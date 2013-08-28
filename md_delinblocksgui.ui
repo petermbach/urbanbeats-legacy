@@ -1,0 +1,1744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DelinBlocksDialog</class>
+ <widget class="QDialog" name="DelinBlocksDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>641</width>
+    <height>371</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Spatial Delineation Module</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../ub_modules/resources/dialogimg.qrc">
+    <normaloff>:/general/ublogo33.png</normaloff>:/general/ublogo33.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QWidget" name="title_frame_2" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>50</height>
+      </size>
+     </property>
+     <widget class="QLabel" name="dbtitle_2">
+      <property name="geometry">
+       <rect>
+        <x>51</x>
+        <y>4</y>
+        <width>441</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Spatial Delineation of Building Blocks</string>
+      </property>
+     </widget>
+     <widget class="Line" name="line_2">
+      <property name="geometry">
+       <rect>
+        <x>51</x>
+        <y>39</y>
+        <width>573</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>573</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="bpmlogo_2">
+      <property name="geometry">
+       <rect>
+        <x>1</x>
+        <y>-1</y>
+        <width>50</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="../ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="dbsubtitle_2">
+      <property name="geometry">
+       <rect>
+        <x>51</x>
+        <y>24</y>
+        <width>561</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Processes Input Data and creates the grid of cells that represents a discretised version of the case study region.</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOn</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>429</width>
+           <height>1086</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QWidget" name="gensim_widget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>60</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <widget class="QLabel" name="blocksize_lbl">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>29</y>
+               <width>71</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>Width of the square cell in the city grid in metres</string>
+             </property>
+             <property name="text">
+              <string>Block Size [m]</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="optionsgs_lbl">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>5</y>
+               <width>111</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>Width of the square cell in the city grid in metres</string>
+             </property>
+             <property name="text">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;General Simulation&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QSpinBox" name="blocksize_in">
+             <property name="geometry">
+              <rect>
+               <x>100</x>
+               <y>30</y>
+               <width>61</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="minimum">
+              <number>200</number>
+             </property>
+             <property name="maximum">
+              <number>5000</number>
+             </property>
+             <property name="singleStep">
+              <number>50</number>
+             </property>
+             <property name="value">
+              <number>500</number>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="blocksize_auto">
+             <property name="geometry">
+              <rect>
+               <x>180</x>
+               <y>30</y>
+               <width>171</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Auto-determine Block Size</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="inputdata_widget" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>540</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <widget class="QLineEdit" name="soc_par1_box">
+             <property name="geometry">
+              <rect>
+               <x>230</x>
+               <y>400</y>
+               <width>161</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="soc_par1_check">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>400</y>
+               <width>191</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Check this box if you would like to experiment with social parameters. DAnCE4Water-BPM (when used as standalone) allows for a maximum of two socio-economic parameters to be specified. Input must be in the form of probabilities (between 0 and 1).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Include Social Parameter 1 - Name:</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="soc_par2_check">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>450</y>
+               <width>221</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Check this box if you would like to experiment with social parameters. DAnCE4Water-BPM (when used as standalone) allows for a maximum of two socio-economic parameters to be specified. Input must be in the form of probabilities (between 0 and 1).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Include Social Parameter 2 - Name:</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="soc_par2_box">
+             <property name="geometry">
+              <rect>
+               <x>230</x>
+               <y>450</y>
+               <width>161</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+            <widget class="QLabel" name="optionsadin_lbl">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>5</y>
+               <width>141</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>Width of the square cell in the city grid in metres</string>
+             </property>
+             <property name="text">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Processing of Input Data&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="planmap_check">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>170</y>
+               <width>101</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>A raster layer that is aligned the basic inputs zoning and population map. The planner's map contains typology-ratios for all land zones, specified according to the user's urban planning snapshot for the region in question. Refer to user guide for more information on how to create this map.</string>
+             </property>
+             <property name="text">
+              <string>Planner's Map</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="localmap_check">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>190</y>
+               <width>101</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;A raster layer that contains information on the location of the central business district and/or activity centres for the region.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;1-2 are urban centres&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;1 = CBD&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;2 = Activity Centre&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;3-7 are water-related point landmarks&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;3 = WWTP&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;4 = DWTP&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;5 = Outfall/Outlet&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Locality Map</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="addinputs_lbl">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>150</y>
+               <width>361</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Additional Planning and Geographic Information:</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="roadnet_check">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>345</y>
+               <width>101</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;A network maps of all road networks (polylines) in the region&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Road Networks</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="soc_params_lbl">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>375</y>
+               <width>221</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Include Societal/Demographic Information</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="popdata_lbl">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>30</y>
+               <width>121</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Population Data Format:</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="spatialanalysis_lbl">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>500</y>
+               <width>171</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Spatial Analysis of Inputs</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="spatialpatches_check">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>520</y>
+               <width>191</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Runs a patch delineation algorithm across all building blocks to determine the clustering of land use mixes therein. This algorithm takes longer for larger blocks.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Information resulting from this is subsequently used in later parts of the model to determine urban form as well as technological opportunities. This allows more accurate assessment of technological opportunities, but is more computationally intensive.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;A map of patches will be created as an output if the option is checked among the list of desired outputs.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Conduct Patch Delineation</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="spatialstats_check">
+             <property name="geometry">
+              <rect>
+               <x>210</x>
+               <y>520</y>
+               <width>191</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Calculates a basic set of spatial indices to describe the nature of land use mix in each building block. These include:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;- Shannon Diversity Index&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;- Shannon Dominance Index&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;- Shannon Evenness Index&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Calculate Set of Spatial Indices</string>
+             </property>
+            </widget>
+            <widget class="QWidget" name="socpar1_customize" native="true">
+             <property name="geometry">
+              <rect>
+               <x>50</x>
+               <y>425</y>
+               <width>341</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <widget class="QRadioButton" name="socpar1binary_radio">
+              <property name="geometry">
+               <rect>
+                <x>130</x>
+                <y>0</y>
+                <width>91</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Binary Yes/No</string>
+              </property>
+             </widget>
+             <widget class="QRadioButton" name="socpar1prop_radio">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>0</y>
+                <width>91</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Proportions</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="socpar1format_lbl">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>0</y>
+                <width>91</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Select Format:</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="socpar2_customize" native="true">
+             <property name="geometry">
+              <rect>
+               <x>50</x>
+               <y>475</y>
+               <width>341</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <widget class="QRadioButton" name="socpar2binary_radio">
+              <property name="geometry">
+               <rect>
+                <x>130</x>
+                <y>0</y>
+                <width>91</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Binary Yes/No</string>
+              </property>
+             </widget>
+             <widget class="QRadioButton" name="socpar2prop_radio">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>0</y>
+                <width>91</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Proportions</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="socpar2format_lbl">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>0</y>
+                <width>91</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Select Format:</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QCheckBox" name="rivers_check">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>255</y>
+               <width>101</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>A raster layer that is aligned the basic inputs zoning and population map. The planner's map contains typology-ratios for all land zones, specified according to the user's urban planning snapshot for the region in question. Refer to user guide for more information on how to create this map.</string>
+             </property>
+             <property name="text">
+              <string>Rivers</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="lakes_check">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>275</y>
+               <width>101</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>A raster layer that is aligned the basic inputs zoning and population map. The planner's map contains typology-ratios for all land zones, specified according to the user's urban planning snapshot for the region in question. Refer to user guide for more information on how to create this map.</string>
+             </property>
+             <property name="text">
+              <string>Lakes</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="employment_check">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>210</y>
+               <width>101</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>A raster layer that is aligned the basic inputs zoning and population map. The planner's map contains typology-ratios for all land zones, specified according to the user's urban planning snapshot for the region in question. Refer to user guide for more information on how to create this map.</string>
+             </property>
+             <property name="text">
+              <string>Employment Map</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="addinputs_lbl_2">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>235</y>
+               <width>361</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Information on Natural Features:</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="sewermains_check">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="geometry">
+              <rect>
+               <x>140</x>
+               <y>345</y>
+               <width>141</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;A network maps of all road networks (polylines) in the region&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Sewer System Mains</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="supplymains_check">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="geometry">
+              <rect>
+               <x>270</x>
+               <y>345</y>
+               <width>131</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;A network maps of all road networks (polylines) in the region&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Water Supply Mains</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="groundwater_check">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>295</y>
+               <width>111</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>A raster layer that is aligned the basic inputs zoning and population map. The planner's map contains typology-ratios for all land zones, specified according to the user's urban planning snapshot for the region in question. Refer to user guide for more information on how to create this map.</string>
+             </property>
+             <property name="text">
+              <string>Groundwater Table</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="soildata_lbl">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>55</y>
+               <width>121</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Soil Data Format:</string>
+             </property>
+            </widget>
+            <widget class="QWidget" name="pop_options_widget" native="true">
+             <property name="geometry">
+              <rect>
+               <x>150</x>
+               <y>30</y>
+               <width>251</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <widget class="QRadioButton" name="popdata_densradio">
+              <property name="geometry">
+               <rect>
+                <x>130</x>
+                <y>0</y>
+                <width>111</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="whatsThis">
+               <string>Input data given as a population density [people/ ha]</string>
+              </property>
+              <property name="text">
+               <string>Population Density</string>
+              </property>
+             </widget>
+             <widget class="QRadioButton" name="popdata_totradio">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>0</y>
+                <width>101</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Input data given as a total population [no. of people]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>Total Population</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="soil_options_widget" native="true">
+             <property name="geometry">
+              <rect>
+               <x>150</x>
+               <y>55</y>
+               <width>251</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <widget class="QRadioButton" name="soildata_infil">
+              <property name="geometry">
+               <rect>
+                <x>130</x>
+                <y>0</y>
+                <width>111</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="whatsThis">
+               <string>Input data given as a population density [people/ ha]</string>
+              </property>
+              <property name="text">
+               <string>Infiltration Rates</string>
+              </property>
+             </widget>
+             <widget class="QRadioButton" name="soildata_classify">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>0</y>
+                <width>101</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Input data given as a total population [no. of people]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>Classification</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="soildata_unitscombo">
+              <property name="geometry">
+               <rect>
+                <x>170</x>
+                <y>20</y>
+                <width>61</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>mm/hr</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>m/sec</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QLabel" name="soildataunits_lbl">
+              <property name="geometry">
+               <rect>
+                <x>130</x>
+                <y>20</y>
+                <width>31</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Units:</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QLabel" name="groundwater_datumlbl">
+             <property name="geometry">
+              <rect>
+               <x>170</x>
+               <y>295</y>
+               <width>81</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Choose Datum:</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="addinputs_lbl_3">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>325</y>
+               <width>361</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Network Structures:</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="elevdata_lbl">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>100</y>
+               <width>141</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Elevation Reference Point:</string>
+             </property>
+            </widget>
+            <widget class="QWidget" name="elev_options_widget" native="true">
+             <property name="geometry">
+              <rect>
+               <x>150</x>
+               <y>100</y>
+               <width>251</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <widget class="QRadioButton" name="elev_custom">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>20</y>
+                <width>71</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="whatsThis">
+               <string>Input data given as a population density [people/ ha]</string>
+              </property>
+              <property name="text">
+               <string>Custom</string>
+              </property>
+             </widget>
+             <widget class="QRadioButton" name="elev_sealevel">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>0</y>
+                <width>101</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Input data given as a total population [no. of people]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>Sea Level</string>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="elev_referencebox">
+              <property name="geometry">
+               <rect>
+                <x>90</x>
+                <y>20</y>
+                <width>51</width>
+                <height>16</height>
+               </rect>
+              </property>
+             </widget>
+             <widget class="QLabel" name="elev_referencelbl">
+              <property name="geometry">
+               <rect>
+                <x>150</x>
+                <y>20</y>
+                <width>91</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>m above sea level</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QComboBox" name="groundwater_datumcombo">
+             <property name="geometry">
+              <rect>
+               <x>260</x>
+               <y>295</y>
+               <width>121</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <item>
+              <property name="text">
+               <string>Sea Level</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Natural Surface</string>
+              </property>
+             </item>
+            </widget>
+            <widget class="QWidget" name="job_options_widget" native="true">
+             <property name="geometry">
+              <rect>
+               <x>150</x>
+               <y>210</y>
+               <width>251</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <widget class="QRadioButton" name="jobdata_densradio">
+              <property name="geometry">
+               <rect>
+                <x>130</x>
+                <y>0</y>
+                <width>111</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="whatsThis">
+               <string>Input data given as a population density [people/ ha]</string>
+              </property>
+              <property name="text">
+               <string>Job Density [/ha]</string>
+              </property>
+             </widget>
+             <widget class="QRadioButton" name="jobdata_totradio">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>0</y>
+                <width>101</width>
+                <height>17</height>
+               </rect>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Input data given as a total population [no. of people]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>Total Jobs</string>
+              </property>
+             </widget>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="connectivity_widget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>240</height>
+             </size>
+            </property>
+            <widget class="QRadioButton" name="radioVNeum">
+             <property name="geometry">
+              <rect>
+               <x>80</x>
+               <y>110</y>
+               <width>101</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>Von Neumann, four cardinal directions on either side of the central block.</string>
+             </property>
+             <property name="text">
+              <string>Von Neumann</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+            <widget class="QLabel" name="img_Moore">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>55</y>
+               <width>41</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="../ub_modules/resources/dialogimg.qrc">:/delinblocks/MooreNH.png</pixmap>
+             </property>
+            </widget>
+            <widget class="QLabel" name="neighb_lbl">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>30</y>
+               <width>231</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;How many blocks to consider when determining drainage fluxes (the greater the number, the greater the computational burden).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Select Neighbourhood (default: Moore):</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="img_vNeum">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>100</y>
+               <width>41</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="../ub_modules/resources/dialogimg.qrc">:/delinblocks/vNeumann.png</pixmap>
+             </property>
+            </widget>
+            <widget class="QRadioButton" name="radioMoore">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="geometry">
+              <rect>
+               <x>80</x>
+               <y>65</y>
+               <width>82</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>Moore, all eight neighbours around the central block.</string>
+             </property>
+             <property name="text">
+              <string>Moore</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QLabel" name="optionsmc_lbl">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>5</y>
+               <width>231</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;How many blocks to consider when determining drainage fluxes (the greater the number, the greater the computational burden).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Local Extents &amp;amp; Map Connectivity&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="flowpath_lbl">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>150</y>
+               <width>131</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Method of finding flow direction in the digital elevation model or in this case the grid of blocks. Refer to publications for further information.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;D-infinity - Tarboton, 1997. A new method for the determination of flow directions and upslope areas in grid digital elevation models. Water Resources Research v33.2, 309-319&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;D8 - O'Callaghan &amp;amp; Mark, 1984. The Extraction of Drainage Networks from Digital Elevation Data. Computer Vision, Graphics and Image Processing v28, 323-344&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Divergent Flows - Freeman, 1991&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Flow Path Method:</string>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="flowpath_combo">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>175</y>
+               <width>271</width>
+               <height>22</height>
+              </rect>
+             </property>
+             <item>
+              <property name="text">
+               <string>Adapted version of D-infinity (Tarboton, 1997)</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>D8 (O'Callaghan &amp; Mark, 1984)</string>
+              </property>
+             </item>
+            </widget>
+            <widget class="QCheckBox" name="demsmooth_check">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>210</y>
+               <width>161</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Applies a weighted average smoothing filter over the DEM layer. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>DEM Smoothing (no. passes)</string>
+             </property>
+            </widget>
+            <widget class="QSpinBox" name="demsmooth_spin">
+             <property name="geometry">
+              <rect>
+               <x>190</x>
+               <y>210</y>
+               <width>31</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>2</number>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="neighb_vnfp_check">
+             <property name="geometry">
+              <rect>
+               <x>210</x>
+               <y>100</y>
+               <width>191</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>Check if you want to avoid localised ponds forming in the region. If this is of particular interest because the DEM's accuracy has been assured and the purpose of the simulation is to assess these problem spots, then leave this box unchecked.
+
+Correction proceeds as follows:
+- If cell cannot transfer water downhill, but there is an adjacent cell with identical elevation within tolerance limit, it will transfer the water into this.
+- If tolerance limit is not met, cell's water is routed directly to catchment outlet.</string>
+             </property>
+             <property name="text">
+              <string>Flow Path Delineation</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="neighb_vnpd_check">
+             <property name="geometry">
+              <rect>
+               <x>210</x>
+               <y>120</y>
+               <width>191</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>Check if you want to avoid localised ponds forming in the region. If this is of particular interest because the DEM's accuracy has been assured and the purpose of the simulation is to assess these problem spots, then leave this box unchecked.
+
+Correction proceeds as follows:
+- If cell cannot transfer water downhill, but there is an adjacent cell with identical elevation within tolerance limit, it will transfer the water into this.
+- If tolerance limit is not met, cell's water is routed directly to catchment outlet.</string>
+             </property>
+             <property name="text">
+              <string>Spatial Averaging Operations</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="neighb_lbl2">
+             <property name="geometry">
+              <rect>
+               <x>180</x>
+               <y>80</y>
+               <width>221</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Method of finding flow direction in the digital elevation model or in this case the grid of blocks. Refer to publications for further information.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;D-infinity - Tarboton, 1997. A new method for the determination of flow directions and upslope areas in grid digital elevation models. Water Resources Research v33.2, 309-319&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;D8 - O'Callaghan &amp;amp; Mark, 1984. The Extraction of Drainage Networks from Digital Elevation Data. Computer Vision, Graphics and Image Processing v28, 323-344&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Divergent Flows - Freeman, 1991&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Apply Von Neumann Neighbourhood to: </string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="regiongeography_widget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>210</height>
+             </size>
+            </property>
+            <widget class="QLabel" name="cbdoption_lbl">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>60</y>
+               <width>231</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;How many blocks to consider when determining drainage fluxes (the greater the number, the greater the computational burden).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Select an option for determining CBD Location:</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="optionsmc_lbl_2">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>5</y>
+               <width>231</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;How many blocks to consider when determining drainage fluxes (the greater the number, the greater the computational burden).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Regional Geography&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="cbd_combo">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>85</y>
+               <width>181</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <item>
+              <property name="text">
+               <string>Adelaide, Australia</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Brisbane, Australia</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Cairns, Australia</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Canberra, Australia</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Copenhagen, Denmark</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Innsbruck, Austria</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Kuala Lumpur, Malaysia</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>London, UK</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Melbourne, Australia</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Munich, Germany</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Perth, Australia</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Singapore, Singapore</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Sydney, Australia</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Vienna, Austria</string>
+              </property>
+             </item>
+            </widget>
+            <widget class="QCheckBox" name="considergeo_check">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>30</y>
+               <width>361</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>Check if you want to avoid localised ponds forming in the region. If this is of particular interest because the DEM's accuracy has been assured and the purpose of the simulation is to assess these problem spots, then leave this box unchecked.
+
+Correction proceeds as follows:
+- If cell cannot transfer water downhill, but there is an adjacent cell with identical elevation within tolerance limit, it will transfer the water into this.
+- If tolerance limit is not met, cell's water is routed directly to catchment outlet.</string>
+             </property>
+             <property name="text">
+              <string>Consider location of nearest Central Business District in Simulation</string>
+             </property>
+            </widget>
+            <widget class="QRadioButton" name="cbdknown_radio">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>85</y>
+               <width>211</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Select from a list of known locations</string>
+             </property>
+            </widget>
+            <widget class="QRadioButton" name="cbdmanual_radio">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>110</y>
+               <width>211</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Manually enter coordinates of CBD</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="cbdlong_box">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>130</y>
+               <width>113</width>
+               <height>20</height>
+              </rect>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="cbdlat_box">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>155</y>
+               <width>113</width>
+               <height>20</height>
+              </rect>
+             </property>
+            </widget>
+            <widget class="QLabel" name="cbdlong_lbl">
+             <property name="geometry">
+              <rect>
+               <x>160</x>
+               <y>130</y>
+               <width>61</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;How many blocks to consider when determining drainage fluxes (the greater the number, the greater the computational burden).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Longitude</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="cbdlat_lbl">
+             <property name="geometry">
+              <rect>
+               <x>160</x>
+               <y>155</y>
+               <width>61</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;How many blocks to consider when determining drainage fluxes (the greater the number, the greater the computational burden).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Latitude</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="cbdmark_check">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>180</y>
+               <width>181</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>Check if you want to avoid localised ponds forming in the region. If this is of particular interest because the DEM's accuracy has been assured and the purpose of the simulation is to assess these problem spots, then leave this box unchecked.
+
+Correction proceeds as follows:
+- If cell cannot transfer water downhill, but there is an adjacent cell with identical elevation within tolerance limit, it will transfer the water into this.
+- If tolerance limit is not met, cell's water is routed directly to catchment outlet.</string>
+             </property>
+             <property name="text">
+              <string>Mark this location on output map</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_2" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>151</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>151</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="img_blocks">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>90</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>90</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../ub_modules/resources/dialogimg.qrc">:/delinblocks/BBcells.png</pixmap>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTextBrowser" name="descr_blocks">
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Set basic simulation parameters for creating the block map of input region. Define additional inputs and specify neighbourhood and DEM analysis rules.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_4" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>38</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>38</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="remarks">
+        <property name="text">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;UrbanBEATS Version 1.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="remarks2">
+        <property name="text">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;- (C) 2012 Peter M. Bach&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDialogButtonBox" name="buttonBox">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="standardButtons">
+         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="helpButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="whatsThis">
+         <string>You do not need help right now! :)</string>
+        </property>
+        <property name="text">
+         <string>Help</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../ub_modules/resources/dialogimg.qrc"/>
+  <include location="../ub_modules/resources/dialogimg.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>DelinBlocksDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>DelinBlocksDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

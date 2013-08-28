@@ -1,0 +1,525 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'newprojectdialog.ui'
+#
+# Created: Wed Apr 03 16:38:51 2013
+#      by: PyQt4 UI code generator 4.8.6
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt4 import QtCore, QtGui
+
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    _fromUtf8 = lambda s: s
+
+class Ui_NewProjectDialog(object):
+    def setupUi(self, NewProjectDialog):
+        NewProjectDialog.setObjectName(_fromUtf8("NewProjectDialog"))
+        NewProjectDialog.resize(480, 600)
+        NewProjectDialog.setWindowTitle(QtGui.QApplication.translate("NewProjectDialog", "New Project...", None, QtGui.QApplication.UnicodeUTF8))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("../../../../../ubeatsicon.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        NewProjectDialog.setWindowIcon(icon)
+        self.verticalLayout = QtGui.QVBoxLayout(NewProjectDialog)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.title_widget = QtGui.QWidget(NewProjectDialog)
+        self.title_widget.setMinimumSize(QtCore.QSize(0, 50))
+        self.title_widget.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.title_widget.setObjectName(_fromUtf8("title_widget"))
+        self.bpmlogo = QtGui.QLabel(self.title_widget)
+        self.bpmlogo.setGeometry(QtCore.QRect(0, 0, 50, 50))
+        self.bpmlogo.setMaximumSize(QtCore.QSize(50, 50))
+        self.bpmlogo.setText(_fromUtf8(""))
+        self.bpmlogo.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/images/D4W-logoBPM.png")))
+        self.bpmlogo.setObjectName(_fromUtf8("bpmlogo"))
+        self.dbtitle = QtGui.QLabel(self.title_widget)
+        self.dbtitle.setGeometry(QtCore.QRect(50, 5, 271, 21))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.dbtitle.setFont(font)
+        self.dbtitle.setText(QtGui.QApplication.translate("NewProjectDialog", "Setup New Project", None, QtGui.QApplication.UnicodeUTF8))
+        self.dbtitle.setObjectName(_fromUtf8("dbtitle"))
+        self.dbsubtitle = QtGui.QLabel(self.title_widget)
+        self.dbsubtitle.setGeometry(QtCore.QRect(50, 25, 561, 16))
+        self.dbsubtitle.setText(QtGui.QApplication.translate("NewProjectDialog", "Customize Simulation Type and Basic Information", None, QtGui.QApplication.UnicodeUTF8))
+        self.dbsubtitle.setObjectName(_fromUtf8("dbsubtitle"))
+        self.verticalLayout.addWidget(self.title_widget)
+        self.widget = QtGui.QWidget(NewProjectDialog)
+        self.widget.setObjectName(_fromUtf8("widget"))
+        self.horizontalLayout = QtGui.QHBoxLayout(self.widget)
+        self.horizontalLayout.setMargin(0)
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.tabWidget = QtGui.QTabWidget(self.widget)
+        self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
+        self.tab_2 = QtGui.QWidget()
+        self.tab_2.setObjectName(_fromUtf8("tab_2"))
+        self.verticalLayout_5 = QtGui.QVBoxLayout(self.tab_2)
+        self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
+        self.scrollArea_2 = QtGui.QScrollArea(self.tab_2)
+        self.scrollArea_2.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scrollArea_2.setWidgetResizable(True)
+        self.scrollArea_2.setObjectName(_fromUtf8("scrollArea_2"))
+        self.scrollAreaWidgetContents_2 = QtGui.QWidget()
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 401, 628))
+        self.scrollAreaWidgetContents_2.setObjectName(_fromUtf8("scrollAreaWidgetContents_2"))
+        self.verticalLayout_4 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_2)
+        self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
+        self.general_widget = QtGui.QWidget(self.scrollAreaWidgetContents_2)
+        self.general_widget.setMinimumSize(QtCore.QSize(0, 610))
+        self.general_widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.general_widget.setObjectName(_fromUtf8("general_widget"))
+        self.name_lbl = QtGui.QLabel(self.general_widget)
+        self.name_lbl.setGeometry(QtCore.QRect(20, 34, 81, 16))
+        self.name_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.name_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Project Name</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.name_lbl.setObjectName(_fromUtf8("name_lbl"))
+        self.name_box = QtGui.QLineEdit(self.general_widget)
+        self.name_box.setGeometry(QtCore.QRect(120, 30, 251, 20))
+        self.name_box.setObjectName(_fromUtf8("name_box"))
+        self.date_lbl = QtGui.QLabel(self.general_widget)
+        self.date_lbl.setGeometry(QtCore.QRect(20, 64, 101, 16))
+        self.date_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.date_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Simulation Date</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.date_lbl.setObjectName(_fromUtf8("date_lbl"))
+        self.date_spin = QtGui.QDateEdit(self.general_widget)
+        self.date_spin.setGeometry(QtCore.QRect(120, 60, 110, 22))
+        self.date_spin.setCalendarPopup(True)
+        self.date_spin.setObjectName(_fromUtf8("date_spin"))
+        self.modellername_lbl = QtGui.QLabel(self.general_widget)
+        self.modellername_lbl.setGeometry(QtCore.QRect(20, 218, 101, 16))
+        self.modellername_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.modellername_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Key Modeller</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.modellername_lbl.setObjectName(_fromUtf8("modellername_lbl"))
+        self.city_box = QtGui.QLineEdit(self.general_widget)
+        self.city_box.setGeometry(QtCore.QRect(120, 90, 251, 20))
+        self.city_box.setObjectName(_fromUtf8("city_box"))
+        self.affiliation_lbl = QtGui.QLabel(self.general_widget)
+        self.affiliation_lbl.setGeometry(QtCore.QRect(20, 248, 101, 16))
+        self.affiliation_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.affiliation_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Affiliation</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.affiliation_lbl.setObjectName(_fromUtf8("affiliation_lbl"))
+        self.state_box = QtGui.QLineEdit(self.general_widget)
+        self.state_box.setGeometry(QtCore.QRect(120, 120, 81, 20))
+        self.state_box.setObjectName(_fromUtf8("state_box"))
+        self.othermodellers_lbl = QtGui.QLabel(self.general_widget)
+        self.othermodellers_lbl.setGeometry(QtCore.QRect(20, 278, 271, 16))
+        self.othermodellers_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.othermodellers_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Other Persons (separate names with commas)</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.othermodellers_lbl.setObjectName(_fromUtf8("othermodellers_lbl"))
+        self.country_box = QtGui.QLineEdit(self.general_widget)
+        self.country_box.setGeometry(QtCore.QRect(120, 150, 121, 20))
+        self.country_box.setObjectName(_fromUtf8("country_box"))
+        self.aboutproject_lbl_3 = QtGui.QLabel(self.general_widget)
+        self.aboutproject_lbl_3.setGeometry(QtCore.QRect(10, 10, 191, 16))
+        self.aboutproject_lbl_3.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.aboutproject_lbl_3.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">About the Project</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.aboutproject_lbl_3.setObjectName(_fromUtf8("aboutproject_lbl_3"))
+        self.aboutmodeller_lbl = QtGui.QLabel(self.general_widget)
+        self.aboutmodeller_lbl.setGeometry(QtCore.QRect(10, 194, 131, 16))
+        self.aboutmodeller_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.aboutmodeller_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">About the Modellers</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.aboutmodeller_lbl.setObjectName(_fromUtf8("aboutmodeller_lbl"))
+        self.city_lbl = QtGui.QLabel(self.general_widget)
+        self.city_lbl.setGeometry(QtCore.QRect(20, 94, 101, 16))
+        self.city_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.city_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Region/City Name</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.city_lbl.setObjectName(_fromUtf8("city_lbl"))
+        self.synopsis_lbl = QtGui.QLabel(self.general_widget)
+        self.synopsis_lbl.setGeometry(QtCore.QRect(10, 340, 131, 16))
+        self.synopsis_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.synopsis_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Project Synopsis</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.synopsis_lbl.setObjectName(_fromUtf8("synopsis_lbl"))
+        self.modellername_box = QtGui.QLineEdit(self.general_widget)
+        self.modellername_box.setGeometry(QtCore.QRect(120, 220, 251, 20))
+        self.modellername_box.setObjectName(_fromUtf8("modellername_box"))
+        self.affiliation_box = QtGui.QLineEdit(self.general_widget)
+        self.affiliation_box.setGeometry(QtCore.QRect(120, 250, 251, 20))
+        self.affiliation_box.setObjectName(_fromUtf8("affiliation_box"))
+        self.state_lbl = QtGui.QLabel(self.general_widget)
+        self.state_lbl.setGeometry(QtCore.QRect(20, 120, 101, 20))
+        self.state_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.state_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">State</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.state_lbl.setObjectName(_fromUtf8("state_lbl"))
+        self.othermodellers_box = QtGui.QLineEdit(self.general_widget)
+        self.othermodellers_box.setGeometry(QtCore.QRect(40, 300, 321, 20))
+        self.othermodellers_box.setObjectName(_fromUtf8("othermodellers_box"))
+        self.country_lbl = QtGui.QLabel(self.general_widget)
+        self.country_lbl.setGeometry(QtCore.QRect(20, 150, 101, 20))
+        self.country_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.country_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Country</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.country_lbl.setObjectName(_fromUtf8("country_lbl"))
+        self.synopsis_box = QtGui.QPlainTextEdit(self.general_widget)
+        self.synopsis_box.setGeometry(QtCore.QRect(10, 380, 361, 211))
+        self.synopsis_box.setPlainText(QtGui.QApplication.translate("NewProjectDialog", "none", None, QtGui.QApplication.UnicodeUTF8))
+        self.synopsis_box.setObjectName(_fromUtf8("synopsis_box"))
+        self.synopsis_descr_lbl = QtGui.QLabel(self.general_widget)
+        self.synopsis_descr_lbl.setGeometry(QtCore.QRect(20, 360, 291, 16))
+        self.synopsis_descr_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.synopsis_descr_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Provide a description of the key aspects of this project.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.synopsis_descr_lbl.setObjectName(_fromUtf8("synopsis_descr_lbl"))
+        self.verticalLayout_4.addWidget(self.general_widget)
+        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
+        self.verticalLayout_5.addWidget(self.scrollArea_2)
+        self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
+        self.tab = QtGui.QWidget()
+        self.tab.setObjectName(_fromUtf8("tab"))
+        self.verticalLayout_3 = QtGui.QVBoxLayout(self.tab)
+        self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
+        self.scrollArea = QtGui.QScrollArea(self.tab)
+        self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
+        self.scrollAreaWidgetContents = QtGui.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 401, 559))
+        self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.simtype_widget = QtGui.QWidget(self.scrollAreaWidgetContents)
+        self.simtype_widget.setMinimumSize(QtCore.QSize(0, 40))
+        self.simtype_widget.setObjectName(_fromUtf8("simtype_widget"))
+        self.simtype_combo = QtGui.QComboBox(self.simtype_widget)
+        self.simtype_combo.setGeometry(QtCore.QRect(170, 7, 181, 21))
+        self.simtype_combo.setObjectName(_fromUtf8("simtype_combo"))
+        self.simtype_combo.addItem(_fromUtf8(""))
+        self.simtype_combo.setItemText(0, QtGui.QApplication.translate("NewProjectDialog", "Static Snapshots Simulation", None, QtGui.QApplication.UnicodeUTF8))
+        self.simtype_combo.addItem(_fromUtf8(""))
+        self.simtype_combo.setItemText(1, QtGui.QApplication.translate("NewProjectDialog", "Dynamic Simulation", None, QtGui.QApplication.UnicodeUTF8))
+        self.simtype_combo.addItem(_fromUtf8(""))
+        self.simtype_combo.setItemText(2, QtGui.QApplication.translate("NewProjectDialog", "Benchmarking Simulation", None, QtGui.QApplication.UnicodeUTF8))
+        self.simtype_lbl = QtGui.QLabel(self.simtype_widget)
+        self.simtype_lbl.setGeometry(QtCore.QRect(35, 10, 131, 16))
+        self.simtype_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Simulation Type:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.simtype_lbl.setObjectName(_fromUtf8("simtype_lbl"))
+        self.verticalLayout_2.addWidget(self.simtype_widget)
+        self.simtype_stack = QtGui.QStackedWidget(self.scrollAreaWidgetContents)
+        self.simtype_stack.setMinimumSize(QtCore.QSize(0, 400))
+        self.simtype_stack.setObjectName(_fromUtf8("simtype_stack"))
+        self.page = QtGui.QWidget()
+        self.page.setObjectName(_fromUtf8("page"))
+        self.horizontalLayout_3 = QtGui.QHBoxLayout(self.page)
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
+        self.static_group = QtGui.QGroupBox(self.page)
+        self.static_group.setTitle(QtGui.QApplication.translate("NewProjectDialog", "Static Snapshot Simulation Options", None, QtGui.QApplication.UnicodeUTF8))
+        self.static_group.setObjectName(_fromUtf8("static_group"))
+        self.snapshots_spin = QtGui.QSpinBox(self.static_group)
+        self.snapshots_spin.setGeometry(QtCore.QRect(190, 30, 42, 16))
+        self.snapshots_spin.setObjectName(_fromUtf8("snapshots_spin"))
+        self.snapshots_lbl = QtGui.QLabel(self.static_group)
+        self.snapshots_lbl.setGeometry(QtCore.QRect(30, 30, 161, 16))
+        self.snapshots_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "How many planning snapshots?", None, QtGui.QApplication.UnicodeUTF8))
+        self.snapshots_lbl.setObjectName(_fromUtf8("snapshots_lbl"))
+        self.snapshot_img = QtGui.QLabel(self.static_group)
+        self.snapshot_img.setGeometry(QtCore.QRect(320, 20, 32, 32))
+        self.snapshot_img.setMinimumSize(QtCore.QSize(32, 32))
+        self.snapshot_img.setText(_fromUtf8(""))
+        self.snapshot_img.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/images/simtype_static.png")))
+        self.snapshot_img.setObjectName(_fromUtf8("snapshot_img"))
+        self.static_techplaninclude = QtGui.QCheckBox(self.static_group)
+        self.static_techplaninclude.setGeometry(QtCore.QRect(30, 110, 211, 17))
+        self.static_techplaninclude.setText(QtGui.QApplication.translate("NewProjectDialog", "Include Technologies Planning?", None, QtGui.QApplication.UnicodeUTF8))
+        self.static_techplaninclude.setObjectName(_fromUtf8("static_techplaninclude"))
+        self.static_perfinclude = QtGui.QCheckBox(self.static_group)
+        self.static_perfinclude.setGeometry(QtCore.QRect(30, 210, 191, 17))
+        self.static_perfinclude.setText(QtGui.QApplication.translate("NewProjectDialog", "Include Performance Assessment?", None, QtGui.QApplication.UnicodeUTF8))
+        self.static_perfinclude.setObjectName(_fromUtf8("static_perfinclude"))
+        self.static_techimplinclude = QtGui.QCheckBox(self.static_group)
+        self.static_techimplinclude.setGeometry(QtCore.QRect(30, 160, 211, 17))
+        self.static_techimplinclude.setText(QtGui.QApplication.translate("NewProjectDialog", "Include Technology Implementation?", None, QtGui.QApplication.UnicodeUTF8))
+        self.static_techimplinclude.setObjectName(_fromUtf8("static_techimplinclude"))
+        self.static_techimplconstant = QtGui.QCheckBox(self.static_group)
+        self.static_techimplconstant.setGeometry(QtCore.QRect(60, 180, 221, 17))
+        self.static_techimplconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Keep implementation rules constant", None, QtGui.QApplication.UnicodeUTF8))
+        self.static_techimplconstant.setObjectName(_fromUtf8("static_techimplconstant"))
+        self.static_techplanconstant = QtGui.QCheckBox(self.static_group)
+        self.static_techplanconstant.setGeometry(QtCore.QRect(60, 130, 221, 17))
+        self.static_techplanconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Keep technology planning rules constant", None, QtGui.QApplication.UnicodeUTF8))
+        self.static_techplanconstant.setObjectName(_fromUtf8("static_techplanconstant"))
+        self.static_ubpconstant = QtGui.QCheckBox(self.static_group)
+        self.static_ubpconstant.setGeometry(QtCore.QRect(30, 80, 221, 17))
+        self.static_ubpconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Keep Urban Planning Rules constant", None, QtGui.QApplication.UnicodeUTF8))
+        self.static_ubpconstant.setObjectName(_fromUtf8("static_ubpconstant"))
+        self.staticsimfeatures = QtGui.QLabel(self.static_group)
+        self.staticsimfeatures.setGeometry(QtCore.QRect(10, 60, 131, 16))
+        self.staticsimfeatures.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Simulation Features:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.staticsimfeatures.setObjectName(_fromUtf8("staticsimfeatures"))
+        self.staticdataoptions = QtGui.QLabel(self.static_group)
+        self.staticdataoptions.setGeometry(QtCore.QRect(10, 240, 131, 16))
+        self.staticdataoptions.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Data Options:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.staticdataoptions.setObjectName(_fromUtf8("staticdataoptions"))
+        self.static_climateconstant = QtGui.QCheckBox(self.static_group)
+        self.static_climateconstant.setGeometry(QtCore.QRect(30, 350, 221, 17))
+        self.static_climateconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Same Climate Data for each Snapshot", None, QtGui.QApplication.UnicodeUTF8))
+        self.static_climateconstant.setObjectName(_fromUtf8("static_climateconstant"))
+        self.radioMasterplan = QtGui.QRadioButton(self.static_group)
+        self.radioMasterplan.setGeometry(QtCore.QRect(30, 280, 131, 17))
+        self.radioMasterplan.setText(QtGui.QApplication.translate("NewProjectDialog", "Same Masterplan", None, QtGui.QApplication.UnicodeUTF8))
+        self.radioMasterplan.setObjectName(_fromUtf8("radioMasterplan"))
+        self.radioEnvironment = QtGui.QRadioButton(self.static_group)
+        self.radioEnvironment.setGeometry(QtCore.QRect(30, 300, 201, 20))
+        self.radioEnvironment.setText(QtGui.QApplication.translate("NewProjectDialog", "Same Implementation Environment", None, QtGui.QApplication.UnicodeUTF8))
+        self.radioEnvironment.setObjectName(_fromUtf8("radioEnvironment"))
+        self.staticdataoptions2 = QtGui.QLabel(self.static_group)
+        self.staticdataoptions2.setGeometry(QtCore.QRect(20, 260, 201, 16))
+        self.staticdataoptions2.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Rainfall time series, obtain data from weather station or climate authority of your city. Time series should be in rainfall depth and have units millimetres.", None, QtGui.QApplication.UnicodeUTF8))
+        self.staticdataoptions2.setText(QtGui.QApplication.translate("NewProjectDialog", "Choose one option for spatial data:", None, QtGui.QApplication.UnicodeUTF8))
+        self.staticdataoptions2.setObjectName(_fromUtf8("staticdataoptions2"))
+        self.staticdataoptions3 = QtGui.QLabel(self.static_group)
+        self.staticdataoptions3.setGeometry(QtCore.QRect(20, 330, 201, 16))
+        self.staticdataoptions3.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Rainfall time series, obtain data from weather station or climate authority of your city. Time series should be in rainfall depth and have units millimetres.", None, QtGui.QApplication.UnicodeUTF8))
+        self.staticdataoptions3.setText(QtGui.QApplication.translate("NewProjectDialog", "Time-series Data:", None, QtGui.QApplication.UnicodeUTF8))
+        self.staticdataoptions3.setObjectName(_fromUtf8("staticdataoptions3"))
+        self.horizontalLayout_3.addWidget(self.static_group)
+        self.simtype_stack.addWidget(self.page)
+        self.page_2 = QtGui.QWidget()
+        self.page_2.setObjectName(_fromUtf8("page_2"))
+        self.horizontalLayout_4 = QtGui.QHBoxLayout(self.page_2)
+        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
+        self.dynamic_group = QtGui.QGroupBox(self.page_2)
+        self.dynamic_group.setMinimumSize(QtCore.QSize(0, 130))
+        self.dynamic_group.setTitle(QtGui.QApplication.translate("NewProjectDialog", "Dynamic Simulation Options", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynamic_group.setObjectName(_fromUtf8("dynamic_group"))
+        self.dynamicperiod_lbl = QtGui.QLabel(self.dynamic_group)
+        self.dynamicperiod_lbl.setGeometry(QtCore.QRect(30, 25, 131, 16))
+        self.dynamicperiod_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "Total Time Period:", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynamicperiod_lbl.setObjectName(_fromUtf8("dynamicperiod_lbl"))
+        self.dynamicperiod_spin = QtGui.QSpinBox(self.dynamic_group)
+        self.dynamicperiod_spin.setGeometry(QtCore.QRect(150, 25, 42, 16))
+        self.dynamicperiod_spin.setObjectName(_fromUtf8("dynamicperiod_spin"))
+        self.dynamicperiod_lbl2 = QtGui.QLabel(self.dynamic_group)
+        self.dynamicperiod_lbl2.setGeometry(QtCore.QRect(200, 25, 41, 16))
+        self.dynamicperiod_lbl2.setText(QtGui.QApplication.translate("NewProjectDialog", "years", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynamicperiod_lbl2.setObjectName(_fromUtf8("dynamicperiod_lbl2"))
+        self.dynamicbreaks_lbl = QtGui.QLabel(self.dynamic_group)
+        self.dynamicbreaks_lbl.setGeometry(QtCore.QRect(30, 75, 101, 16))
+        self.dynamicbreaks_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "Number of breaks:", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynamicbreaks_lbl.setObjectName(_fromUtf8("dynamicbreaks_lbl"))
+        self.dynamicbreaks_spin = QtGui.QSpinBox(self.dynamic_group)
+        self.dynamicbreaks_spin.setGeometry(QtCore.QRect(150, 75, 42, 16))
+        self.dynamicbreaks_spin.setMinimum(0)
+        self.dynamicbreaks_spin.setMaximum(10)
+        self.dynamicbreaks_spin.setObjectName(_fromUtf8("dynamicbreaks_spin"))
+        self.dynamicinterval_check = QtGui.QCheckBox(self.dynamic_group)
+        self.dynamicinterval_check.setGeometry(QtCore.QRect(30, 100, 151, 17))
+        self.dynamicinterval_check.setText(QtGui.QApplication.translate("NewProjectDialog", "Irregular Time Intervals", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynamicinterval_check.setObjectName(_fromUtf8("dynamicinterval_check"))
+        self.dynamicstart_lbl = QtGui.QLabel(self.dynamic_group)
+        self.dynamicstart_lbl.setGeometry(QtCore.QRect(30, 50, 131, 16))
+        self.dynamicstart_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "Starting Year:", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynamicstart_lbl.setObjectName(_fromUtf8("dynamicstart_lbl"))
+        self.dynamicstart_spin = QtGui.QSpinBox(self.dynamic_group)
+        self.dynamicstart_spin.setGeometry(QtCore.QRect(150, 50, 61, 16))
+        self.dynamicstart_spin.setMinimum(1900)
+        self.dynamicstart_spin.setMaximum(2200)
+        self.dynamicstart_spin.setProperty("value", 1960)
+        self.dynamicstart_spin.setObjectName(_fromUtf8("dynamicstart_spin"))
+        self.dynamic_img = QtGui.QLabel(self.dynamic_group)
+        self.dynamic_img.setGeometry(QtCore.QRect(320, 20, 32, 32))
+        self.dynamic_img.setMinimumSize(QtCore.QSize(32, 32))
+        self.dynamic_img.setText(_fromUtf8(""))
+        self.dynamic_img.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/images/simtype_dynamic.png")))
+        self.dynamic_img.setObjectName(_fromUtf8("dynamic_img"))
+        self.dyndataoptions = QtGui.QLabel(self.dynamic_group)
+        self.dyndataoptions.setGeometry(QtCore.QRect(10, 275, 131, 16))
+        self.dyndataoptions.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Data Options:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.dyndataoptions.setObjectName(_fromUtf8("dyndataoptions"))
+        self.dynsimfeatures = QtGui.QLabel(self.dynamic_group)
+        self.dynsimfeatures.setGeometry(QtCore.QRect(10, 130, 131, 16))
+        self.dynsimfeatures.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Simulation Features:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynsimfeatures.setObjectName(_fromUtf8("dynsimfeatures"))
+        self.dyn_climateconstant = QtGui.QCheckBox(self.dynamic_group)
+        self.dyn_climateconstant.setGeometry(QtCore.QRect(30, 320, 321, 17))
+        self.dyn_climateconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Use same climate data across simulation (can still be scaled)", None, QtGui.QApplication.UnicodeUTF8))
+        self.dyn_climateconstant.setObjectName(_fromUtf8("dyn_climateconstant"))
+        self.dyn_ubpconstant = QtGui.QCheckBox(self.dynamic_group)
+        self.dyn_ubpconstant.setGeometry(QtCore.QRect(30, 150, 221, 17))
+        self.dyn_ubpconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Keep Urban Planning Rules constant", None, QtGui.QApplication.UnicodeUTF8))
+        self.dyn_ubpconstant.setObjectName(_fromUtf8("dyn_ubpconstant"))
+        self.dyn_masterplanconstant = QtGui.QCheckBox(self.dynamic_group)
+        self.dyn_masterplanconstant.setGeometry(QtCore.QRect(30, 295, 221, 17))
+        self.dyn_masterplanconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "No change in Masterplan", None, QtGui.QApplication.UnicodeUTF8))
+        self.dyn_masterplanconstant.setObjectName(_fromUtf8("dyn_masterplanconstant"))
+        self.dyn_techplanconstant = QtGui.QCheckBox(self.dynamic_group)
+        self.dyn_techplanconstant.setGeometry(QtCore.QRect(30, 175, 261, 17))
+        self.dyn_techplanconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Keep Technology Planning Rules constant", None, QtGui.QApplication.UnicodeUTF8))
+        self.dyn_techplanconstant.setObjectName(_fromUtf8("dyn_techplanconstant"))
+        self.dyn_techimplconstant = QtGui.QCheckBox(self.dynamic_group)
+        self.dyn_techimplconstant.setGeometry(QtCore.QRect(30, 200, 261, 17))
+        self.dyn_techimplconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Keep Technology Implementation Rules constant", None, QtGui.QApplication.UnicodeUTF8))
+        self.dyn_techimplconstant.setObjectName(_fromUtf8("dyn_techimplconstant"))
+        self.dyn_perfconstant = QtGui.QCheckBox(self.dynamic_group)
+        self.dyn_perfconstant.setGeometry(QtCore.QRect(60, 245, 261, 17))
+        self.dyn_perfconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Constant parameter set across time?", None, QtGui.QApplication.UnicodeUTF8))
+        self.dyn_perfconstant.setObjectName(_fromUtf8("dyn_perfconstant"))
+        self.dyn_perfinclude = QtGui.QCheckBox(self.dynamic_group)
+        self.dyn_perfinclude.setGeometry(QtCore.QRect(30, 225, 261, 17))
+        self.dyn_perfinclude.setText(QtGui.QApplication.translate("NewProjectDialog", "Include Performance Assessment?", None, QtGui.QApplication.UnicodeUTF8))
+        self.dyn_perfinclude.setObjectName(_fromUtf8("dyn_perfinclude"))
+        self.horizontalLayout_4.addWidget(self.dynamic_group)
+        self.simtype_stack.addWidget(self.page_2)
+        self.page_3 = QtGui.QWidget()
+        self.page_3.setObjectName(_fromUtf8("page_3"))
+        self.verticalLayout_6 = QtGui.QVBoxLayout(self.page_3)
+        self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
+        self.dynamic_group_2 = QtGui.QGroupBox(self.page_3)
+        self.dynamic_group_2.setMinimumSize(QtCore.QSize(0, 130))
+        self.dynamic_group_2.setTitle(QtGui.QApplication.translate("NewProjectDialog", "Benchmarking Simulation", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynamic_group_2.setObjectName(_fromUtf8("dynamic_group_2"))
+        self.bench_comingsoon = QtGui.QLabel(self.dynamic_group_2)
+        self.bench_comingsoon.setGeometry(QtCore.QRect(50, 140, 131, 16))
+        self.bench_comingsoon.setText(QtGui.QApplication.translate("NewProjectDialog", "coming soon...", None, QtGui.QApplication.UnicodeUTF8))
+        self.bench_comingsoon.setObjectName(_fromUtf8("bench_comingsoon"))
+        self.benchmark_img = QtGui.QLabel(self.dynamic_group_2)
+        self.benchmark_img.setGeometry(QtCore.QRect(320, 20, 32, 32))
+        self.benchmark_img.setMinimumSize(QtCore.QSize(32, 32))
+        self.benchmark_img.setText(_fromUtf8(""))
+        self.benchmark_img.setPixmap(QtGui.QPixmap(_fromUtf8(":/guitoolbaricons/disperse.png")))
+        self.benchmark_img.setObjectName(_fromUtf8("benchmark_img"))
+        self.verticalLayout_6.addWidget(self.dynamic_group_2)
+        self.simtype_stack.addWidget(self.page_3)
+        self.verticalLayout_2.addWidget(self.simtype_stack)
+        self.filemgmnt_lbl = QtGui.QLabel(self.scrollAreaWidgetContents)
+        self.filemgmnt_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.filemgmnt_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Project Files Management</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.filemgmnt_lbl.setObjectName(_fromUtf8("filemgmnt_lbl"))
+        self.verticalLayout_2.addWidget(self.filemgmnt_lbl)
+        self.filemgmnt_widget = QtGui.QWidget(self.scrollAreaWidgetContents)
+        self.filemgmnt_widget.setMinimumSize(QtCore.QSize(0, 70))
+        self.filemgmnt_widget.setObjectName(_fromUtf8("filemgmnt_widget"))
+        self.projectpath_lbl = QtGui.QLabel(self.filemgmnt_widget)
+        self.projectpath_lbl.setGeometry(QtCore.QRect(20, 10, 141, 16))
+        self.projectpath_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Rainfall time series, obtain data from weather station or climate authority of your city. Time series should be in rainfall depth and have units millimetres.", None, QtGui.QApplication.UnicodeUTF8))
+        self.projectpath_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "Set Path for Project Folder:", None, QtGui.QApplication.UnicodeUTF8))
+        self.projectpath_lbl.setObjectName(_fromUtf8("projectpath_lbl"))
+        self.projectpath_button = QtGui.QToolButton(self.filemgmnt_widget)
+        self.projectpath_button.setGeometry(QtCore.QRect(310, 10, 61, 20))
+        self.projectpath_button.setText(QtGui.QApplication.translate("NewProjectDialog", "Set...", None, QtGui.QApplication.UnicodeUTF8))
+        self.projectpath_button.setObjectName(_fromUtf8("projectpath_button"))
+        self.projectpath_box = QtGui.QLineEdit(self.filemgmnt_widget)
+        self.projectpath_box.setGeometry(QtCore.QRect(160, 10, 141, 20))
+        self.projectpath_box.setObjectName(_fromUtf8("projectpath_box"))
+        self.projectpath_check = QtGui.QCheckBox(self.filemgmnt_widget)
+        self.projectpath_check.setGeometry(QtCore.QRect(40, 40, 231, 17))
+        self.projectpath_check.setText(QtGui.QApplication.translate("NewProjectDialog", "Save copy of data into project folder", None, QtGui.QApplication.UnicodeUTF8))
+        self.projectpath_check.setObjectName(_fromUtf8("projectpath_check"))
+        self.verticalLayout_2.addWidget(self.filemgmnt_widget)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.verticalLayout_3.addWidget(self.scrollArea)
+        self.tabWidget.addTab(self.tab, _fromUtf8(""))
+        self.horizontalLayout.addWidget(self.tabWidget)
+        self.verticalLayout.addWidget(self.widget)
+        self.widget_4 = QtGui.QWidget(NewProjectDialog)
+        self.widget_4.setMinimumSize(QtCore.QSize(0, 38))
+        self.widget_4.setMaximumSize(QtCore.QSize(16777215, 38))
+        self.widget_4.setObjectName(_fromUtf8("widget_4"))
+        self.horizontalLayout_2 = QtGui.QHBoxLayout(self.widget_4)
+        self.horizontalLayout_2.setMargin(0)
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.remarks = QtGui.QLabel(self.widget_4)
+        self.remarks.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS.projectinfo</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.remarks.setObjectName(_fromUtf8("remarks"))
+        self.horizontalLayout_2.addWidget(self.remarks)
+        self.buttonBox = QtGui.QDialogButtonBox(self.widget_4)
+        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
+        self.horizontalLayout_2.addWidget(self.buttonBox)
+        self.verticalLayout.addWidget(self.widget_4)
+
+        self.retranslateUi(NewProjectDialog)
+        self.tabWidget.setCurrentIndex(0)
+        self.simtype_stack.setCurrentIndex(0)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), NewProjectDialog.accept)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), NewProjectDialog.reject)
+        QtCore.QObject.connect(self.simtype_combo, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), self.simtype_stack.setCurrentIndex)
+        QtCore.QMetaObject.connectSlotsByName(NewProjectDialog)
+
+    def retranslateUi(self, NewProjectDialog):
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("NewProjectDialog", "Project Info", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("NewProjectDialog", "Customize Simulation", None, QtGui.QApplication.UnicodeUTF8))
+
+import guitoolbaricons_rc
+import guitoolbaricons_rc
+import guitoolbaricons_rc
+import guitoolbaricons_rc
+import guitoolbaricons_rc
+import guitoolbaricons_rc

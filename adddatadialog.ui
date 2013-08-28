@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddDataDialog</class>
+ <widget class="QDialog" name="AddDataDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>320</width>
+    <height>240</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Add Data...</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../../ubeatsicon.ico</normaloff>../../../../../ubeatsicon.ico</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QWidget" name="dbtitle_widget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>50</height>
+      </size>
+     </property>
+     <widget class="Line" name="line">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>40</y>
+        <width>573</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>573</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="dbtitle">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>5</y>
+        <width>241</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Add Data</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="bpmlogo">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>50</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="toolbaricons/guitoolbaricons.qrc">:/images/images/D4W-logoBPM.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="dbsubtitle">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>25</y>
+        <width>561</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Add GIS or Climate Data to the Project</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="maindb_widget" native="true">
+     <widget class="QToolButton" name="adddatabrowse">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>30</y>
+        <width>61</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="databox">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>30</y>
+        <width>161</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="datafile_lbl">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>61</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="whatsThis">
+       <string>Rainfall time series, obtain data from weather station or climate authority of your city. Time series should be in rainfall depth and have units millimetres.</string>
+      </property>
+      <property name="text">
+       <string>Data File:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="datatype_lbl">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="whatsThis">
+       <string>Rainfall time series, obtain data from weather station or climate authority of your city. Time series should be in rainfall depth and have units millimetres.</string>
+      </property>
+      <property name="text">
+       <string>Select Data Type:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="datatypecombo">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>80</y>
+        <width>191</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <item>
+       <property name="text">
+        <string>&lt;undefined&gt;</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Elevation Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Soil Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Land Use Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Population Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Employment Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Planner's Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Locality Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Groundwater Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Rivers Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Lakes Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Social Parameters Map</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Existing Systems</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Rainfall Time Series</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Evapotranspiration Time Series</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Solar Radiation Time Series</string>
+       </property>
+      </item>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="footwidget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>38</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>38</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QDialogButtonBox" name="buttonBox">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="standardButtons">
+         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="toolbaricons/guitoolbaricons.qrc"/>
+  <include location="toolbaricons/guitoolbaricons.qrc"/>
+  <include location="toolbaricons/guitoolbaricons.qrc"/>
+  <include location="toolbaricons/guitoolbaricons.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>AddDataDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>159</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>159</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>AddDataDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>159</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>159</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
