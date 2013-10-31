@@ -22,6 +22,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
+
+import os
+
+__author__ = 'Peter M Bach'
+
 def createDataStringFromData(datadict):
     """Creates the datastring for the lines in the highcharts html script where data and series
     are defined, returns the complete string.
@@ -107,8 +112,8 @@ def line_basic(charttitle, categories, xlabel, ylabel, valueunits, datadict):
     </script>
     </head>
     <body>
-        <script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
-        <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <div id="container" style="min-width: 400px; min-height: 400px; margin: 0 auto"></div>
     </body>
     </html>
     """
@@ -247,8 +252,8 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
-<script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts-more.js"></script>
+<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts-more.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 	</body>
@@ -330,7 +335,7 @@ def bar_basic(charttitle, categories, axislabel, valueunits, datadict):
         </script>
     </head>
     <body>
-        <script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
     </body>
     </html>"""    
@@ -403,7 +408,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
 
 <div id="container" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
 
@@ -471,7 +476,7 @@ def column_basic(charttitle, categories, axislabel, labelformat, valueunits, dat
         </script>
     </head>
     <body>
-        <script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
     </body>
     </html>
@@ -546,7 +551,7 @@ def column_stacked(charttitle, categories, ylabel, datadict):
 		</script>
 	</head>
 	<body>
-        <script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
     </html>"""
@@ -702,7 +707,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
 </html>"""    
@@ -762,7 +767,7 @@ def pie_basic(charttitle, seriesname, datadict):
         </script>
     </head>
     <body>
-        <script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
     </body>
     </html>"""
@@ -910,7 +915,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 	</body>
@@ -995,7 +1000,7 @@ def scatter_plot(charttitle, xlabel, ylabel, markersize, valueunitsX, valueunits
 		</script>
 	</head>
 	<body>
-        <script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
     </html>"""
@@ -1092,7 +1097,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
 </html>"""
@@ -1192,7 +1197,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 	</body>
@@ -1259,8 +1264,8 @@ def box_plot(charttitle, categories, xlabel, ylabel, valueunits, datadict):
         </script>
     </head>
     <body>
-        <script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
-        <script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts-more.js"></script>
+        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts-more.js"></script>
         <div id="container" style="height: 400px; margin: auto; min-width: 400px; max-width: 600px"></div>
     </body>
     </html>"""
@@ -1315,8 +1320,8 @@ def spiderweb(charttitle, categories, valueunits, datadict):
 	</script>
 	</head>
 	<body>
-        <script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts.js"></script>
-        <script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts-more.js"></script>
+        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts-more.js"></script>
         <div id="container" style="width: 700px; height: 400px; margin: 0 auto"></div>
 	</body>
     </html>"""
@@ -1689,7 +1694,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src="C:/UrbanBEATSv1Dev/main_user_interface/ancillary/highcharts/js/highcharts-more.js"></script>
+<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
 </html>"""

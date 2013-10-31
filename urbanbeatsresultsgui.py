@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatsresultsgui.ui'
 #
-# Created: Thu May 30 22:49:24 2013
+# Created: Tue Oct 29 10:38:46 2013
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -149,33 +149,9 @@ class Ui_ResultsBrowseDialog(object):
         self.resultTabs.addTab(self.tab, _fromUtf8(""))
         self.tab_5 = QtGui.QWidget()
         self.tab_5.setObjectName(_fromUtf8("tab_5"))
-        self.sm_sidebarWidget = QtGui.QWidget(self.tab_5)
-        self.sm_sidebarWidget.setGeometry(QtCore.QRect(6, 10, 218, 501))
-        self.sm_sidebarWidget.setMinimumSize(QtCore.QSize(218, 0))
-        self.sm_sidebarWidget.setMaximumSize(QtCore.QSize(218, 16777215))
-        self.sm_sidebarWidget.setObjectName(_fromUtf8("sm_sidebarWidget"))
-        self.verticalLayout_15 = QtGui.QVBoxLayout(self.sm_sidebarWidget)
-        self.verticalLayout_15.setMargin(0)
+        self.verticalLayout_15 = QtGui.QVBoxLayout(self.tab_5)
         self.verticalLayout_15.setObjectName(_fromUtf8("verticalLayout_15"))
-        self.sm_comboSelect = QtGui.QComboBox(self.sm_sidebarWidget)
-        self.sm_comboSelect.setEnabled(False)
-        self.sm_comboSelect.setMinimumSize(QtCore.QSize(200, 20))
-        self.sm_comboSelect.setMaximumSize(QtCore.QSize(200, 20))
-        self.sm_comboSelect.setObjectName(_fromUtf8("sm_comboSelect"))
-        self.sm_comboSelect.addItem(_fromUtf8(""))
-        self.sm_comboSelect.setItemText(0, QtGui.QApplication.translate("ResultsBrowseDialog", "(Select simulation snapshot/period)", None, QtGui.QApplication.UnicodeUTF8))
-        self.verticalLayout_15.addWidget(self.sm_comboSelect)
-        self.sm_categoryTree = QtGui.QTreeWidget(self.sm_sidebarWidget)
-        self.sm_categoryTree.setMinimumSize(QtCore.QSize(200, 0))
-        self.sm_categoryTree.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.sm_categoryTree.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.sm_categoryTree.setColumnCount(1)
-        self.sm_categoryTree.setObjectName(_fromUtf8("sm_categoryTree"))
-        self.sm_categoryTree.headerItem().setText(0, QtGui.QApplication.translate("ResultsBrowseDialog", "Categories", None, QtGui.QApplication.UnicodeUTF8))
-        self.sm_categoryTree.header().setVisible(False)
-        self.verticalLayout_15.addWidget(self.sm_categoryTree)
         self.sm_MainViewWidget = QtGui.QWidget(self.tab_5)
-        self.sm_MainViewWidget.setGeometry(QtCore.QRect(230, 10, 818, 618))
         self.sm_MainViewWidget.setObjectName(_fromUtf8("sm_MainViewWidget"))
         self.verticalLayout_16 = QtGui.QVBoxLayout(self.sm_MainViewWidget)
         self.verticalLayout_16.setMargin(0)
@@ -184,6 +160,36 @@ class Ui_ResultsBrowseDialog(object):
         self.sm_WebView.setUrl(QtCore.QUrl(_fromUtf8("about:blank")))
         self.sm_WebView.setObjectName(_fromUtf8("sm_WebView"))
         self.verticalLayout_16.addWidget(self.sm_WebView)
+        self.verticalLayout_15.addWidget(self.sm_MainViewWidget)
+        self.sm_controlSimWidget = QtGui.QWidget(self.tab_5)
+        self.sm_controlSimWidget.setMinimumSize(QtCore.QSize(0, 38))
+        self.sm_controlSimWidget.setMaximumSize(QtCore.QSize(16777215, 38))
+        self.sm_controlSimWidget.setObjectName(_fromUtf8("sm_controlSimWidget"))
+        self.horizontalLayout_10 = QtGui.QHBoxLayout(self.sm_controlSimWidget)
+        self.horizontalLayout_10.setMargin(0)
+        self.horizontalLayout_10.setObjectName(_fromUtf8("horizontalLayout_10"))
+        self.sm_Sim_lbl = QtGui.QLabel(self.sm_controlSimWidget)
+        self.sm_Sim_lbl.setText(QtGui.QApplication.translate("ResultsBrowseDialog", "Simulation #", None, QtGui.QApplication.UnicodeUTF8))
+        self.sm_Sim_lbl.setObjectName(_fromUtf8("sm_Sim_lbl"))
+        self.horizontalLayout_10.addWidget(self.sm_Sim_lbl)
+        self.sm_ScrollBar = QtGui.QScrollBar(self.sm_controlSimWidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.sm_ScrollBar.sizePolicy().hasHeightForWidth())
+        self.sm_ScrollBar.setSizePolicy(sizePolicy)
+        self.sm_ScrollBar.setMinimumSize(QtCore.QSize(0, 0))
+        self.sm_ScrollBar.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.sm_ScrollBar.setOrientation(QtCore.Qt.Horizontal)
+        self.sm_ScrollBar.setObjectName(_fromUtf8("sm_ScrollBar"))
+        self.horizontalLayout_10.addWidget(self.sm_ScrollBar)
+        self.sm_Sim_box = QtGui.QLineEdit(self.sm_controlSimWidget)
+        self.sm_Sim_box.setMinimumSize(QtCore.QSize(60, 0))
+        self.sm_Sim_box.setMaximumSize(QtCore.QSize(60, 16777215))
+        self.sm_Sim_box.setText(QtGui.QApplication.translate("ResultsBrowseDialog", "Milestone1", None, QtGui.QApplication.UnicodeUTF8))
+        self.sm_Sim_box.setObjectName(_fromUtf8("sm_Sim_box"))
+        self.horizontalLayout_10.addWidget(self.sm_Sim_box)
+        self.verticalLayout_15.addWidget(self.sm_controlSimWidget)
         self.resultTabs.addTab(self.tab_5, _fromUtf8(""))
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
@@ -441,7 +447,7 @@ class Ui_ResultsBrowseDialog(object):
         self.resultTabs.setTabText(self.resultTabs.indexOf(self.tab_4), QtGui.QApplication.translate("ResultsBrowseDialog", "System Performance", None, QtGui.QApplication.UnicodeUTF8))
 
 from PyQt4 import QtWebKit
-import dialogimg_rc
+import guitoolbaricons_rc
 import guitoolbaricons_rc
 import guitoolbaricons_rc
 import guitoolbaricons_rc

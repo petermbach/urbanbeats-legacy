@@ -6,7 +6,7 @@
 @section LICENSE
 
 This file is part of UrbanBEATS (www.urbanbeatsmodel.com), DynaMind
-Copyright (C) 2011, 2012  Peter M Bach
+Copyright (C) 2011, 2012, 2013  Peter M Bach
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,15 +22,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
-from md_urbplanbbguic import *
+from urbplanbbguic import *
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-#from pydynamind import *
+from pydynamind import *
 import random, math
 import numpy as np
-import urbanbeatsdatatypes as ubdata    #UBCORE
 
-class Urbplanbb(object):
+class Urbplanbb(Module):
     """Determines urban form of grid of blocks for model city by processing the
     individual land zoning classes along with the planning map, locality map and
     population input with local planning regulations/rules/geometries.
@@ -46,6 +45,9 @@ class Urbplanbb(object):
             separate functions and external scripts
         - Urbplanbb can now do all land uses as illustrated in the GUI
         - Uses patch information in its planning as well
+        - Introduced Building Block Dynamics by working with the previously planned blocks
+            and thresholds to determine if block properties can be transferred across or 
+            whether the block needs to be redeveloped.
     
     v0.8 update (March, 2012):
         - Split the planning into four separate modules with prefix ubp_
@@ -65,73 +67,64 @@ class Urbplanbb(object):
         @author Peter M Bach
         """
 
-#    def __init__(self):            #DYNAMIND
-#        Module.__init__(self)       #DYNAMIND
-
-    def __init__(self, activesim, curstate, tabindex):  #UBCORE
-        self.cycletype = curstate       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
-        self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
-        self.activesim = activesim      #UBCORE
+    def __init__(self):
+        Module.__init__(self)
         #inputs from previous modules and output vector data to next module
         
         ############################
         #GENERAL RULES PARAMETERS 
         ############################
         #--> General City Structure
-#        #DYNAMIND ------->
-#        self.createParameter("cityarchetype", STRING, "")       #DYNAMIND
-#        self.createParameter("citysprawl", DOUBLE, "")          #DYNAMIND
-#        self.createParameter("locality_mun_trans", BOOL, "")    #DYNAMIND
-#        #-------> DYNAMIND
+        #self.createParameter("cityarchetype", STRING, "")       #DYNAMIND
+        #self.createParameter("citysprawl", DOUBLE, "")          #DYNAMIND
+        #self.createParameter("locality_mun_trans", BOOL, "")    #DYNAMIND
         self.cityarchetype = "MC"       #MC = monocentric, PC = polycentric
         self.citysprawl = 50.0          #km - approximate urban sprawl radius from main CBD
-        self.locality_mun_trans = 0 #Locality Map available for use? Yes/No
+        self.locality_mun_trans = False #Locality Map available for use? Yes/No
         
-        #--> Decision Variables for Block Dynamics\
-#        self.createParameter("lucredev", BOOL, "")              #DYNAMIND
-#        self.createParameter("popredev", BOOL, "")              #DYNAMIND
-#        self.createParameter("lucredev_thresh", DOUBLE, "")     #DYNAMIND
-#        self.createParameter("popredev_thresh", DOUBLE, "")     #DYNAMIND
-#        self.createParameter("noredev", BOOL, "")               #DYNAMIND
-        self.lucredev = 0
-        self.popredev = 0
-        self.lucredev_thresh = 50.0       #% threshold required for redevelopment to take place
-        self.popredev_thresh = 50.0       #% threshold required for redevelopment to take place
-        self.noredev = 1             #DO NOT REDEVELOP - if checked = True, then all the above parameters no longer used
+        #--> Decision Variables for Block Dynamics
+        #self.createParameter("lucredev", BOOL, "")              #DYNAMIND
+        #self.createParameter("popredev", BOOL, "")              #DYNAMIND
+        #self.createParameter("lucredev_thresh", DOUBLE, "")     #DYNAMIND
+        #self.createParameter("popredev_thresh", DOUBLE, "")     #DYNAMIND
+        #self.createParameter("noredev", BOOL, "")               #DYNAMIND
+        self.lucredev = False
+        self.popredev = False
+        self.lucredev_thresh = 50       #% threshold required for redevelopment to take place
+        self.popredev_thresh = 50       #% threshold required for redevelopment to take place
+        self.noredev = True             #DO NOT REDEVELOP - if checked = True, then all the above parameters no longer used
         
         ############################
         #RESIDENTIAL PARAMETERS
         ############################
         #(includes all residential land uses of varying density)
         #--> Planning Parameters
-#        #DYNAMIND ------->
-#        self.createParameter("occup_avg", DOUBLE, "")
-#        self.createParameter("occup_max", DOUBLE, "")
-#        self.createParameter("person_space", DOUBLE, "")
-#        self.createParameter("extra_comm_area", DOUBLE, "")
-#        self.createParameter("setback_f_min", DOUBLE, "")
-#        self.createParameter("setback_f_max", DOUBLE, "")
-#        self.createParameter("setback_s_min", DOUBLE, "")
-#        self.createParameter("setback_s_max", DOUBLE, "")
-#        self.createParameter("setback_f_med", BOOL, "")
-#        self.createParameter("setback_s_med", BOOL, "")
-#        self.createParameter("carports_max", DOUBLE, "")
-#        self.createParameter("garage_incl", BOOL, "")
-#        self.createParameter("w_driveway_min", DOUBLE, "")
-#        self.createParameter("patio_area_max", DOUBLE, "")
-#        self.createParameter("patio_covered", BOOL, "")
-#        self.createParameter("floor_num_max", DOUBLE, "")
-#        self.createParameter("occup_flat_avg", DOUBLE, "")
-#        self.createParameter("commspace_indoor", DOUBLE, "")
-#        self.createParameter("commspace_outdoor", DOUBLE, "")
-#        self.createParameter("flat_area_max", DOUBLE, "")
-#        self.createParameter("floor_num_HDRmax", DOUBLE, "")
-#        self.createParameter("setback_HDR_avg", DOUBLE, "")
-#        self.createParameter("parking_HDR", STRING, "")
-#        self.createParameter("park_OSR", BOOL, "")
-#        self.createParameter("roof_connected", STRING, "")
-#        self.createParameter("imperv_prop_dced", DOUBLE, "")
-#        #-------> DYNAMIND 
+        #self.createParameter("occup_avg", DOUBLE, "")
+        #self.createParameter("occup_max", DOUBLE, "")
+        #self.createParameter("person_space", DOUBLE, "")
+        #self.createParameter("extra_comm_area", DOUBLE, "")
+        #self.createParameter("setback_f_min", DOUBLE, "")
+        #self.createParameter("setback_f_max", DOUBLE, "")
+        #self.createParameter("setback_s_min", DOUBLE, "")
+        #self.createParameter("setback_s_max", DOUBLE, "")
+        #self.createParameter("setback_f_med", BOOL, "")
+        #self.createParameter("setback_s_med", BOOL, "")
+        #self.createParameter("carports_max", DOUBLE, "")
+        #self.createParameter("garage_incl", BOOL, "")
+        #self.createParameter("w_driveway_min", DOUBLE, "")
+        #self.createParameter("patio_area_max", DOUBLE, "")
+        #self.createParameter("patio_covered", BOOL, "")
+        #self.createParameter("floor_num_max", DOUBLE, "")
+        #self.createParameter("occup_flat_avg", DOUBLE, "")
+        #self.createParameter("commspace_indoor", DOUBLE, "")
+        #self.createParameter("commspace_outdoor", DOUBLE, "")
+        #self.createParameter("flat_area_max", DOUBLE, "")
+        #self.createParameter("floor_num_HDRmax", DOUBLE, "")
+        #self.createParameter("setback_HDR_avg", DOUBLE, "")
+        #self.createParameter("parking_HDR", STRING, "")
+        #self.createParameter("park_OSR", BOOL, "")
+        #self.createParameter("roof_connected", STRING, "")
+        #self.createParameter("imperv_prop_dced", DOUBLE, "")
         self.occup_avg = 2.67                   #average occupancy (house)
         self.occup_max = 5                      #maximum occupancy (house)
         self.person_space = 84                  #space per person [sqm]
@@ -158,42 +151,6 @@ class Urbplanbb(object):
         self.park_OSR = 0                       #Leverage parks to fulfill outdoor open space requirements?
         self.roof_connected = "Direct"          #how is the roof connected to drainage? Direct/Disconnected/Varied?
         self.imperv_prop_dced = 10              #proportion of impervious area disconnected
-        
-        #--> Water Demands
-#        #DYNAMIND ------->
-#        self.createParameter("freq_kitchen", DOUBLE, "")
-#        self.createParameter("freq_shower", DOUBLE, "")
-#        self.createParameter("freq_toilet", DOUBLE, "")
-#        self.createParameter("freq_laundry", DOUBLE, "")
-#        self.createParameter("dur_kitchen", DOUBLE, "")
-#        self.createParameter("dur_shower", DOUBLE, "")
-#        self.createParameter("demandvary_kitchen", DOUBLE, "")
-#        self.createParameter("demandvary_shower", DOUBLE, "")
-#        self.createParameter("demandvary_toilet", DOUBLE, "")
-#        self.createParameter("demandvary_laundry", DOUBLE, "")
-#        self.createParameter("ffp_kitchen", STRING, "")
-#        self.createParameter("ffp_shower", STRING, "")
-#        self.createParameter("ffp_toilet", STRING, "")
-#        self.createParameter("ffp_laundry", STRING, "")
-#        self.createParameter("priv_irr_vol", DOUBLE, "")
-#        self.createParameter("ffp_garden", STRING, "")
-#        #-------> DYNAMIND 
-        self.freq_kitchen = 2                   #Household Demands START
-        self.freq_shower = 2
-        self.freq_toilet = 2
-        self.freq_laundry = 2
-        self.dur_kitchen = 10
-        self.dur_shower = 5
-        self.demandvary_kitchen = 0.00
-        self.demandvary_shower = 0.00
-        self.demandvary_toilet = 0.00
-        self.demandvary_laundry = 0.00
-        self.ffp_kitchen = "PO"
-        self.ffp_shower = "PO"
-        self.ffp_toilet = "PO"
-        self.ffp_laundry = "PO"
-        self.priv_irr_vol = 1                   #Private irrigation volume [ML/ha/yr]
-        self.ffp_garden = "PO"
         
         #--> Advanced Parameters
         self.min_allot_width = 10       #minimum width of an allotment = 10m if exceeded, then will build double allotments
@@ -231,37 +188,29 @@ class Urbplanbb(object):
         #############################
         #(includes Trade, Office/Rescom, Light Industry, Heavy Industry, Education, Health & Comm, Serv & Util)
         #--> Commercial & Industrial Zones :: Employment Details
-#        #DYNAMIND ------->
-#        self.createParameter("employment_mode", STRING, "")
-#        self.createParameter("ind_edist", DOUBLE, "")
-#        self.createParameter("com_edist", DOUBLE, "")
-#        self.createParameter("orc_edist", DOUBLE, "")
-#        self.createParameter("employment_total", DOUBLE, "")
-#        self.createParameter("ind_subd_min", DOUBLE, "")
-#        self.createParameter("ind_subd_max", DOUBLE, "")
-#        self.createParameter("com_subd_min", DOUBLE, "")
-#        self.createParameter("com_subd_max", DOUBLE, "")
-#        self.createParameter("nres_minfsetback", DOUBLE, "")
-#        self.createParameter("nres_maxfloors", DOUBLE, "")
-#        self.createParameter("nres_setback_auto", BOOL, "")
-#        self.createParameter("nres_nolimit_floors", BOOL, "")
-#        self.createParameter("maxplotratio_ind", DOUBLE, "")
-#        self.createParameter("maxplotratio_com", DOUBLE, "")
-#        self.createParameter("carpark_Wmin", DOUBLE, "")
-#        self.createParameter("carpark_Dmin", DOUBLE, "")
-#        self.createParameter("carpark_imp", DOUBLE, "")
-#        self.createParameter("carpark_ind", DOUBLE, "")
-#        self.createParameter("carpark_com", DOUBLE, "")
-#        self.createParameter("loadingbay_A", DOUBLE, "")
-#        self.createParameter("lscape_hsbalance", DOUBLE, "")
-#        self.createParameter("lscape_impdced", DOUBLE, "")
-#        self.createParameter("com_demand", DOUBLE, "")
-#        self.createParameter("com_demandvary", DOUBLE, "")
-#        self.createParameter("li_demand", DOUBLE, "")
-#        self.createParameter("li_demandvary", DOUBLE, "")
-#        self.createParameter("hi_demand", DOUBLE, "")
-#        self.createParameter("hi_demandvary", DOUBLE, "")
-#        #-------> DYNAMIND 
+        #self.createParameter("employment_mode", STRING, "")
+        #self.createParameter("ind_edist", DOUBLE, "")
+        #self.createParameter("com_edist", DOUBLE, "")
+        #self.createParameter("orc_edist", DOUBLE, "")
+        #self.createParameter("employment_total", DOUBLE, "")
+        #self.createParameter("ind_subd_min", DOUBLE, "")
+        #self.createParameter("ind_subd_max", DOUBLE, "")
+        #self.createParameter("com_subd_min", DOUBLE, "")
+        #self.createParameter("com_subd_max", DOUBLE, "")
+        #self.createParameter("nres_minfsetback", DOUBLE, "")
+        #self.createParameter("nres_maxfloors", DOUBLE, "")
+        #self.createParameter("nres_setback_auto", BOOL, "")
+        #self.createParameter("nres_nolimit_floors", BOOL, "")
+        #self.createParameter("maxplotratio_ind", DOUBLE, "")
+        #self.createParameter("maxplotratio_com", DOUBLE, "")
+        #self.createParameter("carpark_Wmin", DOUBLE, "")
+        #self.createParameter("carpark_Dmin", DOUBLE, "")
+        #self.createParameter("carpark_imp", DOUBLE, "")
+        #self.createParameter("carpark_ind", DOUBLE, "")
+        #self.createParameter("carpark_com", DOUBLE, "")
+        #self.createParameter("loadingbay_A", DOUBLE, "")
+        #self.createParameter("lscape_hsbalance", DOUBLE, "")
+        #self.createParameter("lscape_impdced", DOUBLE, "")
         self.employment_mode = "D"      #I = input, D = distribution, S = single
         self.ind_edist = 100                    #Employment Mode D: suggests the industrial employment distribution in employees/ha
         self.com_edist = 100                    #Employment Mode D: suggests the commercial employment distribution in employees/ha
@@ -285,12 +234,6 @@ class Urbplanbb(object):
         self.loadingbay_A = 27
         self.lscape_hsbalance = 1
         self.lscape_impdced = 10
-        self.com_demand = 40
-        self.com_demandvary = 10
-        self.li_demand = 40
-        self.li_demandvary = 10
-        self.hi_demand = 40
-        self.hi_demandvary = 10
         
         self.nonres_far = {}
         self.nonres_far["LI"] = 70
@@ -298,26 +241,23 @@ class Urbplanbb(object):
         self.nonres_far["COM"] = 220 
         self.nonres_far["ORC"] = 110 
         
-        
         #--> Civic Facilities
-#        #DYNAMIND ------->
-#        self.createParameter("mun_explicit", BOOL, "")
-#        self.createParameter("edu_school", BOOL, "")
-#        self.createParameter("edu_uni", BOOL, "")
-#        self.createParameter("edu_lib", BOOL, "")
-#        self.createParameter("civ_hospital", BOOL, "")
-#        self.createParameter("civ_clinic", BOOL, "")
-#        self.createParameter("civ_police", BOOL, "")
-#        self.createParameter("civ_fire", BOOL, "")
-#        self.createParameter("civ_jail", BOOL, "")
-#        self.createParameter("civ_worship", BOOL, "")
-#        self.createParameter("civ_leisure", BOOL, "")
-#        self.createParameter("civ_museum", BOOL, "")
-#        self.createParameter("civ_zoo", BOOL, "")
-#        self.createParameter("civ_stadium", BOOL, "")
-#        self.createParameter("civ_racing", BOOL, "")
-#        self.createParameter("civ_cemetery", BOOL, "")
-#        #-------> DYNAMIND 
+        #self.createParameter("mun_explicit", BOOL, "")
+        #self.createParameter("edu_school", BOOL, "")
+        #self.createParameter("edu_uni", BOOL, "")
+        #self.createParameter("edu_lib", BOOL, "")
+        #self.createParameter("civ_hospital", BOOL, "")
+        #self.createParameter("civ_clinic", BOOL, "")
+        #self.createParameter("civ_police", BOOL, "")
+        #self.createParameter("civ_fire", BOOL, "")
+        #self.createParameter("civ_jail", BOOL, "")
+        #self.createParameter("civ_worship", BOOL, "")
+        #self.createParameter("civ_leisure", BOOL, "")
+        #self.createParameter("civ_museum", BOOL, "")
+        #self.createParameter("civ_zoo", BOOL, "")
+        #self.createParameter("civ_stadium", BOOL, "")
+        #self.createParameter("civ_racing", BOOL, "")
+        #self.createParameter("civ_cemetery", BOOL, "")
         self.mun_explicit = False
         self.edu_school = False
         self.edu_uni = False
@@ -340,23 +280,22 @@ class Urbplanbb(object):
         ############################
         #(includes Roads, Transport)
         #--> Residential Pedestrian
-#        #DYNAMIND ------->
-#        self.createParameter("res_fpwmin", DOUBLE, "")
-#        self.createParameter("res_nswmin", DOUBLE, "")
-#        self.createParameter("res_fpwmax", DOUBLE, "")
-#        self.createParameter("res_nswmax", DOUBLE, "")
-#        self.createParameter("nres_fpwmin", DOUBLE, "")
-#        self.createParameter("nres_nswmin", DOUBLE, "")
-#        self.createParameter("nres_fpwmax", DOUBLE, "")
-#        self.createParameter("nres_nswmax", DOUBLE, "")
-#        self.createParameter("res_fpmed", BOOL, "")
-#        self.createParameter("res_nsmed", BOOL, "")
-#        self.createParameter("nres_fpmed", BOOL, "")
-#        self.createParameter("nres_nsmed", BOOL, "")
-#        self.createParameter("lane_wmin", DOUBLE, "")
-#        self.createParameter("lane_wmax", DOUBLE, "")
-#        self.createParameter("lane_crossfall", DOUBLE, "")
-#        self.createParameter("lane_wmed", BOOL, "")
+        #self.createParameter("res_fpwmin", DOUBLE, "")
+        #self.createParameter("res_nswmin", DOUBLE, "")
+        #self.createParameter("res_fpwmax", DOUBLE, "")
+        #self.createParameter("res_nswmax", DOUBLE, "")
+        #self.createParameter("nres_fpwmin", DOUBLE, "")
+        #self.createParameter("nres_nswmin", DOUBLE, "")
+        #self.createParameter("nres_fpwmax", DOUBLE, "")
+        #self.createParameter("nres_nswmax", DOUBLE, "")
+        #self.createParameter("res_fpmed", BOOL, "")
+        #self.createParameter("res_nsmed", BOOL, "")
+        #self.createParameter("nres_fpmed", BOOL, "")
+        #self.createParameter("nres_nsmed", BOOL, "")
+        #self.createParameter("lane_wmin", DOUBLE, "")
+        #self.createParameter("lane_wmax", DOUBLE, "")
+        #self.createParameter("lane_crossfall", DOUBLE, "")
+        #self.createParameter("lane_wmed", BOOL, "")
         self.res_fpwmin = 1
         self.res_nswmin = 1
         self.res_fpwmax = 3
@@ -373,20 +312,19 @@ class Urbplanbb(object):
         self.lane_wmax = 5
         self.lane_crossfall = 3
         self.lane_wmed = False
- 
-#        #DYNAMIND ------->       
-#        self.createParameter("hwy_wlanemin", DOUBLE, "")
-#        self.createParameter("hwy_wlanemax", DOUBLE, "")
-#        self.createParameter("hwy_wmedianmin", DOUBLE, "")
-#        self.createParameter("hwy_wmedianmax", DOUBLE, "")
-#        self.createParameter("hwy_wbufmin", DOUBLE, "")
-#        self.createParameter("hwy_wbufmax", DOUBLE, "")
-#        self.createParameter("hwy_crossfall", DOUBLE, "")
-#        self.createParameter("hwy_lanemed", BOOL, "")
-#        self.createParameter("hwy_medmed", BOOL, "")
-#        self.createParameter("hwy_bufmed", BOOL, "")
-#        self.createParameter("hwy_restrict", BOOL, "")
-#        self.createParameter("hwy_buffer", BOOL, "")
+        
+        #self.createParameter("hwy_wlanemin", DOUBLE, "")
+        #self.createParameter("hwy_wlanemax", DOUBLE, "")
+        #self.createParameter("hwy_wmedianmin", DOUBLE, "")
+        #self.createParameter("hwy_wmedianmax", DOUBLE, "")
+        #self.createParameter("hwy_wbufmin", DOUBLE, "")
+        #self.createParameter("hwy_wbufmax", DOUBLE, "")
+        #self.createParameter("hwy_crossfall", DOUBLE, "")
+        #self.createParameter("hwy_lanemed", BOOL, "")
+        #self.createParameter("hwy_medmed", BOOL, "")
+        #self.createParameter("hwy_bufmed", BOOL, "")
+        #self.createParameter("hwy_restrict", BOOL, "")
+        #self.createParameter("hwy_buffer", BOOL, "")
         self.hwy_wlanemin = 5
         self.hwy_wlanemax = 10
         self.hwy_wmedianmin = 4
@@ -399,13 +337,12 @@ class Urbplanbb(object):
         self.hwy_bufmed = 0
         self.hwy_restrict = 0
         self.hwy_buffer = 1
-
-#        #DYNAMIND ------->      
-#        self.createParameter("considerTRFacilities", BOOL, "")
-#        self.createParameter("trans_airport", BOOL, "")
-#        self.createParameter("trans_seaport", BOOL, "")
-#        self.createParameter("trans_busdepot", BOOL, "")
-#        self.createParameter("trans_railterminal", BOOL, "")
+        
+        #self.createParameter("considerTRFacilities", BOOL, "")
+        #self.createParameter("trans_airport", BOOL, "")
+        #self.createParameter("trans_seaport", BOOL, "")
+        #self.createParameter("trans_busdepot", BOOL, "")
+        #self.createParameter("trans_railterminal", BOOL, "")
         self.considerTRFacilities = 0
         self.trans_airport = 0
         self.trans_seaport = 0
@@ -417,27 +354,25 @@ class Urbplanbb(object):
         ############################
         #(includes Parks & Garden, Reserves & Floodways)
         #--> Parks, Squares & Gardens :: General
-#        #DYNAMIND ------->
-#        self.createParameter("pg_greengrey_ratio", DOUBLE, "")
-#        self.createParameter("pgsq_distribution", STRING, "")
-#        self.createParameter("pg_unused_space", DOUBLE, "")
-#        self.createParameter("pg_restrict", BOOL, "")
+        #self.createParameter("pg_greengrey_ratio", DOUBLE, "")
+        #self.createParameter("pgsq_distribution", STRING, "")
+        #self.createParameter("pg_unused_space", DOUBLE, "")
+        #self.createParameter("pg_restrict", BOOL, "")
         self.pg_greengrey_ratio = 0
         self.pgsq_distribution = "S"    #S = separate, C = combined
         self.pg_unused_space = 40       #% of space in park not used for anything else
         self.pg_restrict = 0        #Prohibit the use of park space 
         
-#        #DYNAMIND ------->
-#        self.createParameter("ref_usable", BOOL, "")
-#        self.createParameter("ref_usable_percent", DOUBLE, "")
-#        self.createParameter("ref_limit_stormwater", BOOL, "")
-#        self.createParameter("svu_water", DOUBLE, "")
-#        self.createParameter("svu4supply", BOOL, "")
-#        self.createParameter("svu4waste", BOOL, "")
-#        self.createParameter("svu4storm", BOOL, "")
-#        self.createParameter("svu4supply_prop", DOUBLE, "")
-#        self.createParameter("svu4waste_prop", DOUBLE, "")
-#        self.createParameter("svu4storm_prop", DOUBLE, "")
+        #self.createParameter("ref_usable", BOOL, "")
+        #self.createParameter("ref_usable_percent", DOUBLE, "")
+        #self.createParameter("ref_limit_stormwater", BOOL, "")
+        #self.createParameter("svu_water", DOUBLE, "")
+        #self.createParameter("svu4supply", BOOL, "")
+        #self.createParameter("svu4waste", BOOL, "")
+        #self.createParameter("svu4storm", BOOL, "")
+        #self.createParameter("svu4supply_prop", DOUBLE, "")
+        #self.createParameter("svu4waste_prop", DOUBLE, "")
+        #self.createParameter("svu4storm_prop", DOUBLE, "")
         self.ref_usable = 1
         self.ref_usable_percent = 100
         self.ref_limit_stormwater = 0
@@ -448,34 +383,23 @@ class Urbplanbb(object):
         self.svu4supply_prop = 30
         self.svu4waste_prop = 30
         self.svu4storm_prop = 40
-
-#        #DYNAMIND ------->        
-#        self.createParameter("public_irr_vol", DOUBLE, "")
-#        self.createParameter("irrigate_parks", BOOL, "")
-#        self.createParameter("irrigate_refs", BOOL, "")
-#        self.createParameter("public_irr_wq", STRING, "")
-        self.public_irr_vol = 1
-        self.irrigate_parks = 1
-        self.irrigate_refs = 1
-        self.public_irr_wq = "PO"       #PO = potable, NP = non-potable, RW = rainwater, SW = stormwater, GW = greywater
         
         ############################
         #Others Parameters
         ############################
         #(includes Unclassified and Undeveloped)
         #--> Unclassified Land
-#        #DYNAMIND ------->
-#        self.createParameter("unc_merge", BOOL, "")                     #DYNAMIND
-#        self.createParameter("unc_pgmerge", BOOL, "")                   #DYNAMIND
-#        self.createParameter("unc_pgmerge_w", DOUBLE, "")               #DYNAMIND
-#        self.createParameter("unc_refmerge", BOOL, "")                  #DYNAMIND
-#        self.createParameter("unc_refmerge_w", DOUBLE, "")              #DYNAMIND
-#        self.createParameter("unc_rdmerge", BOOL, "")                   #DYNAMIND
-#        self.createParameter("unc_rdmerge_w", DOUBLE, "")               #DYNAMIND
-#        self.createParameter("unc_custom", BOOL, "")                    #DYNAMIND
-#        self.createParameter("unc_customthresh", DOUBLE, "")            #DYNAMIND
-#        self.createParameter("unc_customimp", DOUBLE, "")               #DYNAMIND
-#        self.createParameter("unc_landirrigate", BOOL, "")              #DYNAMIND
+        #self.createParameter("unc_merge", BOOL, "")                     #DYNAMIND
+        #self.createParameter("unc_pgmerge", BOOL, "")                   #DYNAMIND
+        #self.createParameter("unc_pgmerge_w", DOUBLE, "")               #DYNAMIND
+        #self.createParameter("unc_refmerge", BOOL, "")                  #DYNAMIND
+        #self.createParameter("unc_refmerge_w", DOUBLE, "")              #DYNAMIND
+        #self.createParameter("unc_rdmerge", BOOL, "")                   #DYNAMIND
+        #self.createParameter("unc_rdmerge_w", DOUBLE, "")               #DYNAMIND
+        #self.createParameter("unc_custom", BOOL, "")                    #DYNAMIND
+        #self.createParameter("unc_customthresh", DOUBLE, "")            #DYNAMIND
+        #self.createParameter("unc_customimp", DOUBLE, "")               #DYNAMIND
+        #self.createParameter("unc_landirrigate", BOOL, "")              #DYNAMIND
         self.unc_merge = False  #Merge unclassified land?
         self.unc_pgmerge = False
         self.unc_pgmerge_w = 0
@@ -489,10 +413,9 @@ class Urbplanbb(object):
         self.unc_landirrigate = False
         
         #--> Undeveloped Land
-#        #DYNAMIND ------->
-#        self.createParameter("und_state", STRING, "")                   #DYNAMIND
-#        self.createParameter("und_type_manual", STRING, "")             #DYNAMIND
-#        self.createParameter("und_allowdev", BOOL, "")                  #DYNAMIND
+        #self.createParameter("und_state", STRING, "")                   #DYNAMIND
+        #self.createParameter("und_type_manual", STRING, "")             #DYNAMIND
+        #self.createParameter("und_allowdev", BOOL, "")                  #DYNAMIND
         self.und_state = "M"    #M = manual, A = Auto
         self.und_type_manual = "GF"     #GF = Greenfield, BF = Brownfield, AG = Agriculture
         self.und_allowdev = False       #Allow developent for large water infrastructure?
@@ -509,46 +432,53 @@ class Urbplanbb(object):
         #END OF INPUT PARAMETER LIST
 
         #VIEWS-------------------------------------
-#        #DYNAMIND ------->
-#        self.mapattributes = View("GlobalMapAttributes", COMPONENT,READ)
-#        self.mapattributes.getAttribute("NumBlocks")
-#        self.mapattributes.getAttribute("BlockSize")
-#        self.mapattributes.getAttribute("WidthBlocks")
-#        self.mapattributes.getAttribute("HeightBlocks")
-#        self.mapattributes.getAttribute("InputReso")
-#        self.mapattributes.addAttribute("ParkProhibit")
-#        self.mapattributes.addAttribute("RefLimit")
-#        self.mapattributes.addAttribute("UndevAllow")
-#        self.mapattributes.addAttribute("HwyMedLimit")
-#	
-#        self.blocks = View("Block", FACE, WRITE)
-#        self.blocks.getAttribute("BlockID")
-#        self.blocks.addAttribute("MiscAtot")
-#        self.blocks.addAttribute("MiscAimp")
-#        self.blocks.addAttribute("UndType")
-#        self.blocks.addAttribute("UND_av")
-#        self.blocks.addAttribute("OpenSpace")
-#        self.blocks.addAttribute("AGardens")
-#        self.blocks.addAttribute("ASquare")
-#        self.blocks.addAttribute("PG_av")
-#        self.blocks.addAttribute("REF_av")
-#        self.blocks.addAttribute("ANonW_Utils")
-#        self.blocks.addAttribute("SVU_avWS")
-#        self.blocks.addAttribute("SVU_avWW")
-#        self.blocks.addAttribute("SVU_avSW")
-#        self.blocks.addAttribute("SVU_avOTH")
-#        self.blocks.addAttribute("RoadTIA")
-#        self.blocks.addAttribute("ParkBuffer")
-#        self.blocks.addAttribute("RD_av")
-#        self.blocks.addAttribute("RDMedW")
-#        self.blocks.addAttribute("DemPublicI")
-#        
-#        #DEFINE DATA STREAM:
-#        datastream = []
-#        datastream.append(self.blocks)
-#        datastream.append(self.mapattributes)
-#        self.addData("City", datastream)
-#        self.BLOCKIDtoUUID = {}         #DYNAMIND
+        #self.mapattributes = View("GlobalMapAttributes", COMPONENT,READ)
+        #self.mapattributes.getAttribute("NumBlocks")
+        #self.mapattributes.getAttribute("BlockSize")
+        #self.mapattributes.getAttribute("WidthBlocks")
+        #self.mapattributes.getAttribute("HeightBlocks")
+        #self.mapattributes.getAttribute("InputReso")
+        #self.mapattributes.addAttribute("ParkProhibit")
+        #self.mapattributes.addAttribute("RefLimit")
+        #self.mapattributes.addAttribute("UndevAllow")
+        #self.mapattributes.addAttribute("HwyMedLimit")
+        #
+        #self.blocks = View("Block", FACE, WRITE)
+        #self.blocks.getAttribute("BlockID")
+        #self.blocks.modifyAttribute("Employ")
+        #self.blocks.addAttribute("MiscAtot")
+        #self.blocks.addAttribute("MiscAimp")
+        #self.blocks.addAttribute("UndType")
+        #self.blocks.addAttribute("UND_av")
+        #self.blocks.addAttribute("OpenSpace")
+        #self.blocks.addAttribute("AGardens")
+        #self.blocks.addAttribute("ASquare")
+        #self.blocks.addAttribute("PG_av")
+        #self.blocks.addAttribute("REF_av")
+        #self.blocks.addAttribute("ANonW_Utils")
+        #self.blocks.addAttribute("SVU_avWS")
+        #self.blocks.addAttribute("SVU_avWW")
+        #self.blocks.addAttribute("SVU_avSW")
+        #self.blocks.addAttribute("SVU_avOTH")
+        #self.blocks.addAttribute("RoadTIA")
+        #self.blocks.addAttribute("ParkBuffer")
+        #self.blocks.addAttribute("RD_av")
+        #self.blocks.addAttribute("RDMedW")
+        #self.blocks.addAttribute("DemPublicI")
+        #
+        ##BlockDYNAMICS Views
+        #self.prevBlocks = View("PreviousBlocks", COMPONENT, READ)
+        #self.prevMapAttr = View("MasterMapAttributes", COMPONENT, READ)
+        #
+        ##DEFINE DATA STREAM:
+        #datastream = []
+        #datastream.append(self.blocks)
+        #datastream.append(self.mapattributes)
+        #datastream.append(self.prevBlocks)
+        #datastream.append(self.prevMapAttr)
+        #self.addData("City", datastream)
+        #self.BLOCKIDtoUUID = {}         #DYNAMIND
+        #self.prevBLOCKIDtoUUID = {}     #DYNAMIND
 
     def printc(self, message):      #UBCORE FUNCTION
         self.activesim.console.appendPlainText(str(time.asctime())+" | "+str(message))
@@ -556,33 +486,23 @@ class Urbplanbb(object):
 
     def run(self):
         #random.seed()   #Random seed has already been placed in delinblocks
-#        city = self.getData("City")             #DYNAMIND - obtain the City's datastream
-#        self.initBLOCKIDtoUUID(city)            #DYNAMIND - initialize the dictionary that tracks Block ID and UUID
-#        
-#        strvec = city.getUUIDsOfComponentsInView(self.mapattributes)    #DYNAMIND - get map attributes
-#        map_attr = city.getComponent(strvec[0]) #Get Map Attributes     #DYNAMIND - save attributes to a variable
-        self.printc("Begin Urban Planning")
-        map_attr = self.activesim.getAssetWithName("MapAttributes")     #UBCORE
+        #city = self.getData("City")             #DYNAMIND - obtain the City's datastream
+        #self.initBLOCKIDtoUUID(city)            #DYNAMIND - initialize the dictionary that tracks Block ID and UUID
+
+        #strvec = city.getUUIDsOfComponentsInView(self.mapattributes)    #DYNAMIND - get map attributes
+        #map_attr = city.getComponent(strvec[0]) #Get Map Attributes     #DYNAMIND - save attributes to a variable
+        #strvec = city.getUUIDsOfComponentsInView(self.prevMapAttr)
+        #prev_map_attr = city.getComponent(strvec[0])
         
-#        #DYNAMIND ------------------------------------>
-#        #Get all the relevant information
-#        blocks_num = map_attr.getAttribute("NumBlocks").getDouble()     #number of blocks to loop through
-#        block_size = map_attr.getAttribute("BlockSize").getDouble()     #size of blocks
-#        Atblock = block_size * block_size                               #Total area of one block
-#        map_w = map_attr.getAttribute("WidthBlocks").getDouble()        #num of blocks Wide
-#        map_h = map_attr.getAttribute("HeightBlocks").getDouble()       #num of blocks Tall
-#        input_res = map_attr.getAttribute("InputReso").getDouble()      #Resolution of input area
-#        #----------------- DYNAMIND ------------------
-        
-        #UBCORE ------------------------------------>
+        #DYNAMIND ------------------------------------>
         #Get all the relevant information
-        blocks_num = map_attr.getAttribute("NumBlocks")     #number of blocks to loop through
-        block_size = map_attr.getAttribute("BlockSize")     #size of blocks
-        Atblock = block_size * block_size                   #Total area of one block
-        map_w = map_attr.getAttribute("WidthBlocks")        #num of blocks Wide
-        map_h = map_attr.getAttribute("HeightBlocks")       #num of blocks Tall
-        input_res = map_attr.getAttribute("InputReso")      #Resolution of input area        
-        #----------------- UBCORE ------------------
+        blocks_num = map_attr.getAttribute("NumBlocks").getDouble()     #number of blocks to loop through
+        block_size = map_attr.getAttribute("BlockSize").getDouble()     #size of blocks
+        Atblock = block_size * block_size                               #Total area of one block
+        map_w = map_attr.getAttribute("WidthBlocks").getDouble()        #num of blocks Wide
+        map_h = map_attr.getAttribute("HeightBlocks").getDouble()       #num of blocks Tall
+        input_res = map_attr.getAttribute("InputReso").getDouble()      #Resolution of input area
+        #----------------- DYNAMIND ------------------
         
         print "Begin Urban Planning!"
         
@@ -595,6 +515,9 @@ class Urbplanbb(object):
         nres_nsw = self.adjustSampleRange(self.nres_nswmin, self.nres_nswmax, self.nres_nsmed)
         lane_w = self.adjustSampleRange(self.lane_wmin, self.lane_wmax, self.lane_wmed)
         
+        if int(prev_map_attr.getAttribute("Impl_cycle").getDouble()) == 0:    #Is this implementation cycle?
+            self.initPrevBLOCKIDtoUUID(city)        #DYNAMIND - initialize the dictionary that tracks Previous Block IDs and UUID
+        
         #LOOP ACROSS BLOCKS
         for i in range(int(blocks_num)):
             #Reset tally variables
@@ -604,14 +527,12 @@ class Urbplanbb(object):
             blk_avspace = 0     #Total available space for decentralised water infrastructure
             
             currentID = i+1             #GRAB BLOCK INFORMATION
-#            currentAttList = self.getBlockUUID(currentID, city)         #DYNAMIND - assign block information to variable currentAttList
-            currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))            
+            currentAttList = self.getBlockUUID(currentID, city)         #DYNAMIND - assign block information to variable currentAttList
             
             print "Now Developing BlockID", currentID
             
             #Skip Condition 1: Block is not active
-#            if currentAttList.getAttribute("Status").getDouble() == 0:      #DYNAMIND
-            if currentAttList.getAttribute("Status") == 0:      #UBCORE
+            if currentAttList.getAttribute("Status").getDouble() == 0:
                 #print "BlockID"+str(currentID)+" is not active, moving to next ID"
                 currentAttList.addAttribute("Blk_TIA", -9999)
                 currentAttList.addAttribute("Blk_EIF", -9999)
@@ -619,9 +540,16 @@ class Urbplanbb(object):
                 currentAttList.addAttribute("Blk_RoofsA", -9999)
                 continue
             
+            #Determine whether to Update Block at all using Dynamics Parameters
+            if int(prev_map_attr.getAttribute("Impl_cycle").getDouble()) == 0:    #Is this implementation cycle?
+                prevAttList = self.getPrevBlockUUID(currentID, city)
+                if self.keepBlockDataCheck(currentAttList, prevAttList):        #NO = check block for update
+                    print "Changes in Block are below threshold levels, transferring data"
+                    self.transferBlockAttributes(currentAttList, prevAttList)
+                    continue        #If Block does not need to be developed, skip it
+                
             #Get Active Area
-#            activity = currentAttList.getAttribute("Active").getDouble()    #DYNAMIND
-            activity = currentAttList.getAttribute("Active")                #UBCORE
+            activity = currentAttList.getAttribute("Active").getDouble()
             Aactive = activity*Atblock
             #print "Active Area for Block: ", Aactive
             
@@ -629,19 +557,10 @@ class Urbplanbb(object):
             
             #------------UNCLASSIFIED AREA--------------------------------------
             #Allocate unclassified area to the rest of the block's LUC distribution
-#            #DYNAMIND ---------------------------->            
-#            A_unc = currentAttList.getAttribute("pLU_NA").getDouble() * Aactive
-#            A_park = currentAttList.getAttribute("pLU_PG").getDouble() * Aactive
-#            A_ref = currentAttList.getAttribute("pLU_REF").getDouble() * Aactive
-#            A_rd = currentAttList.getAttribute("pLU_RD").getDouble() * Aactive
-#            #---------------------------->DYNAMIND 
-            
-            #UBCORE ---------------------------->
-            A_unc = currentAttList.getAttribute("pLU_NA") * Aactive
-            A_park = currentAttList.getAttribute("pLU_PG") * Aactive
-            A_ref = currentAttList.getAttribute("pLU_REF") * Aactive
-            A_rd = currentAttList.getAttribute("pLU_RD") * Aactive
-            #----------------------------> UBCORE 
+            A_unc = currentAttList.getAttribute("pLU_NA").getDouble() * Aactive
+            A_park = currentAttList.getAttribute("pLU_PG").getDouble() * Aactive
+            A_ref = currentAttList.getAttribute("pLU_REF").getDouble() * Aactive
+            A_rd = currentAttList.getAttribute("pLU_RD").getDouble() * Aactive
             
             #print "Unclassifiable Area: ", A_unc
             #print "Park, Ref and Rd Areas: ", A_park, A_ref, A_rd
@@ -669,11 +588,8 @@ class Urbplanbb(object):
             
             #-----------UNDEVELOPED AREA----------------------------------------
             #Determine the Undeveloped area's state
-#            considerCBD = map_attr.getAttribute("considerCBD").getDouble()  #DYNAMIND
-            considerCBD = map_attr.getAttribute("considerCBD")      #UBCORE
-            
-#            A_und = currentAttList.getAttribute("pLU_UND").getDouble() * Aactive + undevextra   #DYNAMIND
-            A_und = currentAttList.getAttribute("pLU_UND") * Aactive + undevextra   #UBCORE
+            considerCBD = map_attr.getAttribute("considerCBD").getDouble()
+            A_und = currentAttList.getAttribute("pLU_UND").getDouble() * Aactive + undevextra
             #print "Undeveloped Area: ", A_und
             if A_und != 0:
                 type = self.determineUndevType(currentAttList, considerCBD)
@@ -693,8 +609,7 @@ class Urbplanbb(object):
             #-----------OPEN SPACES---------------------------------------------
             A_park += pgextra 
             A_ref += refextra
-#            A_svu = currentAttList.getAttribute("pLU_SVU").getDouble() * Aactive    #DYNAMIND
-            A_svu = currentAttList.getAttribute("pLU_SVU") * Aactive        #UBCORE
+            A_svu = currentAttList.getAttribute("pLU_SVU").getDouble() * Aactive
             #print "Total Open Space Area: ", A_park + A_ref
             #print "Total area for Services & Utilities: ", A_svu
             
@@ -792,10 +707,8 @@ class Urbplanbb(object):
             blk_avspace += av_spRD
              
             #------------RESIDENTIAL AREA---------------------------------------
-#            ResPop = currentAttList.getAttribute("Pop").getDouble()         #DYNAMIND
-            ResPop = currentAttList.getAttribute("Pop")         #UBCORE
-#            A_res = currentAttList.getAttribute("pLU_RES").getDouble() * Aactive    #DYNAMIND
-            A_res = currentAttList.getAttribute("pLU_RES") * Aactive    #UBCORE
+            ResPop = currentAttList.getAttribute("Pop").getDouble()
+            A_res = currentAttList.getAttribute("pLU_RES").getDouble() * Aactive
             minHouse = self.person_space * self.occup_avg * 4
             #print "Residential Area: ",A_res
             if A_res >= minHouse and ResPop > self.occup_flat_avg:
@@ -821,10 +734,12 @@ class Urbplanbb(object):
                     currentAttList.addAttribute("ResLotTIA", resdict["ResLotTIA"])
                     currentAttList.addAttribute("ResLotEIA", resdict["ResLotEIA"])
                     currentAttList.addAttribute("ResGarden", resdict["ResGarden"])
-                    currentAttList.addAttribute("DemPrivI", resdict["DemPrivI"])
                     currentAttList.addAttribute("ResRoofCon", resdict["ResRoofCon"])
                     
-                    frontageTIF = 1 - (resdict["avSt_RES"] / resdict["TotalFrontage"])
+                    if resdict["TotalFrontage"] == 0:
+                        frontageTIF = 0
+                    else:
+                        frontageTIF = 1 - (resdict["avSt_RES"] / resdict["TotalFrontage"])
                     
                     #Add to cumulative area variables
                     blk_tia += (resdict["ResLotTIA"] * resdict["ResAllots"]) + frontageTIF * resdict["TotalFrontage"]
@@ -844,9 +759,7 @@ class Urbplanbb(object):
                     currentAttList.addAttribute("av_HDRes", resdict["av_HDRes"])
                     currentAttList.addAttribute("HDRGarden", resdict["HDRGarden"])
                     currentAttList.addAttribute("HDRCarPark", resdict["HDRCarPark"])
-                    currentAttList.addAttribute("DemAptI", resdict["DemAptI"])
                     #...
-                    
                     #Add to cumulative area variables
                     blk_tia += resdict["HDR_TIA"]
                     blk_eia += resdict["HDR_EIA"]
@@ -863,11 +776,8 @@ class Urbplanbb(object):
                 blk_avspace += A_res
                 
             #-----------NON-RESIDENTIAL (HOTSPOTS) -----------------------------
-#            A_civ = currentAttList.getAttribute("pLU_CIV").getDouble() * Aactive    #DYNAMIND
-#            A_tr = currentAttList.getAttribute("pLU_TR").getDouble() * Aactive      #DYNAMIND
-            A_civ = currentAttList.getAttribute("pLU_CIV") * Aactive    #UBCORE
-            A_tr = currentAttList.getAttribue("pLU_TR") * Aactive       #UBCORE
-            
+            A_civ = currentAttList.getAttribute("pLU_CIV").getDouble() * Aactive
+            A_tr = currentAttList.getAttribute("pLU_TR").getDouble() * Aactive
             extraCom = 0        #Additional commercial land area (if facilities are not to be considered)
             extraInd = 0        #Additional inustrial land area (and if specific facilities are not selected)
             
@@ -906,19 +816,10 @@ class Urbplanbb(object):
                     blk_avspace += 0
             
             #-----------NON-RESIDENTIAL (PLANNING RULES) -----------------------
-#            #-----> DYNAMIND            
-#            A_li = currentAttList.getAttribute("pLU_LI").getDouble() * Aactive + extraInd + A_svu
-#            A_hi = currentAttList.getAttribute("pLU_HI").getDouble() * Aactive
-#            A_com = currentAttList.getAttribute("pLU_COM").getDouble() * Aactive + extraCom
-#            A_orc = currentAttList.getAttribute("pLU_ORC").getDouble() * Aactive 
-#            #-----> DYNAMIND
- 
-            #---------> UBCORE           
-            A_li = currentAttList.getAttribute("pLU_LI") * Aactive + extraInd + A_svu
-            A_hi = currentAttList.getAttribute("pLU_HI") * Aactive
-            A_com = currentAttList.getAttribute("pLU_COM") * Aactive + extraCom
-            A_orc = currentAttList.getAttribute("pLU_ORC") * Aactive
-            #---------> UBCORE           
+            A_li = currentAttList.getAttribute("pLU_LI").getDouble() * Aactive + extraInd + A_svu
+            A_hi = currentAttList.getAttribute("pLU_HI").getDouble() * Aactive
+            A_com = currentAttList.getAttribute("pLU_COM").getDouble() * Aactive + extraCom
+            A_orc = currentAttList.getAttribute("pLU_ORC").getDouble() * Aactive 
             
             #Sample frontage information and create vector to store this
             Wfp = random.randint(nres_fpw[0], nres_fpw[1])
@@ -927,12 +828,14 @@ class Urbplanbb(object):
             frontage = [Wfp, Wns, Wrd]
             
             #print "Total Non-res Area to be constructed with Planning Rules: ", A_li + A_hi + A_com + A_orc
+            totalblockemployed = 0
             
             if A_li != 0:
                 indLI_dict = self.buildNonResArea(currentAttList, map_attr, A_li, "LI", frontage)
                 if indLI_dict["Has_LI"] == 1:
                     currentAttList.addAttribute("Has_LI", 1)
                     #Transfer attributes from indLI dictionary
+                    currentAttList.addAttribute("LIjobs", indLI_dict["TotalBlockEmployed"])
                     currentAttList.addAttribute("LIestates", indLI_dict["Estates"])
                     currentAttList.addAttribute("avSt_LI", indLI_dict["av_St"])
                     currentAttList.addAttribute("LIAfront", indLI_dict["Afrontage"])
@@ -946,10 +849,9 @@ class Urbplanbb(object):
                     currentAttList.addAttribute("LIAeLgrey", indLI_dict["Alandscape"]-indLI_dict["EstateGreenArea"])
                     currentAttList.addAttribute("LIAeEIA", indLI_dict["EstateEffectiveImpervious"])
                     currentAttList.addAttribute("LIAeTIA", indLI_dict["EstateImperviousArea"])
-                    currentAttList.addAttribute("LI_IDD", indLI_dict["indoordailydemand"])
-                    currentAttList.addAttribute("LI_OAD", indLI_dict["outdoorannualdemand"])
                     
                     #Add to cumulative area variables
+                    totalblockemployed += indLI_dict["TotalBlockEmployed"]
                     blk_tia += indLI_dict["Estates"] *(indLI_dict["EstateImperviousArea"] + indLI_dict["FrontageEIA"])
                     blk_eia += indLI_dict["Estates"] *(indLI_dict["EstateEffectiveImpervious"] + 0.9*indLI_dict["FrontageEIA"])
                     blk_roof += indLI_dict["Estates"] * indLI_dict["EstateBuildingArea"]
@@ -960,6 +862,7 @@ class Urbplanbb(object):
                 if indHI_dict["Has_HI"] == 1:
                     currentAttList.addAttribute("Has_HI", 1)
                     #Transfer attributes from indHI dictionary
+                    currentAttList.addAttribute("HIjobs", indHI_dict["TotalBlockEmployed"])
                     currentAttList.addAttribute("HIestates", indHI_dict["Estates"])
                     currentAttList.addAttribute("avSt_HI", indLI_dict["av_St"])
                     currentAttList.addAttribute("HIAfront", indLI_dict["Afrontage"])
@@ -973,10 +876,9 @@ class Urbplanbb(object):
                     currentAttList.addAttribute("HIAeLgrey", indHI_dict["Alandscape"]-indHI_dict["EstateGreenArea"])
                     currentAttList.addAttribute("HIAeEIA", indHI_dict["EstateEffectiveImpervious"])
                     currentAttList.addAttribute("HIAeTIA", indHI_dict["EstateImperviousArea"])
-                    currentAttList.addAttribute("HI_IDD", indHI_dict["indoordailydemand"])
-                    currentAttList.addAttribute("HI_OAD", indHI_dict["outdoorannualdemand"])
             
                     #Add to cumulative area variables
+                    totalblockemployed += indHI_dict["TotalBlockEmployed"]
                     blk_tia += indHI_dict["Estates"] *(indHI_dict["EstateImperviousArea"] + indHI_dict["FrontageEIA"])
                     blk_eia += indHI_dict["Estates"] *(indHI_dict["EstateEffectiveImpervious"] + 0.9*indHI_dict["FrontageEIA"])
                     blk_roof += indHI_dict["Estates"] * indHI_dict["EstateBuildingArea"]
@@ -987,6 +889,7 @@ class Urbplanbb(object):
                 if com_dict["Has_COM"] == 1:
                     currentAttList.addAttribute("Has_Com", 1)
                     #Transfer attributes from COM dictionary
+                    currentAttList.addAttribute("COMjobs", com_dict["TotalBlockEmployed"])
                     currentAttList.addAttribute("COMestates", com_dict["Estates"])
                     currentAttList.addAttribute("avSt_COM", com_dict["av_St"])
                     currentAttList.addAttribute("COMAfront", com_dict["Afrontage"])
@@ -1000,10 +903,9 @@ class Urbplanbb(object):
                     currentAttList.addAttribute("COMAeLgrey", com_dict["Alandscape"]-com_dict["EstateGreenArea"])
                     currentAttList.addAttribute("COMAeEIA", com_dict["EstateEffectiveImpervious"])
                     currentAttList.addAttribute("COMAeTIA", com_dict["EstateImperviousArea"])
-                    currentAttList.addAttribute("COM_IDD", com_dict["indoordailydemand"])
-                    currentAttList.addAttribute("COM_OAD", com_dict["outdoorannualdemand"])
                     
                     #Add to cumulative area variables
+                    totalblockemployed += com_dict["TotalBlockEmployed"]
                     blk_tia += com_dict["Estates"] *(com_dict["EstateImperviousArea"] + com_dict["FrontageEIA"])
                     blk_eia += com_dict["Estates"] *(com_dict["EstateEffectiveImpervious"] + 0.9*com_dict["FrontageEIA"])
                     blk_roof += com_dict["Estates"] * com_dict["EstateBuildingArea"]
@@ -1014,6 +916,7 @@ class Urbplanbb(object):
                 if orc_dict["Has_ORC"] == 1:
                     currentAttList.addAttribute("Has_ORC", 1)
                     #Transfer attributes from Offices dictionary
+                    currentAttList.addAttribute("ORCjobs", orc_dict["TotalBlockEmployed"])
                     currentAttList.addAttribute("ORCestates", orc_dict["Estates"])
                     currentAttList.addAttribute("avSt_ORC", orc_dict["av_St"])
                     currentAttList.addAttribute("ORCAfront", orc_dict["Afrontage"])
@@ -1027,21 +930,16 @@ class Urbplanbb(object):
                     currentAttList.addAttribute("ORCAeLgrey", orc_dict["Alandscape"]-orc_dict["EstateGreenArea"])
                     currentAttList.addAttribute("ORCAeEIA", orc_dict["EstateEffectiveImpervious"])
                     currentAttList.addAttribute("ORCAeTIA", orc_dict["EstateImperviousArea"])
-                    currentAttList.addAttribute("ORC_IDD", orc_dict["indoordailydemand"])
-                    currentAttList.addAttribute("ORC_OAD", orc_dict["outdoorannualdemand"])
                     
                     #Add to cumulative area variables
+                    totalblockemployed += orc_dict["TotalBlockEmployed"]
                     blk_tia += orc_dict["Estates"] *(orc_dict["EstateImperviousArea"] + orc_dict["FrontageEIA"])
                     blk_eia += orc_dict["Estates"] *(orc_dict["EstateEffectiveImpervious"] + 0.9*orc_dict["FrontageEIA"])
                     blk_roof += orc_dict["Estates"] * orc_dict["EstateBuildingArea"]
                     blk_avspace += orc_dict["Estates"] * (orc_dict["EstateGreenArea"] + orc_dict["av_St"])
                     
-            #CALCULATE PUBLIC OPEN SPACE IRRIGATION DEMAND
-            Apubirrigate = A_ref*self.irrigate_refs + A_park*self.irrigate_parks + otherperv*self.unc_landirrigate / 10000    #total irrigation area in hectares
-            Vpubirrigate = Apubirrigate*self.public_irr_vol     #Area of irrigation * annual rate = [ML/yr]
-            currentAttList.addAttribute("DemPublicI", Vpubirrigate)     #annual irrigation volume [ML/yr]
-            
             #TALLY UP TOTAL BLOCK DETAILS
+            currentAttList.changeAttribute("Employ", totalblockemployed)
             currentAttList.addAttribute("Blk_TIA", blk_tia)
             currentAttList.addAttribute("Blk_EIA", blk_eia)
             
@@ -1060,18 +958,47 @@ class Urbplanbb(object):
         map_attr.addAttribute("RefLimit", self.ref_limit_stormwater)            #Limit Reserves and Floodways to SW Management
         map_attr.addAttribute("UndevAllow", self.und_allowdev)                  #Allow developing water infrastructure in undev areas
         map_attr.addAttribute("HwyMedLimit", self.hwy_restrict)                 #Restrict tech placement along Highway medians
-        map_attr.addAttribute("MinWQPubIrr", self.public_irr_wq)                #Minimum acceptable water quality for public irrigation
-        #map_attr.addAttribute("MinWQPrivIrr", ....)                            #Minimum acceptable water quality for private irrigation
-        #map_attr.addAttribute("MinWQKitchen", ....)                            #Minimum acceptable water quality for Kitchen demand
-        #map_attr.addAttribute("MinWQToilet", ....)                             #Minimum acceptable water quality for Toilet Demand
-        #map_attr.addAttribute("MinWQShower", ....)                             #Minimum acceptable water quality for Shower Demand
-        #map_attr.addAttribute("MinWQLaundry", ....)                            #Minimum acceptable water quality for Laundry Demand
         
-        self.printc("End of Urban Planning Module")
+        print "End of Module"
     
     ########################################################################
     ### URBPLANBB SUB-FUNCTIONS                                          ###
     ########################################################################
+    def keepBlockDataCheck(self, currentAttList, prevAttList):
+        """Performs the dynamic checks on the current Block to see if its previous
+        planning data can be transferred."""
+        if self.noredev == 1:
+            return True
+        
+        decisionmatrix = [] #Multiple decisions, in order to redevelop, only one needs to be True
+        
+        if self.lucredev == 1:
+            lucsum = 0
+            for i in ["pLU_CIV", "pLU_COM", "pLU_HI", "pLU_LI", "pLU_NA", "pLU_ORC",
+                      "pLU_PG", "pLU_RD", "pLU_REF", "pLU_RES", "pLU_SVU", "pLU_TR",
+                      "pLU_UND"]:
+                lucsum += abs(currentAttList.getAttribute(i).getDouble() - \
+                              prevAttList.getAttribute(i).getDouble())
+            if lucsum > self.lucredev_thresh/100:
+                decisionmatrix.append(1)
+            else:
+                decisionmatrix.append(0)
+            
+        if self.popredev == 1:
+            popnow = currentAttList.getAttribute("Pop").getDouble()
+            popprev = prevAttList.getAttribute("Pop").getDouble()
+            popdiff = abs(popnow - popprev)/(popprev)
+            if popdiff > self.popredev_thresh/100:
+                decisionmatrix.append(1)
+            else:
+                decisionmatrix.append(0)
+        
+        if sum(decisionmatrix) > 0:
+            return False #If even one factor says 'redev'! return False
+        else:
+            return True #otherwise return True = you can keep the existing data
+        
+        return False    #Otherwise just redevelop block by default if no option is ticked
     
     def adjustSampleRange(self, min, max, usemedian):
         """Returns a min/max sample range for the input variables. Returns the same
@@ -1133,8 +1060,7 @@ class Urbplanbb(object):
         elif considerCBD == 0:
             return self.undtypeDefault
         else:
-#            distCBD = currentAttList.getAttribute("CBDdist").getDouble()/1000   #DYNAMIND - convert to km
-            distCBD = currentAttList.getAttribute("CBDdist")/1000   #UBCORE - convert to km
+            distCBD = currentAttList.getAttribute("CBDdist").getDouble()/1000   #convert to km
             #print "distance from CBD: ", distCBD
             if self.cityarchetype == "MC":       #Monocentric City Case
                 BFdist = float(self.und_BFtoGF)/100 * float(self.citysprawl)  #from 0 to BFdist --> BF
@@ -1158,13 +1084,13 @@ class Urbplanbb(object):
         return undtype
     
     def buildResidential(self, currentAttList, map_attr, A_res):
+        """Builds residential urban form - either houses or apartments depending on the
+        density of the population on the land available"""
         #Step 1 - Determine Typology
-#        popBlock = currentAttList.getAttribute("Pop").getDouble()   #DYNAMIND
-        popBlock = currentAttList.getAttribute("Pop")       #UBCORE
-        
+        popBlock = currentAttList.getAttribute("Pop").getDouble()
         Afloor = self.person_space * popBlock
         farblock = Afloor / A_res   #Calculate FAR
-        #print "FARBlock", farblock
+        print "FARBlock", farblock
         
         blockratios = self.retrieveRatios(farblock)
         restype = self.retrieveResType(blockratios[0])
@@ -1176,14 +1102,15 @@ class Urbplanbb(object):
             restype = self.retrieveResType(blockratios[0])
         
         if "House" in restype:      #Design houses by default
-            resdict = self.designResidentialHouses(A_res, popBlock, blockratios, Afloor)
+            resdict = self.designResidentialHouses(currentAttList, map_attr, A_res, popBlock, blockratios, Afloor)
             resdict["TypeApt"] = 0
         elif "Apartment" in restype or "HighRise" in restype: #Design apartments
             resdict = self.designResidentialApartments(currentAttList, map_attr, A_res, popBlock, blockratios, Afloor)
             resdict["TypeHouse"] = 0
         return resdict
         
-    def designResidentialHouses(self, A_res, pop, ratios, Afloor):
+    def designResidentialHouses(self, currentAttList, map_attr, A_res, pop, ratios, Afloor):
+        """All necessary urban planning calculations for residential dwellings urban form """
         resdict = {}
         resdict["TypeHouse"] = 1
         
@@ -1194,7 +1121,7 @@ class Urbplanbb(object):
         occup = 0       #initialize to enter the loop
         while occup < occupmin or occup > occupmax or occup == 0:
             occup = random.normalvariate(self.occup_avg, self.occup_avg/10)
-        #print "Block occupancy: ", occup
+        print "Block occupancy: ", occup
         
         resdict["HouseOccup"] = occup
         
@@ -1216,19 +1143,26 @@ class Urbplanbb(object):
         Dlot = (100 - 2*Wfrontage)/2                        #Depth of one allotment
         Aca = A_res - Afrontage
         
-        #print "Ndwunits", Ndwunits
-        #print "district_L", district_L
-        #print "parcels", parcels
+        if Aca < 0:
+            print "Too much area taken up for frontage, removing frontage to clear up construction area!"
+            Aca = A_res
+            Afrontage = 0       #Set the frontage equal to zero for this block, this will occur because areas are too small
+            Dlot = 40   #Constrain to 40m deep
+            
+        print "Ndwunits", Ndwunits
+        print "district_L", district_L
+        print "parcels", parcels
         
-        #print "Dlot", Dlot
-        #print "Aca", Aca
+        print "Dlot", Dlot
+        print "Aca", Aca
         
-        AfrontagePerv = float(Afrontage * (Wns / Wfrontage))
+        AfrontagePerv = Afrontage * (float(Wns) / float(Wfrontage))
         
         resdict["ResParcels"] = parcels
         resdict["TotalFrontage"] = Afrontage
         resdict["avSt_RES"] = AfrontagePerv
         resdict["WResNstrip"] = Wns
+        
         
         #Step 2b: Determine how many houses on one allotment based on advanced parameter "min Allotment Width"
         Wlot = 0
@@ -1240,7 +1174,7 @@ class Urbplanbb(object):
             Wlot = Alot / Dlot
             #print DWperLot, Nallotments, Alot, Wlot
         
-        #print "For this block, we need ", DWperLot, " dwellings on each allotment"
+        print "For this block, we need ", DWperLot, " dwellings on each allotment"
         
         resdict["ResAllots"] = Nallotments
         resdict["ResDWpLot"] = DWperLot
@@ -1293,7 +1227,7 @@ class Urbplanbb(object):
             floors = 1
             Aba = Alotfloor
             while (Aba + Apave + Als) > Alot:
-                #print "Even with less garden, need more than ", floors, "floor(s)!"
+                print "Even with less garden, need more than ", floors, "floor(s)!"
                 floors += 1
                 Aba = Alotfloor/floors
         #Retry #2 - Remove Carpark Paving
@@ -1305,7 +1239,7 @@ class Urbplanbb(object):
             floors = 1
             Aba = Alotfloor
             while(Aba + Apave + Als) > Alot:
-                #print "Even with less garden and less carpark paving, need more than ", floors, "floor(s)!"
+                print "Even with less garden and less carpark paving, need more than ", floors, "floor(s)!"
                 floors += 1
                 Aba = Alotfloor/floors
         
@@ -1315,14 +1249,14 @@ class Urbplanbb(object):
             floors = 1
             Aba = Alotfloor
             while(Aba + Apave + Als) > Alot:
-                #print "Even with less garden, carpark paving and driveway, need more than ", floors, "floor(s)!"
+                print "Even with less garden, carpark paving and driveway, need more than ", floors, "floor(s)!"
                 floors += 1
                 Aba = Alotfloor/floors
         
         #Last Resort - exceed floor limit
         if floors > self.floor_num_max:
             pass
-            #print "Floor Limit Exceeded! Cannot plan within bounds, continuing!"
+            print "Floor Limit Exceeded! Cannot plan within bounds, continuing!"
         
         Aba = Alotfloor/floors
         Dbuilding = Aba / (Wlot - 2*ssetback)
@@ -1356,10 +1290,6 @@ class Urbplanbb(object):
         resdict["ResLotTIA"] = AimpLot
         resdict["ResLotEIA"] = AConnectedImp
         resdict["ResGarden"] = Agarden
-        
-        Virrigation = self.priv_irr_vol * Agarden/10000
-        VtotIrrigation = Nallotments * Virrigation
-        resdict["DemPrivI"] = VtotIrrigation
         
         return resdict
 
@@ -1396,18 +1326,9 @@ class Urbplanbb(object):
             Als = AextraOutdoor * (Als/Aos)
             Ars = AextraOutdoor * (Ars/Aos)
         
-        #---> DYNAMIND
         pPG = currentAttList.getAttribute("pLU_PG").getDouble()
         pactive = currentAttList.getAttribute("Active").getDouble()
         Ablock = map_attr.getAttribute("BlockSize").getDouble()*map_attr.getAttribute("BlockSize").getDouble()
-        #---> DYNAMIND
-        
-        #---> UBCORE
-        pPG = currentAttList.getAttribute("pLU_PG")
-        pactive = currentAttList.getAttribute("Active")
-        Ablock = map_attr.getAttribute("BlockSize")*map_attr.getAttribute("BlockSize")
-        #---> UBCORE
-        
         Apg = pPG * pactive * Ablock * float(int(self.park_OSR))
         
         #Step 4a: Work out Building Footprint using OSR
@@ -1443,9 +1364,6 @@ class Urbplanbb(object):
             resdict["av_HDRes"] = av_RESHDR
             resdict["HDRGarden"] = Agarden
             resdict["HDRCarPark"] = Aparking
-            
-            VtotIrrigation = self.priv_irr_vol * Agarden/10000
-            resdict["DemAptI"] = VtotIrrigation
             return resdict
         else:
             pass
@@ -1484,9 +1402,6 @@ class Urbplanbb(object):
             resdict["av_HDRes"] = av_RESHDR
             resdict["HDRGarden"] = Agarden
             resdict["HDRCarPark"] = Aparking
-            
-            VtotIrrigation = self.priv_irr_vol * Agarden/10000
-            resdict["DemAptI"] = VtotIrrigation
             return resdict
         else:
             pass
@@ -1525,9 +1440,6 @@ class Urbplanbb(object):
         resdict["HDRGarden"] = Agarden
         resdict["HDRCarPark"] = Aparking
         
-        VtotIrrigation = self.priv_irr_vol * Agarden/10000
-        resdict["DemAptI"] = VtotIrrigation
-        
         return resdict
 
     def calculateParkingArea(self, Aout, Alive, cpMin, cpMax):
@@ -1559,13 +1471,6 @@ class Urbplanbb(object):
         elif parking_HDR == "Off" or parking_HDR == "Var":
             Aparking = 0
         return Aparking
-
-    def calcHouseholdDemand(self, resdict):
-        """Calculates the residential household demand patterns"""
-        
-        pass
-        
-        return resdict
 
     def retrieveResType(self, lui):
         """Retrieves the residence type for the specified lui, if the type
@@ -1649,6 +1554,10 @@ class Urbplanbb(object):
         return hotspotsdict, remainA
     
     def buildNonResArea(self, currentAttList, map_attr, Aluc, type, frontage):
+        """Function to build non-residential urban form (LI, HI, COM, ORC) based on the
+        typology of estates and plot ratios and the provision of sufficient space for 
+        building, carparks, service/loading bay and landscaping."""
+        
         nresdict = {}
         #Note: Auto-setback
         #The formula to calculate auto-setback = H/2 + 1.5m based on Monash Council's Documents
@@ -1836,27 +1745,14 @@ class Urbplanbb(object):
         nresdict["EstateImperviousArea"] = Aimp_total
         nresdict["EstateEffectiveImpervious"] = Aimp_connected
         
-        #STEP 6: Water demands (sample the demand and calculate the demand)
-        if type == "LI":    
-            demandrate = round(random.uniform(self.li_demand*(1-float(self.li_demandvary/100)), self.li_demand*(1+float(self.li_demandvary/100))),2)
-        elif type == "HI":
-            demandrate = round(random.uniform(self.hi_demand*(1-float(self.hi_demandvary/100)), self.hi_demand*(1+float(self.hi_demandvary/100))),2)
-        elif type == "COM" or type == "ORC": 
-            demandrate = round(random.uniform(self.com_demand*(1-float(self.com_demandvary/100)), self.com_demand*(1+float(self.com_demandvary/100))),2)
-        indoordailydemand = demandrate * Afloor / 1000      #[kL/day]
-        outdoorannualdemand = self.public_irr_vol * Alandscape
-        
-        nresdict["indoordailydemand"] = indoordailydemand
-        nresdict["outdoorannualdemand"] = outdoorannualdemand
-        
         return nresdict
         
     def determineEmployment(self, method, currentAttList, map_attr, Aluc, type):
-#        if method == "I" and map_attr.getAttribute("include_employment").getDouble() == 1:  #DYNAMIND
-        if method == "I" and map_attr.getAttribue("include_employment") == 1:        
+        """Determines the employment of the block based on the selected method. Calls
+        some alternative functions for scaling or other aspects"""
+        if method == "I" and map_attr.getAttribute("include_employment").getDouble() == 1:
             #Condition required to do this: there has to be data on employment input
-#            employed = currentAttList.getAttribute("Employ").getDouble() #DYNAMIND - total employment for Block
-            employed = currentAttList.getAttribute("Employ")    #UBCORE
+            employed = currentAttList.getAttribute("Employ").getDouble() #total employment for Block
             #Scale this value based on the hypothetical area and employee distribution
             
         elif method == "S":
@@ -1879,38 +1775,191 @@ class Urbplanbb(object):
         #Scales the employed value down based on Aluc, used for "S" and "D" methods
         return employed
     
-    
-    ########################################################
-    #LINK WITH GUI                                         #
-    ########################################################            
-    def getParameter(self, name):   #UBCORE FUNCTION
-        return self.__dict__.get(name)
-    
-    def setParameter(self, name, value):    #UBCORE FUNCTION
-        self.__dict__.__setitem__(name, value)
-        return True    
+    def transferBlockAttributes(self, currentAttList, prevAttList):
+        """Manually transfers all urbplanbb attributes from the previous block list into
+        the new block list."""
+        currentAttList.addAttribute("MiscAtot", prevAttList.getAttribute("MiscAtot").getDouble())
+        currentAttList.addAttribute("MiscAimp", prevAttList.getAttribute("MiscAimp").getDouble())
+        currentAttList.addAttribute("UndType", prevAttList.getAttribute("UndType").getString())
+        currentAttList.addAttribute("UND_av", prevAttList.getAttribute("UND_av").getDouble())
+        currentAttList.addAttribute("OpenSpace", prevAttList.getAttribute("OpenSpace").getDouble())
+        currentAttList.addAttribute("AGardens", prevAttList.getAttribute("AGardens").getDouble())
+        currentAttList.addAttribute("ASquare", prevAttList.getAttribute("ASquare").getDouble())
+        currentAttList.addAttribute("PG_av", prevAttList.getAttribute("PG_av").getDouble())
+        currentAttList.addAttribute("REF_av", prevAttList.getAttribute("REF_av").getDouble())
+        currentAttList.addAttribute("ANonW_Utils", prevAttList.getAttribute("ANonW_Utils").getDouble())
+        currentAttList.addAttribute("SVU_avWS", prevAttList.getAttribute("SVU_avWS").getDouble())
+        currentAttList.addAttribute("SVU_avWW", prevAttList.getAttribute("SVU_avWW").getDouble())
+        currentAttList.addAttribute("SVU_avSW", prevAttList.getAttribute("SVU_avSW").getDouble())
+        currentAttList.addAttribute("SVU_avOTH", prevAttList.getAttribute("SVU_avOTH").getDouble())
+        currentAttList.addAttribute("RoadTIA", prevAttList.getAttribute("RoadTIA").getDouble())
+        currentAttList.addAttribute("ParkBuffer", prevAttList.getAttribute("ParkBuffer").getDouble())
+        currentAttList.addAttribute("RD_av", prevAttList.getAttribute("RD_av").getDouble())
+        currentAttList.addAttribute("RDMedW", prevAttList.getAttribute("RDMedW").getDouble())
+        
+        if currentAttList.getAttribute("pLU_RES").getDouble() != 0:
+            currentAttList.addAttribute("HasRes", 1)
+        else:
+            currentAttList.addAttribute("HasRes", 0)
+        if prevAttList.getAttribute("ResAllots").getDouble() != 0:
+            currentAttList.addAttribute("HasHouses", 1)
+        else:
+            currentAttList.addAttribute("HasHouses", 0)
+            
+        currentAttList.addAttribute("HouseOccup", prevAttList.getAttribute("HouseOccup").getDouble())
+        currentAttList.addAttribute("ResParcels", prevAttList.getAttribute("ResParcels").getDouble())
+        currentAttList.addAttribute("ResFrontT", prevAttList.getAttribute("ResFrontT").getDouble())
+        currentAttList.addAttribute("avSt_RES", prevAttList.getAttribute("avSt_RES").getDouble())
+        currentAttList.addAttribute("WResNstrip", prevAttList.getAttribute("WResNstrip").getDouble())
+        currentAttList.addAttribute("ResAllots", prevAttList.getAttribute("ResAllots").getDouble())
+        currentAttList.addAttribute("ResDWpLot", prevAttList.getAttribute("ResDWpLot").getDouble())
+        currentAttList.addAttribute("ResHouses", prevAttList.getAttribute("ResHouses").getDouble())
+        currentAttList.addAttribute("ResLotArea", prevAttList.getAttribute("ResLotArea").getDouble())
+        currentAttList.addAttribute("ResRoof", prevAttList.getAttribute("ResRoof").getDouble())
+        currentAttList.addAttribute("avLt_RES", prevAttList.getAttribute("avLt_RES").getDouble())
+        currentAttList.addAttribute("ResHFloors", prevAttList.getAttribute("ResHFloors").getDouble())
+        currentAttList.addAttribute("ResLotTIA", prevAttList.getAttribute("ResLotTIA").getDouble())
+        currentAttList.addAttribute("ResLotEIA", prevAttList.getAttribute("ResLotEIA").getDouble())
+        currentAttList.addAttribute("ResGarden", prevAttList.getAttribute("ResGarden").getDouble())
+        currentAttList.addAttribute("ResRoofCon", prevAttList.getAttribute("ResRoofCon").getDouble())
+        
+        if prevAttList.getAttribute("HDRFlats").getDouble() != 0:
+            currentAttList.addAttribute("HasFlats", 1)
+        else:
+            currentAttList.addAttribute("HasFlats", 0)
+            
+        currentAttList.addAttribute("avSt_RES", prevAttList.getAttribute("avSt_RES").getDouble())
+        currentAttList.addAttribute("HDRFlats", prevAttList.getAttribute("HDRFlats").getDouble())
+        currentAttList.addAttribute("HDRRoofA", prevAttList.getAttribute("HDRRoofA").getDouble())
+        currentAttList.addAttribute("HDROccup", prevAttList.getAttribute("HDROccup").getDouble())
+        currentAttList.addAttribute("HDR_TIA", prevAttList.getAttribute("HDR_TIA").getDouble())
+        currentAttList.addAttribute("HDR_EIA", prevAttList.getAttribute("HDR_EIA").getDouble())
+        currentAttList.addAttribute("HDRFloors", prevAttList.getAttribute("HDRFloors").getDouble())
+        currentAttList.addAttribute("av_HDRes", prevAttList.getAttribute("av_HDRes").getDouble())
+        currentAttList.addAttribute("HDRGarden", prevAttList.getAttribute("HDRGarden").getDouble())
+        currentAttList.addAttribute("HDRCarPark", prevAttList.getAttribute("HDRCarPark").getDouble())
+        
+        if prevAttList.getAttribute("LIestates").getDouble() != 0:
+            currentAttList.addAttribute("Has_LI", 1)
+        else:
+            currentAttList.addAttribute("Has_LI", 0)
+            
+        currentAttList.addAttribute("LIjobs", prevAttList.getAttribute("LIjobs").getDouble())
+        currentAttList.addAttribute("LIestates", prevAttList.getAttribute("LIestates").getDouble())
+        currentAttList.addAttribute("avSt_LI", prevAttList.getAttribute("avSt_LI").getDouble())
+        currentAttList.addAttribute("LIAfront", prevAttList.getAttribute("LIAfront").getDouble())
+        currentAttList.addAttribute("LIAfrEIA", prevAttList.getAttribute("LIAfrEIA").getDouble())
+        currentAttList.addAttribute("LIAestate", prevAttList.getAttribute("LIAestate").getDouble())
+        currentAttList.addAttribute("LIAeBldg", prevAttList.getAttribute("LIAeBldg").getDouble())
+        currentAttList.addAttribute("LIFloors", prevAttList.getAttribute("LIFloors").getDouble())
+        currentAttList.addAttribute("LIAeLoad", prevAttList.getAttribute("LIAeLoad").getDouble())
+        currentAttList.addAttribute("LIAeCPark", prevAttList.getAttribute("LIAeCPark").getDouble())
+        currentAttList.addAttribute("avLt_LI", prevAttList.getAttribute("avLt_LI").getDouble())
+        currentAttList.addAttribute("LIAeLgrey", prevAttList.getAttribute("LIAeLgrey").getDouble())
+        currentAttList.addAttribute("LIAeEIA", prevAttList.getAttribute("LIAeEIA").getDouble())
+        currentAttList.addAttribute("LIAeTIA", prevAttList.getAttribute("LIAeTIA").getDouble())
+        
+        if prevAttList.getAttribute("HIestates").getDouble() != 0:
+            currentAttList.addAttribute("Has_HI", 1)
+        else:
+            currentAttList.addAttribute("Has_HI", 0)
+            
+        currentAttList.addAttribute("HIjobs", prevAttList.getAttribute("HIjobs").getDouble())
+        currentAttList.addAttribute("HIestates", prevAttList.getAttribute("HIestates").getDouble())
+        currentAttList.addAttribute("avSt_HI", prevAttList.getAttribute("avSt_HI").getDouble())
+        currentAttList.addAttribute("HIAfront", prevAttList.getAttribute("HIAfront").getDouble())
+        currentAttList.addAttribute("HIAfrEIA", prevAttList.getAttribute("HIAfrEIA").getDouble())
+        currentAttList.addAttribute("HIAestate", prevAttList.getAttribute("HIAestate").getDouble())
+        currentAttList.addAttribute("HIAeBldg", prevAttList.getAttribute("HIAeBldg").getDouble())
+        currentAttList.addAttribute("HIFloors", prevAttList.getAttribute("HIFloors").getDouble())
+        currentAttList.addAttribute("HIAeLoad", prevAttList.getAttribute("HIAeLoad").getDouble())
+        currentAttList.addAttribute("HIAeCPark", prevAttList.getAttribute("HIAeCPark").getDouble())
+        currentAttList.addAttribute("avLt_HI", prevAttList.getAttribute("avLt_HI").getDouble())
+        currentAttList.addAttribute("HIAeLgrey", prevAttList.getAttribute("HIAeLgrey").getDouble())
+        currentAttList.addAttribute("HIAeEIA", prevAttList.getAttribute("HIAeEIA").getDouble())
+        currentAttList.addAttribute("HIAeTIA", prevAttList.getAttribute("HIAeTIA").getDouble())
+        
+        if prevAttList.getAttribute("COMestates").getDouble() != 0:
+            currentAttList.addAttribute("Has_Com", 1)
+        else:
+            currentAttList.addAttribute("Has_Com", 0)
+            
+        currentAttList.addAttribute("COMjobs", prevAttList.getAttribute("COMjobs").getDouble())
+        currentAttList.addAttribute("COMestates", prevAttList.getAttribute("COMestates").getDouble())
+        currentAttList.addAttribute("avSt_COM", prevAttList.getAttribute("avSt_COM").getDouble())
+        currentAttList.addAttribute("COMAfront", prevAttList.getAttribute("COMAfront").getDouble())
+        currentAttList.addAttribute("COMAfrEIA", prevAttList.getAttribute("COMAfrEIA").getDouble())
+        currentAttList.addAttribute("COMAestate", prevAttList.getAttribute("COMAestate").getDouble())
+        currentAttList.addAttribute("COMAeBldg", prevAttList.getAttribute("COMAeBldg").getDouble())
+        currentAttList.addAttribute("COMFloors", prevAttList.getAttribute("COMFloors").getDouble())
+        currentAttList.addAttribute("COMAeLoad", prevAttList.getAttribute("COMAeLoad").getDouble())
+        currentAttList.addAttribute("COMAeCPark", prevAttList.getAttribute("COMAeCPark").getDouble())
+        currentAttList.addAttribute("avLt_COM", prevAttList.getAttribute("avLt_COM").getDouble())
+        currentAttList.addAttribute("COMAeLgrey", prevAttList.getAttribute("COMAeLgrey").getDouble())
+        currentAttList.addAttribute("COMAeEIA", prevAttList.getAttribute("COMAeEIA").getDouble())
+        currentAttList.addAttribute("COMAeTIA", prevAttList.getAttribute("COMAeTIA").getDouble())
+        
+        if prevAttList.getAttribute("ORCestates").getDouble() != 0:
+            currentAttList.addAttribute("Has_ORC", 1)
+        else:
+            currentAttList.addAttribute("Has_ORC", 0)
+            
+        currentAttList.addAttribute("ORCjobs", prevAttList.getAttribute("ORCjobs").getDouble())
+        currentAttList.addAttribute("ORCestates", prevAttList.getAttribute("ORCestates").getDouble())
+        currentAttList.addAttribute("avSt_ORC", prevAttList.getAttribute("avSt_ORC").getDouble())
+        currentAttList.addAttribute("ORCAfront", prevAttList.getAttribute("ORCAfront").getDouble())
+        currentAttList.addAttribute("ORCAfrEIA", prevAttList.getAttribute("ORCAfrEIA").getDouble())
+        currentAttList.addAttribute("ORCAestate", prevAttList.getAttribute("ORCAestate").getDouble())
+        currentAttList.addAttribute("ORCAeBldg", prevAttList.getAttribute("ORCAeBldg").getDouble())
+        currentAttList.addAttribute("ORCFloors", prevAttList.getAttribute("ORCFloors").getDouble())
+        currentAttList.addAttribute("ORCAeLoad", prevAttList.getAttribute("ORCAeLoad").getDouble())
+        currentAttList.addAttribute("ORCAeCPark", prevAttList.getAttribute("ORCAeCPark").getDouble())
+        currentAttList.addAttribute("avLt_ORC", prevAttList.getAttribute("avLt_ORC").getDouble())
+        currentAttList.addAttribute("ORCAeLgrey", prevAttList.getAttribute("ORCAeLgrey").getDouble())
+        currentAttList.addAttribute("ORCAeEIA", prevAttList.getAttribute("ORCAeEIA").getDouble())
+        currentAttList.addAttribute("ORCAeTIA", prevAttList.getAttribute("ORCAeTIA").getDouble())
+        currentAttList.addAttribute("Blk_TIA", prevAttList.getAttribute("Blk_TIA").getDouble())
+        currentAttList.addAttribute("Blk_EIA", prevAttList.getAttribute("Blk_EIA").getDouble())
+        currentAttList.addAttribute("Blk_EIF", prevAttList.getAttribute("Blk_EIF").getDouble())
+        currentAttList.addAttribute("Blk_TIF", prevAttList.getAttribute("Blk_TIF").getDouble())
+        currentAttList.addAttribute("Blk_RoofsA", prevAttList.getAttribute("Blk_RoofsA").getDouble())
+        return True
     
     ########################################################
     #DYNAMIND-SPECIFIC FUNCTIONS                           #
     ########################################################   
-#    
-#    def getBlockUUID(self, blockid,city):
-#	try:
-#		key = self.BLOCKIDtoUUID[blockid]
-#	except KeyError:
-#		key = ""
-#	return city.getFace(key)
-#        
-#    def initBLOCKIDtoUUID(self, city):
-#	blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
-#        for blockuuid in blockuuids:
-#            block = city.getFace(blockuuid)
-#            ID = int(round(block.getAttribute("BlockID").getDouble()))
-#	    self.BLOCKIDtoUUID[ID] = blockuuid
-#    
-#    def createInputDialog(self):
-#        form = activateurbplanbbGUI(self, QApplication.activeWindow())
-#        form.show()
-#        return True  
-#
-#        
+    
+    def getBlockUUID(self, blockid,city):
+	try:
+            key = self.BLOCKIDtoUUID[blockid]
+	except KeyError:
+            key = ""
+	return city.getFace(key)
+        
+    def getPrevBlockUUID(self, blockid, city):
+        try:
+            key = self.prevBLOCKIDtoUUID[blockid]
+        except KeyError:
+            key = ""
+        return city.getComponent(key)
+    
+    def initBLOCKIDtoUUID(self, city):
+	blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
+        for blockuuid in blockuuids:
+            block = city.getFace(blockuuid)
+            ID = int(round(block.getAttribute("BlockID").getDouble()))
+	    self.BLOCKIDtoUUID[ID] = blockuuid
+    
+    def initPrevBLOCKIDtoUUID(self, city):
+        prevblockuuids = city.getUUIDsOfComponentsInView(self.prevBlocks)
+        for uuid in prevblockuuids:
+            block = city.getComponent(uuid)
+            ID = int(round(block.getAttribute("BlockID").getDouble()))
+            self.prevBLOCKIDtoUUID[ID] = uuid
+    
+    def createInputDialog(self):
+        form = activateurbplanbbGUI(self, QApplication.activeWindow())
+        form.exec_()
+        return True  
+
+        

@@ -328,105 +328,92 @@
          <attribute name="title">
           <string>Spatial Map</string>
          </attribute>
-         <widget class="QWidget" name="sm_sidebarWidget" native="true">
-          <property name="geometry">
-           <rect>
-            <x>6</x>
-            <y>10</y>
-            <width>218</width>
-            <height>501</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>218</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>218</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_15">
-           <item>
-            <widget class="QComboBox" name="sm_comboSelect">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>200</width>
-               <height>20</height>
-              </size>
-             </property>
+         <layout class="QVBoxLayout" name="verticalLayout_15">
+          <item>
+           <widget class="QWidget" name="sm_MainViewWidget" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_16">
              <item>
-              <property name="text">
-               <string>(Select simulation snapshot/period)</string>
-              </property>
+              <widget class="QWebView" name="sm_WebView">
+               <property name="url">
+                <url>
+                 <string>about:blank</string>
+                </url>
+               </property>
+              </widget>
              </item>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTreeWidget" name="sm_categoryTree">
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>200</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="verticalScrollBarPolicy">
-              <enum>Qt::ScrollBarAsNeeded</enum>
-             </property>
-             <property name="columnCount">
-              <number>1</number>
-             </property>
-             <attribute name="headerVisible">
-              <bool>false</bool>
-             </attribute>
-             <column>
-              <property name="text">
-               <string>Categories</string>
-              </property>
-             </column>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="sm_MainViewWidget" native="true">
-          <property name="geometry">
-           <rect>
-            <x>230</x>
-            <y>10</y>
-            <width>818</width>
-            <height>618</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_16">
-           <item>
-            <widget class="QWebView" name="sm_WebView">
-             <property name="url">
-              <url>
-               <string>about:blank</string>
-              </url>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="sm_controlSimWidget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>38</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>38</height>
+             </size>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <widget class="QLabel" name="sm_Sim_lbl">
+               <property name="text">
+                <string>Simulation #</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QScrollBar" name="sm_ScrollBar">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="sm_Sim_box">
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>60</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Milestone1</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -923,7 +910,7 @@ p, li { white-space: pre-wrap; }
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../ub_modules/resources/dialogimg.qrc"/>
+  <include location="toolbaricons/guitoolbaricons.qrc"/>
   <include location="toolbaricons/guitoolbaricons.qrc"/>
   <include location="toolbaricons/guitoolbaricons.qrc"/>
   <include location="toolbaricons/guitoolbaricons.qrc"/>

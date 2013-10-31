@@ -23,13 +23,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
+__author__ = 'Peter M Bach'
+
 import sys, os
 #import mapnik
 from urbanbeatscore import *
 import PyQt4
 from PyQt4 import QtGui, QtCore, QtWebKit
 from urbanbeatsresultsgui import Ui_ResultsBrowseDialog
-import ubhighcharts
+import ubhighcharts, ubleafletjs
 
 class ResultsBrowseDialogLaunch(QtGui.QDialog):
     def __init__(self, activesim, parent = None):
@@ -62,13 +64,8 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         category10.setText(0, "")
         toplevitems = [category1, category2, category3, category4, category5, category6, category7, category8, category9]
         self.ui.ps_categoryTree.addTopLevelItems(toplevitems)
-        self.htmlscript0 = """
-<html>
-    <body>
-        <img src="D:\WorldPop.png" style="max-width: 100%; height:auto; width: auto" />
-    </body>
-        
-        """
+        self.htmlscript0 = ubleafletjs.writeLeafletScript("off")
+
         #Data Prep for CATEGORY 1
         testcharttitle = "Random temperatures for different cities"
         testcategories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -203,7 +200,10 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.connect(self.ui.ps_categoryTree, QtCore.SIGNAL("itemSelectionChanged()"), self.plotHighChart)
 
         self.ui.sm_WebView.setHtml(self.htmlscript0)
-        
+
+
+
+
 
     def plotHighChart(self):
         print "plotting highchart"        

@@ -765,7 +765,12 @@ def convertSHPtoKML(filename):
     input_filename = filename
     ogr2ogr.main(["", "-f", "KML", str(output_filename)+".kml", str(input_filename)+".shp"])
     return True
-    
+
+def convertSHPtoGEOJSON(filename):
+    output_filename = str(filename)+"GeoJSON"
+    input_filename = filename
+    ogr2ogr.main(["", "-f", "geoJSON", str(output_filename)+".json", str(input_filename)+".shp"])
+    return True
 
 ### DATA CLASSES
 
