@@ -113,37 +113,35 @@ class Delinblocks(UBModule):      #UBCORE
         #-----------------------------------------------------------------------
         
         #General Simulation Parameters
-#        self.createParameter("BlockSize", DOUBLE, "")       #DYNAMIND
-#        self.createParameter("blocksize_auto", BOOL, "")    #DYNAMIND    
+        self.createParameter("BlockSize", DOUBLE, "")
+        self.createParameter("blocksize_auto", BOOL, "")
         self.BlockSize = 400                    #size of the blocks (in m)
         self.blocksize_auto = False             #should the size be chosen automatically?
-        
-#        #DYNAMIND ------->
-#        self.createParameter("popdatatype", STRING, "")         #DYNAMIND
-#        self.createParameter("soildatatype", STRING, "")
-#        self.createParameter("soildataunits", STRING, "")
-#        self.createParameter("elevdatadatum", STRING, "")
-#        self.createParameter("elevdatacustomref", DOUBLE, "")
-#        self.createParameter("include_plan_map", BOOL ,"")
-#        self.createParameter("include_local_map", BOOL,"")
-#        self.createParameter("include_employment", BOOL, "")
-#        self.createParameter("jobdatatype", STRING, "")
-#        self.createParameter("include_rivers", BOOL, "")
-#        self.createParameter("include_lakes", BOOL, "")
-#        self.createParameter("include_groundwater", BOOL, "")
-#        self.createParameter("groundwater_datum", STRING, "")
-#        self.createParameter("include_road_net", BOOL,"")
-#        self.createParameter("include_supply_net", BOOL, "")
-#        self.createParameter("include_sewer_net", BOOL, "")
-#        self.createParameter("include_soc_par1", BOOL,"")
-#        self.createParameter("include_soc_par2", BOOL,"")
-#        self.createParameter("social_par1_name", STRING,"")
-#        self.createParameter("social_par2_name", STRING,"")
-#        self.createParameter("socpar1_type", STRING, "")
-#        self.createParameter("socpar2_type", STRING, "")
-#        self.createParameter("patchdelin", BOOL, "")
-#        self.createParameter("spatialmetrics", BOOL, "")        #DYNAMIND
-#        #-------> DYNAMIND 
+
+        self.createParameter("popdatatype", STRING, "")         #DYNAMIND
+        self.createParameter("soildatatype", STRING, "")
+        self.createParameter("soildataunits", STRING, "")
+        self.createParameter("elevdatadatum", STRING, "")
+        self.createParameter("elevdatacustomref", DOUBLE, "")
+        self.createParameter("include_plan_map", BOOL ,"")
+        self.createParameter("include_local_map", BOOL,"")
+        self.createParameter("include_employment", BOOL, "")
+        self.createParameter("jobdatatype", STRING, "")
+        self.createParameter("include_rivers", BOOL, "")
+        self.createParameter("include_lakes", BOOL, "")
+        self.createParameter("include_groundwater", BOOL, "")
+        self.createParameter("groundwater_datum", STRING, "")
+        self.createParameter("include_road_net", BOOL,"")
+        self.createParameter("include_supply_net", BOOL, "")
+        self.createParameter("include_sewer_net", BOOL, "")
+        self.createParameter("include_soc_par1", BOOL,"")
+        self.createParameter("include_soc_par2", BOOL,"")
+        self.createParameter("social_par1_name", STRING,"")
+        self.createParameter("social_par2_name", STRING,"")
+        self.createParameter("socpar1_type", STRING, "")
+        self.createParameter("socpar2_type", STRING, "")
+        self.createParameter("patchdelin", BOOL, "")
+        self.createParameter("spatialmetrics", BOOL, "")
 
         self.popdatatype = "D"                  #population data type: D = density, C = count
         self.soildatatype = "I"                 #I = infiltration rates, C = classification
@@ -173,15 +171,13 @@ class Delinblocks(UBModule):      #UBCORE
         self.patchdelin = True                  #perform patch delineation? All subsequent algorithms will need to consider this
         self.spatialmetrics = True              #perform calculation of spatial metrics? Just an additional feature
         
-        #Local Extents and Map Connectivity                   
-#        #DYNAMIND ------>        
-#        self.createParameter("Neighbourhood", STRING,"")
-#        self.createParameter("vn4FlowPaths", BOOL,"")
-#        self.createParameter("vn4Patches", BOOL,"")                
-#        self.createParameter("flow_method", STRING,"")
-#        self.createParameter("demsmooth_choose", BOOL,"")
-#        self.createParameter("demsmooth_passes", DOUBLE,"")
-#        #------> DYNAMIND 
+        #Local Extents and Map Connectivity
+        self.createParameter("Neighbourhood", STRING,"")
+        self.createParameter("vn4FlowPaths", BOOL,"")
+        self.createParameter("vn4Patches", BOOL,"")
+        self.createParameter("flow_method", STRING,"")
+        self.createParameter("demsmooth_choose", BOOL,"")
+        self.createParameter("demsmooth_passes", DOUBLE,"")
         
         self.Neighbourhood = "M"                #three options: M = Moore, N = von Neumann
         self.vn4FlowPaths = False
@@ -191,14 +187,12 @@ class Delinblocks(UBModule):      #UBCORE
         self.demsmooth_passes = 1
         
         #Regional Geography
-#        #DYNAMIND ------------>        
-#        self.createParameter("considerCBD", BOOL, "")
-#        self.createParameter("locationOption", STRING, "")
-#        self.createParameter("locationCity", STRING, "")
-#        self.createParameter("locationLong", DOUBLE, "")
-#        self.createParameter("locationLat", DOUBLE, "")
-#        self.createParameter("marklocation", BOOL, "")
-#        #------------> DYNAMIND 
+        self.createParameter("considerCBD", BOOL, "")
+        self.createParameter("locationOption", STRING, "")
+        self.createParameter("locationCity", STRING, "")
+        self.createParameter("locationLong", DOUBLE, "")
+        self.createParameter("locationLat", DOUBLE, "")
+        self.createParameter("marklocation", BOOL, "")
         
         self.considerCBD = False
         self.locationOption = "S"       #method for setting location option: S = selection, C = coordinates
@@ -208,21 +202,19 @@ class Delinblocks(UBModule):      #UBCORE
         self.marklocation = False       #should this CBD location be marked on the map as a point? If yes, it will be saved to the Block Centre Points
         
         #Hidden Inputs
-#        #-------------> DYNAMIND
-#        self.createParameter("LocalityFilename", STRING, "")
-#        self.createParameter("RiversFilename", STRING, "")
-#        self.createParameter("LakesFilename", STRING, "")
-#        self.createParameter("obtain_flowbasins", STRING, "")           #changed internally depending on cycle to skip flowpath delineation
-#        self.LocalityFilename = "C:/UrbanBEATSv1CaseStudies/LocalityMap_UTM.shp"
-#        self.RiversFilename = "C:/UrbanBEATSv1CaseStudies/Rivers_UTM.shp"
-#        self.LakesFilename = "C:/UrbanBEATSv1CaseStudies/Lakes.shp"
-#        self.obtain_flowbasins = "D"                                    #F = file, D = delineate
+        #self.createParameter("LocalityFilename", STRING, "")
+        #self.createParameter("RiversFilename", STRING, "")
+        #self.createParameter("LakesFilename", STRING, "")
+        #self.createParameter("obtain_flowbasins", STRING, "")           #changed internally depending on cycle to skip flowpath delineation
+        #self.LocalityFilename = "C:/UrbanBEATSv1CaseStudies/LocalityMap_UTM.shp"
+        #self.RiversFilename = "C:/UrbanBEATSv1CaseStudies/Rivers_UTM.shp"
+        #self.LakesFilename = "C:/UrbanBEATSv1CaseStudies/Lakes.shp"
+        #self.obtain_flowbasins = "D"                                    #F = file, D = delineate
         
-#        self.createParameter("xllcorner", DOUBLE, "")
-#        self.createParameter("yllcorner", DOUBLE, "")
-#        self.xllcorner = 313420.7405    #Yarra Estuary Limits
-#        self.yllcorner = 5807211.478    #spatial extents of the input map
-#        #-------------> DYNAMIND
+        self.createParameter("xllcorner", DOUBLE, "")
+        self.createParameter("yllcorner", DOUBLE, "")
+        self.xllcorner = 313420.7405    #Yarra Estuary Limits
+        self.yllcorner = 5807211.478    #spatial extents of the input map
         
         #LATER ON! FOR LATER CYCLES - CHANGING THIS VARIABLE WILL ALLOW SKIPPING OF FLOWPATHS AND BASIN DELINATION!
         self.obtain_flowbasins = "D"                                    #F = file, D = delineate
@@ -677,6 +669,11 @@ class Delinblocks(UBModule):      #UBCORE
 
 #                print "CURRENT BLOCK ID: "+str(blockIDcount)           #DYNAMIND                
                 self.notify("CURRENT BLOCK ID: "+str(blockIDcount))     #UBCORE
+
+                if blockIDcount == 50:
+                    self.notify("PROGRESSUPDATE||100")
+                if blockIDcount == 70:
+                    self.notify("PROGRESSUPDATE||20")
 
 #                block_attr = self.createBlockFace(city, x, y, cs, x_adj, y_adj, blockIDcount)   #DYNAMIND                
                 block_attr = self.createBlockFace(x, y, cs, x_adj, y_adj, blockIDcount)         #UBCORE
@@ -2072,13 +2069,13 @@ class Delinblocks(UBModule):      #UBCORE
     ########################################################
     #LINK WITH GUI                                         #
     ########################################################        
-    def getParameter(self, name):   #UBCORE FUNCTION
-        return self.__dict__.get(name)
-    
-    def setParameter(self, name, value):    #UBCORE FUNCTION
-        self.__dict__.__setitem__(name, value)
-        return True
-    
+    #def getParameter(self, name):   #UBCORE FUNCTION
+    #    return self.__dict__.get(name)
+    #
+    #def setParameter(self, name, value):    #UBCORE FUNCTION
+    #    self.__dict__.__setitem__(name, value)
+    #    return True
+    #
 #    def createInputDialog(self):    #DYNAMIND FUNCTION --------------------------
 #        form = activatedelinblocksGUI(self, QApplication.activeWindow())
 #        form.show()

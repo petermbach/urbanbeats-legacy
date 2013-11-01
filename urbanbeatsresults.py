@@ -41,7 +41,11 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.module = activesim
         #Add children to TreeWidget
         self.ui.ps_categoryTree.clear()        
-        
+
+        self.project_path = activesim.getActiveProjectPath()
+        self.gis_details = activesim.getGISExportDetails()
+        self.map_files = self.gis_details["Filename"]
+
         category1 = QtGui.QTreeWidgetItem()
         category1.setText(0, "BasicLinePlot")
         category2 = QtGui.QTreeWidgetItem()
@@ -64,7 +68,10 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         category10.setText(0, "")
         toplevitems = [category1, category2, category3, category4, category5, category6, category7, category8, category9]
         self.ui.ps_categoryTree.addTopLevelItems(toplevitems)
-        self.htmlscript0 = ubleafletjs.writeLeafletScript("off")
+
+
+        self.htmlscript0 = ubleafletjs.writeLeafletScript("off", self.project_path, self.map_files)
+
 
         #Data Prep for CATEGORY 1
         testcharttitle = "Random temperatures for different cities"

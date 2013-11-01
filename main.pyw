@@ -33,7 +33,7 @@ from urbanbeatsmaingui import Ui_urbanbeatsMain
 from startscreen import Ui_StartDialog
 import sys, time, os, random
 import webbrowser, subprocess
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui, QtCore, QtWebKit
 
 import md_delinblocksguic
 import md_urbplanbbguic
@@ -115,6 +115,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.out_projectfolder, QtCore.SIGNAL("clicked()"), self.openActiveProjectFolder)        
         
         #Simulation Menu
+        self.connect(self.ui.pc_narrative, QtCore.SIGNAL("clicked()"), self.callNarrativeGui)
         self.connect(self.ui.actionSet_Spatial_Delineation, QtCore.SIGNAL("triggered()"), self.callDelinblocksGui)
         self.connect(self.ui.pc_delinblocks, QtCore.SIGNAL("clicked()"), self.callDelinblocksGui)
         self.connect(self.ui.actionDefine_Urban_Planning_Rules, QtCore.SIGNAL("triggered()"), self.callUrbplanbbGui)
@@ -156,13 +157,13 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.simconfig_tabs, QtCore.SIGNAL("currentChanged(int)"), self.updateSummaryBox)
 
         self.connect(self.consoleobserver, QtCore.SIGNAL("updateConsole"), self.printc)
+
         #self.connect(self.progressbarobserver, QtCore.SIGNAL("updateProgress"), self.updateProgressBar)
 
 
     def createNewProjectInstance(self):
         newsimulation = ubc.UrbanBeatsSim()
-        newsimulation.registerObserver("Console", self.consoleobserver)
-        #newsimulation.registerObserver("Progress", self.progressobserver)
+        newsimulation.registerObserver(self.consoleobserver)
         return newsimulation
     
     ################################
@@ -183,7 +184,11 @@ class MainWindow(QtGui.QMainWindow):
         return self.__activeprojectpath
         
     def printc(self, textmessage):
-        self.ui.ubeatsConsole.appendPlainText(str(time.asctime())+" | "+str(textmessage))
+        if "PROGRESSUPDATE" in textmessage:
+            progress = textmessage.split('||')
+            self.updateProgressBar(int(progress[1]))
+        else:
+            self.ui.ubeatsConsole.appendPlainText(str(time.asctime())+" | "+str(textmessage))
         return True
         
     ################################
@@ -280,7 +285,7 @@ class MainWindow(QtGui.QMainWindow):
             self.simtab.setObjectName(_fromUtf8(str(tabnames[i])+"_data"))
             self.verticalLayout = QtGui.QVBoxLayout(self.simtab)
             self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"+str(tabnames[i])))            
-            self.simtab_summarybox = QtGui.QPlainTextEdit(self.simtab)
+            self.simtab_summarybox = QtWebKit.QWebView(self.simtab)
             self.simtab_summarybox.setObjectName("summaryBox"+str(i+1))
             self.verticalLayout.addWidget(self.simtab_summarybox)
             self.ui.simconfig_tabs.addTab(self.simtab, _fromUtf8(str(tabnames[i])))
@@ -571,20 +576,37 @@ class MainWindow(QtGui.QMainWindow):
     def updateSummaryBox(self, index):
         active_simulation = self.getActiveSimulationObject()        
         currentTabName = self.ui.simconfig_tabs.tabText(index) #self.ui.simconfig_tabs.currentIndex())
-        sum_box = self.ui.simconfig_tabs.findChild(QtGui.QPlainTextEdit, "summaryBox"+str(index))
-        sum_box.clear()
-        sum_box.appendPlainText("Summary of Inputs for Case: "+str(currentTabName))
-        sum_box.appendPlainText("=============================================")       
-        sum_box.appendPlainText("")
-        sum_box.appendPlainText(ubsum.getSummaryStringDelinBlocks(active_simulation))
-        sum_box.appendPlainText(ubsum.getSummaryStringUrbplanbb(active_simulation, index))
-        sum_box.verticalScrollBar().setValue(0)
+        sumhtml = """
+        <!DOCTYPE HTML>
+        <html>
+            <body>
+            <h4>Summary of Inputs for Case:"""+str(currentTabName)+"""</h4>
+            <hr />
+            <div id="mainsummary", style="font-family:Arial; font-size:10pt">
+            """+ubsum.getSummaryStringNarrative(active_simulation, index)+"""
+            """+ubsum.getSummaryStringDelinBlocks(active_simulation)+"""
+            <hr />
+            """+ubsum.getSummaryStringUrbplanbb(active_simulation, index)+"""
+            <hr /></div>
+            </body>
+        </html>
+        """
+        sum_box = self.ui.simconfig_tabs.findChild(QtWebKit.QWebView, "summaryBox"+str(index))
+        sum_box.setHtml(sumhtml)
         return True
     
     #Simulation Menu
+    def callNarrativeGui(self):
+        tabindex = self.ui.simconfig_tabs.currentIndex()
+        narrativeguic = ubdialogs.NarrativesGuiLaunch(self.getActiveSimulationObject(), tabindex)
+        self.connect(narrativeguic, QtCore.SIGNAL("updatedDetails"), lambda tabindex=tabindex: self.updateSummaryBox(tabindex))
+        narrativeguic.exec_()
+
     def callDelinblocksGui(self):
+        tabindex = self.ui.simconfig_tabs.currentIndex()
         delinblocksguic = md_delinblocksguic.DelinBlocksGUILaunch(self.getActiveSimulationObject())
-        delinblocksguic.exec_()        
+        self.connect(delinblocksguic, QtCore.SIGNAL("updatedDetails"), lambda tabindex=tabindex: self.updateSummaryBox(tabindex))
+        delinblocksguic.exec_()
         
     def callUrbplanbbGui(self):
         if self.__activeSimulationObject.getLengthOfModulesVector("urbplanbb") == 1:
@@ -679,8 +701,10 @@ class MainWindow(QtGui.QMainWindow):
         frees up memory for the next simulation.
         """
         active_simulation = self.getActiveSimulationObject()
+        active_simulation.reinitializeThread()
         active_simulation.resetAssets()
         active_simulation.updateSimulationCompletion(False)
+
         self.printc("----> Complete Simulation Assets Reset Performed!")
         self.printc("")
         return True
@@ -715,8 +739,10 @@ class MainWindow(QtGui.QMainWindow):
         # self.ui.progressBar.setValue(75)
         # #self.printc(str(active_simulation.returnAllAssets()))
         # self.printc("Exporting GIS Outputs...")
-        # active_simulation.exportGIS()
-        self.updateProgressBar(100)
+        #print active_simulation.returnAllAssets()
+
+        #active_simulation.exportGIS()
+        #self.updateProgressBar(100)
         # self.printc("End Of Simulation")
         # active_simulation.updateSimulationCompletion(True)
         return True
@@ -725,8 +751,9 @@ class ConsoleObserver(QtCore.QObject):
     def updateObserver(self, textmessage):
         self.emit(QtCore.SIGNAL("updateConsole"), textmessage)
 
-# class ProgressObserver(QtCore.QObject):
-#     def __init__(self):
+#class ProgressObserver(QtCore.QObject):
+#    def updateObserver(self, textmessage):
+#        self.emit(QtCore.SIGNAL("updateProgress"), textmessage)
 #         progress = 0
 #
 #     def updateObserver(self, value):

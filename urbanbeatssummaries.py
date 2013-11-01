@@ -26,11 +26,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 import md_delinblocks, md_urbplanbb
 import urbanbeatscore as ub
 
+def getSummaryStringNarrative(activesim, tabindex):
+    narrative = activesim.getNarrative(tabindex)
+    htmlstring = """<h3>"""+narrative[0]+"""</h3>
+    <p>"""+narrative[1]+"""</p>
+    <hr />
+    """
+    return htmlstring
+
 def getSummaryStringDelinBlocks(activesim):
     delinblocks = activesim.getModuleDelinblocks()
     yesnomatrix = ["No", "Yes"]        
     summarystring = ""
-    summarystring += "---------- DELINEATION OF BUILDING BLOCKS ---------- \n"
+    summarystring += "<strong>DELINEATION OF BUILDING BLOCKS </strong><br>"
     summarystring += "Block Size: "+str(delinblocks.getParameter("BlockSize"))+"\n\n"
     summarystring += "Include following data sets: \n"
     summarystring += "  >> Planner's Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_plan_map"))])+"\n"
@@ -51,7 +59,7 @@ def getSummaryStringDelinBlocks(activesim):
 def getSummaryStringUrbplanbb(activesim, index):
     urbplanbb = activesim.getModuleUrbplanbb(index)
     summarystring = ""
-    summarystring += "---------- URBAN PLANNING RULES ---------- \n"
+    summarystring += "<strong> URBAN PLANNING RULES</strong><br>"
     summarystring += "General Planning Rules: \n"
     summarystring += "  >> City Type: "+str()+"\n"
     summarystring += "Residential Planning Rules: \n"

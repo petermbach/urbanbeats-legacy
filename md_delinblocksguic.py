@@ -472,3 +472,5 @@ class DelinBlocksGUILaunch(QtGui.QDialog):
         
         self.module.setParameter("locationLong", float(self.ui.cbdlong_box.text()))
         self.module.setParameter("locationLat", float(self.ui.cbdlat_box.text()))
+
+        self.emit(QtCore.SIGNAL("updatedDetails"))

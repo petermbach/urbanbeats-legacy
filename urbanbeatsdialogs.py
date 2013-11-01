@@ -35,6 +35,7 @@ from gisexportoptionsdialog import Ui_GISExportDialog
 from gisexportadvanceddialog import Ui_GISAdvancedDialog
 from reportoptionsdialog import Ui_ReportOptionsDialog
 from selectdatadialog import Ui_SelectData
+from narrativegui import Ui_NarrativeDialog
 
 class NewProjectSetup(QtGui.QDialog):
     def __init__(self, msim, readwrite, parent = None):
@@ -145,17 +146,17 @@ class NewProjectSetup(QtGui.QDialog):
         
     def save_values(self):
         #compile parameter list             
-        self.module.setParameter("name", self.ui.name_box.text())
+        self.module.setParameter("name", str(self.ui.name_box.text()))
         self.module.setParameter("date", 0)
-        self.module.setParameter("region", self.ui.city_box.text())
-        self.module.setParameter("state", self.ui.state_box.text())
-        self.module.setParameter("country", self.ui.country_box.text())
-        self.module.setParameter("modeller", self.ui.modellername_box.text())
-        self.module.setParameter("affilitation", self.ui.affiliation_box.text())
-        self.module.setParameter("otherpersons", self.ui.othermodellers_box.text())
-        self.module.setParameter("synopsis", self.ui.synopsis_box.toPlainText())
+        self.module.setParameter("region", str(self.ui.city_box.text()))
+        self.module.setParameter("state", str(self.ui.state_box.text()))
+        self.module.setParameter("country", str(self.ui.country_box.text()))
+        self.module.setParameter("modeller", str(self.ui.modellername_box.text()))
+        self.module.setParameter("affilitation", str(self.ui.affiliation_box.text()))
+        self.module.setParameter("otherpersons", str(self.ui.othermodellers_box.text()))
+        self.module.setParameter("synopsis", str(self.ui.synopsis_box.toPlainText()))
         
-        self.module.setParameter("projectpath", self.ui.projectpath_box.text())
+        self.module.setParameter("projectpath", str(self.ui.projectpath_box.text()))
         self.module.setParameter("projectpathsavedata", int(self.ui.projectpath_check.isChecked()))
 
         simtype_matrix = ["S", "D", "B"]
@@ -187,6 +188,28 @@ class NewProjectSetup(QtGui.QDialog):
         
         self.emit(QtCore.SIGNAL("newProjectSetupComplete"))
 
+class NarrativesGuiLaunch(QtGui.QDialog):
+    def __init__(self, activesim, tabindex, parent = None):
+        QtGui.QDialog.__init__(self, parent)
+        self.ui = Ui_NarrativeDialog()
+        self.ui.setupUi(self)
+
+        self.module = UrbanBeatsSim
+        self.module = activesim
+
+        self.tabindex = tabindex
+
+        self.ui.heading_box.setText(self.module.getNarrative(self.tabindex)[0])
+        self.ui.narrative_box.setPlainText(self.module.getNarrative(self.tabindex)[1])
+
+        self.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
+
+    def save_values(self):
+        narrative = []
+        narrative.append(self.ui.heading_box.text())
+        narrative.append(self.ui.narrative_box.toPlainText())
+        self.module.setNarrative(self.tabindex, narrative)
+        self.emit(QtCore.SIGNAL("updatedDetails"))
 
 class AboutDialogLaunch(QtGui.QDialog):
     def __init__(self, parent = None):

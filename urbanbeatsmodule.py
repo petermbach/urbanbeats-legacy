@@ -31,17 +31,20 @@ class UBModule(object):
     abstract class contains observer pattern, some other key variables."""
     def __init__(self):
         self.__observers = []
+        self.__parameters = {}      #Holds all parameter names and type
 
-    def attach(self, observer):
-        if not observer in self.__observers:
-            self.__observers.append(observer)
+    def attach(self, observers):
+        for i in observers:
+            if not i in self.__observers:
+                self.__observers.append(i)
         return True
 
-    def detach(self, observer):
-        try:
-            self.__observers.remove(observer)
-        except ValueError:
-            pass
+    def detach(self, observers):
+        for i in observers:
+            try:
+                self.__observers.remove(i)
+            except ValueError:
+                pass
         return True
 
     def notify(self, updateMessage):
@@ -49,3 +52,17 @@ class UBModule(object):
 
     def notifyProgress(self, value):
         self.__observers[1].updateObserver(value)
+
+    def createParameter(self, name, type, descript):
+        self.__parameters[name] = [type, descript]
+
+    def getParameter(self, name):   #UBCORE FUNCTION
+        return self.__dict__.get(name)
+
+    def setParameter(self, name, value):    #UBCORE FUNCTION
+        self.__dict__.__setitem__(name, value)
+
+#KEYWORDS FOR VARIABLES (THIS IS HERE TO MAINTAIN COMPATIBILITY WITH DYNAMIND SYNTAX)
+DOUBLE = 'DOUBLE'
+BOOL = 'BOOL'
+STRING = 'STRING'

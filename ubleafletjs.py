@@ -28,12 +28,12 @@ __author__ = 'Peter M Bach'
 
 import os
 
-def writeLeafletScript(viewmode):
+def writeLeafletScript(viewmode, filepath, filename):
     """Creates the HTML code for the leafletjs map, returns a string object with html code"""
 
     htmlscript = ""
     htmlscript += writeLeafletHeader(viewmode)
-    htmlscript += writeLeafletBody(viewmode)
+    htmlscript += writeLeafletBody(viewmode, filepath, filename)
     htmlscript += """</html>"""
 
     return htmlscript
@@ -41,7 +41,6 @@ def writeLeafletScript(viewmode):
 
 def writeLeafletHeader(viewmode):
     """Adds the <head> </head> bracket for the leaflet code"""
-
     if viewmode == "on":
         linkrel = """<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />"""
     else:
@@ -60,8 +59,9 @@ def writeLeafletHeader(viewmode):
 
     return htmlscript
 
-def writeLeafletBody(viewmode):
+def writeLeafletBody(viewmode, filepath, filename):
     """Writes the main body of the leaflet map"""
+    #L.geoJson('"""+filepath+filename+"_Blocks.geojson"+"""').addTo(map);
 
     if viewmode == "on":
         linkrel = """<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>"""

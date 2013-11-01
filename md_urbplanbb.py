@@ -22,14 +22,16 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
-from urbplanbbguic import *
+from md_urbplanbbguic import *
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from pydynamind import *
+#from pydynamind import *
 import random, math
+import urbanbeatsdatatypes as ubdata    #UBCORE
+from urbanbeatsmodule import *      #UBCORE
 import numpy as np
 
-class Urbplanbb(Module):
+class Urbplanbb(UBModule):
     """Determines urban form of grid of blocks for model city by processing the
     individual land zoning classes along with the planning map, locality map and
     population input with local planning regulations/rules/geometries.
@@ -67,8 +69,11 @@ class Urbplanbb(Module):
         @author Peter M Bach
         """
 
-    def __init__(self):
-        Module.__init__(self)
+    def __init__(self, activesim, curstate, tabindex):
+        UBModule.__init__(self)
+        self.cycletype = curstate       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
+        self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
+        self.activesim = activesim      #UBCORE
         #inputs from previous modules and output vector data to next module
         
         ############################
@@ -480,11 +485,8 @@ class Urbplanbb(Module):
         #self.BLOCKIDtoUUID = {}         #DYNAMIND
         #self.prevBLOCKIDtoUUID = {}     #DYNAMIND
 
-    def printc(self, message):      #UBCORE FUNCTION
-        self.activesim.console.appendPlainText(str(time.asctime())+" | "+str(message))
-        return True
-
     def run(self):
+        self.notify("Start Urban Planning!")        #UBCORE
         #random.seed()   #Random seed has already been placed in delinblocks
         #city = self.getData("City")             #DYNAMIND - obtain the City's datastream
         #self.initBLOCKIDtoUUID(city)            #DYNAMIND - initialize the dictionary that tracks Block ID and UUID
@@ -503,7 +505,18 @@ class Urbplanbb(Module):
         map_h = map_attr.getAttribute("HeightBlocks").getDouble()       #num of blocks Tall
         input_res = map_attr.getAttribute("InputReso").getDouble()      #Resolution of input area
         #----------------- DYNAMIND ------------------
-        
+
+        #UBCORE --------------------------------------->
+        map_attr = self.activesim.getAssetWithName("MapAttributes")
+        #Get all the relevant information
+        blocks_num = map_attr.getAttribute("NumBlocks")
+        block_size = map_attr.getAttribute("BlockSize")     #size of blocks
+        Atblock = block_size * block_size                               #Total area of one block
+        map_w = map_attr.getAttribute("WidthBlocks")        #num of blocks Wide
+        map_h = map_attr.getAttribute("HeightBlocks")       #num of blocks Tall
+        input_res = map_attr.getAttribute("InputReso")      #Resolution of input area
+        #----------------- UBCORE ----------------------------
+
         print "Begin Urban Planning!"
         
         #Make Adjustments to sampling ranges for specific parameters
@@ -514,9 +527,10 @@ class Urbplanbb(Module):
         nres_fpw = self.adjustSampleRange(self.nres_fpwmin, self.nres_fpwmax, self.nres_fpmed)
         nres_nsw = self.adjustSampleRange(self.nres_nswmin, self.nres_nswmax, self.nres_nsmed)
         lane_w = self.adjustSampleRange(self.lane_wmin, self.lane_wmax, self.lane_wmed)
-        
-        if int(prev_map_attr.getAttribute("Impl_cycle").getDouble()) == 0:    #Is this implementation cycle?
-            self.initPrevBLOCKIDtoUUID(city)        #DYNAMIND - initialize the dictionary that tracks Previous Block IDs and UUID
+
+        #UBCORE STUFF - PREVIOUS MAP!
+        #if int(prev_map_attr.getAttribute("Impl_cycle").getDouble()) == 0:    #Is this implementation cycle?
+        #    self.initPrevBLOCKIDtoUUID(city)        #DYNAMIND - initialize the dictionary that tracks Previous Block IDs and UUID
         
         #LOOP ACROSS BLOCKS
         for i in range(int(blocks_num)):
@@ -527,12 +541,14 @@ class Urbplanbb(Module):
             blk_avspace = 0     #Total available space for decentralised water infrastructure
             
             currentID = i+1             #GRAB BLOCK INFORMATION
-            currentAttList = self.getBlockUUID(currentID, city)         #DYNAMIND - assign block information to variable currentAttList
-            
+            #currentAttList = self.getBlockUUID(currentID, city)         #DYNAMIND - assign block information to variable currentAttList
+            currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
+
             print "Now Developing BlockID", currentID
             
             #Skip Condition 1: Block is not active
-            if currentAttList.getAttribute("Status").getDouble() == 0:
+            #if currentAttList.getAttribute("Status").getDouble() == 0:      #DYNAMIND
+            if currentAttList.getAttribute("Status") == 0:
                 #print "BlockID"+str(currentID)+" is not active, moving to next ID"
                 currentAttList.addAttribute("Blk_TIA", -9999)
                 currentAttList.addAttribute("Blk_EIF", -9999)
