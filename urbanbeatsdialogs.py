@@ -504,8 +504,7 @@ class DataSelectGUILaunch(QtGui.QDialog):
         
     def save_values(self):
         self.updateActiveDataItems()
-        self.module.setCycleDataSet(self.__curstate, self.__tabindex, self.__activedataitems)        
-                        
+        self.module.setCycleDataSet(self.__curstate, self.__tabindex, self.__activedataitems)
         return True
 
 

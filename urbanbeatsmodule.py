@@ -62,6 +62,9 @@ class UBModule(object):
     def setParameter(self, name, value):    #UBCORE FUNCTION
         self.__dict__.__setitem__(name, value)
 
+    def getModuleParameterList(self):
+        return self.__parameters
+
 #KEYWORDS FOR VARIABLES (THIS IS HERE TO MAINTAIN COMPATIBILITY WITH DYNAMIND SYNTAX)
 DOUBLE = 'DOUBLE'
 BOOL = 'BOOL'

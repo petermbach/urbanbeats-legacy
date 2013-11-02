@@ -400,6 +400,9 @@ class UrbanBeatsSim(threading.Thread):
         except IndexError:
             return ["none", "none"]
 
+    def getAllNarratives(self):
+        return self.__narratives
+
     def getProjectDetails(self):
         return self.__projectinfo
 
@@ -467,7 +470,13 @@ class UrbanBeatsSim(threading.Thread):
                 else:
                     simmodule[i].setParameter(key, type(simmodule[i].getParameter(key))(paramdict[key][i]))
         return True            
-            
+
+    def getModuleTechplacement(self, index):
+        if index == 9999:
+            return self.__techplacement
+        else:
+            return self.__techplacement[index]
+
     def getParameterSetTechplacement(self, index):
         if len(self.__params_techplacement) == 0:
             return None        
@@ -481,6 +490,12 @@ class UrbanBeatsSim(threading.Thread):
         if len(self.__params_techimplement) == 0:
             return None        
         return self.__params_techimplement[index]
+
+    def getModuleTechimplement(self, index):
+        if index == 9999:
+            return self.__techimplement
+        else:
+            return self.__techimplement[index]
 
     def updateTechimplFromDict(self, paramdict):
         pass
