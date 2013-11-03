@@ -115,7 +115,7 @@ class Delinblocks(UBModule):      #UBCORE
         #General Simulation Parameters
         self.createParameter("BlockSize", DOUBLE, "")
         self.createParameter("blocksize_auto", BOOL, "")
-        self.BlockSize = 400                    #size of the blocks (in m)
+        self.BlockSize = float(400)                    #size of the blocks (in m)
         self.blocksize_auto = 0             #should the size be chosen automatically?
 
         self.createParameter("popdatatype", STRING, "")         #DYNAMIND
@@ -184,7 +184,7 @@ class Delinblocks(UBModule):      #UBCORE
         self.vn4Patches = 0
         self.flow_method = "D8"                 #three options: DI = D-infinity (Tarboton), D8 = D8 (O'Callaghan & Mark) and MS = Divergent (Freeman)
         self.demsmooth_choose = 0
-        self.demsmooth_passes = 1
+        self.demsmooth_passes = float(1)
         
         #Regional Geography
         self.createParameter("considerCBD", BOOL, "")
@@ -211,16 +211,16 @@ class Delinblocks(UBModule):      #UBCORE
         #self.LakesFilename = "C:/UrbanBEATSv1CaseStudies/Lakes.shp"
         #self.obtain_flowbasins = "D"                                    #F = file, D = delineate
         
-        self.createParameter("xllcorner", DOUBLE, "")
-        self.createParameter("yllcorner", DOUBLE, "")
-        self.xllcorner = 313420.7405    #Yarra Estuary Limits
-        self.yllcorner = 5807211.478    #spatial extents of the input map
+        #self.createParameter("xllcorner", DOUBLE, "")
+        #self.createParameter("yllcorner", DOUBLE, "")
+        #self.xllcorner = float(313420.7405)    #Yarra Estuary Limits
+        #self.yllcorner = float(5807211.478)    #spatial extents of the input map
         
         #LATER ON! FOR LATER CYCLES - CHANGING THIS VARIABLE WILL ALLOW SKIPPING OF FLOWPATHS AND BASIN DELINATION!
         self.obtain_flowbasins = "D"                                    #F = file, D = delineate
         
-        self.xllcorner = 0    #Obtained from the loaded raster data (elevation) upon run-time
-        self.yllcorner = 0    #spatial extents of the input map
+        self.xllcorner = float(0)    #Obtained from the loaded raster data (elevation) upon run-time
+        self.yllcorner = float(0)    #spatial extents of the input map
         
         #-----------------------------------------------------------------------
         #END OF INPUT PARAMETER LIST
@@ -668,12 +668,7 @@ class Delinblocks(UBModule):      #UBCORE
             for x in range(widthnew):           #inner loop scans through columns
 
 #                print "CURRENT BLOCK ID: "+str(blockIDcount)           #DYNAMIND                
-                self.notify("CURRENT BLOCK ID: "+str(blockIDcount))     #UBCORE
-
-                if blockIDcount == 50:
-                    self.notify("PROGRESSUPDATE||100")
-                if blockIDcount == 70:
-                    self.notify("PROGRESSUPDATE||20")
+                self.notify("CURRENT BLOCK ID: "+str(blockIDcount))     #UBCORE)
 
 #                block_attr = self.createBlockFace(city, x, y, cs, x_adj, y_adj, blockIDcount)   #DYNAMIND                
                 block_attr = self.createBlockFace(x, y, cs, x_adj, y_adj, blockIDcount)         #UBCORE
@@ -2055,15 +2050,15 @@ class Delinblocks(UBModule):      #UBCORE
 #        return basinID  #DYNAMIND VERSION ------------------------------------------------------------------------------------
     
     def saveFlowBasinsToFile(self, numblocks, hash_table):
-        f = open("simulationflowbasins.txt", 'w')
-    
-        f.close()
+        #f = open("simulationflowbasins.txt", 'w')
+        #
+        #f.close()
         return True
     
     def retrieveFlowBasinsFromFile(self, filename, numblocks):
-        f = open(filename, 'r')
-        
-        f.close()        
+        #f = open(filename, 'r')
+        #
+        #f.close()
         return True
     
     ########################################################

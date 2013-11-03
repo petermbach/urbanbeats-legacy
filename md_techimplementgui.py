@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'techimplementgui.ui'
 #
-# Created: Sun Aug 05 14:56:23 2012
+# Created: Wed Jun 26 13:04:13 2013
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,7 +48,7 @@ class Ui_TechImplement_Dialog(object):
         self.label.setGeometry(QtCore.QRect(0, 0, 50, 50))
         self.label.setMinimumSize(QtCore.QSize(50, 50))
         self.label.setText(_fromUtf8(""))
-        self.label.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../../../D4W-logoBPM.png")))
+        self.label.setPixmap(QtGui.QPixmap(_fromUtf8(":/general/ublogo50.png")))
         self.label.setObjectName(_fromUtf8("label"))
         self.line = QtGui.QFrame(self.techimplement_title)
         self.line.setGeometry(QtCore.QRect(50, 49, 703, 3))
@@ -330,7 +330,7 @@ class Ui_TechImplement_Dialog(object):
         self.implement_sidebar_img = QtGui.QLabel(self.implement_sidebar)
         self.implement_sidebar_img.setMinimumSize(QtCore.QSize(0, 145))
         self.implement_sidebar_img.setText(_fromUtf8(""))
-        self.implement_sidebar_img.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../../D4W-wsudimplement.png")))
+        self.implement_sidebar_img.setPixmap(QtGui.QPixmap(_fromUtf8(":/techplacement/D4W-wsudimplement.png")))
         self.implement_sidebar_img.setObjectName(_fromUtf8("implement_sidebar_img"))
         self.verticalLayout_3.addWidget(self.implement_sidebar_img)
         self.implement_sidebar_descr = QtGui.QTextBrowser(self.implement_sidebar)
@@ -414,7 +414,7 @@ class Ui_TechImplement_Dialog(object):
         self.implement_sidebar_img_2 = QtGui.QLabel(self.implement_sidebar_2)
         self.implement_sidebar_img_2.setMinimumSize(QtCore.QSize(0, 145))
         self.implement_sidebar_img_2.setText(_fromUtf8(""))
-        self.implement_sidebar_img_2.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../../D4W-wsudimplement.png")))
+        self.implement_sidebar_img_2.setPixmap(QtGui.QPixmap(_fromUtf8(":/techplacement/D4W-wsudimplement.png")))
         self.implement_sidebar_img_2.setObjectName(_fromUtf8("implement_sidebar_img_2"))
         self.verticalLayout_4.addWidget(self.implement_sidebar_img_2)
         self.implement_sidebar_descr_2 = QtGui.QTextBrowser(self.implement_sidebar_2)
@@ -439,7 +439,7 @@ class Ui_TechImplement_Dialog(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS.techimplement - v0.80 - (C) 2012 Peter M. Bach </span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS v1.0 - (C) 2013 Peter M. Bach </span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.remarks.setObjectName(_fromUtf8("remarks"))
         self.horizontalLayout.addWidget(self.remarks)
         self.buttonBox = QtGui.QDialogButtonBox(self.techimplement_footer)
@@ -467,3 +467,4 @@ class Ui_TechImplement_Dialog(object):
         self.techimplement_input.setTabText(self.techimplement_input.indexOf(self.DesignCriteria), QtGui.QApplication.translate("TechImplement_Dialog", "Implementation Rules", None, QtGui.QApplication.UnicodeUTF8))
         self.techimplement_input.setTabText(self.techimplement_input.indexOf(self.tab), QtGui.QApplication.translate("TechImplement_Dialog", "Drivers for Implementation", None, QtGui.QApplication.UnicodeUTF8))
 
+import dialogimg_rc

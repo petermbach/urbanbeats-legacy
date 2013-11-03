@@ -144,7 +144,6 @@ def loadSimFile(activesim, filename):
     activesim.initializeSimulationCore()
     activesim.setActiveProjectPath(projectinfo["projectpath"])
     activesim.setFullFileName(filename)
-
     #Restore Data Archive
     f = archive.extractfile("dataarch.txt")     #Category, then read lines until '---eol---'
     dataarray = []
@@ -227,6 +226,7 @@ def loadSimFile(activesim, filename):
         data = lines.split("*||*")
         moduledata[data[0]] = data[1]
     for keys in moduledata.keys():
+        print keys, moduledata[keys], type(delinblocksmodule.getParameter(keys))
         if type(delinblocksmodule.getParameterType(keys)) == 'BOOL':
             delinblocksmodule.setParameter(keys, type(delinblocksmodule.getParameter(keys))(int(moduledata[keys])))
         else:

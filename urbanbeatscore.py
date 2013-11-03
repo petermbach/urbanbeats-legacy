@@ -510,6 +510,7 @@ class UrbanBeatsSim(threading.Thread):
         """Erases all assets, leaves an empty dictionary, carried out when resetting the simulation"""
         self.__assets = {}
         gc.collect()
+        self.updateObservers("PROGRESSUPDATE||0")
         return True
 
     def returnAllAssets(self):
@@ -523,19 +524,27 @@ class UrbanBeatsSim(threading.Thread):
 
     def run(self):
         self.updateObservers("Starting Simulation")
-        self.updateObservers("PROGRESSUPDATE||70")
 
+        #-------------------- BASIC SIMULATION STRUCTURE BEGINS HERE -----------------
+
+        self.updateObservers("PROGRESSUPDATE||10")
         delinblocks = self.getModuleDelinblocks()
         delinblocks.attach(self.__observers)   #Register the observer
         delinblocks.run()
-
-        print self.returnAllAssets()
-
         delinblocks.detach(self.__observers)   #Deregister the observer after run completion
+        self.updateObservers("PROGRESSUPDATE||30")
 
+        urbplanbb = self.getModuleUrbplanbb(0)
+        urbplanbb.attach(self.__observers)  #Register the observer
+        urbplanbb.run()
+        urbplanbb.detach(self.__observers)
+        self.updateObservers("PROGRESSUPDATE||70")
 
-        self.updateObservers("PROGRESSUPDATE||90")
         self.exportGIS()
+        self.updateObservers("PROGRESSUPDATE||90")
         #self.exportGIS()
+
+        #----------------- BASIC SIMULATION STRUCTURE ENS HERE ------------------
+        self.updateObservers("End of Simulation")
         self.updateObservers("PROGRESSUPDATE||100")
         #END OF SIMULATION

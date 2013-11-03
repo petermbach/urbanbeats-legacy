@@ -5,7 +5,7 @@
 @version 1.0
 @section LICENSE
 
-This file is part of UrbanBEATS (www.urbanbeatsmodel.com), DynaMind
+This file is part of UrbanBEATS (www.urbanbeatsmodel.com)
 Copyright (C) 2011, 2012, 2013  Peter M Bach
 
 This program is free software; you can redistribute it and/or
@@ -80,19 +80,19 @@ class Urbplanbb(UBModule):
         #GENERAL RULES PARAMETERS 
         ############################
         #--> General City Structure
-        #self.createParameter("cityarchetype", STRING, "")       #DYNAMIND
-        #self.createParameter("citysprawl", DOUBLE, "")          #DYNAMIND
-        #self.createParameter("locality_mun_trans", BOOL, "")    #DYNAMIND
+        self.createParameter("cityarchetype", STRING, "")
+        self.createParameter("citysprawl", DOUBLE, "")
+        self.createParameter("locality_mun_trans", BOOL, "")
         self.cityarchetype = "MC"       #MC = monocentric, PC = polycentric
         self.citysprawl = 50.0          #km - approximate urban sprawl radius from main CBD
-        self.locality_mun_trans = False #Locality Map available for use? Yes/No
+        self.locality_mun_trans = 0 #Locality Map available for use? Yes/No
         
         #--> Decision Variables for Block Dynamics
-        #self.createParameter("lucredev", BOOL, "")              #DYNAMIND
-        #self.createParameter("popredev", BOOL, "")              #DYNAMIND
-        #self.createParameter("lucredev_thresh", DOUBLE, "")     #DYNAMIND
-        #self.createParameter("popredev_thresh", DOUBLE, "")     #DYNAMIND
-        #self.createParameter("noredev", BOOL, "")               #DYNAMIND
+        self.createParameter("lucredev", BOOL, "")
+        self.createParameter("popredev", BOOL, "")
+        self.createParameter("lucredev_thresh", DOUBLE, "")
+        self.createParameter("popredev_thresh", DOUBLE, "")
+        self.createParameter("noredev", BOOL, "")
         self.lucredev = False
         self.popredev = False
         self.lucredev_thresh = 50       #% threshold required for redevelopment to take place
@@ -104,32 +104,32 @@ class Urbplanbb(UBModule):
         ############################
         #(includes all residential land uses of varying density)
         #--> Planning Parameters
-        #self.createParameter("occup_avg", DOUBLE, "")
-        #self.createParameter("occup_max", DOUBLE, "")
-        #self.createParameter("person_space", DOUBLE, "")
-        #self.createParameter("extra_comm_area", DOUBLE, "")
-        #self.createParameter("setback_f_min", DOUBLE, "")
-        #self.createParameter("setback_f_max", DOUBLE, "")
-        #self.createParameter("setback_s_min", DOUBLE, "")
-        #self.createParameter("setback_s_max", DOUBLE, "")
-        #self.createParameter("setback_f_med", BOOL, "")
-        #self.createParameter("setback_s_med", BOOL, "")
-        #self.createParameter("carports_max", DOUBLE, "")
-        #self.createParameter("garage_incl", BOOL, "")
-        #self.createParameter("w_driveway_min", DOUBLE, "")
-        #self.createParameter("patio_area_max", DOUBLE, "")
-        #self.createParameter("patio_covered", BOOL, "")
-        #self.createParameter("floor_num_max", DOUBLE, "")
-        #self.createParameter("occup_flat_avg", DOUBLE, "")
-        #self.createParameter("commspace_indoor", DOUBLE, "")
-        #self.createParameter("commspace_outdoor", DOUBLE, "")
-        #self.createParameter("flat_area_max", DOUBLE, "")
-        #self.createParameter("floor_num_HDRmax", DOUBLE, "")
-        #self.createParameter("setback_HDR_avg", DOUBLE, "")
-        #self.createParameter("parking_HDR", STRING, "")
-        #self.createParameter("park_OSR", BOOL, "")
-        #self.createParameter("roof_connected", STRING, "")
-        #self.createParameter("imperv_prop_dced", DOUBLE, "")
+        self.createParameter("occup_avg", DOUBLE, "")
+        self.createParameter("occup_max", DOUBLE, "")
+        self.createParameter("person_space", DOUBLE, "")
+        self.createParameter("extra_comm_area", DOUBLE, "")
+        self.createParameter("setback_f_min", DOUBLE, "")
+        self.createParameter("setback_f_max", DOUBLE, "")
+        self.createParameter("setback_s_min", DOUBLE, "")
+        self.createParameter("setback_s_max", DOUBLE, "")
+        self.createParameter("setback_f_med", BOOL, "")
+        self.createParameter("setback_s_med", BOOL, "")
+        self.createParameter("carports_max", DOUBLE, "")
+        self.createParameter("garage_incl", BOOL, "")
+        self.createParameter("w_driveway_min", DOUBLE, "")
+        self.createParameter("patio_area_max", DOUBLE, "")
+        self.createParameter("patio_covered", BOOL, "")
+        self.createParameter("floor_num_max", DOUBLE, "")
+        self.createParameter("occup_flat_avg", DOUBLE, "")
+        self.createParameter("commspace_indoor", DOUBLE, "")
+        self.createParameter("commspace_outdoor", DOUBLE, "")
+        self.createParameter("flat_area_max", DOUBLE, "")
+        self.createParameter("floor_num_HDRmax", DOUBLE, "")
+        self.createParameter("setback_HDR_avg", DOUBLE, "")
+        self.createParameter("parking_HDR", STRING, "")
+        self.createParameter("park_OSR", BOOL, "")
+        self.createParameter("roof_connected", STRING, "")
+        self.createParameter("imperv_prop_dced", DOUBLE, "")
         self.occup_avg = 2.67                   #average occupancy (house)
         self.occup_max = 5                      #maximum occupancy (house)
         self.person_space = 84                  #space per person [sqm]
@@ -193,29 +193,29 @@ class Urbplanbb(UBModule):
         #############################
         #(includes Trade, Office/Rescom, Light Industry, Heavy Industry, Education, Health & Comm, Serv & Util)
         #--> Commercial & Industrial Zones :: Employment Details
-        #self.createParameter("employment_mode", STRING, "")
-        #self.createParameter("ind_edist", DOUBLE, "")
-        #self.createParameter("com_edist", DOUBLE, "")
-        #self.createParameter("orc_edist", DOUBLE, "")
-        #self.createParameter("employment_total", DOUBLE, "")
-        #self.createParameter("ind_subd_min", DOUBLE, "")
-        #self.createParameter("ind_subd_max", DOUBLE, "")
-        #self.createParameter("com_subd_min", DOUBLE, "")
-        #self.createParameter("com_subd_max", DOUBLE, "")
-        #self.createParameter("nres_minfsetback", DOUBLE, "")
-        #self.createParameter("nres_maxfloors", DOUBLE, "")
-        #self.createParameter("nres_setback_auto", BOOL, "")
-        #self.createParameter("nres_nolimit_floors", BOOL, "")
-        #self.createParameter("maxplotratio_ind", DOUBLE, "")
-        #self.createParameter("maxplotratio_com", DOUBLE, "")
-        #self.createParameter("carpark_Wmin", DOUBLE, "")
-        #self.createParameter("carpark_Dmin", DOUBLE, "")
-        #self.createParameter("carpark_imp", DOUBLE, "")
-        #self.createParameter("carpark_ind", DOUBLE, "")
-        #self.createParameter("carpark_com", DOUBLE, "")
-        #self.createParameter("loadingbay_A", DOUBLE, "")
-        #self.createParameter("lscape_hsbalance", DOUBLE, "")
-        #self.createParameter("lscape_impdced", DOUBLE, "")
+        self.createParameter("employment_mode", STRING, "")
+        self.createParameter("ind_edist", DOUBLE, "")
+        self.createParameter("com_edist", DOUBLE, "")
+        self.createParameter("orc_edist", DOUBLE, "")
+        self.createParameter("employment_total", DOUBLE, "")
+        self.createParameter("ind_subd_min", DOUBLE, "")
+        self.createParameter("ind_subd_max", DOUBLE, "")
+        self.createParameter("com_subd_min", DOUBLE, "")
+        self.createParameter("com_subd_max", DOUBLE, "")
+        self.createParameter("nres_minfsetback", DOUBLE, "")
+        self.createParameter("nres_maxfloors", DOUBLE, "")
+        self.createParameter("nres_setback_auto", BOOL, "")
+        self.createParameter("nres_nolimit_floors", BOOL, "")
+        self.createParameter("maxplotratio_ind", DOUBLE, "")
+        self.createParameter("maxplotratio_com", DOUBLE, "")
+        self.createParameter("carpark_Wmin", DOUBLE, "")
+        self.createParameter("carpark_Dmin", DOUBLE, "")
+        self.createParameter("carpark_imp", DOUBLE, "")
+        self.createParameter("carpark_ind", DOUBLE, "")
+        self.createParameter("carpark_com", DOUBLE, "")
+        self.createParameter("loadingbay_A", DOUBLE, "")
+        self.createParameter("lscape_hsbalance", DOUBLE, "")
+        self.createParameter("lscape_impdced", DOUBLE, "")
         self.employment_mode = "D"      #I = input, D = distribution, S = single
         self.ind_edist = 100                    #Employment Mode D: suggests the industrial employment distribution in employees/ha
         self.com_edist = 100                    #Employment Mode D: suggests the commercial employment distribution in employees/ha
@@ -247,22 +247,22 @@ class Urbplanbb(UBModule):
         self.nonres_far["ORC"] = 110 
         
         #--> Civic Facilities
-        #self.createParameter("mun_explicit", BOOL, "")
-        #self.createParameter("edu_school", BOOL, "")
-        #self.createParameter("edu_uni", BOOL, "")
-        #self.createParameter("edu_lib", BOOL, "")
-        #self.createParameter("civ_hospital", BOOL, "")
-        #self.createParameter("civ_clinic", BOOL, "")
-        #self.createParameter("civ_police", BOOL, "")
-        #self.createParameter("civ_fire", BOOL, "")
-        #self.createParameter("civ_jail", BOOL, "")
-        #self.createParameter("civ_worship", BOOL, "")
-        #self.createParameter("civ_leisure", BOOL, "")
-        #self.createParameter("civ_museum", BOOL, "")
-        #self.createParameter("civ_zoo", BOOL, "")
-        #self.createParameter("civ_stadium", BOOL, "")
-        #self.createParameter("civ_racing", BOOL, "")
-        #self.createParameter("civ_cemetery", BOOL, "")
+        self.createParameter("mun_explicit", BOOL, "")
+        self.createParameter("edu_school", BOOL, "")
+        self.createParameter("edu_uni", BOOL, "")
+        self.createParameter("edu_lib", BOOL, "")
+        self.createParameter("civ_hospital", BOOL, "")
+        self.createParameter("civ_clinic", BOOL, "")
+        self.createParameter("civ_police", BOOL, "")
+        self.createParameter("civ_fire", BOOL, "")
+        self.createParameter("civ_jail", BOOL, "")
+        self.createParameter("civ_worship", BOOL, "")
+        self.createParameter("civ_leisure", BOOL, "")
+        self.createParameter("civ_museum", BOOL, "")
+        self.createParameter("civ_zoo", BOOL, "")
+        self.createParameter("civ_stadium", BOOL, "")
+        self.createParameter("civ_racing", BOOL, "")
+        self.createParameter("civ_cemetery", BOOL, "")
         self.mun_explicit = False
         self.edu_school = False
         self.edu_uni = False
@@ -285,22 +285,22 @@ class Urbplanbb(UBModule):
         ############################
         #(includes Roads, Transport)
         #--> Residential Pedestrian
-        #self.createParameter("res_fpwmin", DOUBLE, "")
-        #self.createParameter("res_nswmin", DOUBLE, "")
-        #self.createParameter("res_fpwmax", DOUBLE, "")
-        #self.createParameter("res_nswmax", DOUBLE, "")
-        #self.createParameter("nres_fpwmin", DOUBLE, "")
-        #self.createParameter("nres_nswmin", DOUBLE, "")
-        #self.createParameter("nres_fpwmax", DOUBLE, "")
-        #self.createParameter("nres_nswmax", DOUBLE, "")
-        #self.createParameter("res_fpmed", BOOL, "")
-        #self.createParameter("res_nsmed", BOOL, "")
-        #self.createParameter("nres_fpmed", BOOL, "")
-        #self.createParameter("nres_nsmed", BOOL, "")
-        #self.createParameter("lane_wmin", DOUBLE, "")
-        #self.createParameter("lane_wmax", DOUBLE, "")
-        #self.createParameter("lane_crossfall", DOUBLE, "")
-        #self.createParameter("lane_wmed", BOOL, "")
+        self.createParameter("res_fpwmin", DOUBLE, "")
+        self.createParameter("res_nswmin", DOUBLE, "")
+        self.createParameter("res_fpwmax", DOUBLE, "")
+        self.createParameter("res_nswmax", DOUBLE, "")
+        self.createParameter("nres_fpwmin", DOUBLE, "")
+        self.createParameter("nres_nswmin", DOUBLE, "")
+        self.createParameter("nres_fpwmax", DOUBLE, "")
+        self.createParameter("nres_nswmax", DOUBLE, "")
+        self.createParameter("res_fpmed", BOOL, "")
+        self.createParameter("res_nsmed", BOOL, "")
+        self.createParameter("nres_fpmed", BOOL, "")
+        self.createParameter("nres_nsmed", BOOL, "")
+        self.createParameter("lane_wmin", DOUBLE, "")
+        self.createParameter("lane_wmax", DOUBLE, "")
+        self.createParameter("lane_crossfall", DOUBLE, "")
+        self.createParameter("lane_wmed", BOOL, "")
         self.res_fpwmin = 1
         self.res_nswmin = 1
         self.res_fpwmax = 3
@@ -318,18 +318,18 @@ class Urbplanbb(UBModule):
         self.lane_crossfall = 3
         self.lane_wmed = False
         
-        #self.createParameter("hwy_wlanemin", DOUBLE, "")
-        #self.createParameter("hwy_wlanemax", DOUBLE, "")
-        #self.createParameter("hwy_wmedianmin", DOUBLE, "")
-        #self.createParameter("hwy_wmedianmax", DOUBLE, "")
-        #self.createParameter("hwy_wbufmin", DOUBLE, "")
-        #self.createParameter("hwy_wbufmax", DOUBLE, "")
-        #self.createParameter("hwy_crossfall", DOUBLE, "")
-        #self.createParameter("hwy_lanemed", BOOL, "")
-        #self.createParameter("hwy_medmed", BOOL, "")
-        #self.createParameter("hwy_bufmed", BOOL, "")
-        #self.createParameter("hwy_restrict", BOOL, "")
-        #self.createParameter("hwy_buffer", BOOL, "")
+        self.createParameter("hwy_wlanemin", DOUBLE, "")
+        self.createParameter("hwy_wlanemax", DOUBLE, "")
+        self.createParameter("hwy_wmedianmin", DOUBLE, "")
+        self.createParameter("hwy_wmedianmax", DOUBLE, "")
+        self.createParameter("hwy_wbufmin", DOUBLE, "")
+        self.createParameter("hwy_wbufmax", DOUBLE, "")
+        self.createParameter("hwy_crossfall", DOUBLE, "")
+        self.createParameter("hwy_lanemed", BOOL, "")
+        self.createParameter("hwy_medmed", BOOL, "")
+        self.createParameter("hwy_bufmed", BOOL, "")
+        self.createParameter("hwy_restrict", BOOL, "")
+        self.createParameter("hwy_buffer", BOOL, "")
         self.hwy_wlanemin = 5
         self.hwy_wlanemax = 10
         self.hwy_wmedianmin = 4
@@ -343,11 +343,11 @@ class Urbplanbb(UBModule):
         self.hwy_restrict = 0
         self.hwy_buffer = 1
         
-        #self.createParameter("considerTRFacilities", BOOL, "")
-        #self.createParameter("trans_airport", BOOL, "")
-        #self.createParameter("trans_seaport", BOOL, "")
-        #self.createParameter("trans_busdepot", BOOL, "")
-        #self.createParameter("trans_railterminal", BOOL, "")
+        self.createParameter("considerTRFacilities", BOOL, "")
+        self.createParameter("trans_airport", BOOL, "")
+        self.createParameter("trans_seaport", BOOL, "")
+        self.createParameter("trans_busdepot", BOOL, "")
+        self.createParameter("trans_railterminal", BOOL, "")
         self.considerTRFacilities = 0
         self.trans_airport = 0
         self.trans_seaport = 0
@@ -359,25 +359,25 @@ class Urbplanbb(UBModule):
         ############################
         #(includes Parks & Garden, Reserves & Floodways)
         #--> Parks, Squares & Gardens :: General
-        #self.createParameter("pg_greengrey_ratio", DOUBLE, "")
-        #self.createParameter("pgsq_distribution", STRING, "")
-        #self.createParameter("pg_unused_space", DOUBLE, "")
-        #self.createParameter("pg_restrict", BOOL, "")
+        self.createParameter("pg_greengrey_ratio", DOUBLE, "")
+        self.createParameter("pgsq_distribution", STRING, "")
+        self.createParameter("pg_unused_space", DOUBLE, "")
+        self.createParameter("pg_restrict", BOOL, "")
         self.pg_greengrey_ratio = 0
         self.pgsq_distribution = "S"    #S = separate, C = combined
         self.pg_unused_space = 40       #% of space in park not used for anything else
         self.pg_restrict = 0        #Prohibit the use of park space 
         
-        #self.createParameter("ref_usable", BOOL, "")
-        #self.createParameter("ref_usable_percent", DOUBLE, "")
-        #self.createParameter("ref_limit_stormwater", BOOL, "")
-        #self.createParameter("svu_water", DOUBLE, "")
-        #self.createParameter("svu4supply", BOOL, "")
-        #self.createParameter("svu4waste", BOOL, "")
-        #self.createParameter("svu4storm", BOOL, "")
-        #self.createParameter("svu4supply_prop", DOUBLE, "")
-        #self.createParameter("svu4waste_prop", DOUBLE, "")
-        #self.createParameter("svu4storm_prop", DOUBLE, "")
+        self.createParameter("ref_usable", BOOL, "")
+        self.createParameter("ref_usable_percent", DOUBLE, "")
+        self.createParameter("ref_limit_stormwater", BOOL, "")
+        self.createParameter("svu_water", DOUBLE, "")
+        self.createParameter("svu4supply", BOOL, "")
+        self.createParameter("svu4waste", BOOL, "")
+        self.createParameter("svu4storm", BOOL, "")
+        self.createParameter("svu4supply_prop", DOUBLE, "")
+        self.createParameter("svu4waste_prop", DOUBLE, "")
+        self.createParameter("svu4storm_prop", DOUBLE, "")
         self.ref_usable = 1
         self.ref_usable_percent = 100
         self.ref_limit_stormwater = 0
@@ -394,17 +394,17 @@ class Urbplanbb(UBModule):
         ############################
         #(includes Unclassified and Undeveloped)
         #--> Unclassified Land
-        #self.createParameter("unc_merge", BOOL, "")                     #DYNAMIND
-        #self.createParameter("unc_pgmerge", BOOL, "")                   #DYNAMIND
-        #self.createParameter("unc_pgmerge_w", DOUBLE, "")               #DYNAMIND
-        #self.createParameter("unc_refmerge", BOOL, "")                  #DYNAMIND
-        #self.createParameter("unc_refmerge_w", DOUBLE, "")              #DYNAMIND
-        #self.createParameter("unc_rdmerge", BOOL, "")                   #DYNAMIND
-        #self.createParameter("unc_rdmerge_w", DOUBLE, "")               #DYNAMIND
-        #self.createParameter("unc_custom", BOOL, "")                    #DYNAMIND
-        #self.createParameter("unc_customthresh", DOUBLE, "")            #DYNAMIND
-        #self.createParameter("unc_customimp", DOUBLE, "")               #DYNAMIND
-        #self.createParameter("unc_landirrigate", BOOL, "")              #DYNAMIND
+        self.createParameter("unc_merge", BOOL, "")
+        self.createParameter("unc_pgmerge", BOOL, "")
+        self.createParameter("unc_pgmerge_w", DOUBLE, "")
+        self.createParameter("unc_refmerge", BOOL, "")
+        self.createParameter("unc_refmerge_w", DOUBLE, "")
+        self.createParameter("unc_rdmerge", BOOL, "")
+        self.createParameter("unc_rdmerge_w", DOUBLE, "")
+        self.createParameter("unc_custom", BOOL, "")
+        self.createParameter("unc_customthresh", DOUBLE, "")
+        self.createParameter("unc_customimp", DOUBLE, "")
+        self.createParameter("unc_landirrigate", BOOL, "")
         self.unc_merge = False  #Merge unclassified land?
         self.unc_pgmerge = False
         self.unc_pgmerge_w = 0
@@ -418,9 +418,9 @@ class Urbplanbb(UBModule):
         self.unc_landirrigate = False
         
         #--> Undeveloped Land
-        #self.createParameter("und_state", STRING, "")                   #DYNAMIND
-        #self.createParameter("und_type_manual", STRING, "")             #DYNAMIND
-        #self.createParameter("und_allowdev", BOOL, "")                  #DYNAMIND
+        self.createParameter("und_state", STRING, "")
+        self.createParameter("und_type_manual", STRING, "")
+        self.createParameter("und_allowdev", BOOL, "")
         self.und_state = "M"    #M = manual, A = Auto
         self.und_type_manual = "GF"     #GF = Greenfield, BF = Brownfield, AG = Agriculture
         self.und_allowdev = False       #Allow developent for large water infrastructure?

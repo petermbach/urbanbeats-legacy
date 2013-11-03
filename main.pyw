@@ -184,7 +184,7 @@ class MainWindow(QtGui.QMainWindow):
         return self.__activeprojectpath
         
     def printc(self, textmessage):
-        if "PROGRESSUPDATE" in textmessage:
+        if "PROGRESSUPDATE" in str(textmessage):
             progress = textmessage.split('||')
             self.updateProgressBar(int(progress[1]))
         else:
@@ -197,6 +197,7 @@ class MainWindow(QtGui.QMainWindow):
     
     def enabledisable_sim_guis(self, setstate):        
         self.ui.pc_dataset.setEnabled(setstate)
+        self.ui.pc_narrative.setEnabled(setstate)
         self.ui.pc_delinblocks.setEnabled(setstate)
         self.ui.pc_delinblocks_help.setEnabled(setstate)
         self.ui.pc_urbplanbb.setEnabled(setstate)
@@ -350,8 +351,8 @@ class MainWindow(QtGui.QMainWindow):
         if fname:
             activesim = self.getActiveSimulationObject()
             ubfiles.loadSimFile(activesim, fname)
+            self.setActiveProjectPath(activesim.getActiveProjectPath())
             self.updateNewProject()
-            self.setNewProjectDirectory(activesim.getActiveProjectPath())
             self.setupTreeWidgetFromDict()
         self.printc("Simulation Core Initialised")
         #Call a function to update entire gui on everything
@@ -626,11 +627,11 @@ class MainWindow(QtGui.QMainWindow):
            tabindex = self.ui.simconfig_tabs.currentIndex()
         techplacementguic = md_techplacementguic.TechplacementGUILaunch(self.getActiveSimulationObject(), tabindex)
         techplacementguic.exec_()
-#
-#    def callTechimplementGui(self):
-#        tabindex = 0        
-#        techimplementguic = techimplementguiset.TechimplementGUILaunch()#self.getActiveSimulationObject, tabindex)
-#        techimplementguic.exec_()
+
+    def callTechimplementGui(self):
+        tabindex = 0
+        techimplementguic = md_techimplementguic.TechimplementGUILaunch(self.getActiveSimulationObject(), tabindex)
+        techimplementguic.exec_()
 #
 #    def callPrepareperfGui(self, cycle):
 #        if cycle == "pc":
@@ -694,7 +695,8 @@ class MainWindow(QtGui.QMainWindow):
     def openActiveProjectFolder(self):
         #doesn't work yet...        
         self.printc("Opening Project Directory: "+str(self.getActiveProjectPath()))
-        subprocess.Popen('explorer "'+str(self.getActiveProjectPath())+'"')    
+        path = str(self.getActiveProjectPath())
+        subprocess.Popen(r'explorer "'+path+'"')
         pass
     
     def resetSimulationAssets(self):

@@ -38,7 +38,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>5</number>
         </property>
         <widget class="QWidget" name="GenRules">
          <attribute name="title">
@@ -95,7 +95,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="resources/dialogimg.qrc">:/urbplanbb/GeneralImage.png</pixmap>
+                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/GeneralImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -180,7 +180,7 @@ p, li { white-space: pre-wrap; }
                   <x>0</x>
                   <y>0</y>
                   <width>398</width>
-                  <height>286</height>
+                  <height>287</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -616,9 +616,9 @@ p, li { white-space: pre-wrap; }
                 <property name="geometry">
                  <rect>
                   <x>0</x>
-                  <y>-484</y>
+                  <y>0</y>
                   <width>398</width>
-                  <height>770</height>
+                  <height>545</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_15">
@@ -1580,572 +1580,6 @@ p, li { white-space: pre-wrap; }
                    </property>
                   </widget>
                  </item>
-                 <item row="9" column="0">
-                  <widget class="QLabel" name="res_demand_title">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>13</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Water Demand Patterns&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="10" column="0">
-                  <widget class="QWidget" name="res_demand_params" native="true">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>50</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>369</width>
-                     <height>200</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>200</height>
-                    </size>
-                   </property>
-                   <widget class="QLabel" name="demand_laundry_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>320</x>
-                      <y>0</y>
-                      <width>51</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>Laundry = washing machine water use calculated based on number of uses per day (if less than one wash per day convert value from weekly washes to daily).</string>
-                    </property>
-                    <property name="text">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Laundry&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="ffp_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>110</y>
-                      <width>161</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select the minimum water quality requirement to source from when meeting demand (default: PO).&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;PO = Potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;NP = Non-potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;RW = Rainwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;SW = Stormwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;GW = Greywater&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                    <property name="text">
-                     <string>Minimum Fit-for-purpose Source</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="dur_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>50</y>
-                      <width>141</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>How long is each facility used for? (Does not apply to toilets or laundry as the usage amount is based on frequency).</string>
-                    </property>
-                    <property name="text">
-                     <string>Avg. Duration of use [mins]</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="freq_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>20</y>
-                      <width>161</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>How many times does the household/person use the facility per day?
-Kitchen = Household
-Shower = Person
-Toilet = Person
-Laundry = Household</string>
-                    </property>
-                    <property name="text">
-                     <string>Avg. Frequency of use  [per day]</string>
-                    </property>
-                   </widget>
-                   <widget class="QComboBox" name="ffp_kitchen_combo">
-                    <property name="geometry">
-                     <rect>
-                      <x>175</x>
-                      <y>110</y>
-                      <width>41</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <item>
-                     <property name="text">
-                      <string>PO</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>NP</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>RW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>SW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>GW</string>
-                     </property>
-                    </item>
-                   </widget>
-                   <widget class="QLineEdit" name="dur_laundry_box">
-                    <property name="enabled">
-                     <bool>false</bool>
-                    </property>
-                    <property name="geometry">
-                     <rect>
-                      <x>330</x>
-                      <y>50</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="demandvary_toilet_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>280</x>
-                      <y>80</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="dur_shower_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>230</x>
-                      <y>50</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="freq_shower_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>230</x>
-                      <y>20</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="demand_shower_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>220</x>
-                      <y>0</y>
-                      <width>51</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>Shower = bathroom shower, not including bathtub. Shower head water usage taken from AS6400 unless otherwise customized.</string>
-                    </property>
-                    <property name="text">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Shower&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                   </widget>
-                   <widget class="QComboBox" name="ffp_shower_combo">
-                    <property name="geometry">
-                     <rect>
-                      <x>225</x>
-                      <y>110</y>
-                      <width>41</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <item>
-                     <property name="text">
-                      <string>PO</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>NP</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>RW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>SW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>GW</string>
-                     </property>
-                    </item>
-                   </widget>
-                   <widget class="QLabel" name="t2t_house_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>140</y>
-                      <width>261</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>Based on Aquacycle's calibration parameter. If soil moisture drops below this value, irrigation will occur to refill the soil moisture store. Specify as a proportion (e.g. 0.5 for 50%)</string>
-                    </property>
-                    <property name="text">
-                     <string>Approximate Annual Irrigation Volume [ML/ha/year]</string>
-                    </property>
-                   </widget>
-                   <widget class="QComboBox" name="ffp_toilet_combo">
-                    <property name="geometry">
-                     <rect>
-                      <x>275</x>
-                      <y>110</y>
-                      <width>41</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <item>
-                     <property name="text">
-                      <string>PO</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>NP</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>RW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>SW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>GW</string>
-                     </property>
-                    </item>
-                   </widget>
-                   <widget class="QLineEdit" name="demandvary_kitchen_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>180</x>
-                      <y>80</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QComboBox" name="ffp_laundry_combo">
-                    <property name="geometry">
-                     <rect>
-                      <x>325</x>
-                      <y>110</y>
-                      <width>41</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <item>
-                     <property name="text">
-                      <string>PO</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>NP</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>RW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>SW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>GW</string>
-                     </property>
-                    </item>
-                   </widget>
-                   <widget class="QLabel" name="demand_toilet_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>280</x>
-                      <y>0</y>
-                      <width>31</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>Toilet = flushes made per person per day determines total water use. Dual-flush toilets/waterless toilets and urine-separating toilets are customized under technologies.</string>
-                    </property>
-                    <property name="text">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Toilet&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                   </widget>
-                   <widget class="QComboBox" name="ffp_garden_combo">
-                    <property name="geometry">
-                     <rect>
-                      <x>180</x>
-                      <y>170</y>
-                      <width>41</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <item>
-                     <property name="text">
-                      <string>PO</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>NP</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>RW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>SW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>GW</string>
-                     </property>
-                    </item>
-                   </widget>
-                   <widget class="QLineEdit" name="freq_laundry_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>330</x>
-                      <y>20</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="priv_irr_vol_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>280</x>
-                      <y>140</y>
-                      <width>41</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="ffp_garden_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>170</y>
-                      <width>161</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select the minimum water quality requirement to source from when meeting demand.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;PO = Potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;NP = Non-potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;RW = Rainwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;SW = Stormwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;GW = Greywater&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                    <property name="text">
-                     <string>Minimum Irrigation Water Quality</string>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="dur_toilet_box">
-                    <property name="enabled">
-                     <bool>false</bool>
-                    </property>
-                    <property name="geometry">
-                     <rect>
-                      <x>280</x>
-                      <y>50</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="demandvary_shower_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>230</x>
-                      <y>80</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="demandvary_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>80</y>
-                      <width>161</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;A stochastic variability used to scale the daily household demand. Will be scaled according to the number of households in the block. Specify a percent, demand value will be scaled according to a random number drawin within this range.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;e.g. +/- 5% will see demand being multiplied by a number between 0.95 and 1.05.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                    <property name="text">
-                     <string>Daily demand variation [+/- %]</string>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="freq_kitchen_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>180</x>
-                      <y>20</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="demandvary_laundry_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>330</x>
-                      <y>80</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="freq_toilet_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>280</x>
-                      <y>20</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="demand_kitchen_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>170</x>
-                      <y>0</y>
-                      <width>51</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>Kitchen = kitchen tap, water for cooking and washing up. Demand is calculated from both tap and partly from dishwasher using values from AS6400 unless otherwise customized.</string>
-                    </property>
-                    <property name="text">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Kitchen&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="dur_kitchen_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>180</x>
-                      <y>50</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                  </widget>
-                 </item>
                 </layout>
                </widget>
               </widget>
@@ -2186,7 +1620,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="resources/dialogimg.qrc">:/urbplanbb/ResidentialImage.png</pixmap>
+                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/ResidentialImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -2256,7 +1690,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="resources/dialogimg.qrc">:/urbplanbb/NonResImage.png</pixmap>
+                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/NonResImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -2358,7 +1792,7 @@ p, li { white-space: pre-wrap; }
                   <x>0</x>
                   <y>0</y>
                   <width>398</width>
-                  <height>1267</height>
+                  <height>1142</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -3583,210 +3017,6 @@ p, li { white-space: pre-wrap; }
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLabel" name="nres_demand_title">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>13</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Water Demand Patterns&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QWidget" name="widget_3" native="true">
-                   <property name="minimumSize">
-                    <size>
-                     <width>369</width>
-                     <height>100</height>
-                    </size>
-                   </property>
-                   <widget class="QLabel" name="comdemand_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>20</x>
-                      <y>10</y>
-                      <width>201</width>
-                      <height>17</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>Commercial Water Demand [L/sqm/day]</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="lidemand_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>20</x>
-                      <y>40</y>
-                      <width>221</width>
-                      <height>17</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>Light Industrial Water Demand [L/sqm/day]</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="hidemand_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>20</x>
-                      <y>70</y>
-                      <width>221</width>
-                      <height>17</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>Heavy Industrial Water Demand [L/sqm/day]</string>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="comdemand_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>250</x>
-                      <y>10</y>
-                      <width>41</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="lidemand_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>250</x>
-                      <y>40</y>
-                      <width>41</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="hidemand_box">
-                    <property name="geometry">
-                     <rect>
-                      <x>250</x>
-                      <y>70</y>
-                      <width>41</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                   </widget>
-                   <widget class="QSpinBox" name="comdemand_spin">
-                    <property name="geometry">
-                     <rect>
-                      <x>320</x>
-                      <y>10</y>
-                      <width>51</width>
-                      <height>22</height>
-                     </rect>
-                    </property>
-                    <property name="suffix">
-                     <string>%</string>
-                    </property>
-                    <property name="maximum">
-                     <number>10</number>
-                    </property>
-                    <property name="value">
-                     <number>10</number>
-                    </property>
-                   </widget>
-                   <widget class="QSpinBox" name="lidemand_spin">
-                    <property name="geometry">
-                     <rect>
-                      <x>320</x>
-                      <y>40</y>
-                      <width>51</width>
-                      <height>22</height>
-                     </rect>
-                    </property>
-                    <property name="suffix">
-                     <string>%</string>
-                    </property>
-                    <property name="maximum">
-                     <number>10</number>
-                    </property>
-                    <property name="value">
-                     <number>10</number>
-                    </property>
-                   </widget>
-                   <widget class="QSpinBox" name="hidemand_spin">
-                    <property name="geometry">
-                     <rect>
-                      <x>320</x>
-                      <y>70</y>
-                      <width>51</width>
-                      <height>22</height>
-                     </rect>
-                    </property>
-                    <property name="suffix">
-                     <string>%</string>
-                    </property>
-                    <property name="maximum">
-                     <number>10</number>
-                    </property>
-                    <property name="value">
-                     <number>10</number>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="comdemand_pm">
-                    <property name="geometry">
-                     <rect>
-                      <x>295</x>
-                      <y>10</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>+/-</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="lidemand_pm">
-                    <property name="geometry">
-                     <rect>
-                      <x>295</x>
-                      <y>40</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>+/-</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="hidemand_pm">
-                    <property name="geometry">
-                     <rect>
-                      <x>295</x>
-                      <y>70</y>
-                      <width>31</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>+/-</string>
-                    </property>
-                   </widget>
-                  </widget>
-                 </item>
-                 <item>
                   <widget class="QLabel" name="civ_title">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -4157,7 +3387,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="resources/dialogimg.qrc">:/urbplanbb/TransportImage.png</pixmap>
+                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/TransportImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -5255,7 +4485,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="resources/dialogimg.qrc">:/urbplanbb/ParkImage.png</pixmap>
+                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/ParkImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -5363,7 +4593,7 @@ p, li { white-space: pre-wrap; }
                   <x>0</x>
                   <y>0</y>
                   <width>398</width>
-                  <height>667</height>
+                  <height>532</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -6001,188 +5231,6 @@ p, li { white-space: pre-wrap; }
                    </widget>
                   </widget>
                  </item>
-                 <item>
-                  <widget class="QLabel" name="public_irr_title">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>13</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Public Open Space Irrigation&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QWidget" name="public_irr_widget" native="true">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>369</width>
-                     <height>110</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>110</height>
-                    </size>
-                   </property>
-                   <widget class="QCheckBox" name="public_irr_pg">
-                    <property name="geometry">
-                     <rect>
-                      <x>200</x>
-                      <y>35</y>
-                      <width>141</width>
-                      <height>17</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>Parks and Gardens</string>
-                    </property>
-                   </widget>
-                   <widget class="QCheckBox" name="public_irr_ref">
-                    <property name="geometry">
-                     <rect>
-                      <x>200</x>
-                      <y>55</y>
-                      <width>141</width>
-                      <height>17</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>Reserves &amp; Floodways</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="public_irr_lbl2">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>35</y>
-                      <width>181</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>Based on Aquacycle's calibration parameter. If soil moisture drops below this value, irrigation will occur to refill the soil moisture store. Specify as a proportion (e.g. 0.5 for 50%)</string>
-                    </property>
-                    <property name="text">
-                     <string>Select Open Spaces to Irrigate:</string>
-                    </property>
-                   </widget>
-                   <widget class="QComboBox" name="public_irr_wq">
-                    <property name="geometry">
-                     <rect>
-                      <x>210</x>
-                      <y>80</y>
-                      <width>41</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <item>
-                     <property name="text">
-                      <string>PO</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>NP</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>RW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>SW</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>GW</string>
-                     </property>
-                    </item>
-                   </widget>
-                   <widget class="QLabel" name="public_irr_lbl3">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>80</y>
-                      <width>201</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select the minimum water quality requirement to source from when meeting demand.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;PO = Potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;NP = Non-potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;RW = Rainwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;SW = Stormwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;GW = Greywater&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                    <property name="text">
-                     <string>Minimum Public Irrigation Water Quality</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="public_irr_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>10</x>
-                      <y>5</y>
-                      <width>251</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="whatsThis">
-                     <string>Based on Aquacycle's calibration parameter. If soil moisture drops below this value, irrigation will occur to refill the soil moisture store. Specify as a proportion (e.g. 0.5 for 50%)</string>
-                    </property>
-                    <property name="text">
-                     <string>Approximate Annual Irrigation Volume [ML/ha/year]</string>
-                    </property>
-                   </widget>
-                   <widget class="QLineEdit" name="public_irr_volume">
-                    <property name="geometry">
-                     <rect>
-                      <x>270</x>
-                      <y>5</y>
-                      <width>41</width>
-                      <height>20</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                   </widget>
-                  </widget>
-                 </item>
                 </layout>
                </widget>
               </widget>
@@ -6273,7 +5321,7 @@ p, li { white-space: pre-wrap; }
                 <property name="geometry">
                  <rect>
                   <x>0</x>
-                  <y>0</y>
+                  <y>-105</y>
                   <width>398</width>
                   <height>392</height>
                  </rect>
@@ -6683,7 +5731,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="resources/dialogimg.qrc">:/urbplanbb/UndevImage.png</pixmap>
+                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/UndevImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -6802,7 +5850,7 @@ p, li { white-space: pre-wrap; }
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
+       <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="bbdescr1">
@@ -6856,7 +5904,8 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <resources>
-  <include location="resources/dialogimg.qrc"/>
+  <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
+  <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
   <include location="resources/dialogimg.qrc"/>
  </resources>
  <connections>
