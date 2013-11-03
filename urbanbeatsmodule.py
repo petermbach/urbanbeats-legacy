@@ -56,6 +56,12 @@ class UBModule(object):
     def createParameter(self, name, type, descript):
         self.__parameters[name] = [type, descript]
 
+    def getParameterType(self, name):
+        try:
+            return self.__parameters[name][0]
+        except KeyError:
+            return None
+
     def getParameter(self, name):   #UBCORE FUNCTION
         return self.__dict__.get(name)
 

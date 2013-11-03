@@ -376,10 +376,10 @@ class DelinBlocksGUILaunch(QtGui.QDialog):
         
         self.module.setParameter("elevdatacustomref", float(self.ui.elev_referencebox.text()))
         
-        self.module.setParameter("include_plan_map", self.ui.planmap_check.isChecked())
-        self.module.setParameter("include_local_map", self.ui.localmap_check.isChecked())
+        self.module.setParameter("include_plan_map", int(self.ui.planmap_check.isChecked()))
+        self.module.setParameter("include_local_map", int(self.ui.localmap_check.isChecked()))
         
-        self.module.setParameter("include_employment", self.ui.employment_check.isChecked())
+        self.module.setParameter("include_employment", int(self.ui.employment_check.isChecked()))
         
         if self.ui.jobdata_totradio.isChecked() == True:
             jobdatatype = "C"
@@ -387,10 +387,10 @@ class DelinBlocksGUILaunch(QtGui.QDialog):
             jobdatatype = "D"
         self.module.setParameter("jobdatatype", jobdatatype)
         
-        self.module.setParameter("include_rivers", self.ui.rivers_check.isChecked())
-        self.module.setParameter("include_lakes", self.ui.lakes_check.isChecked())
+        self.module.setParameter("include_rivers", int(self.ui.rivers_check.isChecked()))
+        self.module.setParameter("include_lakes", int(self.ui.lakes_check.isChecked()))
         
-        self.module.setParameter("include_groundwater", self.ui.groundwater_check.isChecked())
+        self.module.setParameter("include_groundwater", int(self.ui.groundwater_check.isChecked()))
         
         gwoptions = ["Sea", "Surf"]
         self.module.setParameter("groundwater_datum", gwoptions[self.ui.groundwater_datumcombo.currentIndex()])
@@ -431,8 +431,8 @@ class DelinBlocksGUILaunch(QtGui.QDialog):
             
         self.module.setParameter("include_soc_par2", include_soc_par2)
         
-        self.module.setParameter("patchdelin", self.ui.spatialpatches_check.isChecked())
-        self.module.setParameter("spatialmetrics", self.ui.spatialstats_check.isChecked())
+        self.module.setParameter("patchdelin", int(self.ui.spatialpatches_check.isChecked()))
+        self.module.setParameter("spatialmetrics", int(self.ui.spatialstats_check.isChecked()))
         
         #----------------------------------------------------------------------#
         #-------- MAP CONNECTIVITY PARAMETERS----------------------------------#

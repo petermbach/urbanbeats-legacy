@@ -96,22 +96,19 @@ class NewProjectSetup(QtGui.QDialog):
         
         self.ui.snapshots_spin.setValue(self.module.getParameter("static_snapshots"))
 
-        staticsimfeatures = self.module.getParameter("staticsimfeatures")
-        self.ui.static_ubpconstant.setChecked(bool(staticsimfeatures[0]))
-        self.ui.static_techplaninclude.setChecked(bool(staticsimfeatures[1]))
-        self.ui.static_techplanconstant.setChecked(bool(staticsimfeatures[2]))
-        self.ui.static_techimplinclude.setChecked(bool(staticsimfeatures[3]))
-        self.ui.static_techimplconstant.setChecked(bool(staticsimfeatures[4]))
-        self.ui.static_perfinclude.setChecked(bool(staticsimfeatures[5]))
-        
-         #  "staticdataoptions" : [0,0]
-        staticdataoptions = self.module.getParameter("staticdataoptions")
-        if staticdataoptions[0] == 1:
+        self.ui.static_ubpconstant.setChecked(bool(self.module.getParameter("sf_ubpconstant")))
+        self.ui.static_techplaninclude.setChecked(bool(self.module.getParameter("sf_techplaninclude")))
+        self.ui.static_techplanconstant.setChecked(bool(self.module.getParameter("sf_techplanconstant")))
+        self.ui.static_techimplinclude.setChecked(bool(self.module.getParameter("sf_techimplinclude")))
+        self.ui.static_techimplconstant.setChecked(bool(self.module.getParameter("sf_techimplconstant")))
+        self.ui.static_perfinclude.setChecked(bool(self.module.getParameter("sf_perfinclude")))
+
+        if self.module.getParameter("sd_samedata") == 'M':
             self.ui.radioMasterplan.setChecked(1)
-        elif staticdataoptions[0] == 0:
+        elif self.module.getParameter("sd_samedata") == 'E':
             self.ui.radioEnvironment.setChecked(1)
         
-        self.ui.static_climateconstant.setChecked(bool(staticdataoptions[1]))
+        self.ui.static_climateconstant.setChecked(bool(self.module.getParameter("sd_sameclimate")))
         
         self.ui.dynamicperiod_spin.setValue(self.module.getParameter("dyn_totyears"))
         self.ui.dynamicstart_spin.setValue(self.module.getParameter("dyn_startyear"))
@@ -121,18 +118,15 @@ class NewProjectSetup(QtGui.QDialog):
             self.ui.dynamicinterval_check.setChecked(1)
         else:
             self.ui.dynamicinterval_check.setChecked(0)
-            
-        dynsimfeatures = self.module.getParameter("dynsimfeatures")
-        self.ui.dyn_ubpconstant.setChecked(bool(dynsimfeatures[0]))
-        self.ui.dyn_techplanconstant.setChecked(bool(dynsimfeatures[1]))
-        self.ui.dyn_techimplconstant.setChecked(bool(dynsimfeatures[2]))
-        self.ui.dyn_perfinclude.setChecked(bool(dynsimfeatures[3]))
-        self.ui.dyn_perfconstant.setChecked(bool(dynsimfeatures[4]))        
-        
-         #       "dyndatafeatures" : [0,0]
-        dyndatafeatures = self.module.getParameter("dyndatafeatures")
-        self.ui.dyn_masterplanconstant.setChecked(bool(dyndatafeatures[0]))
-        self.ui.dyn_climateconstant.setChecked(bool(dyndatafeatures[1]))
+
+        self.ui.dyn_ubpconstant.setChecked(bool(self.module.getParameter("df_ubpconstant")))
+        self.ui.dyn_techplanconstant.setChecked(bool(self.module.getParameter("df_techplaceconstant")))
+        self.ui.dyn_techimplconstant.setChecked(bool(self.module.getParameter("df_techimplconstant")))
+        self.ui.dyn_perfinclude.setChecked(bool(self.module.getParameter("df_perfinclude")))
+        self.ui.dyn_perfconstant.setChecked(bool(self.module.getParameter("df_perfconstant")))
+
+        self.ui.dyn_masterplanconstant.setChecked(bool(self.module.getParameter("dd_samemaster")))
+        self.ui.dyn_climateconstant.setChecked(bool(self.module.getParameter("dd_sameclimate")))
                         
         #Connect GUI Elements        
         self.connect(self.ui.projectpath_button, QtCore.SIGNAL("clicked()"), self.setProjectPath)
@@ -152,7 +146,7 @@ class NewProjectSetup(QtGui.QDialog):
         self.module.setParameter("state", str(self.ui.state_box.text()))
         self.module.setParameter("country", str(self.ui.country_box.text()))
         self.module.setParameter("modeller", str(self.ui.modellername_box.text()))
-        self.module.setParameter("affilitation", str(self.ui.affiliation_box.text()))
+        self.module.setParameter("affiliation", str(self.ui.affiliation_box.text()))
         self.module.setParameter("otherpersons", str(self.ui.othermodellers_box.text()))
         self.module.setParameter("synopsis", str(self.ui.synopsis_box.toPlainText()))
         
@@ -165,26 +159,33 @@ class NewProjectSetup(QtGui.QDialog):
         
         self.module.setParameter("static_snapshots", self.ui.snapshots_spin.value())                        
 
-        static_parameters = [int(self.ui.static_ubpconstant.isChecked()), int(self.ui.static_techplaninclude.isChecked()), \
-                                int(self.ui.static_techplanconstant.isChecked()), int(self.ui.static_techimplinclude.isChecked()), \
-                                int(self.ui.static_techimplconstant.isChecked()), int(self.ui.static_perfinclude.isChecked())]
-        self.module.setParameter("staticsimfeatures", static_parameters)
-                
-        staticdataoptions = [int(self.ui.radioMasterplan.isChecked()), int(self.ui.static_climateconstant.isChecked())]
-        self.module.setParameter("staticdataoptions", staticdataoptions)
+        self.module.setParameter("sf_ubpconstant", int(self.ui.static_ubpconstant.isChecked()))
+        self.module.setParameter("sf_techplaninclude", int(self.ui.static_techplaninclude.isChecked()))
+        self.module.setParameter("sf_techplanconstant", int(self.ui.static_techplanconstant.isChecked()))
+        self.module.setParameter("sf_techimplinclude", int(self.ui.static_techimplinclude.isChecked()))
+        self.module.setParameter("sf_techimplconstant", int(self.ui.static_techimplconstant.isChecked()))
+        self.module.setParameter("sf_perfinclude", int(self.ui.static_perfinclude.isChecked()))
+
+        if self.ui.radioMasterplan.isChecked():
+            self.module.setParameter("sd_samedata", 'M')
+        elif self.ui.radioEnvironment.isChecked():
+            self.module.setParameter("sd_samedata", 'E')
+
+        self.module.setParameter("sd_sameclimate", int(self.ui.static_climateconstant.isChecked()))
 
         self.module.setParameter("dyn_totyears", self.ui.dynamicperiod_spin.value())
         self.module.setParameter("dyn_startyear", self.ui.dynamicstart_spin.value())
         self.module.setParameter("dyn_breaks", self.ui.dynamicbreaks_spin.value())
         self.module.setParameter("dyn_irregulardt", int(self.ui.dynamicinterval_check.isChecked()))
         
-        dyn_simfeatures = [int(self.ui.dyn_ubpconstant.isChecked()), int(self.ui.dyn_techplanconstant.isChecked()), \
-                            int(self.ui.dyn_techimplconstant.isChecked()), int(self.ui.dyn_perfinclude.isChecked()), \
-                            int(self.ui.dyn_perfconstant.isChecked())]
-        self.module.setParameter("dynsimfeatures", dyn_simfeatures)
-        
-        dyn_datafeatures = [int(self.ui.dyn_masterplanconstant.isChecked()), int(self.ui.dyn_climateconstant.isChecked())]
-        self.module.setParameter("dyndatafeatures", dyn_datafeatures)
+        self.module.setParameter("df_ubpconstant", int(self.ui.dyn_ubpconstant.isChecked()))
+        self.module.setParameter("df_techplaceconstant", int(self.ui.dyn_techplanconstant.isChecked()))
+        self.module.setParameter("df_techimplconstant", int(self.ui.dyn_techimplconstant.isChecked()))
+        self.module.setParameter("df_perfinclude", int(self.ui.dyn_perfinclude.isChecked()))
+        self.module.setParameter("df_perfconstant", int(self.ui.dyn_perfconstant.isChecked()))
+
+        self.module.setParameter("dd_samemaster", int(self.ui.dyn_masterplanconstant.isChecked()))
+        self.module.setParameter("dd_sameclimate", int(self.ui.dyn_climateconstant.isChecked()))
         
         self.emit(QtCore.SIGNAL("newProjectSetupComplete"))
 
@@ -505,6 +506,7 @@ class DataSelectGUILaunch(QtGui.QDialog):
     def save_values(self):
         self.updateActiveDataItems()
         self.module.setCycleDataSet(self.__curstate, self.__tabindex, self.__activedataitems)
+        print self.__activedataitems
         return True
 
 

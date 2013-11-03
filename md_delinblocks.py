@@ -116,7 +116,7 @@ class Delinblocks(UBModule):      #UBCORE
         self.createParameter("BlockSize", DOUBLE, "")
         self.createParameter("blocksize_auto", BOOL, "")
         self.BlockSize = 400                    #size of the blocks (in m)
-        self.blocksize_auto = False             #should the size be chosen automatically?
+        self.blocksize_auto = 0             #should the size be chosen automatically?
 
         self.createParameter("popdatatype", STRING, "")         #DYNAMIND
         self.createParameter("soildatatype", STRING, "")
@@ -148,28 +148,28 @@ class Delinblocks(UBModule):      #UBCORE
         self.soildataunits = "hrs"              #sec = m/s, hrs = mm/hr
         self.elevdatadatum = "S"                #S = sea level, C = custom
         self.elevdatacustomref = float(0.0)              #reference above sea level for custom elevation
-        self.include_plan_map = False           #planner's map displaying typology distributions
-        self.include_local_map = False          #locality map displaying location of centres
-        self.include_employment = False         #include employment data for industrial land uses?
+        self.include_plan_map = 0           #planner's map displaying typology distributions
+        self.include_local_map = 0          #locality map displaying location of centres
+        self.include_employment = 0         #include employment data for industrial land uses?
         self.jobdatatype = "D"                  #employment data type: D = density, C = count
-        self.include_rivers = False             #include river systems
-        self.include_lakes = False              #include lake systems
-        self.include_groundwater = False        #include groundwater table
+        self.include_rivers = 0             #include river systems
+        self.include_lakes = 0              #include lake systems
+        self.include_groundwater = 0        #include groundwater table
         self.groundwater_datum = "Sea"          #"Sea" = Sea level, "Surf" = Surface level
         
         #self.include_road_net = False           #road network map not working yet
         #self.include_supply_net = False       #include water supply mains
         #self.include_sewer_net = False        #include sewer mains
         
-        self.include_soc_par1 = False            #include a social parameter in the simulation?
-        self.include_soc_par2 = False            #include a social parameter in the simulation?
+        self.include_soc_par1 = 0            #include a social parameter in the simulation?
+        self.include_soc_par2 = 0            #include a social parameter in the simulation?
         self.social_par1_name = "unnamed1"      #name of social parameter1
         self.social_par2_name = "unnamed2"      #name of social parameter2
         self.socpar1_type = "B"                 #B = Binary, P = Proportionate
         self.socpar2_type = "B"
         
-        self.patchdelin = True                  #perform patch delineation? All subsequent algorithms will need to consider this
-        self.spatialmetrics = True              #perform calculation of spatial metrics? Just an additional feature
+        self.patchdelin = 0                  #perform patch delineation? All subsequent algorithms will need to consider this
+        self.spatialmetrics = 0              #perform calculation of spatial metrics? Just an additional feature
         
         #Local Extents and Map Connectivity
         self.createParameter("Neighbourhood", STRING,"")
@@ -180,10 +180,10 @@ class Delinblocks(UBModule):      #UBCORE
         self.createParameter("demsmooth_passes", DOUBLE,"")
         
         self.Neighbourhood = "M"                #three options: M = Moore, N = von Neumann
-        self.vn4FlowPaths = False
-        self.vn4Patches = False               
+        self.vn4FlowPaths = 0
+        self.vn4Patches = 0
         self.flow_method = "D8"                 #three options: DI = D-infinity (Tarboton), D8 = D8 (O'Callaghan & Mark) and MS = Divergent (Freeman)
-        self.demsmooth_choose = False
+        self.demsmooth_choose = 0
         self.demsmooth_passes = 1
         
         #Regional Geography
@@ -194,12 +194,12 @@ class Delinblocks(UBModule):      #UBCORE
         self.createParameter("locationLat", DOUBLE, "")
         self.createParameter("marklocation", BOOL, "")
         
-        self.considerCBD = False
+        self.considerCBD = 0
         self.locationOption = "S"       #method for setting location option: S = selection, C = coordinates
         self.locationCity = "Melbourne" #index of the combobox, it returns the city name in a different vector
         self.locationLong = float(0.0)           #longitude of the location
         self.locationLat = float(0.0)            #latitude of the location
-        self.marklocation = False       #should this CBD location be marked on the map as a point? If yes, it will be saved to the Block Centre Points
+        self.marklocation = 0       #should this CBD location be marked on the map as a point? If yes, it will be saved to the Block Centre Points
         
         #Hidden Inputs
         #self.createParameter("LocalityFilename", STRING, "")

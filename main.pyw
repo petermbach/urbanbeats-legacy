@@ -244,7 +244,13 @@ class MainWindow(QtGui.QMainWindow):
         
     def resetConfigInterface(self):
         n = self.ui.simconfig_tabs.count()
-        for i in range(n-1):
+        self.ui.summaryBox0.setHtml("")
+        for i in range(n):
+            if i == 0:
+                continue
+            sumbox = self.ui.simconfig_tabs.findChild(QtWebKit.QWebView, "summaryBox"+str(i))
+            sumbox.setParent(None)
+            sumbox.deleteLater()
             self.ui.simconfig_tabs.removeTab(1)
         return True
         
@@ -295,7 +301,6 @@ class MainWindow(QtGui.QMainWindow):
             self.revise_check.setText("Do not Revise Water Management Plan for this instance")
             self.revise_check.setObjectName(_fromUtf8("revise_check_"+str(tabnames[i])))
             self.verticalLayout.addWidget(self.revise_check)
-        activesimulation.initializeSimulationCore()
         self.updateSummaryBox(self.ui.simconfig_tabs.currentIndex())
         return True
     
@@ -311,13 +316,18 @@ class MainWindow(QtGui.QMainWindow):
         self.setupNewProject()          
         newprojectdialog = ubdialogs.NewProjectSetup(self.getActiveSimulationObject(), 'create')
         self.connect(newprojectdialog, QtCore.SIGNAL("rejected()"), lambda setstate=0: self.enabledisable_sim_guis(setstate) )
-        self.connect(newprojectdialog, QtCore.SIGNAL("newProjectSetupComplete"), self.updateNewProject)
+        self.connect(newprojectdialog, QtCore.SIGNAL("newProjectSetupComplete"), self.initializeNewProject)
         self.connect(newprojectdialog, QtCore.SIGNAL("newProjectDirectory"), self.setNewProjectDirectory)
         newprojectdialog.exec_()
         return True
 
+    def initializeNewProject(self):
+        activesim = self.getActiveSimulationObject()
+        activesim.initializeSimulationCore()
+        self.updateNewProject()
+
     def updateNewProject(self):
-        self.processSetupParameters()        
+        self.processSetupParameters()
         self.addSimulationDetailTabs()
         return True
     
@@ -331,25 +341,18 @@ class MainWindow(QtGui.QMainWindow):
         return True        
         
     def openExistingProject(self):
-        self.ui.databrowseTree.clear()        
+        self.ui.simconfig_tabs.setCurrentIndex(0)
+        self.ui.databrowseTree.clear()
         self.enabledisable_sim_guis(0)
         self.resetConfigInterface()
         self.setupNewProject()                          
         fname = QtGui.QFileDialog.getOpenFileName(self, "Load Existing UrbanBEATS Project...", os.curdir, "UrbanBEATS (*.ubs)")
         if fname:
             activesim = self.getActiveSimulationObject()
-            simdetails, activedataitemspc, activedataitemsic, activedataitemspa, md_delinblocks, md_urbplanbb, md_techplace, md_techimpl, md_perf = ubfiles.loadSimFile(activesim, fname)
+            ubfiles.loadSimFile(activesim, fname)
             self.updateNewProject()
-            activesim.setActiveProjectPath(simdetails["projectpath"])           
             self.setNewProjectDirectory(activesim.getActiveProjectPath())
-            activesim.updateDelinblocksFromDict(md_delinblocks)
-            activesim.updateUrbplanbbFromDict(md_urbplanbb)
-            #activesim.updateTechplaceFromDict(md_techplace)
-            #activesim.updateTechimplFromDict(md_techimpl)
-            #activesim.updatePerfFromDict(md_perf)
             self.setupTreeWidgetFromDict()
-            activesim.setCycleDataFromDict(activedataitemspc, activedataitemsic, activedataitemspa)
-            activesim.setFullFileName(fname)
         self.printc("Simulation Core Initialised")
         #Call a function to update entire gui on everything
         return True

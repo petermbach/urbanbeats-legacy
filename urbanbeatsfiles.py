@@ -15,7 +15,7 @@ def saveSimFile(activesim, filename):
                         also relevant for determining size of several arrays and the number of modules to instantiate
         - dataarch.txt - data archive listing all data files currently in the data browser of the project including their
                         type (e.g. land use, elevation, etc.)
-        - pcycledata.txt & icycledata.txt - the data currently set for each cycle in the simulation
+        - pcycledata.txt & icycledata.txt & perfdata.txt - the data currently set for each cycle in the simulation
         - outputcfg.txt - all parameters relating to the outputs requested from UrbanBEATS by the user for the current
                         simulation
         - narrative.txt - narratives for each of the cycles, this is the context-specific information of the proejct that
@@ -27,52 +27,60 @@ def saveSimFile(activesim, filename):
                         re-assigned based on cycle
         - techimplement.txt - parameters for techimplement module(s), read as an array of parameters and can be easily
                         re-assigned based on cycle
+        - perfassess.txt - parameters for performance assessment module(s)
 
     Note that for the module files, one txt is created per instantiation of module, filenames delimited with an index
     number representing the tabindex.
     """
+
     tempfiles = []
+    directory = os.path.dirname(str(filename))
+    if os.path.exists(filename): os.remove(filename)
     archive = tarfile.open(filename, 'w')     #creates the tar archive
 
     #Create the individual text files in the same location, then add to the tar archive - *||* is used as delimiter
-    f = open("projinfo.txt", 'w')
+    if os.path.exists(directory+"/projinfo.txt"): os.remove(directory+"/projinfo.txt")
+    f = open(directory+"/projinfo.txt", 'w')
     projdetails = activesim.getProjectDetails() #Obtains the project information dictionary
     for keys in projdetails.keys():
-        f.write(keys+"*||*"+str(projdetails[keys])+"\n")
+        f.write(keys+"*||*"+str(projdetails[keys])+"*||*\n")
     f.close()
-    archive.add("projinfo.txt")
+    archive.add(directory+"/projinfo.txt", arcname="projinfo.txt")
     tempfiles.append("projinfo.txt")    #---END OF PROJECT FILE DATA SAVE
 
-    f = open("dataarch.txt", 'w')
+    if os.path.exists(directory+"/dataarch.txt"): os.remove(directory+"/dataarch.txt")
+    f = open(directory+"/dataarch.txt", 'w')
     dataarchive = activesim.showDataArchive()   #Obtains the data archive dictionary
     for datatype in dataarchive.keys():
-        f.write(str(datatype)+"\n")
+        f.write(str(datatype)+"*||*\n")
         for files in dataarchive[datatype]:
-            f.write(str(files)+"\n")
+            f.write(str(files)+"*||*\n")
         f.write("---eol---\n")  #End of line marker for that particular data type, file is read until this is encountered
     f.close()
-    archive.add("dataarch.txt")
+    archive.add(directory+"/dataarch.txt", arcname="dataarch.txt")
     tempfiles.append("dataarch.txt")    #---END OF DATA ARCHIVE DATA SAVE
 
-    f = open("narrative.txt", 'w')
+    if os.path.exists(directory+"/narrative.txt"): os.remove(directory+"/narrative.txt")
+    f = open(directory+"/narrative.txt", 'w')
     narratives = activesim.getAllNarratives()       #Obtains all narratives, one narrative per line on the file
     for line in range(len(narratives)):
         nar = narratives[line]
-        f.write(str(nar[0]+"*||*"+nar[1]+"\n"))
+        f.write(str(nar[0]+"*||*"+nar[1]+"*||*\n"))
     f.close()
-    archive.add("narrative.txt")
+    archive.add(directory+"/narrative.txt", arcname="narrative.txt")
     tempfiles.append("narrative.txt")
 
-    f = open("outputcfg.txt", 'w')
+    if os.path.exists(directory+"/outputcfg.txt"): os.remove(directory+"/outputcfg.txt")
+    f = open(directory+"/outputcfg.txt", 'w')
     gisoptions = activesim.getGISExportDetails()
     #reportoptions = activesim.getReportingOptions()
     for keys in gisoptions.keys():
-        f.write(str(keys)+"*||*"+str(gisoptions[keys])+"\n")
+        f.write(str(keys)+"*||*"+str(gisoptions[keys])+"*||*\n")
     #for keys in reportoptions.keys():
         #f.write(str(keys)+"*||*"+str(reportoptions[keys])+"\n")
     f.close()
-    archive.add("outputcfg.txt", 'w')
-    tempfiles.append("outputcfg.txt", 'w')
+    archive.add(directory+"/outputcfg.txt", arcname="outputcfg.txt")
+    tempfiles.append("outputcfg.txt")
 
     #Transfer Data Arrays into three separate text files for planning, implementation and performance assessment cycles
     datafname = ["pcycledata.txt", "icycledata.txt", "perfdata.txt"]
@@ -80,27 +88,32 @@ def saveSimFile(activesim, filename):
     for i in range(len(datafname)):
         fname = datafname[i]
         cycle = datacycles[i]
-        f = open(fname, 'w')
         dataarray = activesim.getAllCycleDataSets(cycle)
+        if len(dataarray) == 0:     #If the array is empty, that data cycle is not featured
+            continue    #Skip saving that particular file
+
+        if os.path.exists(directory+"/"+fname): os.remove(directory+"/"+fname)
+        f = open(directory+"/"+fname, 'w')
         for j in range(len(dataarray)):
-            f.write("TabIndex"+str(j)+"\n")
+            f.write("TabIndex"+str(j)+"*||*\n")
             data = dataarray[j]
             for k in data.keys():
-                f.write(str(k)+"*||*"+str(data[k])+"\n")
+                f.write(str(k)+"*||*"+str(data[k])+"*||*\n")
             f.write("---eol---\n")
         f.close()
-        archive.add(fname)
+        archive.add(directory+"/"+fname, arcname=fname)
         tempfiles.append(fname)
 
     #Transfer Module Data into separate files for each module
     #---DELINBLOCKS----
-    f = open("delinblocks.txt", 'w')
+    if os.path.exists(directory+"/delinblocks.txt"): os.remove(directory+"/delinblocks.txt")
+    f = open(directory+"/delinblocks.txt", 'w')
     delinblocksmodule = activesim.getModuleDelinblocks()
     parameters = delinblocksmodule.getModuleParameterList()
     for i in parameters.keys():
-        f.write(str(i)+"*||*"+str(parameters[i])+"*||*"+str(delinblocksmodule.__dict__[i])+"\n")
+        f.write(str(i)+"*||*"+str(delinblocksmodule.__dict__[i])+"*||*\n")
     f.close()
-    archive.add("delinblocks.txt")
+    archive.add(directory+"/delinblocks.txt", arcname="delinblocks.txt")
     tempfiles.append("delinblocks.txt")
 
     #---OTHER PLANNING-SUPPORT MODULES----
@@ -110,189 +123,121 @@ def saveSimFile(activesim, filename):
     #for i in range(len(modulefnames)):
     #    fname = modulefname[i]
 
-
     #Save the archive and finish up
     archive.close()
     for file in tempfiles:
-        if os.path.exists(file): os.remove(file)
+        if os.path.exists(directory+"/"+file): os.remove(directory+"/"+file)
     return True
-#
-#def getCompleteCycleString(modulevector, parametername):
-#    stringoutput = str(parametername)+";"
-#    for i in modulevector:
-#        if type(i.getParameter(parametername)) == bool:
-#            stringoutput += str(int(i.getParameter(parametername)))+";"
-#        else:
-#            stringoutput += str(i.getParameter(parametername))+";"
-#    stringoutput.rstrip(';')
-#    stringoutput += "\n"
-#    return stringoutput
 
 def loadSimFile(activesim, filename):
+    archive = tarfile.open(filename, 'r')
+
+    #Retrieve Project Details
+    projectinfo = {}
+    f = archive.extractfile("projinfo.txt")
+    for lines in f:
+        data = lines.split("*||*")
+        projectinfo[str(data[0])] = str(data[1])
+    for key in projectinfo.keys():
+        activesim.setParameter(key, type(activesim.getParameter(key))(projectinfo[key]))
+    f.close()
+    activesim.initializeSimulationCore()
+    activesim.setActiveProjectPath(projectinfo["projectpath"])
+    activesim.setFullFileName(filename)
+
+    #Restore Data Archive
+    f = archive.extractfile("dataarch.txt")     #Category, then read lines until '---eol---'
+    dataarray = []
+    categories = []
+    for lines in f:
+        dataarray.append(lines.split('*||*'))
+    category = dataarray[0][0]
+    i = 1
+    while i <= (len(dataarray)-1):
+        if 'eol' in dataarray[i][0]:
+            i += 1
+            if i < len(dataarray):
+                category = dataarray[i][0]
+                i += 1
+                continue
+            else:
+                continue
+        activesim.addDataToArchive(category, dataarray[i][0])
+        i += 1
+    f.close()
+
+    #Restore Narratives
+    f = archive.extractfile("narrative.txt")
+    tabindex = 0
+    for lines in f:
+        nar = lines.split('*||*')
+        activesim.setNarrative(tabindex, [nar[0], nar[1]])
+        tabindex += 1
+    f.close()
+
+    #Write project output options into file
+    outputoptions = {}
+    f = archive.extractfile("outputcfg.txt")
+    for lines in f:
+        data = lines.split("*||*")
+        outputoptions[str(data[0])] = str(data[1])
+    #Now transfer to gisexportoptions and other options
+    gisoptions = activesim.getGISExportDetails()
+    for keys in gisoptions.keys():
+        activesim.setGISExportDetails(keys, type(gisoptions[keys])(outputoptions[keys]))
+    f.close()
+
+    #Set Cycle Data Sets
+    datafname = ["pcycledata.txt", "icycledata.txt", "perfdata.txt"]
+    datacycles = ["pc", "ic", "pa"]
+    for i in range(len(datafname)):
+        fname = datafname[i]
+        print fname
+        cycle = datacycles[i]
+        print archive.getnames()
+        if fname not in archive.getnames():   #if the datafname file is not in the archive, skip
+            continue
+        f = archive.extractfile(fname)
+        dataarray = []  #transfer data to an array
+        for lines in f:
+            dataarray.append(lines)
+
+        tabindex = 0 #counter
+        j = 1   #Skip the first line
+        dataset = {}    #individual data sets for different cycles
+        while j <= len(dataarray):
+            if 'eol' in dataarray[j]:        #If an 'end of line' is encountered, set data set
+                activesim.setCycleDataSet(cycle, tabindex, dataset)
+                print dataset
+                dataset = {}
+                tabindex += 1
+                j += 2  #Skips two lines ahead (the next header onto the first line
+                continue
+            line = dataarray[j].split("*||*")
+            print line
+            dataset[line[0]] = line[1]
+            j += 1
+        f.close()
+
+    #Update modules
+    delinblocksmodule = activesim.getModuleDelinblocks()
+    moduledata = {}
+    f = archive.extractfile("delinblocks.txt")
+    for lines in f:
+        data = lines.split("*||*")
+        moduledata[data[0]] = data[1]
+    for keys in moduledata.keys():
+        if type(delinblocksmodule.getParameterType(keys)) == 'BOOL':
+            delinblocksmodule.setParameter(keys, type(delinblocksmodule.getParameter(keys))(int(moduledata[keys])))
+        else:
+            delinblocksmodule.setParameter(keys, type(delinblocksmodule.getParameter(keys))(moduledata[keys]))
+    f.close()
+
+    #modulenames = {"urbplanbb":activesim.getModuleUrbplanbb,
+    #                "techplacement":activesim.getModuleTechplacement,
+    #                "techimplement":activesim.getModuleTechimplement}
 
 
+
+    archive.close()
     return True
-
-#    simulationdetails = {}
-#    simdataarchive = {"Elevation" : [],               "Soil" : [],                "Land Use" : [],
-#                      "Population" : [],              "Employment" : [],          "Planning" : [],
-#                      "Locality" : [],                "Groundwater" : [],         "Rivers" : [],
-#                      "Lakes" : [],                   "Social Parameters" : [],   "Existing Systems" : [],
-#                      "Rainfall" : [],                "Evapotranspiration" : [],  "Solar Radiation" : []                }       #will contain the full library
-#    md_delinblocks = {}
-#    md_urbplanbb = {}
-#    md_techplace = {}
-#    md_techimpl = {}
-#    md_perf = {}
-#    line = 0
-#    f = open(filename, 'r')
-#    while str(line) != "--- PROJECT INFO ---\n":
-#        line = f.readline()
-#    #print "Before project info"
-#    #--- PROJECT INFO ---
-#    lines = readUntil(f, "--- DATA ARCHIVE ---\n")
-#    simulationdetails = transferFileDataToDict(lines, simulationdetails)
-#
-#    staticsimfeatures = [int(simulationdetails["static_ubpconstant"]), \
-#                         int(simulationdetails["static_techplaninclude"]),\
-#                         int(simulationdetails["static_techplanconstant"]),\
-#                         int(simulationdetails["static_techimplinclude"]),\
-#                         int(simulationdetails["static_techimplconstant"]),\
-#                         int(simulationdetails["static_perfinclude"])]
-#    simulationdetails["staticsimfeatures"] = staticsimfeatures
-#    staticdataoptions = [int(simulationdetails["static_mapchange"]),\
-#                         int(simulationdetails["static_climateconstant"])]
-#    simulationdetails["staticdataoptions"] = staticdataoptions
-#    dynsimfeatures = [int(simulationdetails["dyn_ubpconstant"]),\
-#                      int(simulationdetails["dyn_techplanconstant"]),\
-#                      int(simulationdetails["dyn_techimplconstant"]),\
-#                      int(simulationdetails["dyn_perfinclude"]),\
-#                      int(simulationdetails["dyn_perfconstant"])]
-#    simulationdetails["dynsimfeatures"] = dynsimfeatures
-#
-#    dyndatafeatures = [int(simulationdetails["dyn_mplanconstant"]),\
-#                       int(simulationdetails["dyn_climateconstant"])]
-#    simulationdetails["dyndatafeatures"] = dyndatafeatures
-#
-#    #--- DATA ARCHIVE ---
-#    f.readline()
-#    f.readline()
-#    f.readline()    #Read the three lines that make up the Table's header
-#    lines = readUntil(f, "--- OUTPUT OPTIONS ---\n")
-#    simdatadict = {}
-#    for i in lines:
-#        i = i.strip("\n")
-#        datasplit = i.split(";")
-#        if len(i) > 1:
-#            simdataarchive[str(datasplit[1])].append(str(datasplit[2]))
-#            simdatadict[int(datasplit[0])] = [str(datasplit[1]),str(datasplit[2])]
-#    #print simdataarchive
-#    #print simdatadict
-#    #--- OUTPUT OPTIONS ---
-#    lines = readUntil(f, "--- CYCLE DATA SETS ---\n")
-#    simulationdetails = transferFileDataToDict(lines, simulationdetails)
-#
-#    #--- CYCLE DATA SETS ---
-#    f.readline()
-#    f.readline()
-#    f.readline()    #Read the next three lines of Table Header
-#    lines = readUntil(f, "--- DELINBLOCKS PARAMETERS ---\n")
-#    activedataitemspc = []
-#    activedataitemsic = []
-#    activedataitemspa = []
-#
-#    lineindex = 0
-#    for i in lines:
-#        i = i.strip("\n")
-#        i = i.split(";")
-#
-#        if len(i) <= 1:
-#            continue
-#        for cols in range(len(i)):
-#            if cols == 0 or i[cols] == 'none':
-#                continue
-#            i[cols] = i[cols].split(",")        #Will give something like [0, [1, 3, 5, 6], [4, 6, 6, 2], 'none']
-#            for values in range(len(i[cols])):
-#                i[cols][values] = int(i[cols][values])
-#
-#        activedataitemspc.append({})        #activedataitems = [ {dictionary 1}, {dictionary 2}, {dictionary 3}]
-#        if i[1] != 'none':                  #{dictionary1} = {Elevation: file, Land Use: file, ...}
-#            for selection in i[1]:
-#                activedataitemspc[lineindex][simdatadict[int(selection)][0]] = simdatadict[int(selection)][1]     #simdatadict[selection][0] = label of data type e.g. "Elevation"
-#                                                                                                #simdatadict[selection][1] = filename
-#        activedataitemsic.append({})
-#        if i[2] != 'none':
-#            for selection in i[2]:
-#                activedataitemsic[lineindex][simdatadict[int(selection)][0]] = simdatadict[int(selection)][1]
-#
-#        activedataitemspa.append({})
-#        if i[3] != 'none':
-#            for selection in i[3]:
-#                activedataitemspa[lineindex][simdatadict[int(selection)][0]] = simdatadict[int(selection)][1]
-#        #print "Set Cycle Data Variables"
-#        lineindex += 1
-#        #END OF FOR LOOP
-#
-#    #simulationdetails = transferFileDataToDict(lines, simulationdetails)
-#
-#    #--- DELINBLOCKS PARAMETERS ---
-#    lines = readUntil(f, "--- URBAN PLANNING PARAMETERS (PLANNING) ---\n")
-#    md_delinblocks = transferFileDataToDict(lines, md_delinblocks)
-#
-#    #--- URBAN PLANNING PARAMETERS ---
-#    lines = readUntil(f, "--- TECHNOLOGY PLANNING PARAMETERS ---\n")
-#    md_urbplanbb = transferFileDataToDict(lines, md_urbplanbb)
-#    #--- TECHNOLOGY PLANNING PARAMETERS ---
-#
-#    #--- TECHNOLOGY IMPLEMENTATION PARAMETERS ---
-#
-#    f.close()
-#
-#    #Transfer Project Details data
-#    projectdetails = activesim.getProjectDetails()
-#    for key in projectdetails:
-#        try:
-#            #print projectdetails[key]
-#            #print simulationdetails[key]
-#            projectdetails[key] = type(projectdetails[key])(simulationdetails[key])
-#        except KeyError:
-#            print "WARNING, project file does not contain info about: "+str(key)
-#    #Transfer data library data
-#    dataarchive = activesim.showDataArchive()
-#    for key in dataarchive:
-#        try:
-#            dataarchive[key] = simdataarchive[key]
-#        except KeyError:
-#            print "ATTENTION, no "+str(key)+" data specified"
-#
-#    #Transfer output options
-#    gisoutputs = activesim.getGISExportDetails()
-#    for key in gisoutputs:
-#        try:
-#            if type(gisoutputs[key]) == bool:
-#                gisoutputs[key] = type(gisoutputs[key])(int(simulationdetails[key]))
-#            else:
-#                gisoutputs[key] = type(gisoutputs[key])(simulationdetails[key])
-#        except KeyError:
-#            print "WARNING, project file does not contain info about: "+str(key)
-#
-#    return simulationdetails, activedataitemspc, activedataitemsic, activedataitemspa, md_delinblocks, md_urbplanbb, md_techplace, md_techimpl, md_perf
-#
-#def transferFileDataToDict(lines, simdict):
-#    for i in lines:
-#        i = i.strip("\n")
-#        datasplit = i.split(";")
-#        #print datasplit
-#        if len(datasplit) > 1 and len(datasplit) == 2:
-#            simdict[str(datasplit[0])] = datasplit[1]
-#        else:
-#            simdict[str(datasplit[0])] = datasplit[1:]
-
-def readUntil(fname, label):
-    lines = []
-    line = ""
-    while str(line) != label:
-        line = fname.readline()
-        if str(line) != label:
-            lines.append(line)
-    return lines

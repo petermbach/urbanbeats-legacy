@@ -56,17 +56,28 @@ class UrbanBeatsSim(threading.Thread):
                 "otherpersons" : "<none specified>",
                 "synopsis" : "<none specified>",
                 "simtype" : "S",
-                "static_snapshots" : 2,
-                "staticsimfeatures" : [0,0,0,0,0,0],
-                "staticdataoptions" : [0,0],
-                "dyn_totyears" : 50,
-                "dyn_startyear" : 1960,
-                "dyn_breaks" : 5,
-                "dyn_irregulardt" : 0,
-                "dynsimfeatures" : [0,0,0,0,0],
-                "dyndatafeatures" : [0,0],
+                "static_snapshots" : int(2),
+                "sf_ubpconstant": int(0),
+                "sf_techplaninclude":int(0),
+                "sf_techplanconstant":int(0),
+                "sf_techimplinclude":int(0),
+                "sf_techimplconstant":int(0),
+                "sf_perfinclude":int(0),
+                "sd_samedata":'E',
+                "sd_sameclimate":int(0),
+                "dyn_totyears" : int(50),
+                "dyn_startyear" : int(1960),
+                "dyn_breaks" : int(5),
+                "dyn_irregulardt" : int(0),
+                "df_ubpconstant":int(0),
+                "df_techplaceconstant":int(0),
+                "df_techimplconstant":int(0),
+                "df_perfinclude":int(0),
+                "df_perfconstant":int(0),
+                "dd_samemaster":int(0),
+                "dd_sameclimate":int(0),
                 "projectpath" : "<none>",
-                "projectpathsavedata" : 0   }
+                "projectpathsavedata" : int(0)   }
 
         self.__projectpath = "C:\\hello\\you\\"
 
@@ -107,20 +118,20 @@ class UrbanBeatsSim(threading.Thread):
         #Outputs and File Export Options
         self.__gis_options = {
                 "Filename": "unnamed",
-                "BuildingBlocks" : 1,
-                "PatchData" : 0,
-                "Flowpaths": 0,
-                "PlannedWSUD" : 0,
-                "ImplementedWSUD" : 0,
-                "CentrePoints" : 0,
+                "BuildingBlocks" : int(1),
+                "PatchData" : int(0),
+                "Flowpaths": int(0),
+                "PlannedWSUD" : int(0),
+                "ImplementedWSUD" : int(0),
+                "CentrePoints" : int(0),
                 "Projection": "+proj=utm +zone=55 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs +towgs84=0,0,0",
-                "ProjUser" : 0,
+                "ProjUser" : int(0),
                 "Proj4" : "",
                 "Offset" : "I",
-                "OffsetCustX" : 0.0,
-                "OffsetCustY" : 0.0,
-                "GoogleEarth" : 0,
-                "Localities" : 0   }
+                "OffsetCustX" : float(0.0),
+                "OffsetCustY" : float(0.0),
+                "GoogleEarth" : int(0),
+                "Localities" : int(0)   }
 
         self.__optionsinfo = {}       #contains all the reporting options and other options
 
@@ -163,95 +174,102 @@ class UrbanBeatsSim(threading.Thread):
 
     def initializeParameterSetsStatic(self):
         paramlength = self.__projectinfo["static_snapshots"]
-        simfeatures = self.__projectinfo["staticsimfeatures"]
-        staticdataoptions = self.__projectinfo["staticdataoptions"]
 
         self.__delinblocks.append(md_delinblocks.Delinblocks(self, "pc", 0))         #ONLY ONE DELINBLOCKS NEEDED
         self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc", 0))         #Add the first one, then check if more needed
 
-        if simfeatures[0] == 0: #if urbplanning rules (simfeatures[0]) are NOT to be constant...
+        if self.__projectinfo["sf_ubpconstant"] == 0: #if urbplanning rules are NOT to be constant...
             for i in range(int(paramlength-1)):     #add additional urbplan objects
                 self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc", i+1))
-#
-#        if simfeatures[1] != 0:     #If techplan is included
-#            self.__params_techplacement.append(TechplacementParameterSet("baseline"))
-#            if simfeatures[2] == 0:
-#                for i in range(int(paramlength-1)):
-#                    self.__params_techplacement.append(TechplacementParameterSet("snapshot"+str(i+1)))
-#
-#        if simfeatures[3] != 0:     #If techimplement is included
-#            self.__params_techimplement.append(TechimplementParameterSet("baseline"))
-#            if simfeatures[4] == 0:
-#                for i in range(int(paramlength-1)):
-#                    self.__params_techimplement.append(TechimplementParameterSet("snapshot"+str(i+1)))
-#
-#        if simfeatures[5] != 0:
-#            self.__params_perfassess.append(PerformanceParameterSet("baseline"))
-#            #No varying allowed in a static simulation as we are assuming that we're simulating the same catchment
-#
+
+        #if self.__projectinfo["sf_techplaninclude"] == 1:     #If techplan is included
+        #    self.__techplacement.append(md_techplacement.Techplacement(self, "pc", 0))
+        #    if self.__projectinfo["sf_techplanconstant"] == 0:
+        #        for i in range(int(paramlength-1)):
+        #            self.__techplacement.append(md_techplacement.Techplacement(self, "pc", i+1))
+        #
+        #if self.__projectinfo["sf_techimplinclude"] == 1:     #If techimplement is included
+        #    self.__techimplement.append(md_techimplement.Techimplement(self, "ic", 0))
+        #    if self.__projectinfo["sf_techimplconstant"] == 0:
+        #        for i in range(int(paramlength-1)):
+        #            self.__techimplement.append(md_techimplement.Techimplement(self, "ic", i+1))
+        #
+        #if self.__projectinfo["sf_perfinclude"] == 1:
+        #    self.__perf_assess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
+        #    #No varying allowed in a static simulation as we are assuming that we're simulating the same catchment
+
+        self.__narratives = []
         for i in range(int(paramlength)):
             self.__narratives.append(["Header"+str(i), "insert current narrative here..."])
 
-        if staticdataoptions[0] == 1:   #No change in MASTERPLAN        STATICDATAOPTIONS[0] = 0 --> MASTERPLAN CHANGES
-            for i in range(int(paramlength)):                          #STATICDATAOPTIONS[0] = 1 --> MASTERPLAN CONSTANT
-                self.__data_geographic_ic.append({}) #so change the implementation environment data ever cycle
-        else:
-            self.__data_geographic_ic.append({})
+        if self.__projectinfo["sf_techimplinclude"] == 1:
+            if self.__projectinfo["sd_samedata"] == 'M':   #No change in MASTERPLAN        STATICDATAOPTIONS[0] = 0 --> MASTERPLAN CHANGES
+                for i in range(int(paramlength)):                          #STATICDATAOPTIONS[0] = 1 --> MASTERPLAN CONSTANT
+                    self.__data_geographic_ic.append({}) #so change the implementation environment data ever cycle
+            else:
+                self.__data_geographic_ic.append({})
 
-        if staticdataoptions[0] == 0: #No change in implementation envrionment
+            if self.__projectinfo["sf_techimplinclude"] == 1 and self.__projectinfo["sd_samedata"] == 'E': #No change in implementation environment
+                for i in range(int(paramlength)):
+                    self.__data_geographic_pc.append({}) #so change the masterplan data every cycle
+            else:
+                self.__data_geographic_pc.append({})
+        else:
             for i in range(int(paramlength)):
-                self.__data_geographic_pc.append({}) #so change the masterplan data every cycle
-        else:
-            self.__data_geographic_pc.append({})
+                self.__data_geographic_pc.append({})    #else by default just add the required number of placeholders to planning cycle data
 
-        if staticdataoptions[1] == 0:   #Change in climate every snapshot
-            for i in range(int(paramlength)):                       #STATICDATAOPTIONS[1] = 0 --> CLIMATE CHANGES
-                self.__data_climate.append({})                      #STATICDATAOPTIONS[1] = 1 --> CLIMATE CONSTANT
+        if self.__projectinfo["sf_perfinclude"] == 1:
+            if self.__projectinfo["sd_sameclimate"] == 0:   #Change in climate every snapshot
+                for i in range(int(paramlength)):                       #STATICDATAOPTIONS[1] = 0 --> CLIMATE CHANGES
+                    self.__data_climate.append({})                      #STATICDATAOPTIONS[1] = 1 --> CLIMATE CONSTANT
+            else:
+                self.__data_climate.append({})
         else:
-            self.__data_climate.append({})
+            pass    #array stays empty
 
     def initializeParameterSetsDynamic(self):
         paramlength = self.__projectinfo["dyn_breaks"] +1       #n breaks + baseline
-        simfeatures = self.__projectinfo["dynsimfeatures"]
-        dyndatafeatures = self.__projectinfo["dyndatafeatures"]
 
         self.__delinblocks.append(md_delinblocks.Delinblocks(self, "pc", 0))         #ONLY ONE DELINBLOCKS NEEDED
         self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc",0))         #Add the first one, then check if more needed
 
-        if simfeatures[0] == 0: #if NOT same urbanplanning rules (simfeatures[0])
+        if self.__projectinfo["df_ubpconstant"] == 0: #if NOT same urbanplanning rules
             for i in range(int(paramlength-1)):
                 self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc", i+1))
-#
-#        self.__params_techplacement.append(TechplacementParameterSet("baseline"))
-#        if simfeatures[1] == 0:
-#            for i in range(int(paramlength-1)):
-#                self.__params_techplacement.append(TechplacementParameterSet("milestone"+str(i+1)))
-#
-#        self.__params_techimplement.append(TechimplementParameterSet("baseline"))
-#        if simfeatures[2] == 0:
-#            for i in range(int(paramlength-1)):
-#                self.__params_techimplement.append(TechimplementParameterSet("milestone"+str(i+1)))
-#
-#        if simfeatures[3] != 0:
-#            self.__params_perfassess.append(PerformanceParameterSet("baseline"))
-#            if simfeatures[4] == 0:
-#                for i in range(int(paramlength-1)):
-#                    self.__params_perfassess.append(PerformanceParameterSet("milestone"+str(i+1)))
-#
-        if dyndatafeatures[0] == 0:                     #If masterplan should change
-            for i in range(int(paramlength)):                       #DYNDATAFEATURES[0] = 0 --> MASTERPLAN CHANGES
-                self.__data_geographic_pc.append({})                #DYNDATAFEATURES[0] = 1 --> MASTERPLAN CONSTANT
+
+        #self.__techplacement.append(md_techplacement.Techplacement(self, "pc", 0))
+        #if self.__projectinfo["df_techplaceconstant"] == 0:
+        #    for i in range(int(paramlength-1)):
+        #        self.__techplacement.append(md_techplacement.Techplacement(self, "pc", i+1))
+        #
+        #self.__techimplement.append(md_techimplement.Techimplement(self, "ic", 0))
+        #if self.__projectinfo["df_techimplconstant"] == 0:
+        #    for i in range(int(paramlength-1)):
+        #        self.__techimplement.append(md_techimplement.Techimplement(self, "ic", i+1))
+        #
+        #if self.__projectinfo["df_perfinclude"] != 0:
+        #    self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
+        #    if self.__projectinfo["df_perfconstant"] == 0:
+        #        for i in range(int(paramlength-1)):
+        #            self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", i+1))
+
+        if self.__projectinfo["dd_samemaster"] == 0:                     #If masterplan should change
+            for i in range(int(paramlength)):
+                self.__data_geographic_pc.append({})
         else:
             self.__data_geographic_pc.append({})
 
         for i in range(int(paramlength)):
             self.__data_geographic_ic.append({})
 
-        if dyndatafeatures[1] == 0:                     #if climate data should change
-            for i in range(int(paramlength)):                       #DYNDATAFEATURES[1] = 0 --> CLIMATE CHANGES
-                self.__data_climate.append({})                      #DYNDATAFEATURES[1] = 1 --> CLIMATE CONSTANT
+        if self.__projectinfo["df_perfinclude"] == 1:
+            if self.__projectinfo["dd_sameclimate"] == 0:                     #if climate data should change
+                for i in range(int(paramlength)):
+                    self.__data_climate.append({})
+            else:
+                self.__data_climate.append({})
         else:
-            self.__data_climate.append({})
+            pass        #Leave climate data array blank with len = 0
 
     def initalizeParameterSetBenchmark(self):
         self.__delinblocks.append(md_delinblocks.Delinblocks(self, "pc", 0))         #ONLY ONE DELINBLOCKS NEEDED
@@ -310,43 +328,6 @@ class UrbanBeatsSim(threading.Thread):
                 self.__data_climate[0] = dataset
         return True
 
-    def setCycleDataFromDict(self, pcdict, icdict, padict):
-        #Set Cycle Data Sets
-        cycletypes = ["pc", "ic", "pa"]
-        simtype = self.getProjectDetails()["simtype"]
-        if simtype == "S":
-            cycles = self.getProjectDetails()["static_snapshots"]
-        elif simtype == "D":
-            cycles = self.getProjectDetails()["dyn_breaks"] + 1
-        else:
-            simtype == "B"
-            cycles = 1  #Benchmark mode: only one cycle
-        
-        for i in range(cycles):
-            for j in cycletypes:    #By default, for i = 0 we add the data in the 0th index line of the data file, but for all others we don't
-                if j == "pc":
-                    if i > 0 and simtype == "S" and self.getProjectDetails()["staticdataoptions"][0] == 1:  #no change in materplan?
-                        continue
-                    elif i > 0 and simtype == "D" and self.getProjectDetails()["dyndatafeatures"][0] == 1:
-                        continue
-                    #print pcdict[i]
-                    self.setCycleDataSet(j, i, pcdict[i])
-                elif j == "ic":
-                    if i > 0 and simtype == "S" and self.getProjectDetails()["staticdataoptions"][0] == 0:  #no change in implementation enviro?
-                        continue            #ONLY FOR STATIC, in Dynamic mode we add data in every cycle, for Benchmark there is only one cycle
-                    #print icdict[i]
-                    self.setCycleDataSet(j, i, icdict[i])   #set equal to the baseline set
-                elif j == "pa":
-                    if i > 0 and simtype == "S" and self.getProjectDetails()["staticdataoptions"][1] == 1:  #no change in climate data?
-                        continue
-                    elif i > 0 and simtype == "D" and self.getProjectDetails()["dyndatafeatures"][1] == 1:
-                        continue
-                    #print padict[i]
-                    self.setCycleDataSet(j, i, padict[i])
-                else:
-                    pass
-        return True
-
     def getCycleDataSet(self, curstate, tabindex):
         if curstate == "pc":
             if len(self.__data_geographic_pc) > 1:
@@ -392,7 +373,10 @@ class UrbanBeatsSim(threading.Thread):
             return None
 
     def setNarrative(self, tabindex, narrative):
-        self.__narratives[tabindex] = narrative
+        if tabindex == 9999:
+            self.__narratives = narrative
+        else:
+            self.__narratives[tabindex] = narrative
 
     def getNarrative(self, tabindex):
         try:
@@ -436,17 +420,6 @@ class UrbanBeatsSim(threading.Thread):
     def getModuleDelinblocks(self):
         return self.__delinblocks[0]
 
-    def updateDelinblocksFromDict(self, paramdict):
-        simmodule = self.__delinblocks[0]
-        for key in paramdict:
-            if key == "":
-                continue
-            if type(simmodule.getParameter(key)) == bool:
-                simmodule.setParameter(key, type(simmodule.getParameter(key))(int(paramdict[key])))
-            else:
-                simmodule.setParameter(key, type(simmodule.getParameter(key))(paramdict[key]))
-        return True
-    
     def getModuleUrbplanbb(self, index):
         if index == 9999:
             return self.__urbplanbb
