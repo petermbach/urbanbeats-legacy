@@ -239,5 +239,19 @@ def loadSimFile(activesim, filename):
 
 
 
+    #def updateUrbplanbbFromDict(self, paramdict):
+    #    simmodule = self.__urbplanbb
+    #    for key in paramdict:
+    #        if key == "":
+    #            continue
+    #        for i in range(len(simmodule)):
+    #            if type(simmodule[i].getParameter(key)) == bool:
+    #                simmodule[i].setParameter(key, type(simmodule[i].getParameter(key))(int(paramdict[key][i])))
+    #            else:
+    #                simmodule[i].setParameter(key, type(simmodule[i].getParameter(key))(paramdict[key][i]))
+    #    return True
+
+
+
     archive.close()
     return True

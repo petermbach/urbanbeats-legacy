@@ -29,16 +29,18 @@ import tech_designbyeq as deq           #sub-functions that design based on desi
 import tech_designbysim as dsim         #sub-functions that design based on miniature simulations
 import ubseriesread as ubseries         #sub-functions responsible for processing climate data
 
-from techplacementguic import *
+from md_techplacementguic import *
 
 import os, sqlite3, gc, random
 import numpy as np
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from pydynamind import *
+#from pydynamind import *
+import urbanbeatsdatatypes as ubdata    #UBCORE
+from urbanbeatsmodule import *      #UBCORE
 
-class Techplacement(Module):
+class Techplacement(UBModule):
     """Log of Updates made at each version:
     
     v1.00 update (April 2013):
@@ -77,11 +79,14 @@ class Techplacement(Module):
 	@author Peter M Bach
 	"""
         
-    def __init__(self):
-        Module.__init__(self)
+    def __init__(self, activesim, curstate, tabindex):
+        UBModule.__init__(self)
         self.block_size = 0        
         self.ubeatsdir = os.path.dirname(__file__)  #Current directory of the file
-        
+        self.cycletype = curstate       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
+        self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
+        self.activesim = activesim      #UBCORE
+
         ##########################################################################
         #---DESIGN CRITERIA INPUTS                                               
         ##########################################################################
@@ -710,99 +715,99 @@ class Techplacement(Module):
         self.relTolerance = 1
         self.maxSBiterations = 100
 
-        ########################################################################
-        
-        #Views
-        self.blocks = View("Block", FACE,WRITE)
-        self.blocks.getAttribute("Status")
-        self.blocks.getAttribute("UpstrIDs")
-        self.blocks.getAttribute("DownstrIDs")
-        self.blocks.addAttribute("wd_Rating")
-        self.blocks.addAttribute("wd_RES_K")
-        self.blocks.addAttribute("wd_RES_S")
-        self.blocks.addAttribute("wd_RES_T")
-        self.blocks.addAttribute("wd_RES_L")
-        self.blocks.addAttribute("wd_RES_IN")
-        self.blocks.addAttribute("wd_RES_OUT")
-        self.blocks.addAttribute("wd_HDR_K")
-        self.blocks.addAttribute("wd_HDR_S")
-        self.blocks.addAttribute("wd_HDR_T")
-        self.blocks.addAttribute("wd_HDR_L")
-        self.blocks.addAttribute("wd_HDR_IN")
-        self.blocks.addAttribute("wd_HDR_OUT")
-        self.blocks.addAttribute("wd_PrivIN")
-        self.blocks.addAttribute("wd_PrivOUT")
-        self.blocks.addAttribute("wd_LI")
-        self.blocks.addAttribute("wd_HI")
-        self.blocks.addAttribute("wd_COM")
-        self.blocks.addAttribute("wd_ORC")
-        self.blocks.addAttribute("wd_Nres_IN")
-        self.blocks.addAttribute("Apub_irr")
-        self.blocks.addAttribute("wd_PubOUT")
-        self.blocks.addAttribute("Blk_WD")
-        self.blocks.addAttribute("Blk_WD_OUT")
-        self.blocks.addAttribute("Manage_EIA")
-
-        self.mapattributes = View("GlobalMapAttributes", COMPONENT, WRITE)
-        self.mapattributes.getAttribute("NumBlocks")
-        self.mapattributes.addAttribute("OutputStrats")
-	
-        self.sysGlobal = View("SystemGlobal", COMPONENT, READ)
-        self.sysGlobal.getAttribute("TotalSystems")
-        
-        self.sysAttr = View("SystemAttribute", COMPONENT, READ)
-        self.sysAttr.getAttribute("StrategyID")
-        self.sysAttr.getAttribute("posX")
-        self.sysAttr.getAttribute("posY")
-        self.sysAttr.getAttribute("BasinID")
-        self.sysAttr.getAttribute("Location")
-        self.sysAttr.getAttribute("Scale")
-        self.sysAttr.getAttribute("Type")
-        self.sysAttr.getAttribute("Qty")
-        self.sysAttr.getAttribute("GoalQty")
-        self.sysAttr.getAttribute("SysArea")
-        self.sysAttr.getAttribute("Status")
-        self.sysAttr.getAttribute("Year")
-        self.sysAttr.getAttribute("EAFact")
-        self.sysAttr.getAttribute("ImpT")
-        self.sysAttr.getAttribute("CurImpT")
-        self.sysAttr.getAttribute("Upgrades")
-        self.sysAttr.getAttribute("WDepth")
-        self.sysAttr.getAttribute("FDepth")
-        self.sysAttr.getAttribute("Exfil")
-        
-        self.wsudAttr = View("WsudAttr", COMPONENT, WRITE)
-        self.wsudAttr.addAttribute("StrategyID")
-        self.wsudAttr.addAttribute("posX")
-        self.wsudAttr.addAttribute("posY")
-        self.wsudAttr.addAttribute("BasinID")
-        self.wsudAttr.addAttribute("Location")
-        self.wsudAttr.addAttribute("Scale")
-        self.wsudAttr.addAttribute("Type")
-        self.wsudAttr.addAttribute("Qty")
-        self.wsudAttr.addAttribute("GoalQty")
-        self.wsudAttr.addAttribute("SysArea")
-        self.wsudAttr.addAttribute("Status")
-        self.wsudAttr.addAttribute("Year")
-        self.wsudAttr.addAttribute("EAFact")
-        self.wsudAttr.addAttribute("ImpT")
-        self.wsudAttr.addAttribute("CurImpT")
-        self.wsudAttr.addAttribute("Upgrades")
-        self.wsudAttr.addAttribute("WDepth")
-        self.wsudAttr.addAttribute("FDepth")
-        self.wsudAttr.addAttribute("Exfil")
-	
-        #Datastream
-        datastream = []
-        datastream.append(self.mapattributes)
-        datastream.append(self.blocks)
-        datastream.append(self.sysGlobal)
-        datastream.append(self.sysAttr)
-        datastream.append(self.wsudAttr)
-        
-        self.addData("City", datastream)
-	
-        self.BLOCKIDtoUUID = {}
+        #########################################################################
+        #
+        ##Views
+        #self.blocks = View("Block", FACE,WRITE)
+        #self.blocks.getAttribute("Status")
+        #self.blocks.getAttribute("UpstrIDs")
+        #self.blocks.getAttribute("DownstrIDs")
+        #self.blocks.addAttribute("wd_Rating")
+        #self.blocks.addAttribute("wd_RES_K")
+        #self.blocks.addAttribute("wd_RES_S")
+        #self.blocks.addAttribute("wd_RES_T")
+        #self.blocks.addAttribute("wd_RES_L")
+        #self.blocks.addAttribute("wd_RES_IN")
+        #self.blocks.addAttribute("wd_RES_OUT")
+        #self.blocks.addAttribute("wd_HDR_K")
+        #self.blocks.addAttribute("wd_HDR_S")
+        #self.blocks.addAttribute("wd_HDR_T")
+        #self.blocks.addAttribute("wd_HDR_L")
+        #self.blocks.addAttribute("wd_HDR_IN")
+        #self.blocks.addAttribute("wd_HDR_OUT")
+        #self.blocks.addAttribute("wd_PrivIN")
+        #self.blocks.addAttribute("wd_PrivOUT")
+        #self.blocks.addAttribute("wd_LI")
+        #self.blocks.addAttribute("wd_HI")
+        #self.blocks.addAttribute("wd_COM")
+        #self.blocks.addAttribute("wd_ORC")
+        #self.blocks.addAttribute("wd_Nres_IN")
+        #self.blocks.addAttribute("Apub_irr")
+        #self.blocks.addAttribute("wd_PubOUT")
+        #self.blocks.addAttribute("Blk_WD")
+        #self.blocks.addAttribute("Blk_WD_OUT")
+        #self.blocks.addAttribute("Manage_EIA")
+        #
+        #self.mapattributes = View("GlobalMapAttributes", COMPONENT, WRITE)
+        #self.mapattributes.getAttribute("NumBlocks")
+        #self.mapattributes.addAttribute("OutputStrats")
+        #
+        #self.sysGlobal = View("SystemGlobal", COMPONENT, READ)
+        #self.sysGlobal.getAttribute("TotalSystems")
+        #
+        #self.sysAttr = View("SystemAttribute", COMPONENT, READ)
+        #self.sysAttr.getAttribute("StrategyID")
+        #self.sysAttr.getAttribute("posX")
+        #self.sysAttr.getAttribute("posY")
+        #self.sysAttr.getAttribute("BasinID")
+        #self.sysAttr.getAttribute("Location")
+        #self.sysAttr.getAttribute("Scale")
+        #self.sysAttr.getAttribute("Type")
+        #self.sysAttr.getAttribute("Qty")
+        #self.sysAttr.getAttribute("GoalQty")
+        #self.sysAttr.getAttribute("SysArea")
+        #self.sysAttr.getAttribute("Status")
+        #self.sysAttr.getAttribute("Year")
+        #self.sysAttr.getAttribute("EAFact")
+        #self.sysAttr.getAttribute("ImpT")
+        #self.sysAttr.getAttribute("CurImpT")
+        #self.sysAttr.getAttribute("Upgrades")
+        #self.sysAttr.getAttribute("WDepth")
+        #self.sysAttr.getAttribute("FDepth")
+        #self.sysAttr.getAttribute("Exfil")
+        #
+        #self.wsudAttr = View("WsudAttr", COMPONENT, WRITE)
+        #self.wsudAttr.addAttribute("StrategyID")
+        #self.wsudAttr.addAttribute("posX")
+        #self.wsudAttr.addAttribute("posY")
+        #self.wsudAttr.addAttribute("BasinID")
+        #self.wsudAttr.addAttribute("Location")
+        #self.wsudAttr.addAttribute("Scale")
+        #self.wsudAttr.addAttribute("Type")
+        #self.wsudAttr.addAttribute("Qty")
+        #self.wsudAttr.addAttribute("GoalQty")
+        #self.wsudAttr.addAttribute("SysArea")
+        #self.wsudAttr.addAttribute("Status")
+        #self.wsudAttr.addAttribute("Year")
+        #self.wsudAttr.addAttribute("EAFact")
+        #self.wsudAttr.addAttribute("ImpT")
+        #self.wsudAttr.addAttribute("CurImpT")
+        #self.wsudAttr.addAttribute("Upgrades")
+        #self.wsudAttr.addAttribute("WDepth")
+        #self.wsudAttr.addAttribute("FDepth")
+        #self.wsudAttr.addAttribute("Exfil")
+        #
+        ##Datastream
+        #datastream = []
+        #datastream.append(self.mapattributes)
+        #datastream.append(self.blocks)
+        #datastream.append(self.sysGlobal)
+        #datastream.append(self.sysAttr)
+        #datastream.append(self.wsudAttr)
+        #
+        #self.addData("City", datastream)
+        #
+        #self.BLOCKIDtoUUID = {}
 
     def run(self):
         print self.ubeatsdir        
@@ -4096,25 +4101,25 @@ class Techplacement(Module):
     ############################
     #--- DYNAMIND FUNCTIONS ---#
     ############################
-    def createInputDialog(self):
-        form = activatetechplacementGUI(self, QApplication.activeWindow())
-        form.exec_()
-        return True  
-
-    def getBlockUUID(self, blockid,city):
-        try:
-            key = self.BLOCKIDtoUUID[blockid]
-        except KeyError:
-            key = ""
-        return city.getFace(key)
-
-    def initBLOCKIDtoUUID(self, city):
-        blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
-        for blockuuid in blockuuids:
-            block = city.getFace(blockuuid)
-            ID = int(round(block.getAttribute("BlockID").getDouble()))
-            self.BLOCKIDtoUUID[ID] = blockuuid
-        return True
+    #def createInputDialog(self):
+    #    form = activatetechplacementGUI(self, QApplication.activeWindow())
+    #    form.exec_()
+    #    return True
+    #
+    #def getBlockUUID(self, blockid,city):
+    #    try:
+    #        key = self.BLOCKIDtoUUID[blockid]
+    #    except KeyError:
+    #        key = ""
+    #    return city.getFace(key)
+    #
+    #def initBLOCKIDtoUUID(self, city):
+    #    blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
+    #    for blockuuid in blockuuids:
+    #        block = city.getFace(blockuuid)
+    #        ID = int(round(block.getAttribute("BlockID").getDouble()))
+    #        self.BLOCKIDtoUUID[ID] = blockuuid
+    #    return True
     
     def debugPlanning(self, basin_strategies_matrix, basinID):
         f = open("D:/Debug"+str(basinID)+".csv", 'w')

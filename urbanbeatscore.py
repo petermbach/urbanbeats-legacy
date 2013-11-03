@@ -31,7 +31,7 @@ import threading, gc
 import urbanbeatsdatatypes as ubdata
 
 #Modules
-import md_delinblocks, md_urbplanbb#, md_techplacement, md_techimplement, md_perfassess
+import md_delinblocks, md_urbplanbb, md_techplacement, md_techimplement#, md_perfassess
 
 # ------ CLASS DEFINITION -------
 class UrbanBeatsSim(threading.Thread):
@@ -182,18 +182,18 @@ class UrbanBeatsSim(threading.Thread):
             for i in range(int(paramlength-1)):     #add additional urbplan objects
                 self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc", i+1))
 
-        #if self.__projectinfo["sf_techplaninclude"] == 1:     #If techplan is included
-        #    self.__techplacement.append(md_techplacement.Techplacement(self, "pc", 0))
-        #    if self.__projectinfo["sf_techplanconstant"] == 0:
-        #        for i in range(int(paramlength-1)):
-        #            self.__techplacement.append(md_techplacement.Techplacement(self, "pc", i+1))
-        #
-        #if self.__projectinfo["sf_techimplinclude"] == 1:     #If techimplement is included
-        #    self.__techimplement.append(md_techimplement.Techimplement(self, "ic", 0))
-        #    if self.__projectinfo["sf_techimplconstant"] == 0:
-        #        for i in range(int(paramlength-1)):
-        #            self.__techimplement.append(md_techimplement.Techimplement(self, "ic", i+1))
-        #
+        if self.__projectinfo["sf_techplaninclude"] == 1:     #If techplan is included
+            self.__techplacement.append(md_techplacement.Techplacement(self, "pc", 0))
+            if self.__projectinfo["sf_techplanconstant"] == 0:
+                for i in range(int(paramlength-1)):
+                    self.__techplacement.append(md_techplacement.Techplacement(self, "pc", i+1))
+
+        if self.__projectinfo["sf_techimplinclude"] == 1:     #If techimplement is included
+            self.__techimplement.append(md_techimplement.Techimplement(self, "ic", 0))
+            if self.__projectinfo["sf_techimplconstant"] == 0:
+                for i in range(int(paramlength-1)):
+                    self.__techimplement.append(md_techimplement.Techimplement(self, "ic", i+1))
+
         #if self.__projectinfo["sf_perfinclude"] == 1:
         #    self.__perf_assess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
         #    #No varying allowed in a static simulation as we are assuming that we're simulating the same catchment
@@ -424,67 +424,36 @@ class UrbanBeatsSim(threading.Thread):
         if index == 9999:
             return self.__urbplanbb
         else:
+            if len(self.__urbplanbb) == 1:
+                return self.__urbplanbb[0]
             return self.__urbplanbb[index]
-
-    def getModuleUrbplanbbParameterSet(self, name):
-        parameterset = []        
-        for i in range(len(self.__urbplanbb)):
-            parameterset.append(self.getModuleUrbplanbb(i).getParameter(name))
-        return parameterset
-
-    def updateUrbplanbbFromDict(self, paramdict):
-        simmodule = self.__urbplanbb
-        for key in paramdict:
-            if key == "":
-                continue
-            for i in range(len(simmodule)):
-                if type(simmodule[i].getParameter(key)) == bool:
-                    simmodule[i].setParameter(key, type(simmodule[i].getParameter(key))(int(paramdict[key][i])))
-                else:
-                    simmodule[i].setParameter(key, type(simmodule[i].getParameter(key))(paramdict[key][i]))
-        return True            
 
     def getModuleTechplacement(self, index):
         if index == 9999:
             return self.__techplacement
         else:
+            if len(self.__techplacement) == 1:
+                return self.__techplacement[0]
             return self.__techplacement[index]
-
-    def getParameterSetTechplacement(self, index):
-        if len(self.__params_techplacement) == 0:
-            return None        
-        return self.__params_techplacement[index]
-
-    def updateTechplaceFromDict(self, paramdict):
-        pass        
-        return True
-
-    def getParameterSetTechimplement(self, index):
-        if len(self.__params_techimplement) == 0:
-            return None        
-        return self.__params_techimplement[index]
 
     def getModuleTechimplement(self, index):
         if index == 9999:
             return self.__techimplement
         else:
+            if len(self.__techimplement) == 1:
+                return self.__techimplement[0]
             return self.__techimplement[index]
 
-    def updateTechimplFromDict(self, paramdict):
-        pass
-        return True
-    
-    def getParameterSetPerfAssess(self, index):
-        if len(self.__params_perfassess) == 0:
-            return None        
-        return self.__params_perfassess[index]
+    def getModulePerfAssess(self, index):
+        if index == 9999:
+            return self.__perfassess
+        else:
+            if len(self.__perfassess) == 1:
+                return self.__perfassess[0]
+            return self.__perfassess[index]
 
-    def updatePerfFromDict(self, paramdict):
-        pass
-        return True
-    
-    def printAllParameterSets(self):
-        return [self.__delinblocks]#, self.__params_urbplanbb, self.__params_techplacement, self.__params_techimplement, self.__params_perfassess]
+    def printAllModules(self):
+        return [self.__delinblocks, self.__urbplanbb, self.__techplacement, self.__techimplement, self.__perfassess]
 
     ### ----------- SIMULATION DATA TYPE MANIPULATION ------------------------
     def addAsset(self, name, asset):

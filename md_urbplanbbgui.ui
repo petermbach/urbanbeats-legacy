@@ -38,7 +38,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>5</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="GenRules">
          <attribute name="title">
@@ -617,7 +617,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>398</width>
+                  <width>387</width>
                   <height>545</height>
                  </rect>
                 </property>
@@ -1791,7 +1791,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>398</width>
+                  <width>387</width>
                   <height>1142</height>
                  </rect>
                 </property>
@@ -3494,7 +3494,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>398</width>
+                  <width>387</width>
                   <height>617</height>
                  </rect>
                 </property>
@@ -4592,7 +4592,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>398</width>
+                  <width>387</width>
                   <height>532</height>
                  </rect>
                 </property>
@@ -5321,7 +5321,7 @@ p, li { white-space: pre-wrap; }
                 <property name="geometry">
                  <rect>
                   <x>0</x>
-                  <y>-105</y>
+                  <y>0</y>
                   <width>398</width>
                   <height>392</height>
                  </rect>
@@ -5906,7 +5906,8 @@ p, li { white-space: pre-wrap; }
  <resources>
   <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
   <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
-  <include location="resources/dialogimg.qrc"/>
+  <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
+  <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
  </resources>
  <connections>
   <connection>

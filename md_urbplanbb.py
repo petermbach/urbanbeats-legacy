@@ -93,11 +93,11 @@ class Urbplanbb(UBModule):
         self.createParameter("lucredev_thresh", DOUBLE, "")
         self.createParameter("popredev_thresh", DOUBLE, "")
         self.createParameter("noredev", BOOL, "")
-        self.lucredev = False
-        self.popredev = False
+        self.lucredev = 0
+        self.popredev = 0
         self.lucredev_thresh = 50       #% threshold required for redevelopment to take place
         self.popredev_thresh = 50       #% threshold required for redevelopment to take place
-        self.noredev = True             #DO NOT REDEVELOP - if checked = True, then all the above parameters no longer used
+        self.noredev = 1             #DO NOT REDEVELOP - if checked = True, then all the above parameters no longer used
         
         ############################
         #RESIDENTIAL PARAMETERS
@@ -141,10 +141,10 @@ class Urbplanbb(UBModule):
         self.setback_f_med = 0                  #Use median for min/max front setback?
         self.setback_s_med = 0                  #Use median for min/max side setback?
         self.carports_max = 2                   #max number of carports
-        self.garage_incl = False                #include garage? YES/NO
+        self.garage_incl = 0                #include garage? YES/NO
         self.w_driveway_min = 2.6               #minimum driveway width [m]
         self.patio_area_max = 2                 #maximum patio area [sqm]
-        self.patio_covered = False              #is patio covered by roof?
+        self.patio_covered = 0              #is patio covered by roof?
         self.floor_num_max = 2                  #maximum number of floors
         self.occup_flat_avg = 1.5               #average occupancy of apartment
         self.commspace_indoor = 10              #communal space % indoor
@@ -263,22 +263,22 @@ class Urbplanbb(UBModule):
         self.createParameter("civ_stadium", BOOL, "")
         self.createParameter("civ_racing", BOOL, "")
         self.createParameter("civ_cemetery", BOOL, "")
-        self.mun_explicit = False
-        self.edu_school = False
-        self.edu_uni = False
-        self.edu_lib = False
-        self.civ_hospital = False
-        self.civ_clinic = False
-        self.civ_police = False
-        self.civ_fire = False
-        self.civ_jail = False
-        self.civ_worship = False
-        self.civ_leisure = False
-        self.civ_museum = False
-        self.civ_zoo = False
-        self.civ_stadium = False
-        self.civ_racing = False
-        self.civ_cemetery = False
+        self.mun_explicit = 0
+        self.edu_school = 0
+        self.edu_uni = 0
+        self.edu_lib = 0
+        self.civ_hospital = 0
+        self.civ_clinic = 0
+        self.civ_police = 0
+        self.civ_fire = 0
+        self.civ_jail = 0
+        self.civ_worship = 0
+        self.civ_leisure = 0
+        self.civ_museum = 0
+        self.civ_zoo = 0
+        self.civ_stadium = 0
+        self.civ_racing = 0
+        self.civ_cemetery = 0
 
         ############################
         #Transport Parameters
@@ -309,14 +309,14 @@ class Urbplanbb(UBModule):
         self.nres_nswmin = 1
         self.nres_fpwmax = 3
         self.nres_nswmax = 3
-        self.res_fpmed = False
-        self.res_nsmed = False
-        self.nres_fpmed = False
-        self.nres_nsmed = False
+        self.res_fpmed = 0
+        self.res_nsmed = 0
+        self.nres_fpmed = 0
+        self.nres_nsmed = 0
         self.lane_wmin = 3
         self.lane_wmax = 5
         self.lane_crossfall = 3
-        self.lane_wmed = False
+        self.lane_wmed = 0
         
         self.createParameter("hwy_wlanemin", DOUBLE, "")
         self.createParameter("hwy_wlanemax", DOUBLE, "")
@@ -405,17 +405,17 @@ class Urbplanbb(UBModule):
         self.createParameter("unc_customthresh", DOUBLE, "")
         self.createParameter("unc_customimp", DOUBLE, "")
         self.createParameter("unc_landirrigate", BOOL, "")
-        self.unc_merge = False  #Merge unclassified land?
-        self.unc_pgmerge = False
+        self.unc_merge = 0  #Merge unclassified land?
+        self.unc_pgmerge = 0
         self.unc_pgmerge_w = 0
-        self.unc_refmerge = False
+        self.unc_refmerge = 0
         self.unc_refmerge_w = 0
-        self.unc_rdmerge = False
+        self.unc_rdmerge = 0
         self.unc_rdmerge_w = 0
-        self.unc_custom = False
+        self.unc_custom = 0
         self.unc_customthresh = 50
         self.unc_customimp = 50
-        self.unc_landirrigate = False
+        self.unc_landirrigate = 0
         
         #--> Undeveloped Land
         self.createParameter("und_state", STRING, "")
@@ -423,14 +423,14 @@ class Urbplanbb(UBModule):
         self.createParameter("und_allowdev", BOOL, "")
         self.und_state = "M"    #M = manual, A = Auto
         self.und_type_manual = "GF"     #GF = Greenfield, BF = Brownfield, AG = Agriculture
-        self.und_allowdev = False       #Allow developent for large water infrastructure?
+        self.und_allowdev = 0       #Allow developent for large water infrastructure?
         
         #-->Advanced Parameters
         self.und_BFtoGF = 50     #Threshold distance % between Brownfield and Greenfield
         self.und_BFtoAG = 90    #Threshold distance % between Brownfield and Agriculture
         self.undtypeDefault = "BF"
-        self.considerGF = True     #Even consider Greenfield?
-        self.considerAG = True     #Even consider Agriculture areas in model?
+        self.considerGF = 1     #Even consider Greenfield?
+        self.considerAG = 1     #Even consider Agriculture areas in model?
         self.CBD_MAD_dist = 10.0        #km - approximate distance between main CBD and major activity districts
         
         #------------------------------------------
@@ -1945,37 +1945,37 @@ class Urbplanbb(UBModule):
     #DYNAMIND-SPECIFIC FUNCTIONS                           #
     ########################################################   
     
-    def getBlockUUID(self, blockid,city):
-	try:
-            key = self.BLOCKIDtoUUID[blockid]
-	except KeyError:
-            key = ""
-	return city.getFace(key)
-        
-    def getPrevBlockUUID(self, blockid, city):
-        try:
-            key = self.prevBLOCKIDtoUUID[blockid]
-        except KeyError:
-            key = ""
-        return city.getComponent(key)
-    
-    def initBLOCKIDtoUUID(self, city):
-	blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
-        for blockuuid in blockuuids:
-            block = city.getFace(blockuuid)
-            ID = int(round(block.getAttribute("BlockID").getDouble()))
-	    self.BLOCKIDtoUUID[ID] = blockuuid
-    
-    def initPrevBLOCKIDtoUUID(self, city):
-        prevblockuuids = city.getUUIDsOfComponentsInView(self.prevBlocks)
-        for uuid in prevblockuuids:
-            block = city.getComponent(uuid)
-            ID = int(round(block.getAttribute("BlockID").getDouble()))
-            self.prevBLOCKIDtoUUID[ID] = uuid
-    
-    def createInputDialog(self):
-        form = activateurbplanbbGUI(self, QApplication.activeWindow())
-        form.exec_()
-        return True  
+    #def getBlockUUID(self, blockid,city):
+    #try:
+    #        key = self.BLOCKIDtoUUID[blockid]
+    #except KeyError:
+    #        key = ""
+    #return city.getFace(key)
+    #
+    #def getPrevBlockUUID(self, blockid, city):
+    #    try:
+    #        key = self.prevBLOCKIDtoUUID[blockid]
+    #    except KeyError:
+    #        key = ""
+    #    return city.getComponent(key)
+    #
+    #def initBLOCKIDtoUUID(self, city):
+    #blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
+    #    for blockuuid in blockuuids:
+    #        block = city.getFace(blockuuid)
+    #        ID = int(round(block.getAttribute("BlockID").getDouble()))
+	 #   self.BLOCKIDtoUUID[ID] = blockuuid
+    #
+    #def initPrevBLOCKIDtoUUID(self, city):
+    #    prevblockuuids = city.getUUIDsOfComponentsInView(self.prevBlocks)
+    #    for uuid in prevblockuuids:
+    #        block = city.getComponent(uuid)
+    #        ID = int(round(block.getAttribute("BlockID").getDouble()))
+    #        self.prevBLOCKIDtoUUID[ID] = uuid
+    #
+    #def createInputDialog(self):
+    #    form = activateurbplanbbGUI(self, QApplication.activeWindow())
+    #    form.exec_()
+    #    return True
 
         

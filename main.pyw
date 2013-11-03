@@ -38,7 +38,7 @@ from PyQt4 import QtGui, QtCore, QtWebKit
 import md_delinblocksguic
 import md_urbplanbbguic
 import md_techplacementguic
-#import md_techimplementguic
+import md_techimplementguic
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -122,8 +122,8 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.pc_urbplanbb, QtCore.SIGNAL("clicked()"), self.callUrbplanbbGui)
         self.connect(self.ui.actionCustomize_Technologies, QtCore.SIGNAL("triggered()"), self.callTechplacementGui)
         self.connect(self.ui.pc_techplacement, QtCore.SIGNAL("clicked()"), self.callTechplacementGui)
-        #self.connect(self.ui.actionTechnology_Implementation, QtCore.SIGNAL("triggered()"), self.callTechimplementGui)
-        #self.connect(self.ui.ic_techimplement, QtCore.SIGNAL("clicked()"), self.callTechimplementGui)
+        self.connect(self.ui.actionTechnology_Implementation, QtCore.SIGNAL("triggered()"), self.callTechimplementGui)
+        self.connect(self.ui.ic_techimplement, QtCore.SIGNAL("clicked()"), self.callTechimplementGui)
         #self.connect(self.ui.actionPlanning_Cycle, QtCore.SIGNAL("triggered()"), lambda ctype="pc": self.callPrepareperfGui(ctype))
         #self.connect(self.ui.actionImplementation_Cycle, QtCore.SIGNAL("triggered()"), lambda ctype="ic": self.callPrepareperfGui(ctype))
         #self.connect(self.ui.pa_assesspc, QtCore.SIGNAL("clicked()"), lambda ctype="pc": self.callPrepareperfGui(ctype))
@@ -629,7 +629,10 @@ class MainWindow(QtGui.QMainWindow):
         techplacementguic.exec_()
 
     def callTechimplementGui(self):
-        tabindex = 0
+        if self.__activeSimulationObject.getLengthOfModulesVector("techimplement") == 1:
+           tabindex = 0
+        else:
+           tabindex = self.ui.simconfig_tabs.currentIndex()
         techimplementguic = md_techimplementguic.TechimplementGUILaunch(self.getActiveSimulationObject(), tabindex)
         techimplementguic.exec_()
 #

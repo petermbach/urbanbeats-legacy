@@ -23,14 +23,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 """
 
-from techimplementguic import *
+from md_techimplementguic import *
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from pydynamind import *
+
+#from pydynamind import *
 import math
+import urbanbeatsdatatypes as ubdata    #UBCORE
+from urbanbeatsmodule import *      #UBCORE
 import numpy as np
 
-class Techimplement(Module):
+class Techimplement(UBModule):
     """Loads the Blocks and Patches Shapefile and transfers all relevant information into
     a suitable data management structure for use in urbplanbb and other modules
     Inputs: Either project path or exact filename
@@ -51,9 +55,12 @@ class Techimplement(Module):
     @author Peter M Bach
     """
     
-    def __init__(self):
-        Module.__init__(self)
-        
+    def __init__(self, activesim, curstate, tabindex):
+        UBModule.__init__(self)
+        self.cycletype = curstate       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
+        self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
+        self.activesim = activesim      #UBCORE
+
         #IMPLEMENTATION RULES TAB
         self.createParameter("dynamic_rule", STRING,"")
         self.dynamic_rule = "B" #B = Block-based, P = Parcel-based
@@ -104,119 +111,119 @@ class Techimplement(Module):
 
         # ----------------------------- #
         
-	#Views - From Urbplanbb
-        self.mapattributes = View("GlobalMapAttributes", COMPONENT, WRITE)
-	self.mapattributes.getAttribute("NumBlocks")
-	self.mapattributes.getAttribute("BlockSize")
-	self.mapattributes.getAttribute("WidthBlocks")
-	self.mapattributes.getAttribute("HeightBlocks")
-	self.mapattributes.getAttribute("InputReso")
-	self.mapattributes.addAttribute("TotalBasins")
-        
-	self.blocks = View("Block",FACE,READ)
-	self.blocks.getAttribute("BlockID")
-
-        self.patch = View("Patch", FACE, READ)
-
-        #Views - From GetPreviousBlocks
-	self.prevBlocks = View("PreviousBlocks",COMPONENT,READ)
-        
-        self.prevPatch = View("PatchAttributes", COMPONENT, READ)
-
-	self.mastermapattributes = View("MasterMapAttributes",COMPONENT,READ)
-        self.mastermapattributes.getAttribute("Xmin")
-        self.mastermapattributes.getAttribute("Ymin")
-        self.mastermapattributes.getAttribute("Width")
-        self.mastermapattributes.getAttribute("Height")
-        self.mastermapattributes.getAttribute("BlockSize")
-        self.mastermapattributes.getAttribute("BlocksWidth")
-        self.mastermapattributes.getAttribute("BlocksHeight")
-        self.mastermapattributes.getAttribute("TotalBlocks")
-        
-        #Views - GetSystems
-	self.sysGlobal = View("SystemGlobal",COMPONENT, READ)
-	self.sysGlobal.getAttribute("TotalSystems")
-	
-        self.sysAttr = View("SystemAttribute",COMPONENT, READ)
-	self.sysAttr.getAttribute("StrategyID")
-        self.sysAttr.getAttribute("posX")
-        self.sysAttr.getAttribute("posY")
-	self.sysAttr.getAttribute("BasinID")
-	self.sysAttr.getAttribute("Location")
-	self.sysAttr.getAttribute("Scale")
-	self.sysAttr.getAttribute("Type")
-        self.sysAttr.getAttribute("Qty")
-	self.sysAttr.getAttribute("GoalQty")
-	self.sysAttr.getAttribute("SysArea")
-	self.sysAttr.getAttribute("Status")
-	self.sysAttr.getAttribute("Year")
-	self.sysAttr.getAttribute("EAFact")
-	self.sysAttr.getAttribute("ImpT")
-	self.sysAttr.getAttribute("CurImpT")
-	self.sysAttr.getAttribute("Upgrades")
-	self.sysAttr.getAttribute("WDepth")
-	self.sysAttr.getAttribute("FDepth")
-        self.sysAttr.getAttribute("Exfil")
-        
-        #Views - Output
-	self.techimplAttr = View("WsudAttr",COMPONENT ,WRITE)	
-	self.techimplAttr.addAttribute("StrategyID")
-        self.techimplAttr.addAttribute("posX")
-        self.techimplAttr.addAttribute("posY")
-        self.techimplAttr.addAttribute("BasinID")
-        self.techimplAttr.addAttribute("Location")
-        self.techimplAttr.addAttribute("Scale")
-        self.techimplAttr.addAttribute("Type")
-        self.techimplAttr.addAttribute("Qty")
-        self.techimplAttr.addAttribute("GoalQty")
-        self.techimplAttr.addAttribute("SysArea")
-        self.techimplAttr.addAttribute("Status")
-        self.techimplAttr.addAttribute("Year")
-        self.techimplAttr.addAttribute("EAFact")
-        self.techimplAttr.addAttribute("ImpT")
-        self.techimplAttr.addAttribute("CurImpT")
-        self.techimplAttr.addAttribute("Upgrades")
-        self.techimplAttr.addAttribute("WDepth")
-        self.techimplAttr.addAttribute("FDepth")
-        self.techimplAttr.addAttribute("Exfil")
-
-        #Datastream
-	datastream = []
-        datastream.append(self.mapattributes)
-        datastream.append(self.blocks)
-        datastream.append(self.patch)
-	datastream.append(self.prevBlocks)
-	datastream.append(self.prevPatch)
-	datastream.append(self.mastermapattributes)
-        datastream.append(self.sysGlobal)
-	datastream.append(self.sysAttr)
-	datastream.append(self.techimplAttr)
-        
-        self.addData("City", datastream)
-	
-	self.BLOCKIDtoUUID = {}
-        self.prevBLOCKIDtoUUID = {}     #DYNAMIND
+        ##Views - From Urbplanbb
+        #self.mapattributes = View("GlobalMapAttributes", COMPONENT, WRITE)
+        #self.mapattributes.getAttribute("NumBlocks")
+        #self.mapattributes.getAttribute("BlockSize")
+        #self.mapattributes.getAttribute("WidthBlocks")
+        #self.mapattributes.getAttribute("HeightBlocks")
+        #self.mapattributes.getAttribute("InputReso")
+        #self.mapattributes.addAttribute("TotalBasins")
+        #
+        #self.blocks = View("Block",FACE,READ)
+        #self.blocks.getAttribute("BlockID")
+        #
+        #self.patch = View("Patch", FACE, READ)
+        #
+        ##Views - From GetPreviousBlocks
+        #self.prevBlocks = View("PreviousBlocks",COMPONENT,READ)
+        #
+        #self.prevPatch = View("PatchAttributes", COMPONENT, READ)
+        #
+        #self.mastermapattributes = View("MasterMapAttributes",COMPONENT,READ)
+        #self.mastermapattributes.getAttribute("Xmin")
+        #self.mastermapattributes.getAttribute("Ymin")
+        #self.mastermapattributes.getAttribute("Width")
+        #self.mastermapattributes.getAttribute("Height")
+        #self.mastermapattributes.getAttribute("BlockSize")
+        #self.mastermapattributes.getAttribute("BlocksWidth")
+        #self.mastermapattributes.getAttribute("BlocksHeight")
+        #self.mastermapattributes.getAttribute("TotalBlocks")
+        #
+        ##Views - GetSystems
+        #self.sysGlobal = View("SystemGlobal",COMPONENT, READ)
+        #self.sysGlobal.getAttribute("TotalSystems")
+        #
+        #self.sysAttr = View("SystemAttribute",COMPONENT, READ)
+        #self.sysAttr.getAttribute("StrategyID")
+        #self.sysAttr.getAttribute("posX")
+        #self.sysAttr.getAttribute("posY")
+        #self.sysAttr.getAttribute("BasinID")
+        #self.sysAttr.getAttribute("Location")
+        #self.sysAttr.getAttribute("Scale")
+        #self.sysAttr.getAttribute("Type")
+        #self.sysAttr.getAttribute("Qty")
+        #self.sysAttr.getAttribute("GoalQty")
+        #self.sysAttr.getAttribute("SysArea")
+        #self.sysAttr.getAttribute("Status")
+        #self.sysAttr.getAttribute("Year")
+        #self.sysAttr.getAttribute("EAFact")
+        #self.sysAttr.getAttribute("ImpT")
+        #self.sysAttr.getAttribute("CurImpT")
+        #self.sysAttr.getAttribute("Upgrades")
+        #self.sysAttr.getAttribute("WDepth")
+        #self.sysAttr.getAttribute("FDepth")
+        #self.sysAttr.getAttribute("Exfil")
+        #
+        ##Views - Output
+        #self.techimplAttr = View("WsudAttr",COMPONENT ,WRITE)
+        #self.techimplAttr.addAttribute("StrategyID")
+        #self.techimplAttr.addAttribute("posX")
+        #self.techimplAttr.addAttribute("posY")
+        #self.techimplAttr.addAttribute("BasinID")
+        #self.techimplAttr.addAttribute("Location")
+        #self.techimplAttr.addAttribute("Scale")
+        #self.techimplAttr.addAttribute("Type")
+        #self.techimplAttr.addAttribute("Qty")
+        #self.techimplAttr.addAttribute("GoalQty")
+        #self.techimplAttr.addAttribute("SysArea")
+        #self.techimplAttr.addAttribute("Status")
+        #self.techimplAttr.addAttribute("Year")
+        #self.techimplAttr.addAttribute("EAFact")
+        #self.techimplAttr.addAttribute("ImpT")
+        #self.techimplAttr.addAttribute("CurImpT")
+        #self.techimplAttr.addAttribute("Upgrades")
+        #self.techimplAttr.addAttribute("WDepth")
+        #self.techimplAttr.addAttribute("FDepth")
+        #self.techimplAttr.addAttribute("Exfil")
+        #
+        ##Datastream
+        #datastream = []
+        #datastream.append(self.mapattributes)
+        #datastream.append(self.blocks)
+        #datastream.append(self.patch)
+        #datastream.append(self.prevBlocks)
+        #datastream.append(self.prevPatch)
+        #datastream.append(self.mastermapattributes)
+        #datastream.append(self.sysGlobal)
+        #datastream.append(self.sysAttr)
+        #datastream.append(self.techimplAttr)
+        #
+        #self.addData("City", datastream)
+        #
+        #self.BLOCKIDtoUUID = {}
+        #self.prevBLOCKIDtoUUID = {}     #DYNAMIND
         
     def run(self):
-	city = self.getData("City")
-	self.initBLOCKIDtoUUID(city)
+        city = self.getData("City")
+        self.initBLOCKIDtoUUID(city)
         self.initPrevBLOCKIDtoUUID(city)        #DYNAMIND - initialize the dictionary that tracks Previous Block IDs and UUID
         
         currentyear = self.currentyear  #Tracking years in the dynamic simulation
         startyear = self.startyear
 
         #Get global map attributes
-	strvec = city.getUUIDsOfComponentsInView(self.mapattributes)
+        strvec = city.getUUIDsOfComponentsInView(self.mapattributes)
         map_attr = city.getComponent(strvec[0])
         
         #Find out how many systems are in the list of systems to be implemented
-	strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
+        strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
         totsystems = city.getComponent(strvec[0]).getAttribute("TotalSystems").getDouble()
         print "Total Systems in map: "+str(totsystems)
         
         #Get block number, etc.
-        blocks_num = map_attr.getAttribute("NumBlocks").getDouble() #number of blocks to loop through   
-	blocks_size = map_attr.getAttribute("BlockSize").getDouble() #size of block
+        blocks_num = map_attr.getAttribute("NumBlocks").getDouble() #number of blocks to loop through
+        blocks_size = map_attr.getAttribute("BlockSize").getDouble() #size of block
 
         #Get all systems for current block, also do a double-check on system location
         blockXY = self.getBlockXYcentres(city, blocks_num)
@@ -325,7 +332,7 @@ class Techimplement(Module):
         return 0
     
     def skipIfBelowBlockThreshold(self, ID, threshold,city):
-	undevland = self.getBlockUUID(ID, city).getAttribute("pLU_UND").getDouble()
+        undevland = self.getBlockUUID(ID, city).getAttribute("pLU_UND").getDouble()
         undevprev = self.getPrevBlockUUID(ID, city).getAttribute("pLU_UND").getDouble() #This is the final value
         devtot = 1 - undevprev  #Developed = Masterplan, i.e. once 1-%UND has been developed
         if ((1-undevland)/devtot) < threshold:
@@ -573,35 +580,35 @@ class Techimplement(Module):
     ########################################################
     #DYNAMIND FUNCTIONS                                    #
     ########################################################
-    def initBLOCKIDtoUUID(self, city):
-	blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
-        for blockuuid in blockuuids:
-            block = city.getFace(blockuuid)
-            ID = int(round(block.getAttribute("BlockID").getDouble()))
-	    self.BLOCKIDtoUUID[ID] = blockuuid
+    #def initBLOCKIDtoUUID(self, city):
+    #blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
+    #    for blockuuid in blockuuids:
+    #        block = city.getFace(blockuuid)
+    #        ID = int(round(block.getAttribute("BlockID").getDouble()))
+	 #   self.BLOCKIDtoUUID[ID] = blockuuid
+    #
+    #def initPrevBLOCKIDtoUUID(self, city):
+    #    prevblockuuids = city.getUUIDsOfComponentsInView(self.prevBlocks)
+    #    for uuid in prevblockuuids:
+    #        block = city.getComponent(uuid)
+    #        ID = int(round(block.getAttribute("BlockID").getDouble()))
+    #        self.prevBLOCKIDtoUUID[ID] = uuid
+    #
+    #def getBlockUUID(self, blockid,city):
+    #try:
+		#key = self.BLOCKIDtoUUID[blockid]
+    #except KeyError:
+		#key = ""
+    #return city.getFace(key)
+    #
+    #def getPrevBlockUUID(self, blockid, city):
+    #    try:
+    #        key = self.prevBLOCKIDtoUUID[blockid]
+    #    except KeyError:
+    #        key = ""
+    #    return city.getComponent(key)
 
-    def initPrevBLOCKIDtoUUID(self, city):
-        prevblockuuids = city.getUUIDsOfComponentsInView(self.prevBlocks)
-        for uuid in prevblockuuids:
-            block = city.getComponent(uuid)
-            ID = int(round(block.getAttribute("BlockID").getDouble()))
-            self.prevBLOCKIDtoUUID[ID] = uuid
-
-    def getBlockUUID(self, blockid,city):
-	try:
-		key = self.BLOCKIDtoUUID[blockid]
-	except KeyError:
-		key = ""
-	return city.getFace(key)
-
-    def getPrevBlockUUID(self, blockid, city):
-        try:
-            key = self.prevBLOCKIDtoUUID[blockid]
-        except KeyError:
-            key = ""
-        return city.getComponent(key)
-
-    def createInputDialog(self):
-        form = activatetechimplementGUI(self, QApplication.activeWindow())
-        form.exec_()
-        return True 
+    #def createInputDialog(self):
+    #    form = activatetechimplementGUI(self, QApplication.activeWindow())
+    #    form.exec_()
+    #    return True
