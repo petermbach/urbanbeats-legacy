@@ -511,11 +511,11 @@ class UrbanBeatsSim(threading.Thread):
         delinblocks.detach(self.__observers)   #Deregister the observer after run completion
         self.updateObservers("PROGRESSUPDATE||30")
 
-        urbplanbb = self.getModuleUrbplanbb(0)
-        urbplanbb.attach(self.__observers)  #Register the observer
-        urbplanbb.run()
-        urbplanbb.detach(self.__observers)
-        self.updateObservers("PROGRESSUPDATE||70")
+        #urbplanbb = self.getModuleUrbplanbb(0)
+        #urbplanbb.attach(self.__observers)  #Register the observer
+        #urbplanbb.run()
+        #urbplanbb.detach(self.__observers)
+        #self.updateObservers("PROGRESSUPDATE||70")
 
         self.exportGIS()
         self.updateObservers("PROGRESSUPDATE||90")
