@@ -98,9 +98,9 @@ class Techplacement(UBModule):
         self.createParameter("runoff_pri", DOUBLE,"")
         self.createParameter("pollute_pri", DOUBLE,"")
         self.createParameter("harvest_pri",DOUBLE,"")
-        self.ration_runoff = False                #Design for flood mitigation?
-        self.ration_pollute = True               #Design for pollution management?
-        self.ration_harvest = False              #Design for harvesting & reuse? Adds storage-sizing to certain systems
+        self.ration_runoff = 0                #Design for flood mitigation?
+        self.ration_pollute = 1               #Design for pollution management?
+        self.ration_harvest = 0              #Design for harvesting & reuse? Adds storage-sizing to certain systems
         self.runoff_pri = 0                      #Priority of flood mitigation?
         self.pollute_pri = 1                     #Priority of pollution management?
         self.harvest_pri = 0                     #Priority for harvesting & reuse
@@ -139,11 +139,11 @@ class Techplacement(UBModule):
         self.service_swmQty = 50                #required service level for stormwater management
         self.service_swmWQ = 80                 #required service level for stormwater management
         self.service_rec = 50                   #required service level for substituting potable water demand through recycling
-        self.service_res = True
-        self.service_hdr = True
-        self.service_com = True
-        self.service_li = True
-        self.service_hi = True
+        self.service_res = 1
+        self.service_hdr = 1
+        self.service_com = 1
+        self.service_li = 1
+        self.service_hi = 1
         self.service_redundancy = 25
         self.servicevector = []
         
@@ -249,9 +249,9 @@ class Techplacement(UBModule):
         self.createParameter("WEF_loc_apart", BOOL,"")
         self.createParameter("WEF_loc_nonres", BOOL,"")
         self.WEF_rating_system = "AS"
-        self.WEF_loc_house = True
-        self.WEF_loc_apart = True
-        self.WEF_loc_nonres = True
+        self.WEF_loc_house = 1
+        self.WEF_loc_apart = 1
+        self.WEF_loc_nonres = 1
         
         self.createParameter("WEF_method", STRING, "")
         self.createParameter("WEF_c_rating", DOUBLE, "")
@@ -262,7 +262,7 @@ class Techplacement(UBModule):
         self.WEF_c_rating = 2   #Number of stars
         self.WEF_d_rating = 5  #Maximum number of stars
         self.WEF_distribution = "UF"     #UF = Uniform, LH = log-normal (high-end), LL = log-normal (low-end), NM = normal
-        self.WEF_includezero = True
+        self.WEF_includezero = 1
         
         #REGIONAL RECYCLING-SUPPLY ZONES
         self.createParameter("rec_demrange_min", DOUBLE, "")
@@ -274,10 +274,10 @@ class Techplacement(UBModule):
         self.createParameter("hs_strategy", STRING, "")
         self.rec_demrange_min = 10
         self.rec_demrange_max = 100
-        self.ww_kitchen = False         #Kitchen WQ default = GW
-        self.ww_shower = False          #Shower WQ default = GW
-        self.ww_toilet = False          #Toilet WQ default = BW --> MUST BE RECYCLED
-        self.ww_laundry = False         #Laundry WQ default = GW
+        self.ww_kitchen = 0         #Kitchen WQ default = GW
+        self.ww_shower = 0          #Shower WQ default = GW
+        self.ww_toilet = 0          #Toilet WQ default = BW --> MUST BE RECYCLED
+        self.ww_laundry = 0         #Laundry WQ default = GW
         self.hs_strategy = "ud"         #ud = upstream-downstream, uu = upstream-upstream, ua = upstream-around
         
         #ADDITIONAL INPUTS
@@ -363,23 +363,23 @@ class Techplacement(UBModule):
         self.createParameter("BFstreet", BOOL,"")
         self.createParameter("BFneigh", BOOL,"")
         self.createParameter("BFprec", BOOL,"")
-        self.BFlot = True
-        self.BFstreet = True
-        self.BFneigh = True
-        self.BFprec = True
+        self.BFlot = 1
+        self.BFstreet = 1
+        self.BFneigh = 1
+        self.BFprec = 1
         
         #Available Applications
         self.createParameter("BFflow", BOOL, "")
         self.createParameter("BFpollute", BOOL,"")
         self.createParameter("BFrecycle", BOOL, "")
-        self.BFflow = True
-        self.BFpollute = True
-        self.BFrecycle = True
+        self.BFflow = 1
+        self.BFpollute = 1
+        self.BFrecycle = 1
 	
         #Design Curves
         self.createParameter("BFdesignUB", BOOL,"")
         self.createParameter("BFdescur_path", STRING,"")
-        self.BFdesignUB = True          #use DAnCE4Water's default curves to design system?
+        self.BFdesignUB = 1          #use DAnCE4Water's default curves to design system?
         self.BFdescur_path = "no file"  #path for design curve
         
         #Design Information
@@ -408,20 +408,20 @@ class Techplacement(UBModule):
         self.createParameter("ISlot", BOOL,"")
         self.createParameter("ISstreet", BOOL,"")
         self.createParameter("ISneigh", BOOL,"")
-        self.ISlot = True
-        self.ISstreet = True
-        self.ISneigh = True
+        self.ISlot = 1
+        self.ISstreet = 1
+        self.ISneigh = 1
         
         #Available Applications
         self.createParameter("ISflow", BOOL,"")
         self.createParameter("ISpollute", BOOL,"")
-        self.ISflow = True
-        self.ISpollute = True
+        self.ISflow = 1
+        self.ISpollute = 1
         
         #Design Curves
         self.createParameter("ISdesignUB", BOOL,"")
         self.createParameter("ISdescur_path", STRING,"")
-        self.ISdesignUB = True          #use DAnCE4Water's default curves to design system?
+        self.ISdesignUB = 1          #use DAnCE4Water's default curves to design system?
         self.ISdescur_path = "no file"  #path for design curve
         
         #Design Information        self.createParameter("ISspec_EDD", DOUBLE,"")
@@ -457,21 +457,21 @@ class Techplacement(UBModule):
         #Available Scales
         self.createParameter("PBneigh", BOOL,"")
         self.createParameter("PBprec", BOOL,"")
-        self.PBneigh = True
-        self.PBprec = True
+        self.PBneigh = 1
+        self.PBprec = 1
         
         #Available Applications
         self.createParameter("PBflow", BOOL,"")
         self.createParameter("PBpollute", BOOL,"")
         self.createParameter("PBrecycle", BOOL, "")
-        self.PBflow = True
-        self.PBpollute = True
-        self.PBrecycle = False
+        self.PBflow = 1
+        self.PBpollute = 1
+        self.PBrecycle = 0
         
         #Design Curves
         self.createParameter("PBdesignUB", BOOL,"")
         self.createParameter("PBdescur_path", STRING,"")
-        self.PBdesignUB = True          #use DAnCE4Water's default curves to design system?
+        self.PBdesignUB = 1          #use DAnCE4Water's default curves to design system?
         self.PBdescur_path = "no file"  #path for design curve
         
         #Design Information
@@ -498,10 +498,10 @@ class Techplacement(UBModule):
         self.createParameter("RTneigh", BOOL,"")
         self.createParameter("RTflow", BOOL,"")
         self.createParameter("RTrecycle", BOOL,"")
-        self.RTlot = True
-        self.RTneigh = False
-        self.RTflow = False
-        self.RTrecycle = True
+        self.RTlot = 1
+        self.RTneigh = 0
+        self.RTflow = 0
+        self.RTrecycle = 1
         
         self.createParameter("RT_maxdepth", DOUBLE,"")
         self.createParameter("RT_mindead", DOUBLE,"")
@@ -510,7 +510,7 @@ class Techplacement(UBModule):
         self.createParameter("RTavglife", DOUBLE,"")
         self.RT_maxdepth = 2            #max tank depth [m]
         self.RT_mindead = 0.1           #minimum dead storage level [m]
-        self.RTdesignUB = True         #use DAnCE4Water's default curves to design system?
+        self.RTdesignUB = 1         #use DAnCE4Water's default curves to design system?
         self.RTdescur_path = "no file"  #path for design curve
         self.RTavglife = 20             #average life span of a raintank
         
@@ -536,21 +536,21 @@ class Techplacement(UBModule):
         #Available Scales
         self.createParameter("WSURneigh", BOOL,"")
         self.createParameter("WSURprec", BOOL,"")
-        self.WSURneigh = True
-        self.WSURprec = True
+        self.WSURneigh = 1
+        self.WSURprec = 1
         
         #Available Applications
         self.createParameter("WSURflow", BOOL,"")
         self.createParameter("WSURpollute", BOOL,"")
         self.createParameter("WSURrecycle", BOOL, "")
-        self.WSURflow = True
-        self.WSURpollute = True
-        self.WSURrecycle = False
+        self.WSURflow = 1
+        self.WSURpollute = 1
+        self.WSURrecycle = 0
         
         #Design Curves
         self.createParameter("WSURdesignUB", BOOL,"")
         self.createParameter("WSURdescur_path", STRING,"")
-        self.WSURdesignUB = True          #use DAnCE4Water's default curves to design system?
+        self.WSURdesignUB = 1          #use DAnCE4Water's default curves to design system?
         self.WSURdescur_path = "no file"  #path for design curve
         
         #Design Information
@@ -572,19 +572,19 @@ class Techplacement(UBModule):
         #Available Scales
         self.createParameter("SWstreet", BOOL,"")
         self.createParameter("SWneigh", BOOL,"")
-        self.SWstreet = True
-        self.SWneigh = True        
+        self.SWstreet = 1
+        self.SWneigh = 1
         
         #Available Applications
         self.createParameter("SWflow", BOOL,"")
         self.createParameter("SWpollute", BOOL,"")
-        self.SWflow = True
-        self.SWpollute = True
+        self.SWflow = 1
+        self.SWpollute = 1
         
         #Design Curves
         self.createParameter("SWdesignUB", BOOL,"")
         self.createParameter("SWdescur_path", STRING,"")
-        self.SWdesignUB = True          #use DAnCE4Water's default curves to design system?
+        self.SWdesignUB = 1          #use DAnCE4Water's default curves to design system?
         self.SWdescur_path = "no file"  #path for design curve
         
         #Design Information
@@ -624,7 +624,7 @@ class Techplacement(UBModule):
         self.createParameter("scoringmatrix_path", STRING,"")
         self.createParameter("scoringmatrix_default", BOOL,"")
         self.scoringmatrix_path = "C:/UrbanBEATSv1Dev/ub_modules/resources/mcadefault.csv"
-        self.scoringmatrix_default = False
+        self.scoringmatrix_default = 0
         
         #CUSTOMIZE EVALUATION CRITERIA
         self.createParameter("bottomlines_tech", BOOL,"")
@@ -639,10 +639,10 @@ class Techplacement(UBModule):
         self.createParameter("bottomlines_env_w", DOUBLE,"")
         self.createParameter("bottomlines_ecn_w", DOUBLE,"")
         self.createParameter("bottomlines_soc_w", DOUBLE,"")
-        self.bottomlines_tech = True   #Include criteria? Yes/No
-        self.bottomlines_env = True
-        self.bottomlines_ecn = True
-        self.bottomlines_soc = True
+        self.bottomlines_tech = 1   #Include criteria? Yes/No
+        self.bottomlines_env = 1
+        self.bottomlines_ecn = 1
+        self.bottomlines_soc = 1
         self.bottomlines_tech_n = 4     #Metric numbers
         self.bottomlines_env_n = 5
         self.bottomlines_ecn_n = 2
@@ -657,7 +657,7 @@ class Techplacement(UBModule):
         self.createParameter("scope_stoch", BOOL,"")
         self.createParameter("score_method", STRING,"")
         self.createParameter("ingroup_scoring", STRING,"")
-        self.scope_stoch = False
+        self.scope_stoch = 0
         self.score_method = "WSM"       #MCA scoring method
         self.ingroup_scoring = "Avg"
         

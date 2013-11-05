@@ -227,6 +227,10 @@ class UrbanBeatsSim(threading.Thread):
         else:
             pass    #array stays empty
 
+        #FINISHED INITIALIZATION
+        self.updateObservers(str(self.getAllCycleDataSets("pc")))
+        self.updateObservers(str(self.printAllModules()))
+
     def initializeParameterSetsDynamic(self):
         paramlength = self.__projectinfo["dyn_breaks"] +1       #n breaks + baseline
 
@@ -237,16 +241,16 @@ class UrbanBeatsSim(threading.Thread):
             for i in range(int(paramlength-1)):
                 self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc", i+1))
 
-        #self.__techplacement.append(md_techplacement.Techplacement(self, "pc", 0))
-        #if self.__projectinfo["df_techplaceconstant"] == 0:
-        #    for i in range(int(paramlength-1)):
-        #        self.__techplacement.append(md_techplacement.Techplacement(self, "pc", i+1))
-        #
-        #self.__techimplement.append(md_techimplement.Techimplement(self, "ic", 0))
-        #if self.__projectinfo["df_techimplconstant"] == 0:
-        #    for i in range(int(paramlength-1)):
-        #        self.__techimplement.append(md_techimplement.Techimplement(self, "ic", i+1))
-        #
+        self.__techplacement.append(md_techplacement.Techplacement(self, "pc", 0))
+        if self.__projectinfo["df_techplaceconstant"] == 0:
+            for i in range(int(paramlength-1)):
+                self.__techplacement.append(md_techplacement.Techplacement(self, "pc", i+1))
+
+        self.__techimplement.append(md_techimplement.Techimplement(self, "ic", 0))
+        if self.__projectinfo["df_techimplconstant"] == 0:
+            for i in range(int(paramlength-1)):
+                self.__techimplement.append(md_techimplement.Techimplement(self, "ic", i+1))
+
         #if self.__projectinfo["df_perfinclude"] != 0:
         #    self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
         #    if self.__projectinfo["df_perfconstant"] == 0:
@@ -270,6 +274,10 @@ class UrbanBeatsSim(threading.Thread):
                 self.__data_climate.append({})
         else:
             pass        #Leave climate data array blank with len = 0
+
+        #End of Initialization
+        self.updateObservers(str(self.getAllCycleDataSets("pc")))
+        self.updateObservers(str(self.printAllModules()))
 
     def initalizeParameterSetBenchmark(self):
         self.__delinblocks.append(md_delinblocks.Delinblocks(self, "pc", 0))         #ONLY ONE DELINBLOCKS NEEDED
