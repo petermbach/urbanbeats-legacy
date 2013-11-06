@@ -24,10 +24,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
 import ubmusicwrite as ubmusic
-from pydynamind import * 
+#from pydynamind import *
+import urbanbeatsdatatypes as ubdata    #UBCORE
+from urbanbeatsmodule import *      #UBCORE
 import sys, random, numpy, math
 
-class WriteResults2MUSIC(Module):
+class WriteResults2MUSIC(UBModule):
     """Creates a fully functional MUSIC model file *.msf for the input map of blocks and systems
     Log of Updates made at each version:
     
@@ -45,8 +47,12 @@ class WriteResults2MUSIC(Module):
 	@author Peter M Bach
 	"""
 
-    def __init__(self):
-        Module.__init__(self)
+    def __init__(self, activesim, curstate, tabindex):
+        UBModule.__init__(self)
+        self.cycletype = curstate       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
+        self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
+        self.activesim = activesim      #UBCORE
+
         self.createParameter("pathname", STRING, "")
         self.createParameter("filename", STRING, "")
         self.createParameter("currentyear", DOUBLE, "")
@@ -54,29 +60,28 @@ class WriteResults2MUSIC(Module):
         self.pathname = "D:\\"
         self.filename = "ubeatsMUSIC"
         self.currentyear = 9999
-	self.masterplanmodel = True
+        self.masterplanmodel = True
         #self.include_secondary_links = 0
 
         ########################################################################
-	#Views
+        #Views
+        #self.mapattributes = View("GlobalMapAttributes", COMPONENT, READ)
+        #self.blocks = View("Block", FACE, READ)
+        #self.wsudAttr = View("WsudAttr", COMPONENT, READ)
+        #
+        #datastream = []
+        #datastream.append(self.mapattributes)
+        #datastream.append(self.wsudAttr)
+        #datastream.append(self.blocks)
+        #self.addData("City", datastream)
+        #
+        #self.BLOCKIDtoUUID = {}
 
-	self.mapattributes = View("GlobalMapAttributes", COMPONENT, READ)
-	self.blocks = View("Block", FACE, READ)
-	self.wsudAttr = View("WsudAttr", COMPONENT, READ)
-
-	datastream = []
-        datastream.append(self.mapattributes)
-	datastream.append(self.wsudAttr)
-	datastream.append(self.blocks)
-        self.addData("City", datastream)
-	
-	self.BLOCKIDtoUUID = {}
-	
     def run(self):
-	city = self.getData("City")
-	self.initBLOCKIDtoUUID(city)
+        #city = self.getData("City")
+        #self.initBLOCKIDtoUUID(city)
 	
-	strvec = city.getUUIDsOfComponentsInView(self.mapattributes)
+        #strvec = city.getUUIDsOfComponentsInView(self.mapattributes)
         map_attr = city.getComponent(strvec[0])
         
         #get data needed to being for loop analysis
@@ -88,8 +93,8 @@ class WriteResults2MUSIC(Module):
         totalbasins = map_attr.getAttribute("TotalBasins").getDouble()  #total number of basins in map
         strats = map_attr.getAttribute("OutputStrats").getDouble()      #Number of MUSIC files to write
         
-        print totalbasins
-        print "Total Strategies :", strats
+        self.notify("Total Basins: "+str(totalbasins))
+        self.notify("Total Strategies :"+str(strats))
         
         if self.masterplanmodel == 1:   #differentiate between planning and implementation models
             filesuffix = "PC"
@@ -115,7 +120,7 @@ class WriteResults2MUSIC(Module):
                 musicnodedb["BlockID"+str(currentID)] = {}
                 current_soilK = currentAttList.getAttribute("Soil_k").getDouble()
                 blocksystems = self.getBlockSystems(currentID, systemlist, city)      #Get all systems for the current block
-                #print blocksystems
+                #self.notify(str(blocksystems))
                 
                 blockX = currentAttList.getAttribute("CentreX").getDouble()
                 blockY = currentAttList.getAttribute("CentreY").getDouble()
@@ -130,7 +135,7 @@ class WriteResults2MUSIC(Module):
                 lotareas = self.determineCatchmentLotAreas(currentAttList, blocksystems)
                 nonlotarea = total_catch_imparea - sum(lotareas.values())
                 if nonlotarea == 0:
-                    print "ISSUE: NONLOT AREA ZERO ON BLOCK: ", currentID
+                    self.notify("ISSUE: NONLOT AREA ZERO ON BLOCK: "+str(currentID))
                 ncount_list = []
                 
                 lotoffset = 0
@@ -182,10 +187,10 @@ class WriteResults2MUSIC(Module):
                 ncount_list.append(ncount)
                 offsets = self.getSystemOffsetXY("J", blocks_size)
                 if int(currentAttList.getAttribute("Outlet").getDouble()) == 1:
-                    #print "GOT AN OUTLET at BlockID", currentID
+                    #self.notify("GOT AN OUTLET at BlockID"+str(currentID))
                     basinID = int(currentAttList.getAttribute("BasinID").getDouble())
                     jname = "OUT_Bas"+str(basinID)+"-BlkID"+str(currentID)
-                    #print jname
+                    #self.notify(str(jname))
                 else:
                     jname = "Block"+str(currentID)+"J"
                 ubmusic.writeMUSICjunction(ufile, jname, ncount, (blockX+offsets[0])*scalar, (blockY+offsets[1])*scalar)
@@ -311,12 +316,12 @@ class WriteResults2MUSIC(Module):
                    "S_S": ["S_N", "J"], "S_N": ["J"], "S_B" : [0]}      #gives the order in which links can be arranged
         for key in nodedb.keys():
             map = linkmap[key]
-            #print map
+            #self.notify(str(map))
             for pos in range(len(map)):
                 if map[pos] in nodedb.keys():
                     nodelinks.append([nodedb[key], nodedb[map[pos]]])   #[ID1, ID2] in an array
                     break
-        #print nodelinks
+        #self.notify(str(nodelinks))
         return nodelinks
     
     def getDownstreamNodeLink(self, upNodes, downNodes):
@@ -415,26 +420,20 @@ class WriteResults2MUSIC(Module):
             return curSys.getAttribute("GoalQty").getDouble()
         else:
             return curSys.getAttribute("Qty").getDouble()
-    
 
     ########################################################
     #DYNAMIND FUNCTIONS                                    #
     ########################################################
-    def getBlockUUID(self, blockid,city):
-	try:
-		key = self.BLOCKIDtoUUID[blockid]
-	except KeyError:
-		key = ""
-	return city.getFace(key)
-
-    def initBLOCKIDtoUUID(self, city):
-	blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
-        for blockuuid in blockuuids:
-            block = city.getFace(blockuuid)
-            ID = int(round(block.getAttribute("BlockID").getDouble()))
-	    self.BLOCKIDtoUUID[ID] = blockuuid
-
-
-
-
-
+    #def getBlockUUID(self, blockid,city):
+    #try:
+		#key = self.BLOCKIDtoUUID[blockid]
+    #except KeyError:
+		#key = ""
+    #return city.getFace(key)
+    #
+    #def initBLOCKIDtoUUID(self, city):
+    #blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
+    #    for blockuuid in blockuuids:
+    #        block = city.getFace(blockuuid)
+    #        ID = int(round(block.getAttribute("BlockID").getDouble()))
+	 #   self.BLOCKIDtoUUID[ID] = blockuuid

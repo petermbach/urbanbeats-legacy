@@ -81,7 +81,7 @@ class GetPreviousBlocks(UBModule):
         self.block_path_name = "D:\\Screek500m_Blocks.shp"
         self.patch_path_name = "D:\\Screek500m_Patches.shp"
 
-	    #Views
+        #Views
 	    #self.blocks = View("PreviousBlocks", COMPONENT, WRITE)	#other because of datatransfer problem with other block view from delinblocks
         #self.patch = View("PatchAttributes", COMPONENT, WRITE)
 	    #self.mapattributes = View("MasterMapAttributes", COMPONENT, WRITE)	#same thing with the name as with the block
@@ -102,7 +102,7 @@ class GetPreviousBlocks(UBModule):
         #self.addData("City", datastream)
 
     def run(self):
-    	#city = self.getData("City")
+        #city = self.getData("City")
         #map_attr = Component()
 
         map_attr = ubdata.UBComponent()
@@ -127,12 +127,12 @@ class GetPreviousBlocks(UBModule):
         blockdatasource = driver.Open(blockfile_name, 0)
         patchdatasource = driver.Open(patchfile_name, 0)
         if blockdatasource is None:
-            print "Error, could not open Blocks " + blockfile_name
+            self.notify("Error, could not open Blocks " + str(blockfile_name))
             map_attr.addAttribute("Impl_cycle", 1)      #No data so fake impl_cycle so that urbplanbb does not check redev
             return False
         if self.patchesavailable:
             if patchdatasource is None:
-                print "Error, could not open Patches " + patchfile_name
+                self.notify("Error, could not open Patches " + str(patchfile_name))
                 map_attr.addAttribute("Impl_cycle", 1)      #No data so fake impl_cycle so that urbplanbb does not check redev
                 return False
         
@@ -146,8 +146,8 @@ class GetPreviousBlocks(UBModule):
             return False        #No blocks, end function
         blockspatialRef = blocklayer.GetSpatialRef()
         if self.patchesavailable: patchspatialRef = patchlayer.GetSpatialRef()
-        print "Spatial Reference (Proj4): " + str(blockspatialRef.ExportToProj4())
-        print "Total Blocks in map: " + str(total_blocks)
+        self.notify("Spatial Reference (Proj4): " + str(blockspatialRef.ExportToProj4()))
+        self.notify("Total Blocks in map: " + str(total_blocks))
         
         #Perform some comparison to make sure that the projection of the loaded file is identical to that of the final desired format
         #Code...
