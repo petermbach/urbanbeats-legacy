@@ -26,13 +26,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #from pyvibe import *
 import os
 #from pydynamind import *
+import urbanbeatsdatatypes as ubdata    #UBCORE
+from urbanbeatsmodule import *      #UBCORE
 from osgeo import ogr, osr
 import sys
 
-class GetPreviousBlocks(Module):
+class GetPreviousBlocks(UBModule):
     """Loads the Blocks and Patches Shapefile and transfers all relevant information into
     a suitable data management structure for use in urbplanbb and other modules
-        
+
     Inputs: Either project path or exact filename
 	- Obtain file directly from a filename or from an ongoing simulation? - Boolean
             Filename: specify path
@@ -60,9 +62,12 @@ class GetPreviousBlocks(Module):
 	@author Peter M Bach
 	"""
         
-    def __init__(self):
-        Module.__init__(self)
-	#homeDir = os.environ['HOME']	#works only in linux
+    def __init__(self, activesim, curstate, tabindex):
+        UBModule.__init__(self)
+        self.cycletype = curstate       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
+        self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
+        self.activesim = activesim      #UBCORE
+
         self.createParameter("ongoing_sim", BOOL,"")
         self.createParameter("implementationcycle", BOOL, "")
         self.createParameter("patchesavailable", BOOL, "")
@@ -76,33 +81,33 @@ class GetPreviousBlocks(Module):
         self.block_path_name = "D:\\Screek500m_Blocks.shp"
         self.patch_path_name = "D:\\Screek500m_Patches.shp"
 
-	#Views
-	self.blocks = View("PreviousBlocks", COMPONENT, WRITE)	#other because of datatransfer problem with other block view from delinblocks
+	    #Views
+	    #self.blocks = View("PreviousBlocks", COMPONENT, WRITE)	#other because of datatransfer problem with other block view from delinblocks
+        #self.patch = View("PatchAttributes", COMPONENT, WRITE)
+	    #self.mapattributes = View("MasterMapAttributes", COMPONENT, WRITE)	#same thing with the name as with the block
+        #self.mapattributes.addAttribute("Xmin")
+        #self.mapattributes.addAttribute("Ymin")
+        #self.mapattributes.addAttribute("Width")
+        #self.mapattributes.addAttribute("Height")
+        #self.mapattributes.addAttribute("BlockSize")
+        #self.mapattributes.addAttribute("BlocksWidth")
+        #self.mapattributes.addAttribute("BlocksHeight")
+        #self.mapattributes.addAttribute("TotalBlocks")
+        #self.mapattributes.addAttribute("Impl_cycle")
         
-        self.patch = View("PatchAttributes", COMPONENT, WRITE)
+        #datastream = []
+        #datastream.append(self.blocks)
+        #datastream.append(self.mapattributes)
+        #datastream.append(self.patch)
+        #self.addData("City", datastream)
 
-	self.mapattributes = View("MasterMapAttributes", COMPONENT, WRITE)	#same thing with the name as with the block
-        self.mapattributes.addAttribute("Xmin")
-        self.mapattributes.addAttribute("Ymin")
-        self.mapattributes.addAttribute("Width")
-        self.mapattributes.addAttribute("Height")
-        self.mapattributes.addAttribute("BlockSize")
-        self.mapattributes.addAttribute("BlocksWidth")
-        self.mapattributes.addAttribute("BlocksHeight")
-        self.mapattributes.addAttribute("TotalBlocks")
-        self.mapattributes.addAttribute("Impl_cycle")
-        
-	datastream = []
-        datastream.append(self.blocks)
-        datastream.append(self.mapattributes)
-        datastream.append(self.patch)
-        self.addData("City", datastream)
-        
     def run(self):
-	city = self.getData("City")
-        map_attr = Component()
+    	#city = self.getData("City")
+        #map_attr = Component()
+
+        map_attr = ubdata.UBComponent()
         map_attr.addAttribute("Impl_cycle", self.implementationcycle)
-        city.addComponent(map_attr, self.mapattributes)
+        #city.addComponent(map_attr, self.mapattributes)
         
         #Get the correct driver (we are working with ESRI Shapefiles)
         driver = ogr.GetDriverByName('ESRI Shapefile')
@@ -119,25 +124,25 @@ class GetPreviousBlocks(Module):
             patchfile_name = self.patch_path_name
         
         #open data source, check if it exists otherwise quit.
-        blockdataSource = driver.Open(blockfile_name, 0)
-        patchdataSource = driver.Open(patchfile_name, 0)
-        if blockdataSource is None:
+        blockdatasource = driver.Open(blockfile_name, 0)
+        patchdatasource = driver.Open(patchfile_name, 0)
+        if blockdatasource is None:
             print "Error, could not open Blocks " + blockfile_name
             map_attr.addAttribute("Impl_cycle", 1)      #No data so fake impl_cycle so that urbplanbb does not check redev
             return False
         if self.patchesavailable:
-            if patchdataSource is None:
+            if patchdatasource is None:
                 print "Error, could not open Patches " + patchfile_name
                 map_attr.addAttribute("Impl_cycle", 1)      #No data so fake impl_cycle so that urbplanbb does not check redev
                 return False
         
-        blocklayer = blockdataSource.GetLayer()
-        if self.patchesavailable: patchlayer = patchdataSource.GetLayer()
+        blocklayer = blockdatasource.GetLayer()
+        if self.patchesavailable: patchlayer = patchdatasource.GetLayer()
         total_blocks = blocklayer.GetFeatureCount()
         if total_blocks == 0:
             map_attr.addAttribute("Impl_cycle", 1)      #No data so fake impl_cycle so that urbplanbb does not check redev
-            blockdataSource.Destroy()
-            if self.patchesavailable: patchdataSource.Destroy()
+            blockdatasource.Destroy()
+            if self.patchesavailable: patchdatasource.Destroy()
             return False        #No blocks, end function
         blockspatialRef = blocklayer.GetSpatialRef()
         if self.patchesavailable: patchspatialRef = patchlayer.GetSpatialRef()
@@ -152,7 +157,7 @@ class GetPreviousBlocks(Module):
         extents = blocklayer.GetExtent()     #returns as xmin, xmax, ymin, ymax
         xmin = extents[0]
         ymin = extents[2]
-        print str(xmin) + ", " + str(ymin)
+        self.notify(str(xmin) + ", " + str(ymin))
         
         #Get some dimensions of the map
         map_width = extents[1] - xmin
@@ -165,7 +170,7 @@ class GetPreviousBlocks(Module):
         blocks_wide = map_width/block_size
         blocks_tall = map_height/block_size
         
-        print firstBlock.GetFieldCount()
+        self.notify(str(firstBlock.GetFieldCount()))
         
         #Set some global attributes
         map_attr.addAttribute("Xmin", xmin)
@@ -176,7 +181,7 @@ class GetPreviousBlocks(Module):
         map_attr.addAttribute("BlocksWidth", blocks_wide)
         map_attr.addAttribute("BlocksHeight", blocks_tall)
         map_attr.addAttribute("TotalBlocks", total_blocks)
-        
+
         #Loop through each Block and obtain all attributes
         for i in range(int(total_blocks)):
             currentID = i+1
@@ -184,9 +189,9 @@ class GetPreviousBlocks(Module):
             if self.patchesavailable: currentPatches = patchlayer.GetFeature(i)        #obtains patches from patch file
             
             #Transfer all Block Attributes to Block Output
-            block_attr = Component()                         #declares Attribute() vector for VIBe
-            city.addComponent(block_attr,self.blocks)
-	    total_attrs = currentBlock.GetFieldCount()  #gets total number of attributes
+            block_attr = ubdata.UBComponent()                         #declares Attribute() vector for VIBe
+            #city.addComponent(block_attr,self.blocks)
+            total_attrs = currentBlock.GetFieldCount()  #gets total number of attributes
             for j in range(int(total_attrs)):           
                 name = str(currentBlock.GetFieldDefnRef(j).GetName())        #Obtain attribute name from FieldDefn object
                 value = currentBlock.GetField(j)                        #get the value from the field using the same index
@@ -196,11 +201,12 @@ class GetPreviousBlocks(Module):
                     block_attr.addAttribute(str(name), value)                    #assign to block_attr vector
 
             currentBlock.Destroy()      #destroy to save memory
-            
+            self.activesim.addAsset("PrevBlockID"+str(currentID))
+
             if self.patchesavailable:
                 #Transfer all Patch Attributes to Patch Output
-                patch_attr = Component()
-                city.addComponent(patch_attr,self.patch)
+                patch_attr = ubdata.UBComponent()
+                #city.addComponent(patch_attr,self.patch)
                 total_patchattr = currentPatches.GetFieldCount()
                 for j in range(int(total_patchattr)):
                     name = str(currentPatches.GetFieldDefnRef(j).GetName())
@@ -211,8 +217,11 @@ class GetPreviousBlocks(Module):
                         patch_attr.addAttribute(str(name), value)
                 
                 currentPatches.Destroy()    #destroy to save memory
+                self.activesim.addAsset("PrevPatchID"+str(currentID))
         
         #Destroy the shapefile
-        blockdataSource.Destroy()
-        if self.patchesavailable: patchdataSource.Destroy()
+        blockdatasource.Destroy()
+        if self.patchesavailable: patchdatasource.Destroy()
+
+        self.activesim.addAsset("MasterMapAttributes")
         #END OF MODULE
