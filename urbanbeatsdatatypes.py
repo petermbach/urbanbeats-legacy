@@ -835,7 +835,14 @@ class UBComponent(object):
         else:
             print "WARNING NO ATTTRIBUTE NAMED: "+str(name)
         return True
-    
+
+    def changeAttribute(self, name, value):
+        if name in self.__attributes.keys():
+            self.__attributes[name] = value
+        else:
+            print "NOTE: ", name, "not originally in Attributes list, adding..."
+            self.__attributes[name] = value
+
     def getAttribute(self, name):
         try:
             return self.__attributes[name]
