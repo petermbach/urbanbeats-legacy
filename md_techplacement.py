@@ -28,9 +28,7 @@ import tech_designbydcv as dcv          #sub-functions that design based on desi
 import tech_designbyeq as deq           #sub-functions that design based on design equations
 import tech_designbysim as dsim         #sub-functions that design based on miniature simulations
 import ubseriesread as ubseries         #sub-functions responsible for processing climate data
-
 from md_techplacementguic import *
-
 import os, sqlite3, gc, random
 import numpy as np
 

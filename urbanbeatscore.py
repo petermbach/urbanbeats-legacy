@@ -108,6 +108,9 @@ class UrbanBeatsSim(threading.Thread):
         self.__techimplement = []
         self.__perfassess = []
 
+        self.__getprevBlocks = []   #md_getpreviousblocks module, is initialize and parameters automatically set based on project details
+        self.__getSystems = []      #md_getsystems module, parameters set based on cycle data set and whether dynamic simulation
+
         #DATA SETS
         self.__data_geographic_pc = []      #contains the geographic data set for different snapshots/milestones for planning
         self.__data_geographic_ic = []      #contains geographic data set for different snapshots/milestones for implementation
