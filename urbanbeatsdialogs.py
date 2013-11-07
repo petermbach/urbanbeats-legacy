@@ -102,6 +102,11 @@ class NewProjectSetup(QtGui.QDialog):
         self.ui.static_techimplinclude.setChecked(bool(self.module.getParameter("sf_techimplinclude")))
         self.ui.static_techimplconstant.setChecked(bool(self.module.getParameter("sf_techimplconstant")))
         self.ui.static_perfinclude.setChecked(bool(self.module.getParameter("sf_perfinclude")))
+        self.adjTechplaceBoxes()
+
+        self.connect(self.ui.static_techplaninclude, QtCore.SIGNAL("clicked()"), self.adjTechplaceBoxes)
+        self.connect(self.ui.static_techimplinclude, QtCore.SIGNAL("clicked()"), self.adjTechplaceBoxes)
+        self.connect(self.ui.static_perfinclude, QtCore.SIGNAL("clicked()"), self.adjTechplaceBoxes)
 
         if self.module.getParameter("sd_samedata") == 'M':
             self.ui.radioMasterplan.setChecked(1)
@@ -124,6 +129,8 @@ class NewProjectSetup(QtGui.QDialog):
         self.ui.dyn_techimplconstant.setChecked(bool(self.module.getParameter("df_techimplconstant")))
         self.ui.dyn_perfinclude.setChecked(bool(self.module.getParameter("df_perfinclude")))
         self.ui.dyn_perfconstant.setChecked(bool(self.module.getParameter("df_perfconstant")))
+        self.adjDynPerfBoxes()
+        self.connect(self.ui.dyn_perfinclude, QtCore.SIGNAL("clicked()"), self.adjDynPerfBoxes)
 
         self.ui.dyn_masterplanconstant.setChecked(bool(self.module.getParameter("dd_samemaster")))
         self.ui.dyn_climateconstant.setChecked(bool(self.module.getParameter("dd_sameclimate")))
@@ -137,7 +144,42 @@ class NewProjectSetup(QtGui.QDialog):
         if pathname:
             self.ui.projectpath_box.setText(pathname)
             self.emit(QtCore.SIGNAL("newProjectDirectory"), pathname)
-        
+
+    def adjTechplaceBoxes(self):
+        """If "include techplacement" is not checked, then disabled a bunch of buttons thereafter"""
+        if self.ui.static_techplaninclude.isChecked() == 1:
+            self.ui.static_techplanconstant.setEnabled(1)
+            self.ui.static_techimplinclude.setEnabled(1)
+            if self.ui.static_techimplinclude.isChecked() == 1:
+                self.ui.static_techimplconstant.setEnabled(1)
+                self.ui.radioMasterplan.setEnabled(1)
+                self.ui.radioEnvironment.setEnabled(1)
+            else:
+                self.ui.static_techimplconstant.setEnabled(0)
+                self.ui.radioMasterplan.setEnabled(0)
+                self.ui.radioEnvironment.setEnabled(0)
+            self.ui.static_perfinclude.setEnabled(1)
+            if self.ui.static_perfinclude.isChecked() == 1:
+                self.ui.static_climateconstant.setEnabled(1)
+            else:
+                self.ui.static_climateconstant.setEnabled(0)
+        else:
+            self.ui.static_techplanconstant.setEnabled(0)
+            self.ui.static_techimplinclude.setEnabled(0)
+            self.ui.static_techimplconstant.setEnabled(0)
+            self.ui.static_perfinclude.setEnabled(0)
+            self.ui.radioMasterplan.setEnabled(0)
+            self.ui.radioEnvironment.setEnabled(0)
+            self.ui.static_climateconstant.setEnabled(0)
+
+    def adjDynPerfBoxes(self):
+        if self.ui.dyn_perfinclude.isChecked() == 1:
+            self.ui.dyn_perfconstant.setEnabled(1)
+            self.ui.dyn_climateconstant.setEnabled(1)
+        else:
+            self.ui.dyn_perfconstant.setEnabled(0)
+            self.ui.dyn_climateconstant.setEnabled(0)
+
     def save_values(self):
         #compile parameter list             
         self.module.setParameter("name", str(self.ui.name_box.text()))
@@ -166,9 +208,11 @@ class NewProjectSetup(QtGui.QDialog):
         self.module.setParameter("sf_techimplconstant", int(self.ui.static_techimplconstant.isChecked()))
         self.module.setParameter("sf_perfinclude", int(self.ui.static_perfinclude.isChecked()))
 
-        if self.ui.radioMasterplan.isChecked():
+        if self.ui.static_techimplinclude.isChecked() and self.ui.radioMasterplan.isChecked():
             self.module.setParameter("sd_samedata", 'M')
-        elif self.ui.radioEnvironment.isChecked():
+        elif self.ui.static_techimplinclude.isChecked() and self.ui.radioEnvironment.isChecked():
+            self.module.setParameter("sd_samedata", 'E')
+        else:
             self.module.setParameter("sd_samedata", 'E')
 
         self.module.setParameter("sd_sameclimate", int(self.ui.static_climateconstant.isChecked()))
