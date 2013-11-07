@@ -563,6 +563,10 @@ class UrbanBeatsSim(threading.Thread):
                 self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
             else:
+                self.__getprevBlocks[0].setParameter("block_path_name", emptyBlockPath) #PREVIOUS SIMULATION
+                self.__getprevBlocks[0].setParameter("patchesavailable", 0)
+                self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
+                self.__getprevBlocks[0].setParameter("patchesavailable", 0)
                 #Set previous simulation files name+tab-1
                 pass
 
@@ -590,42 +594,39 @@ class UrbanBeatsSim(threading.Thread):
             self.updateObservers("PROGRESSUPDATE||"+str(int(50.0*progressincrement+incrementcount)))
 
             #(4) Techplacement
-            if len(self.__techplacement) == 0:
-                self.transferCurrentAssetsToCollection("pc")
-                self.exportGIS(tab, "pc")
-                self.updateObservers("PROGRESSUPDATE||"+str(int(100.0*progressincrement+incrementcount)))
-                continue
-            if tab == 0:
-                self.__getSystems[0].setParameter("ubeats_file", 1)
-                self.__getSystems[0].setParameter("path_name", emptySysPath)
-            else:
-                pass
+            if len(self.__techplacement) > 0:
+                if tab == 0:
+                    self.__getSystems[0].setParameter("ubeats_file", 1)
+                    self.__getSystems[0].setParameter("path_name", emptySysPath)
+                else:
+                    pass
 
-            getSystems = self.__getSystems[0]
-            getSystems.attach(self.__observers)
-            getSystems.run()
-            getSystems.detach(self.__observers)
-            self.updateObservers("PROGRESSUPDATE||"+str(int(60.0*progressincrement+incrementcount)))
+                getSystems = self.__getSystems[0]
+                getSystems.attach(self.__observers)
+                getSystems.run()
+                getSystems.detach(self.__observers)
+                self.updateObservers("PROGRESSUPDATE||"+str(int(60.0*progressincrement+incrementcount)))
 
-            #techplacement = self.getModuleTechplacement(tab)
-            #techplacement.attach(self.__observers)
-            #techplacement.run()
-            #techplacement.detach(self.__observers)
+                #techplacement = self.getModuleTechplacement(tab)
+                #techplacement.attach(self.__observers)
+                #techplacement.run()
+                #techplacement.detach(self.__observers)
+                #musicExport = self.__getModuleWrite2MUSIC[0]
+                #musicExport.setParameter("curcycle", "pc")
+                #musicExport.setParameter("tabindex", tab)
+                #musicExport.attach(self.__observers)
+                #musicExport.run()
+                #musicExport.detach(self.__observers)
+
             self.updateObservers("PROGRESSUPDATE||"+str(int(80.0*progressincrement+incrementcount)))
 
             #(5) Export
-            #musicExport = self.__getModuleWrite2MUSIC[0]
-            #musicExport.setParameter("curcycle", "pc")
-            #musicExport.setParameter("tabindex", tab)
-            #musicExport.attach(self.__observers)
-            #musicExport.run()
-            #musicExport.detach(self.__observers)
             self.updateObservers("PROGRESSUPDATE||"+str(int(90.0*progressincrement+incrementcount)))
-
             self.transferCurrentAssetsToCollection("pc")
             self.exportGIS(tab, "pc")
             self.updateObservers("PROGRESSUPDATE||"+str(int(100.0*progressincrement+incrementcount)))
             incrementcount += 100.0*progressincrement
+
             #----------------------------------------#
             #IMPLEMENTATION CYCLE START (IF SELECTED)#
             #----------------------------------------#
@@ -664,8 +665,9 @@ class UrbanBeatsSim(threading.Thread):
             #(4) Techimplement
             #self.__getSystems[0].setParameter("ubeats_file", 1)
             #self.__getSystems[0].setParameter("path_name", emptySysPath)
-
             self.updateObservers("PROGRESSUPDATE||"+str(int(70*progressincrement+incrementcount)))
+
+
 
             self.updateObservers("PROGRESSUPDATE||"+str(int(90*progressincrement+incrementcount)))
 

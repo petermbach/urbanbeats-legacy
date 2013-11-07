@@ -68,18 +68,14 @@ class GetPreviousBlocks(UBModule):
         self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
         self.activesim = activesim      #UBCORE
 
-        self.createParameter("ongoing_sim", BOOL,"")
         self.createParameter("implementationcycle", BOOL, "")
         self.createParameter("patchesavailable", BOOL, "")
-        self.createParameter("path_name", STRING,"")
         self.createParameter("block_path_name",STRING,"")
         self.createParameter("patch_path_name",STRING,"")
-        self.ongoing_sim = 0            #Is this module part of an ongoing simulation?
         self.implementationcycle = 0    #Is this module in the implementation cycle? If yes, urbplanbb will not check
         self.patchesavailable = 0
-        self.path_name = "D:\\"
-        self.block_path_name = "D:\\Screek500m_Blocks.shp"
-        self.patch_path_name = "D:\\Screek500m_Patches.shp"
+        self.block_path_name = ""
+        self.patch_path_name = ""
 
         #Views
 	    #self.blocks = View("PreviousBlocks", COMPONENT, WRITE)	#other because of datatransfer problem with other block view from delinblocks
@@ -111,17 +107,9 @@ class GetPreviousBlocks(UBModule):
         
         #Get the correct driver (we are working with ESRI Shapefiles)
         driver = ogr.GetDriverByName('ESRI Shapefile')
-        
-        #default savefile names for ongoing simulations
-        blocksave_file = "ubeats_out.shp"
-        patchsave_file = "ubeats_outp.shp"
-        
-        if self.ongoing_sim == True:
-            blockfile_name = self.path_name + blocksave_file
-            patchfile_name = self.path_name + patchsave_file
-        else:
-            blockfile_name = self.block_path_name
-            patchfile_name = self.patch_path_name
+
+        blockfile_name = self.block_path_name
+        patchfile_name = self.patch_path_name
         
         #open data source, check if it exists otherwise quit.
         blockdatasource = driver.Open(blockfile_name, 0)
@@ -135,15 +123,20 @@ class GetPreviousBlocks(UBModule):
                 self.notify("Error, could not open Patches " + str(patchfile_name))
                 map_attr.addAttribute("Impl_cycle", 1)      #No data so fake impl_cycle so that urbplanbb does not check redev
                 return False
-        
+
+        self.notify("Transferring Previous Block Data")
         blocklayer = blockdatasource.GetLayer()
         if self.patchesavailable: patchlayer = patchdatasource.GetLayer()
         total_blocks = blocklayer.GetFeatureCount()
+
+        self.notify("Total Blocks: "+str(total_blocks))
+
         if total_blocks == 0:
             map_attr.addAttribute("Impl_cycle", 1)      #No data so fake impl_cycle so that urbplanbb does not check redev
             blockdatasource.Destroy()
             if self.patchesavailable: patchdatasource.Destroy()
-            return False        #No blocks, end function
+            self.activesim.addAsset("PrevMapAttributes", map_attr)
+            return True        #No blocks, end function
         blockspatialRef = blocklayer.GetSpatialRef()
         if self.patchesavailable: patchspatialRef = patchlayer.GetSpatialRef()
         self.notify("Spatial Reference (Proj4): " + str(blockspatialRef.ExportToProj4()))
@@ -222,6 +215,5 @@ class GetPreviousBlocks(UBModule):
         #Destroy the shapefile
         blockdatasource.Destroy()
         if self.patchesavailable: patchdatasource.Destroy()
-        print "debug"
         self.activesim.addAsset("PrevMapAttributes", map_attr)
         #END OF MODULE

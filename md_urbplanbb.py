@@ -497,7 +497,7 @@ class Urbplanbb(UBModule):
         #strvec = city.getUUIDsOfComponentsInView(self.prevMapAttr)
         #prev_map_attr = city.getComponent(strvec[0])
 
-        #prev_map_attr = self.activesim.getAssetWithName("PrevMapAttributes")  #Implementation Cycle only
+        prev_map_attr = self.activesim.getAssetWithName("PrevMapAttributes")  #Implementation Cycle only
 
         #UBCORE --------------------------------------->
         map_attr = self.activesim.getAssetWithName("MapAttributes")
@@ -549,13 +549,13 @@ class Urbplanbb(UBModule):
                 continue
             
             #Determine whether to Update Block at all using Dynamics Parameters
-            #if int(prev_map_attr.getAttribute("Impl_cycle")) == 0:    #Is this implementation cycle?
-            #    prevAttList = self.activesim.getAssetWithName("PrevID"+str(currentID))
-            #    if self.keepBlockDataCheck(currentAttList, prevAttList):        #NO = check block for update
-            #        self.notify("Changes in Block are below threshold levels, transferring data")
-            #        self.transferBlockAttributes(currentAttList, prevAttList)
-            #        continue        #If Block does not need to be developed, skip it
-            #
+            if int(prev_map_attr.getAttribute("Impl_cycle")) == 0:    #Is this implementation cycle?
+                prevAttList = self.activesim.getAssetWithName("PrevID"+str(currentID))
+                if self.keepBlockDataCheck(currentAttList, prevAttList):        #NO = check block for update
+                    self.notify("Changes in Block are below threshold levels, transferring data")
+                    self.transferBlockAttributes(currentAttList, prevAttList)
+                    continue        #If Block does not need to be developed, skip it
+
             #Get Active Area
             activity = currentAttList.getAttribute("Active")
             Aactive = activity*Atblock
