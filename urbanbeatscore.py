@@ -591,6 +591,9 @@ class UrbanBeatsSim(threading.Thread):
 
             #(4) Techplacement
             if len(self.__techplacement) == 0:
+                self.transferCurrentAssetsToCollection("pc")
+                self.exportGIS(tab, "pc")
+                self.updateObservers("PROGRESSUPDATE||"+str(int(100.0*progressincrement+incrementcount)))
                 continue
             if tab == 0:
                 self.__getSystems[0].setParameter("ubeats_file", 1)

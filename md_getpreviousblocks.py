@@ -222,6 +222,6 @@ class GetPreviousBlocks(UBModule):
         #Destroy the shapefile
         blockdatasource.Destroy()
         if self.patchesavailable: patchdatasource.Destroy()
-
-        self.activesim.addAsset("PrevMapAttributes")
+        print "debug"
+        self.activesim.addAsset("PrevMapAttributes", map_attr)
         #END OF MODULE
