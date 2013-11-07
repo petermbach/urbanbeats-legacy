@@ -35,8 +35,8 @@ def saveSimFile(activesim, filename):
 
     tempfiles = []
     directory = os.path.dirname(str(filename))
-    if os.path.exists(filename): os.remove(filename)
-    archive = tarfile.open(filename, 'w')     #creates the tar archive
+    if os.path.exists(str(filename)): os.remove(str(filename))
+    archive = tarfile.open(str(filename), 'w')     #creates the tar archive
 
     #Create the individual text files in the same location, then add to the tar archive - *||* is used as delimiter
     if os.path.exists(directory+"/projinfo.txt"): os.remove(directory+"/projinfo.txt")
@@ -130,7 +130,7 @@ def saveSimFile(activesim, filename):
     return True
 
 def loadSimFile(activesim, filename):
-    archive = tarfile.open(filename, 'r')
+    archive = tarfile.open(str(filename), 'r')
 
     #Retrieve Project Details
     projectinfo = {}

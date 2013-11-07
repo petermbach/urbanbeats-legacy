@@ -55,9 +55,9 @@ class Techimplement(UBModule):
     @author Peter M Bach
     """
     
-    def __init__(self, activesim, curstate, tabindex):
+    def __init__(self, activesim, tabindex):
         UBModule.__init__(self)
-        self.cycletype = curstate       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
+        self.cycletype = "ic"       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
         self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
         self.activesim = activesim      #UBCORE
 

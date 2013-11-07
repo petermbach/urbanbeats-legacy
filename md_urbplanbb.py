@@ -70,9 +70,9 @@ class Urbplanbb(UBModule):
         @author Peter M Bach
         """
 
-    def __init__(self, activesim, curstate, tabindex):
+    def __init__(self, activesim, tabindex):
         UBModule.__init__(self)
-        self.cycletype = curstate       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
+        self.cycletype = "pc"       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
         self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
         self.activesim = activesim      #UBCORE
         #inputs from previous modules and output vector data to next module
@@ -497,7 +497,7 @@ class Urbplanbb(UBModule):
         #strvec = city.getUUIDsOfComponentsInView(self.prevMapAttr)
         #prev_map_attr = city.getComponent(strvec[0])
 
-        #prev_map_attr = self.activesim.getAssetWithName("MasterMapAttributes")  #Implementation Cycle only
+        prev_map_attr = self.activesim.getAssetWithName("PrevMapAttributes")  #Implementation Cycle only
 
         #UBCORE --------------------------------------->
         map_attr = self.activesim.getAssetWithName("MapAttributes")
@@ -521,9 +521,6 @@ class Urbplanbb(UBModule):
         nres_nsw = self.adjustSampleRange(self.nres_nswmin, self.nres_nswmax, self.nres_nsmed)
         lane_w = self.adjustSampleRange(self.lane_wmin, self.lane_wmax, self.lane_wmed)
 
-        #UBCORE STUFF - PREVIOUS MAP!
-        #if int(prev_map_attr.getAttribue("Impl_cycle")) == 0:   #Is this the implementation cycle?
-        #    pass
         #if int(prev_map_attr.getAttribute("Impl_cycle")) == 0:    #Is this implementation cycle?
         #    self.initPrevBLOCKIDtoUUID(city)        #DYNAMIND - initialize the dictionary that tracks Previous Block IDs and UUID
         
@@ -552,12 +549,12 @@ class Urbplanbb(UBModule):
                 continue
             
             #Determine whether to Update Block at all using Dynamics Parameters
-            #if int(prev_map_attr.getAttribute("Impl_cycle")) == 0:    #Is this implementation cycle?
-            #    prevAttList = self.activesim.getAssetWithName("PrevID"+str(currentID))
-            #    if self.keepBlockDataCheck(currentAttList, prevAttList):        #NO = check block for update
-            #        self.notify("Changes in Block are below threshold levels, transferring data")
-            #        self.transferBlockAttributes(currentAttList, prevAttList)
-            #        continue        #If Block does not need to be developed, skip it
+            if int(prev_map_attr.getAttribute("Impl_cycle")) == 0:    #Is this implementation cycle?
+                prevAttList = self.activesim.getAssetWithName("PrevID"+str(currentID))
+                if self.keepBlockDataCheck(currentAttList, prevAttList):        #NO = check block for update
+                    self.notify("Changes in Block are below threshold levels, transferring data")
+                    self.transferBlockAttributes(currentAttList, prevAttList)
+                    continue        #If Block does not need to be developed, skip it
             #
             #Get Active Area
             activity = currentAttList.getAttribute("Active")
@@ -653,7 +650,9 @@ class Urbplanbb(UBModule):
             blk_avspace += avail_ref
             
             #---Services & Utilities
-            Asvu_water = float(A_svu * self.svu_water/100)
+            print A_svu
+            print self.svu_water
+            Asvu_water = float(A_svu) * float(self.svu_water)/100.0
             Asvu_others = A_svu - Asvu_water
             
                 #Adjust percentages
@@ -1630,11 +1629,11 @@ class Urbplanbb(UBModule):
         Afloor = self.nonres_far[type] * employed        #Step 3a: Calculate total floor area
 
         if type == "LI" or type == "HI":            #Step 3b: Determine maximum building footself.notify(
-            Afootprintmax = self.maxplotratio_ind/100 * Aca
+            Afootprintmax = float(self.maxplotratio_ind)/100 * Aca
         elif type == "COM":
-            Afootprintmax = self.maxplotratio_com/100 * Aca
+            Afootprintmax = float(self.maxplotratio_com)/100 * Aca
         else:       #type = "ORC", plot ratio rules do not apply, but instead setback rules, taken on 2 faces
-            Afootprintmax = Aca - 2.0*math.sqrt(Aca)* max(self.nres_minfsetback*float(not(self.nres_setback_auto)), 2.0)
+            Afootprintmax = Aca - 2.0*math.sqrt(Aca)* max(float(self.nres_minfsetback)*float(not(self.nres_setback_auto)), 2.0)
             #Site area - (setback area, which is either minimum specified or 2meters if auto is enabled)
             #NOTE - need to go measure the setbacks for high-rise areas in the city just to make sure 2m is ok
         

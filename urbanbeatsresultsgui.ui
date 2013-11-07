@@ -121,6 +121,9 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QTabWidget" name="resultTabs">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="currentIndex">
          <number>0</number>
         </property>
@@ -144,30 +147,6 @@
              </size>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_4">
-             <item>
-              <widget class="QComboBox" name="ps_comboSelect">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>200</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>200</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <item>
-                <property name="text">
-                 <string>General</string>
-                </property>
-               </item>
-              </widget>
-             </item>
              <item>
               <widget class="QTreeWidget" name="ps_categoryTree">
                <property name="minimumSize">
@@ -193,7 +172,7 @@
                </attribute>
                <column>
                 <property name="text">
-                 <string>Categories</string>
+                 <string>Outline</string>
                 </property>
                </column>
               </widget>
@@ -228,7 +207,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Export Results ...</string>
+                   <string>Export Summary ...</string>
                   </property>
                  </widget>
                 </item>
@@ -248,75 +227,6 @@
                  <string>about:blank</string>
                 </url>
                </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QWidget" name="ps_controlSimWidget" native="true">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>38</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>38</height>
-                </size>
-               </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <item>
-                 <widget class="QLabel" name="ps_Sim_lbl">
-                  <property name="text">
-                   <string>Simulation #</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QScrollBar" name="ps_ScrollBar">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="ps_Sim_box">
-                  <property name="minimumSize">
-                   <size>
-                    <width>60</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Milestone1</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
               </widget>
              </item>
             </layout>
@@ -439,31 +349,105 @@
                </property>
                <item>
                 <property name="text">
-                 <string>(Select a scale to view results)</string>
+                 <string>&lt;select category&gt;</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Allotments and Estates</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Available Space Distribution</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Elevation</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Impervious Areas</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Land Surface Cover Distribution</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Land Use Mix</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Population and Employment</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Spatial Metrics</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Undeveloped Land Type</string>
                 </property>
                </item>
               </widget>
              </item>
              <item>
               <widget class="QTreeWidget" name="ue_categoryTree">
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::MultiSelection</enum>
+               </property>
                <column>
                 <property name="text">
-                 <string>Categories</string>
+                 <string>Urban Regions</string>
                 </property>
                </column>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="ue_multiselect">
+               <property name="text">
+                <string>Enable Multiple Selection</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="ue_neighbourhood">
+               <property name="text">
+                <string>Show only Block Neighbourhood</string>
+               </property>
               </widget>
              </item>
              <item>
               <widget class="QWidget" name="ue_exportWidget" native="true">
                <property name="minimumSize">
                 <size>
-                 <width>0</width>
+                 <width>200</width>
                  <height>38</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
+                 <width>200</width>
                  <height>38</height>
                 </size>
                </property>
@@ -565,6 +549,9 @@
             <layout class="QVBoxLayout" name="verticalLayout_10">
              <item>
               <widget class="QComboBox" name="wi_comboSelect">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="minimumSize">
                 <size>
                  <width>200</width>
@@ -579,18 +566,78 @@
                </property>
                <item>
                 <property name="text">
-                 <string>(Select a scale to view results)</string>
+                 <string>&lt;select category&gt;</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Service Levels</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Technology Selection</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Utilisation</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Water Demands</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Water Efficiency Rating</string>
                 </property>
                </item>
               </widget>
              </item>
              <item>
               <widget class="QTreeWidget" name="wi_categoryTree">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <column>
                 <property name="text">
-                 <string>Categories</string>
+                 <string>Urban Regions</string>
                 </property>
                </column>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="wi_multiselect">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Enable Multiple Selection</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="wi_neighbourhood">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Show only Block Neighbourhood</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -610,6 +657,21 @@
                <layout class="QVBoxLayout" name="verticalLayout_11">
                 <item>
                  <widget class="QPushButton" name="wi_exportResults">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Export Results ...</string>
                   </property>
@@ -645,6 +707,9 @@
                 </item>
                 <item>
                  <widget class="QScrollBar" name="wi_ScrollBar">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -670,6 +735,9 @@
                 </item>
                 <item>
                  <widget class="QLineEdit" name="wi_Sim_box">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="minimumSize">
                    <size>
                     <width>60</width>
@@ -705,6 +773,21 @@
             <layout class="QVBoxLayout" name="verticalLayout_13">
              <item>
               <widget class="QTreeWidget" name="sp_categoryTree">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <column>
                 <property name="text">
                  <string>Categories</string>

@@ -28,9 +28,8 @@ import urbanbeatscore as ub
 
 def getSummaryStringNarrative(activesim, tabindex):
     narrative = activesim.getNarrative(tabindex)
-    htmlstring = """<h3>"""+narrative[0]+"""</h3>
+    htmlstring = """<strong>"""+narrative[0]+"""</strong>
     <p>"""+narrative[1]+"""</p>
-    <hr />
     """
     return htmlstring
 
@@ -38,28 +37,35 @@ def getSummaryStringDelinBlocks(activesim):
     delinblocks = activesim.getModuleDelinblocks()
     yesnomatrix = ["No", "Yes"]        
     summarystring = ""
-    summarystring += "<strong>DELINEATION OF BUILDING BLOCKS </strong><br>"
-    summarystring += "Block Size: "+str(delinblocks.getParameter("BlockSize"))+"\n\n"
-    summarystring += "Include following data sets: \n"
-    summarystring += "  >> Planner's Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_plan_map"))])+"\n"
-    summarystring += "  >> Locality Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_local_map"))])+"\n"
-    summarystring += "  >> Employment Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_employment"))])+"\n"
-    summarystring += "  >> Rivers Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_rivers"))])+"\n"
-    summarystring += "  >> Lakes Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_lakes"))])+"\n"
-    summarystring += "  >> Groundwater Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_groundwater"))])+"\n"
-    summarystring += "  >> Social Parameter Map 1: "+str(yesnomatrix[int(delinblocks.getParameter("include_soc_par1"))])+"\n"
-    summarystring += "  >> Social Parameter Map 2: "+str(yesnomatrix[int(delinblocks.getParameter("include_soc_par2"))])+"\n"
-    summarystring += "Additional Analyses: \n"
-    summarystring += "  >> Spatial Metrics: "+str(yesnomatrix[int(delinblocks.getParameter("spatialmetrics"))])+"\n"      
-    summarystring += "  >> Patch Delineation: "+str(yesnomatrix[int(delinblocks.getParameter("patchdelin"))])+"\n"
-    summarystring += "  >> CBD Distance: "+str(yesnomatrix[int(delinblocks.getParameter("considerCBD"))])+"\n\n"
-    summarystring += "Flow Path Delineation Method: "+str(delinblocks.getParameter("flow_method"))+"\n\n"
+    summarystring += "<strong><em>Delineation of Building Blocks </em></strong><br><ul>"
+    paramlist = delinblocks.getModuleParameterList()
+    for param in paramlist.keys():
+        if paramlist[param][0] == "BOOL":
+            summarystring += "<li>"+str(paramlist[param][1])+" - "+str(yesnomatrix[int(delinblocks.getParameter(str(param)))])+"</li>"
+        else:
+            summarystring += "<li>"+str(paramlist[param][1])+" - "+str(delinblocks.getParameter(str(param)))+"</li>"
+    #summarystring += "Include following data sets: \n"
+    #summarystring += "  >> Planner's Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_plan_map"))])+"\n"
+    #summarystring += "  >> Locality Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_local_map"))])+"\n"
+    #summarystring += "  >> Employment Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_employment"))])+"\n"
+    #summarystring += "  >> Rivers Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_rivers"))])+"\n"
+    #summarystring += "  >> Lakes Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_lakes"))])+"\n"
+    #summarystring += "  >> Groundwater Map: "+str(yesnomatrix[int(delinblocks.getParameter("include_groundwater"))])+"\n"
+    #summarystring += "  >> Social Parameter Map 1: "+str(yesnomatrix[int(delinblocks.getParameter("include_soc_par1"))])+"\n"
+    #summarystring += "  >> Social Parameter Map 2: "+str(yesnomatrix[int(delinblocks.getParameter("include_soc_par2"))])+"\n"
+    #summarystring += "Block Size: "+str(delinblocks.getParameter("BlockSize"))+"\n\n"
+    #summarystring += "Additional Analyses: \n"
+    #summarystring += "  >> Spatial Metrics: "+str(yesnomatrix[int(delinblocks.getParameter("spatialmetrics"))])+"\n"
+    #summarystring += "  >> Patch Delineation: "+str(yesnomatrix[int(delinblocks.getParameter("patchdelin"))])+"\n"
+    #summarystring += "  >> CBD Distance: "+str(yesnomatrix[int(delinblocks.getParameter("considerCBD"))])+"\n\n"
+    #summarystring += "Flow Path Delineation Method: "+str(delinblocks.getParameter("flow_method"))+"\n\n"
+    summarystring += "</ul>"
     return summarystring
 
 def getSummaryStringUrbplanbb(activesim, index):
     urbplanbb = activesim.getModuleUrbplanbb(index)
     summarystring = ""
-    summarystring += "<strong> URBAN PLANNING RULES</strong><br>"
+    summarystring += "<strong><em>Urban Planning Rules</em></strong><br>"
     summarystring += "General Planning Rules: \n"
     summarystring += "  >> City Type: "+str()+"\n"
     summarystring += "Residential Planning Rules: \n"

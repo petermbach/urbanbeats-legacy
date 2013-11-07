@@ -6,7 +6,7 @@
 @section LICENSE
 
 This file is part of VIBe2
-Copyright (C) 2011  Peter M Bach
+Copyright (C) 2013  Peter M Bach
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,13 +25,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #------ IMPORTS --------------
 #Regular imports
-import threading, gc
+import threading, gc, os
 
 #Dependencies
 import urbanbeatsdatatypes as ubdata
 
 #Modules
 import md_delinblocks, md_urbplanbb, md_techplacement, md_techimplement#, md_perfassess
+import md_getpreviousblocks, md_getsystems, md_writeMUSICsim
+
+
+emptyBlockPath = os.path.dirname(__file__)+str("/ancillary/emptyblockmap.shp")
+emptySysPath = os.path.dirname(__file__)+str("/ancillary/emptysystemsmap.shp")
 
 # ------ CLASS DEFINITION -------
 class UrbanBeatsSim(threading.Thread):
@@ -43,7 +48,7 @@ class UrbanBeatsSim(threading.Thread):
         self.__observers = []         #Observers of the current simulation
         self.__simulation_has_completed = 0
         self.__filename= ""                 #Filename of the simulation
-
+        self.__tabs = 1
         ### ---------- Project information, Narrative Information and Simulation Details ------------
         self.__projectinfo = {
                 "name" : "<enter name>",
@@ -108,8 +113,8 @@ class UrbanBeatsSim(threading.Thread):
         self.__techimplement = []
         self.__perfassess = []
 
-        self.__getprevBlocks = []   #md_getpreviousblocks module, is initialize and parameters automatically set based on project details
-        self.__getSystems = []      #md_getsystems module, parameters set based on cycle data set and whether dynamic simulation
+        self.__getprevBlocks = []   #md_getpreviousblocks module, is initialize and parameters automatically set based on project details ["pc", "ic"]
+        self.__getSystems = []      #md_getsystems module, parameters set based on cycle data set and whether dynamic simulation ["pc", "ic"]
 
         #DATA SETS
         self.__data_geographic_pc = []      #contains the geographic data set for different snapshots/milestones for planning
@@ -117,6 +122,7 @@ class UrbanBeatsSim(threading.Thread):
         self.__data_climate = []            #contains climate data set for different snapshots/milestones
 
         self.__assets = {}            #The Database of the simulation file, which contains ALL the vector information
+        self.__assetscollection = {"pc":[], "ic":[]}    #Holds ALL assets for the entire simulation
 
         #Outputs and File Export Options
         self.__gis_options = {
@@ -178,24 +184,28 @@ class UrbanBeatsSim(threading.Thread):
     def initializeParameterSetsStatic(self):
         paramlength = self.__projectinfo["static_snapshots"]
 
-        self.__delinblocks.append(md_delinblocks.Delinblocks(self, "pc", 0))         #ONLY ONE DELINBLOCKS NEEDED
-        self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc", 0))         #Add the first one, then check if more needed
+        self.__delinblocks.append(md_delinblocks.Delinblocks(self, 0))         #ONLY ONE DELINBLOCKS NEEDED
+        self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, 0))         #Add the first one, then check if more needed
+        self.__getprevBlocks.append(md_getpreviousblocks.GetPreviousBlocks(self, 0))  #planning cycle modules
 
         if self.__projectinfo["sf_ubpconstant"] == 0: #if urbplanning rules are NOT to be constant...
             for i in range(int(paramlength-1)):     #add additional urbplan objects
-                self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc", i+1))
+                self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, i+1))
 
         if self.__projectinfo["sf_techplaninclude"] == 1:     #If techplan is included
-            self.__techplacement.append(md_techplacement.Techplacement(self, "pc", 0))
+            self.__techplacement.append(md_techplacement.Techplacement(self, 0))
+            self.__getSystems.append(md_getsystems.GetSystems(self, 0))
             if self.__projectinfo["sf_techplanconstant"] == 0:
                 for i in range(int(paramlength-1)):
-                    self.__techplacement.append(md_techplacement.Techplacement(self, "pc", i+1))
+                    self.__techplacement.append(md_techplacement.Techplacement(self, i+1))
 
         if self.__projectinfo["sf_techimplinclude"] == 1:     #If techimplement is included
-            self.__techimplement.append(md_techimplement.Techimplement(self, "ic", 0))
+            self.__getSystems.append(md_getsystems.GetSystems(self, 0))
+            self.__techimplement.append(md_techimplement.Techimplement(self, 0))
+            self.__getprevBlocks.append(md_getpreviousblocks.GetPreviousBlocks(self, 0))
             if self.__projectinfo["sf_techimplconstant"] == 0:
                 for i in range(int(paramlength-1)):
-                    self.__techimplement.append(md_techimplement.Techimplement(self, "ic", i+1))
+                    self.__techimplement.append(md_techimplement.Techimplement(self, i+1))
 
         #if self.__projectinfo["sf_perfinclude"] == 1:
         #    self.__perf_assess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
@@ -230,6 +240,7 @@ class UrbanBeatsSim(threading.Thread):
         else:
             pass    #array stays empty
 
+        self.__tabs = int(paramlength)
         #FINISHED INITIALIZATION
         self.updateObservers(str(self.getAllCycleDataSets("pc")))
         self.updateObservers(str(self.printAllModules()))
@@ -237,22 +248,26 @@ class UrbanBeatsSim(threading.Thread):
     def initializeParameterSetsDynamic(self):
         paramlength = self.__projectinfo["dyn_breaks"] +1       #n breaks + baseline
 
-        self.__delinblocks.append(md_delinblocks.Delinblocks(self, "pc", 0))         #ONLY ONE DELINBLOCKS NEEDED
-        self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc",0))         #Add the first one, then check if more needed
+        self.__delinblocks.append(md_delinblocks.Delinblocks(self, 0))         #ONLY ONE DELINBLOCKS NEEDED
+        self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, 0))         #Add the first one, then check if more needed
+        self.__getprevBlocks.append(md_getpreviousblocks.GetPreviousBlocks(self, 0))  #planning cycle modules
 
         if self.__projectinfo["df_ubpconstant"] == 0: #if NOT same urbanplanning rules
             for i in range(int(paramlength-1)):
-                self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc", i+1))
+                self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, i+1))
 
-        self.__techplacement.append(md_techplacement.Techplacement(self, "pc", 0))
+        self.__getSystems.append(md_getsystems.GetSystems(self, 0))
+        self.__techplacement.append(md_techplacement.Techplacement(self, 0))
         if self.__projectinfo["df_techplaceconstant"] == 0:
             for i in range(int(paramlength-1)):
-                self.__techplacement.append(md_techplacement.Techplacement(self, "pc", i+1))
+                self.__techplacement.append(md_techplacement.Techplacement(self, i+1))
 
-        self.__techimplement.append(md_techimplement.Techimplement(self, "ic", 0))
+        self.__techimplement.append(md_techimplement.Techimplement(self, 0))
+        self.__getprevBlocks.append(md_getpreviousblocks.GetPreviousBlocks(self, 0))
+        self.__getSystems.append(md_getsystems.GetSystems(self, 0))
         if self.__projectinfo["df_techimplconstant"] == 0:
             for i in range(int(paramlength-1)):
-                self.__techimplement.append(md_techimplement.Techimplement(self, "ic", i+1))
+                self.__techimplement.append(md_techimplement.Techimplement(self, i+1))
 
         #if self.__projectinfo["df_perfinclude"] != 0:
         #    self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
@@ -278,13 +293,14 @@ class UrbanBeatsSim(threading.Thread):
         else:
             pass        #Leave climate data array blank with len = 0
 
+        self.__tabs = int(paramlength)
         #End of Initialization
         self.updateObservers(str(self.getAllCycleDataSets("pc")))
         self.updateObservers(str(self.printAllModules()))
 
     def initalizeParameterSetBenchmark(self):
-        self.__delinblocks.append(md_delinblocks.Delinblocks(self, "pc", 0))         #ONLY ONE DELINBLOCKS NEEDED
-        self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, "pc", 0))
+        self.__delinblocks.append(md_delinblocks.Delinblocks(self, 0))         #ONLY ONE DELINBLOCKS NEEDED
+        self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, 0))
 #        self.__params_techplacement.append(TechplacementParameterSet("baseline"))
 #        self.__params_techimplement.append(TechimplementParameterSet("baseline"))
 #        self.__params_perfassess.append(PerformanceParameterSet("baseline"))
@@ -490,6 +506,12 @@ class UrbanBeatsSim(threading.Thread):
         """Erases all assets, leaves an empty dictionary, carried out when resetting the simulation"""
         self.__assets = {}
         gc.collect()
+        return True
+
+    def resetAssetCollection(self):
+        """Resets the asset collection completely"""
+        self.__assetscollection = {"pc": [], "ic": []}
+        gc.collect()
         self.updateObservers("PROGRESSUPDATE||0")
         return True
 
@@ -497,32 +519,166 @@ class UrbanBeatsSim(threading.Thread):
         """Returns the dictionary containing all assets from the simulation"""
         return self.__assets
 
-    def exportGIS(self):
+    def retrieveAssetsFromCollection(self, cycle, tabindex):
+        """To be used only once the simulation has completed, returns assets
+        from a particular cycle and snapshot/time period to be used in plotting results
+        """
+        try:
+            return self.__assetscollection[cycle][tabindex]
+        except KeyError:
+            return 0
+
+    def transferCurrentAssetsToCollection(self, cycle):
+        """Transfers the current Assets in self.__assets to the asset collection
+        to be used later in viewing results, etc."""
+        self.__assetscollection[cycle].append(self.__assets)
+        return True
+
+    def exportGIS(self, tabindex, curcycle):
         """Calls the Shapefile Export function from urbanbeatsdatatypes"""
-        ubdata.exportGISShapeFile(self)
+        ubdata.exportGISShapeFile(self, tabindex, curcycle)
         return True
 
     def run(self):
         self.updateObservers("Starting Simulation")
 
-        #-------------------- BASIC SIMULATION STRUCTURE BEGINS HERE -----------------
+        if len(self.__techimplement) == 0:
+            progressincrement = 1.0/float(self.__tabs)   #1 divided by number of tabs e.g. 4 tabs, each tab will be 25% of progress bar
+        else:
+            progressincrement = 1.0/(float(self.__tabs * 2.0))  #if there is implementation, one progress increment is twice as short
 
-        self.updateObservers("PROGRESSUPDATE||10")
-        delinblocks = self.getModuleDelinblocks()
-        delinblocks.attach(self.__observers)   #Register the observer
-        delinblocks.run()
-        delinblocks.detach(self.__observers)   #Deregister the observer after run completion
-        self.updateObservers("PROGRESSUPDATE||30")
+        incrementcount = 0.0
+        for tab in range(self.__tabs):
+            #Current iteration index = tab's value
+            self.updateObservers("Tab No. "+str(tab+1))
+            #-------------------- BASIC SIMULATION STRUCTURE BEGINS HERE -----------------
+            #----------------------------------------#
+            #PLANNING CYCLE START                    #
+            #----------------------------------------#
+            self.resetAssets()  #Reset the asset vector
+            #(1) Set files for previous systems and blocks
+            if tab == 0:
+                self.__getprevBlocks[0].setParameter("block_path_name", emptyBlockPath)
+                self.__getprevBlocks[0].setParameter("patchesavailable", 0)
+                self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
+                self.__getprevBlocks[0].setParameter("patchesavailable", 0)
+            else:
+                #Set previous simulation files name+tab-1
+                pass
 
-        urbplanbb = self.getModuleUrbplanbb(0)
-        urbplanbb.attach(self.__observers)  #Register the observer
-        urbplanbb.run()
-        urbplanbb.detach(self.__observers)
-        self.updateObservers("PROGRESSUPDATE||70")
+            #(2) Delinblocks
+            self.updateObservers("PROGRESSUPDATE||"+str(int(10.0*progressincrement+incrementcount)))
+            delinblocks = self.getModuleDelinblocks()
+            delinblocks.setParameter("curcycle", "pc")
+            delinblocks.setParameter("tabindex", tab)
+            delinblocks.attach(self.__observers)   #Register the observer
+            delinblocks.run()
+            delinblocks.detach(self.__observers)   #Deregister the observer after run completion
+            self.updateObservers("PROGRESSUPDATE||"+str(int(20.0*progressincrement+incrementcount)))
 
-        self.exportGIS()
-        self.updateObservers("PROGRESSUPDATE||90")
-        #self.exportGIS()
+            #(3) Urbplanbb
+            getPrevBlocks = self.__getprevBlocks[0]
+            getPrevBlocks.attach(self.__observers)
+            getPrevBlocks.run()
+            getPrevBlocks.detach(self.__observers)
+            self.updateObservers("PROGRESSUPDATE||"+str(int(30.0*progressincrement+incrementcount)))
+
+            urbplanbb = self.getModuleUrbplanbb(tab)
+            urbplanbb.attach(self.__observers)  #Register the observer
+            urbplanbb.run()
+            urbplanbb.detach(self.__observers)
+            self.updateObservers("PROGRESSUPDATE||"+str(int(50.0*progressincrement+incrementcount)))
+
+            #(4) Techplacement
+            if len(self.__techplacement) == 0:
+                continue
+            if tab == 0:
+                self.__getSystems[0].setParameter("ubeats_file", 1)
+                self.__getSystems[0].setParameter("path_name", emptySysPath)
+            else:
+                pass
+
+            getSystems = self.__getSystems[0]
+            getSystems.attach(self.__observers)
+            getSystems.run()
+            getSystems.detach(self.__observers)
+            self.updateObservers("PROGRESSUPDATE||"+str(int(60.0*progressincrement+incrementcount)))
+
+            #techplacement = self.getModuleTechplacement(tab)
+            #techplacement.attach(self.__observers)
+            #techplacement.run()
+            #techplacement.detach(self.__observers)
+            self.updateObservers("PROGRESSUPDATE||"+str(int(80.0*progressincrement+incrementcount)))
+
+            #(5) Export
+            #musicExport = self.__getModuleWrite2MUSIC[0]
+            #musicExport.setParameter("curcycle", "pc")
+            #musicExport.setParameter("tabindex", tab)
+            #musicExport.attach(self.__observers)
+            #musicExport.run()
+            #musicExport.detach(self.__observers)
+            self.updateObservers("PROGRESSUPDATE||"+str(int(90.0*progressincrement+incrementcount)))
+
+            self.transferCurrentAssetsToCollection("pc")
+            self.exportGIS(tab, "pc")
+            self.updateObservers("PROGRESSUPDATE||"+str(int(100.0*progressincrement+incrementcount)))
+            incrementcount += 100.0*progressincrement
+            #----------------------------------------#
+            #IMPLEMENTATION CYCLE START (IF SELECTED)#
+            #----------------------------------------#
+            if len(self.getModuleTechimplement(9999)) == 0:
+                continue    #Skip the loop, otherwise implement stuff
+            self.resetAssets()  #Reset the asset vector
+            incrementcount += 1
+
+            #(1) Set parameters for modules that load previous blocks and systems
+            #self.__getprevBlocks[0].setParameter("block_path_name", emptyBlockPath)
+            #self.__getprevBlocks[0].setParameter("patchesavailable", 0)
+            #self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
+            #self.__getprevBlocks[0].setParameter("patchesavailable", 0)
+
+            #(2) Delinblocks
+            self.updateObservers("PROGRESSUPDATE||"+str(int(10*progressincrement+incrementcount)))
+            delinblocks = self.getModuleDelinblocks()
+            delinblocks.setParameter("curcycle", "ic")
+            delinblocks.setParameter("tabindex", tab)
+            delinblocks.attach(self.__observers)   #Register the observer
+            delinblocks.run()
+            delinblocks.detach(self.__observers)   #Deregister the observer after run completion
+            self.updateObservers("PROGRESSUPDATE||"+str(int(30*progressincrement+incrementcount)))
+
+            #(3) Urbplanbb
+            #getPrevBlocks = self.__getprevBlocks[0]
+            #getPrevBlocks.attach(self.__observers)
+            #getPrevBlocks.run()
+            #getPrevBlocks.detach(self.__observers)
+            self.updateObservers("PROGRESSUPDATE||"+str(int(30.0*progressincrement+incrementcount)))
+
+            self.updateObservers("PROGRESSUPDATE||"+str(int(40*progressincrement+incrementcount)))
+
+            self.updateObservers("PROGRESSUPDATE||"+str(int(60*progressincrement+incrementcount)))
+
+            #(4) Techimplement
+            #self.__getSystems[0].setParameter("ubeats_file", 1)
+            #self.__getSystems[0].setParameter("path_name", emptySysPath)
+
+            self.updateObservers("PROGRESSUPDATE||"+str(int(70*progressincrement+incrementcount)))
+
+            self.updateObservers("PROGRESSUPDATE||"+str(int(90*progressincrement+incrementcount)))
+
+            #(5) Export
+            #musicExport = self.__getModuleWrite2MUSIC[0]
+            #musicExport.setParameter("curcycle", "ic")
+            #musicExport.setParameter("tabindex", tab)
+            #musicExport.attach(self.__observers)
+            #musicExport.run()
+            #musicExport.detach(self.__observers)
+            self.updateObservers("PROGRESSUPDATE||"+str(int(90.0*progressincrement+incrementcount)))
+
+            self.transferCurrentAssetsToCollection("ic")
+            self.exportGIS(tab, "ic")
+            self.updateObservers("PROGRESSUPDATE||"+str(int(100*progressincrement+incrementcount)))
+            incrementcount += 100.0*progressincrement
 
         #----------------- BASIC SIMULATION STRUCTURE ENS HERE ------------------
         self.updateObservers("End of Simulation")

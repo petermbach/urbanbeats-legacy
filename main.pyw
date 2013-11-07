@@ -584,14 +584,14 @@ class MainWindow(QtGui.QMainWindow):
         <!DOCTYPE HTML>
         <html>
             <body>
-            <h4>Summary of Inputs for Case:"""+str(currentTabName)+"""</h4>
+            <h4>Summary of Inputs for Case: """+str(currentTabName)+"""</h4>
             <hr />
             <div id="mainsummary", style="font-family:Arial; font-size:10pt">
             """+ubsum.getSummaryStringNarrative(active_simulation, index)+"""
             """+ubsum.getSummaryStringDelinBlocks(active_simulation)+"""
-            <hr />
+
             """+ubsum.getSummaryStringUrbplanbb(active_simulation, index)+"""
-            <hr /></div>
+            </div>
             </body>
         </html>
         """
@@ -710,8 +710,8 @@ class MainWindow(QtGui.QMainWindow):
         active_simulation = self.getActiveSimulationObject()
         active_simulation.reinitializeThread()
         active_simulation.resetAssets()
+        active_simulation.resetAssetCollection()
         active_simulation.updateSimulationCompletion(False)
-
         self.printc("----> Complete Simulation Assets Reset Performed!")
         self.printc("")
         return True
@@ -723,48 +723,18 @@ class MainWindow(QtGui.QMainWindow):
 
     #RUN SIMULATION
     def run_simulation(self):
-        active_simulation = self.getActiveSimulationObject()
-        self.updateProgressBar(0)
-        # self.printc(str(active_simulation))
-        # self.printc(str(active_simulation.printAllParameterSets()))
-        # self.printc(str(active_simulation.printAllDataSets()))
-        # self.consoleobserver.update("Begin Simulation")
-        #printobserver.update("Begin Simulation")
-        # self.printc("Loading Data...")
-        self.updateProgressBar(10)
-        active_simulation.start()
-        # delinblocks = active_simulation.getModuleDelinblocks()
-        # delinblocks.attach(self.consoleobserver)   #Register the observer
-        # #delinblocks.attach(printobserver)
-        # delinblocks.run()
-        # delinblocks.detach(self.consoleobserver)   #Deregister the observer after run completion
-        # #delinblocks.detach(printobserver)
-
-        # self.ui.progressBar.setValue(50)
-        # #urbplanbb = active_simulation.getModuleUrbplanbb(0)
-        # #urbplanbb.run()
-        # self.ui.progressBar.setValue(75)
-        # #self.printc(str(active_simulation.returnAllAssets()))
-        # self.printc("Exporting GIS Outputs...")
-        #print active_simulation.returnAllAssets()
-
-        #active_simulation.exportGIS()
-        #self.updateProgressBar(100)
-        # self.printc("End Of Simulation")
-        # active_simulation.updateSimulationCompletion(True)
+        try:
+            active_simulation = self.getActiveSimulationObject()
+            self.updateProgressBar(0)
+            active_simulation.start()
+        except RuntimeError as e:
+            self.printc(e)
+            self.printc("Please reset simulation before starting a new run!")
         return True
 
 class ConsoleObserver(QtCore.QObject):
     def updateObserver(self, textmessage):
         self.emit(QtCore.SIGNAL("updateConsole"), textmessage)
-
-#class ProgressObserver(QtCore.QObject):
-#    def updateObserver(self, textmessage):
-#        self.emit(QtCore.SIGNAL("updateProgress"), textmessage)
-#         progress = 0
-#
-#     def updateObserver(self, value):
-#         self.emit(QtCore.SIGNAL("updateProgress"), value)
 
 class StartScreenLaunch(QtGui.QDialog):
     def __init__(self, parent = None):
@@ -816,9 +786,8 @@ if __name__ == "__main__":
     app.processEvents()
 
     # Simulate something that takes time
-    time.sleep(2)    
-    
-    
+    time.sleep(0)
+
     #Main Window
     main_window = MainWindow()
     main_window.showMaximized()

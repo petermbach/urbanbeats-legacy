@@ -62,9 +62,9 @@ class GetPreviousBlocks(UBModule):
 	@author Peter M Bach
 	"""
         
-    def __init__(self, activesim, curstate, tabindex):
+    def __init__(self, activesim, tabindex):
         UBModule.__init__(self)
-        self.cycletype = curstate       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
+        self.cycletype = "pc"       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
         self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
         self.activesim = activesim      #UBCORE
 
@@ -104,7 +104,7 @@ class GetPreviousBlocks(UBModule):
     def run(self):
         #city = self.getData("City")
         #map_attr = Component()
-
+        self.notify("Retrieving Previous Blocks")
         map_attr = ubdata.UBComponent()
         map_attr.addAttribute("Impl_cycle", self.implementationcycle)
         #city.addComponent(map_attr, self.mapattributes)
@@ -223,5 +223,5 @@ class GetPreviousBlocks(UBModule):
         blockdatasource.Destroy()
         if self.patchesavailable: patchdatasource.Destroy()
 
-        self.activesim.addAsset("MasterMapAttributes")
+        self.activesim.addAsset("PrevMapAttributes")
         #END OF MODULE

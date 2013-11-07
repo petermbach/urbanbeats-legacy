@@ -346,8 +346,8 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
         self.ui.ref_limit_check.setChecked(bool(int(self.module.getParameter("ref_limit_stormwater"))))
 
         #--> Services & Utilities
-        svu_water = self.module.getParameter("svu_water")
-        svu_nonwater = 100 - int(svu_water)
+        svu_water = int(self.module.getParameter("svu_water"))
+        svu_nonwater = 100 - svu_water
         self.ui.svu_wat_box.setText(str(svu_water))
         self.ui.svu_nonwat_box.setText(str(svu_nonwater))
 
@@ -678,13 +678,13 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
         elif self.ui.citypoly_radio.isChecked() == 1:
             self.module.setParameter("cityarchetype", "PC")
 
-        self.module.setParameter("citysprawl", self.ui.citysprawl_spin.value())
+        self.module.setParameter("citysprawl", float(self.ui.citysprawl_spin.value()))
         self.module.setParameter("locality_mun_trans", int(self.ui.mun_localmap_check.isChecked()))
         #building block dynamics parameters
         self.module.setParameter("lucredev", int(self.ui.lucredevelop_check.isChecked()))
         self.module.setParameter("popredev", int(self.ui.popredevelop_check.isChecked()))
-        self.module.setParameter("lucredev_thresh", self.ui.lucredevelop_spin.value())
-        self.module.setParameter("popredev_thresh", self.ui.popredevelop_spin.value())
+        self.module.setParameter("lucredev_thresh", float(self.ui.lucredevelop_spin.value()))
+        self.module.setParameter("popredev_thresh", float(self.ui.popredevelop_spin.value()))
         self.module.setParameter("noredev", int(self.ui.noredevelop_check.isChecked()))
 
         ##########################
@@ -744,9 +744,9 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
         if self.ui.jobs_total_radio.isChecked() == True:
             self.module.setParameter("employment_mode", "S")
 
-        self.module.setParameter("ind_edist", self.ui.dist_ind_spin.value())
-        self.module.setParameter("com_edist", self.ui.dist_com_spin.value())
-        self.module.setParameter("orc_edist", self.ui.dist_orc_spin.value())
+        self.module.setParameter("ind_edist", float(self.ui.dist_ind_spin.value()))
+        self.module.setParameter("com_edist", float(self.ui.dist_com_spin.value()))
+        self.module.setParameter("orc_edist", float(self.ui.dist_orc_spin.value()))
         self.module.setParameter("employment_total", float(self.ui.totjobs_box.text()))
 
         #--> Land Subdivision & Site Layout
@@ -760,8 +760,8 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
         self.module.setParameter("nres_setback_auto", int(self.ui.nres_setback_auto.isChecked()))
         self.module.setParameter("nres_nolimit_floors", int(self.ui.nres_maxfloors_nolimit.isChecked()))
 
-        self.module.setParameter("maxplotratio_ind", self.ui.plotratio_ind_slider.value())
-        self.module.setParameter("maxplotratio_com", self.ui.plotratio_com_slider.value())
+        self.module.setParameter("maxplotratio_ind", float(self.ui.plotratio_ind_slider.value()))
+        self.module.setParameter("maxplotratio_com", float(self.ui.plotratio_com_slider.value()))
 
         #--> Car Parking and Loading Bay
         self.module.setParameter("carpark_Wmin", float(self.ui.carpark_dimW_box.text()))
@@ -773,10 +773,10 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
 
         #--> Landscaping & Drainage
         lscape_hsbalance = self.ui.lscape_hsbalance_slide.value()
-        self.module.setParameter("lscape_hsbalance", lscape_hsbalance)
+        self.module.setParameter("lscape_hsbalance", float(lscape_hsbalance))
 
         lscape_impdced = self.ui.lscape_impdced_spin.value()
-        self.module.setParameter("lscape_impdced", lscape_impdced)
+        self.module.setParameter("lscape_impdced", float(lscape_impdced))
 
         #--> Municipal Facilities
         self.module.setParameter("mun_explicit", int(self.ui.civ_consider_check.isChecked()))
@@ -849,12 +849,12 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
         if self.ui.pg_dist_sep_radio.isChecked() == 1:
             self.module.setParameter("pgsq_distribution", "S")
 
-        self.module.setParameter("pg_unused_space", self.ui.pg_usable_spin.value())
+        self.module.setParameter("pg_unused_space", float(self.ui.pg_usable_spin.value()))
         self.module.setParameter("pg_restrict", int(self.ui.pg_usable_prohibit.isChecked()))
 
         #--> Reserves & Floodways
         self.module.setParameter("ref_usable", int(self.ui.ref_usable_check.isChecked()))
-        self.module.setParameter("ref_usable_percent", self.ui.ref_usable_spin.value())
+        self.module.setParameter("ref_usable_percent", float(self.ui.ref_usable_spin.value()))
         self.module.setParameter("ref_limit_stormwater", int(self.ui.ref_limit_check.isChecked()))
 
         #--> Services & Utilities
@@ -862,9 +862,9 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
         self.module.setParameter("svu4supply", int(self.ui.svu_supply_check.isChecked()))
         self.module.setParameter("svu4waste", int(self.ui.svu_waste_check.isChecked()))
         self.module.setParameter("svu4storm", int(self.ui.svu_storm_check.isChecked()))
-        self.module.setParameter("svu4supply_prop", self.ui.svu_supply_spin.value())
-        self.module.setParameter("svu4waste_prop", self.ui.svu_waste_spin.value())
-        self.module.setParameter("svu4storm_prop", self.ui.svu_storm_spin.value())
+        self.module.setParameter("svu4supply_prop", float(self.ui.svu_supply_spin.value()))
+        self.module.setParameter("svu4waste_prop", float(self.ui.svu_waste_spin.value()))
+        self.module.setParameter("svu4storm_prop", float(self.ui.svu_storm_spin.value()))
 
         ##########################
         #Others Tab
@@ -874,12 +874,12 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
         self.module.setParameter("unc_refmerge", int(self.ui.unc_merge2ref_check.isChecked()))
         self.module.setParameter("unc_pgmerge", int(self.ui.unc_merge2pg_check.isChecked()))
         self.module.setParameter("unc_rdmerge", int(self.ui.unc_merge2trans_check.isChecked()))
-        self.module.setParameter("unc_pgmerge_w", self.ui.unc_merge2pg_spin.value())
-        self.module.setParameter("unc_refmerge_w", self.ui.unc_merge2ref_spin.value())
-        self.module.setParameter("unc_rdmerge_w", self.ui.unc_merge2trans_spin.value())
+        self.module.setParameter("unc_pgmerge_w", float(self.ui.unc_merge2pg_spin.value()))
+        self.module.setParameter("unc_refmerge_w", float(self.ui.unc_merge2ref_spin.value()))
+        self.module.setParameter("unc_rdmerge_w", float(self.ui.unc_merge2trans_spin.value()))
         self.module.setParameter("unc_custom", int(self.ui.unc_custom_check.isChecked()))
-        self.module.setParameter("unc_customthresh", self.ui.unc_areathresh_spin.value())
-        self.module.setParameter("unc_customimp", self.ui.unc_customimp_spin.value())
+        self.module.setParameter("unc_customthresh", float(self.ui.unc_areathresh_spin.value()))
+        self.module.setParameter("unc_customimp", float(self.ui.unc_customimp_spin.value()))
         self.module.setParameter("unc_landirrigate", int(self.ui.unc_customirrigate_check.isChecked()))
 
         #--> Undeveloped

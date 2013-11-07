@@ -103,9 +103,9 @@ class Delinblocks(UBModule):      #UBCORE
 #    def __init__(self):            #DYNAMIND
 #        Module.__init__(self)       #DYNAMIND
 
-    def __init__(self, activesim, curstate, tabindex):      #UBCORE
+    def __init__(self, activesim, tabindex):      #UBCORE
         UBModule.__init__(self)      #UBCORE
-        self.cycletype = curstate       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
+        self.cycletype = "pc"       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
         self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
         self.activesim = activesim      #UBCORE
        
@@ -113,35 +113,35 @@ class Delinblocks(UBModule):      #UBCORE
         #-----------------------------------------------------------------------
         
         #General Simulation Parameters
-        self.createParameter("BlockSize", DOUBLE, "")
-        self.createParameter("blocksize_auto", BOOL, "")
+        self.createParameter("BlockSize", DOUBLE, "Block Size")
+        self.createParameter("blocksize_auto", BOOL, "Autosize Blocks?")
         self.BlockSize = float(400)                    #size of the blocks (in m)
         self.blocksize_auto = 0             #should the size be chosen automatically?
 
-        self.createParameter("popdatatype", STRING, "")         #DYNAMIND
-        self.createParameter("soildatatype", STRING, "")
-        self.createParameter("soildataunits", STRING, "")
-        self.createParameter("elevdatadatum", STRING, "")
-        self.createParameter("elevdatacustomref", DOUBLE, "")
-        self.createParameter("include_plan_map", BOOL ,"")
-        self.createParameter("include_local_map", BOOL,"")
-        self.createParameter("include_employment", BOOL, "")
-        self.createParameter("jobdatatype", STRING, "")
-        self.createParameter("include_rivers", BOOL, "")
-        self.createParameter("include_lakes", BOOL, "")
-        self.createParameter("include_groundwater", BOOL, "")
-        self.createParameter("groundwater_datum", STRING, "")
+        self.createParameter("popdatatype", STRING, "Population Data Format")         #DYNAMIND
+        self.createParameter("soildatatype", STRING, "Soil Data Format")
+        self.createParameter("soildataunits", STRING, "Units for Soil Data")
+        self.createParameter("elevdatadatum", STRING, "Datum for Elevation Data")
+        self.createParameter("elevdatacustomref", DOUBLE, "Custom Reference Elevation")
+        self.createParameter("include_plan_map", BOOL ,"Include Planner's Map?")
+        self.createParameter("include_local_map", BOOL,"Include Locality Map?")
+        self.createParameter("include_employment", BOOL, "Include Employment Map?")
+        self.createParameter("jobdatatype", STRING, "Job Data Format")
+        self.createParameter("include_rivers", BOOL, "Include Rivers Map?")
+        self.createParameter("include_lakes", BOOL, "Include Lakes Map?")
+        self.createParameter("include_groundwater", BOOL, "Include Groundwater Map?")
+        self.createParameter("groundwater_datum", STRING, "Groundwater Datum?")
         #self.createParameter("include_road_net", BOOL,"")
         #self.createParameter("include_supply_net", BOOL, "")
         #self.createParameter("include_sewer_net", BOOL, "")
-        self.createParameter("include_soc_par1", BOOL,"")
-        self.createParameter("include_soc_par2", BOOL,"")
-        self.createParameter("social_par1_name", STRING,"")
-        self.createParameter("social_par2_name", STRING,"")
-        self.createParameter("socpar1_type", STRING, "")
-        self.createParameter("socpar2_type", STRING, "")
-        self.createParameter("patchdelin", BOOL, "")
-        self.createParameter("spatialmetrics", BOOL, "")
+        self.createParameter("include_soc_par1", BOOL,"Include Social Parameters Map?")
+        self.createParameter("include_soc_par2", BOOL,"Include a Second Social Parameters Map?")
+        self.createParameter("social_par1_name", STRING,"Social Parameter 1 Name")
+        self.createParameter("social_par2_name", STRING,"Social Parameter 2 Name")
+        self.createParameter("socpar1_type", STRING, "Data format for Social Parameter 1")
+        self.createParameter("socpar2_type", STRING, "Data format for Social Parameter 2")
+        self.createParameter("patchdelin", BOOL, "Delineate Patches?")
+        self.createParameter("spatialmetrics", BOOL, "Calculate Spatial Metrics?")
 
         self.popdatatype = "D"                  #population data type: D = density, C = count
         self.soildatatype = "I"                 #I = infiltration rates, C = classification
@@ -172,12 +172,12 @@ class Delinblocks(UBModule):      #UBCORE
         self.spatialmetrics = 0              #perform calculation of spatial metrics? Just an additional feature
         
         #Local Extents and Map Connectivity
-        self.createParameter("Neighbourhood", STRING,"")
-        self.createParameter("vn4FlowPaths", BOOL,"")
-        self.createParameter("vn4Patches", BOOL,"")
-        self.createParameter("flow_method", STRING,"")
-        self.createParameter("demsmooth_choose", BOOL,"")
-        self.createParameter("demsmooth_passes", DOUBLE,"")
+        self.createParameter("Neighbourhood", STRING,"Type of Neighbourhood")
+        self.createParameter("vn4FlowPaths", BOOL,"Use vonNeumann Neighbourhood for Flow Paths?")
+        self.createParameter("vn4Patches", BOOL,"Use vonNeumann Neighbourhood for Patches?")
+        self.createParameter("flow_method", STRING,"Selected Flowpath Method")
+        self.createParameter("demsmooth_choose", BOOL,"Smoothen DEM?")
+        self.createParameter("demsmooth_passes", DOUBLE,"Number of Smoothing Passes for DEM")
         
         self.Neighbourhood = "M"                #three options: M = Moore, N = von Neumann
         self.vn4FlowPaths = 0
@@ -187,12 +187,12 @@ class Delinblocks(UBModule):      #UBCORE
         self.demsmooth_passes = float(1)
         
         #Regional Geography
-        self.createParameter("considerCBD", BOOL, "")
-        self.createParameter("locationOption", STRING, "")
-        self.createParameter("locationCity", STRING, "")
-        self.createParameter("locationLong", DOUBLE, "")
-        self.createParameter("locationLat", DOUBLE, "")
-        self.createParameter("marklocation", BOOL, "")
+        self.createParameter("considerCBD", BOOL, "Consider CBD Location?")
+        self.createParameter("locationOption", STRING, "Location Method")
+        self.createParameter("locationCity", STRING, "City Name")
+        self.createParameter("locationLong", DOUBLE, "CBD Longitude")
+        self.createParameter("locationLat", DOUBLE, "CBD Latitude")
+        self.createParameter("marklocation", BOOL, "Mark Location on Output Map?")
         
         self.considerCBD = 0
         self.locationOption = "S"       #method for setting location option: S = selection, C = coordinates
@@ -469,7 +469,7 @@ class Delinblocks(UBModule):      #UBCORE
         
         ## Retrieve the raster data UBCORE VERSION ###############################################################################
         ## 4 BASIC INPUTS ###
-        cycledataset = self.activesim.getCycleDataSet("pc", 0)        
+        cycledataset = self.activesim.getCycleDataSet(self.cycletype, self.tabindex)
         elevationraster = self.loadRaster(cycledataset, "Elevation")   #ELEVATION AND SOIL DATA ARE NOT URBANSIM DEPENDENT!
         self.xllcorner = elevationraster.getExtents()[0] 
         self.yllcorner = elevationraster.getExtents()[1]    #spatial extents of the input map

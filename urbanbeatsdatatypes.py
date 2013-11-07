@@ -64,13 +64,13 @@ def importRasterData(filepath):
 
 ### GIS EXPORT FUNCTIONS
 
-def exportGISShapeFile(activesim):
+def exportGISShapeFile(activesim, tabindex, curcycle):
     """Exports the Active Simulation's Asset Data to the specified shapefiles requested
     using the Osgeo GDAL library"""
     #Get the following info:
     gisoptions = activesim.getGISExportDetails()
     map_data = activesim.getAssetWithName("MapAttributes")
-    fname = gisoptions["Filename"]
+    fname = gisoptions["Filename"]+"_"+str(tabindex)+str(curcycle)
     if gisoptions["ProjUser"] == True:
         proj = gisoptions["Proj4"]
     else:
