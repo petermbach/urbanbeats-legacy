@@ -502,6 +502,13 @@ class UrbanBeatsSim(threading.Thread):
                 assetcollection.append(self.__assets[i])
         return assetcollection
 
+    def removeAssetByName(self, name):
+        """Remove an asset from the collection based on the name"""
+        try:
+            del self.__assets[name]
+        except KeyError:
+            return True
+
     def resetAssets(self):
         """Erases all assets, leaves an empty dictionary, carried out when resetting the simulation"""
         self.__assets = {}

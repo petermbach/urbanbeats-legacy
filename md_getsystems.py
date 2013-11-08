@@ -135,7 +135,7 @@ class GetSystems(UBModule):
             feature = layer.GetFeature(i)
             sys_attr = ubdata.UBComponent()
             #city.addComponent(sys_attr,self.sysAttr)
-            
+            sys_attr.addAttribute("SysID", i+1)
             total_attrs = feature.GetFieldCount()  #gets total number of attributes
             for j in range(int(total_attrs)):           
                 name = str(feature.GetFieldDefnRef(j).GetName())        #Obtain attribute name from FieldDefn object
@@ -146,7 +146,8 @@ class GetSystems(UBModule):
                     sys_attr.addAttribute(str(name), value)                    #assign to block_attr vector
 
             feature.Destroy()      #destroy to save memory
-            self.activesim.addAsset("SystemAttribute", sys_attr)
+            self.activesim.addAsset("SysPrevID"+str(i+1), sys_attr)
+        self.activesim.addAsset("SysPrevGlobal", sys_global)
         #Destroy the shapefile to free up memory
         dataSource.Destroy()
         #END OF MODULE

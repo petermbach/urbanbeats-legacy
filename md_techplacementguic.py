@@ -595,7 +595,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
             self.ui.ISspecs_FD_combo.setCurrentIndex(2)
         elif self.module.getParameter("ISspec_FD") == 0.8:
             self.ui.ISspecs_FD_combo.setCurrentIndex(3)
-        
+
         if self.module.getParameter("ISexfil") == 0.18:
             self.ui.ISexfil_combo.setCurrentIndex(0)
         elif self.module.getParameter("ISexfil") == 0.36:

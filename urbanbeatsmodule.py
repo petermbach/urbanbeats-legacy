@@ -48,7 +48,7 @@ class UBModule(object):
         return True
 
     def notify(self, updateMessage):
-        self.__observers[0].updateObserver(updateMessage)
+        self.__observers[0].updateObserver(str(updateMessage))
 
     def notifyProgress(self, value):
         self.__observers[1].updateObserver(value)
