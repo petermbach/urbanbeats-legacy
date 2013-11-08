@@ -89,7 +89,7 @@ p, li { white-space: pre-wrap; }
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
+       <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
       </property>
      </widget>
      <widget class="Line" name="line">
@@ -762,7 +762,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources/dialogimg.qrc">:/techplacement/D4W-wsudimplement.png</pixmap>
+             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/D4W-wsudimplement.png</pixmap>
             </property>
            </widget>
           </item>
@@ -951,7 +951,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources/dialogimg.qrc">:/techplacement/D4W-wsudimplement.png</pixmap>
+             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/D4W-wsudimplement.png</pixmap>
             </property>
            </widget>
           </item>
@@ -1025,6 +1025,7 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <resources>
+  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
   <include location="resources/dialogimg.qrc"/>
  </resources>
  <connections>
