@@ -40,7 +40,6 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #######################################
         #General Strategy Tab
         #######################################
-
         #-------- DESIGN RATIONALE --------------------------------------------#
         self.ui.ration_runoff_check.setChecked(bool(int(self.module.getParameter("ration_runoff"))))
         self.ui.ration_pollute_check.setChecked(bool(int(self.module.getParameter("ration_pollute"))))
@@ -465,71 +464,30 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #######################################
 
         #--------- Advanced Stormwater Harvesting Plant -----------------------#
-        if self.module.getParameter("ASHPstatus") == 1:
-            self.ui.ASHPstatus_box.setChecked(1)
-        else:
-            self.ui.ASHPstatus_box.setChecked(0)
+        self.ui.ASHPstatus_box.setChecked(bool(int(self.module.getParameter("ASHPstatus"))))
 
         #--------- Aquaculture/LivingSystems ----------------------------------#
-        if self.module.getParameter("AQstatus") == 1:
-            self.ui.AQstatus_box.setChecked(1)
-        else:
-            self.ui.AQstatus_box.setChecked(0)
+        self.ui.AQstatus_box.setChecked(bool(int(self.module.getParameter("AQstatus"))))
 
         #--------- Aquifer Storage/Recovery -----------------------------------#
-        if self.module.getParameter("ASRstatus") == 1:
-            self.ui.ASRstatus_box.setChecked(1)
-        else:
-            self.ui.ASRstatus_box.setChecked(0)
+        self.ui.ASRstatus_box.setChecked(bool(int(self.module.getParameter("ASRstatus"))))
 
         #--------- Biofiltration/Raingardens ----------------------------------#
-        if self.module.getParameter("BFstatus") == 1:
-            self.ui.BFstatus_box.setChecked(1)
-        else:
-            self.ui.BFstatus_box.setChecked(0)
+        self.ui.BFstatus_box.setChecked(bool(int(self.module.getParameter("BFstatus"))))
 
         #Available Scales
-        if self.module.getParameter("BFlot") == 1:
-            self.ui.BFlot_check.setChecked(1)
-        else:
-            self.ui.BFlot_check.setChecked(0)
-
-        if self.module.getParameter("BFstreet") == 1:
-            self.ui.BFstreet_check.setChecked(1)
-        else:
-            self.ui.BFstreet_check.setChecked(0)
-
-        if self.module.getParameter("BFneigh") == 1:
-            self.ui.BFneigh_check.setChecked(1)
-        else:
-            self.ui.BFneigh_check.setChecked(0)
-
-        if self.module.getParameter("BFprec") == 1:
-            self.ui.BFprec_check.setChecked(1)
-        else:
-            self.ui.BFprec_check.setChecked(0)
+        self.ui.BFlot_check.setChecked(bool(int(self.module.getParameter("BFlot"))))
+        self.ui.BFstreet_check.setChecked(bool(int(self.module.getParameter("BFstreet"))))
+        self.ui.BFneigh_check.setChecked(bool(int(self.module.getParameter("BFneigh"))))
+        self.ui.BFprec_check.setChecked(bool(int(self.module.getParameter("BFprec"))))
 
         #Available Applications
-        if self.module.getParameter("BFflow") == 1:
-            self.ui.BFflow_check.setChecked(1)
-        else:
-            self.ui.BFflow_check.setChecked(0)
-
-        if self.module.getParameter("BFpollute") == 1:
-            self.ui.BFpollute_check.setChecked(1)
-        else:
-            self.ui.BFpollute_check.setChecked(0)
-
-        if self.module.getParameter("BFrecycle") == 1:
-            self.ui.BFrecycle_check.setChecked(1)
-        else:
-            self.ui.BFrecycle_check.setChecked(0)
+        self.ui.BFflow_check.setChecked(bool(int(self.module.getParameter("BFflow"))))
+        self.ui.BFpollute_check.setChecked(bool(int(self.module.getParameter("BFpollute"))))
+        self.ui.BFrecycle_check.setChecked(bool(int(self.module.getParameter("BFrecycle"))))
 
         #Design Curves
-        if self.module.getParameter("BFdesignUB") == 1:
-            self.ui.BFdesignUB_box.setChecked(1)
-        else:
-            self.ui.BFdesignUB_box.setChecked(0)
+        self.ui.BFdesignUB_box.setChecked(bool(int(self.module.getParameter("BFdesignUB"))))
 
         if self.module.getParameter("BFdesignUB") == 1:
             self.ui.BFdesignUB_box.setChecked(1)
@@ -584,55 +542,25 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #futher design info coming soon
 
         #--------- Green Roof -------------------------------------------------#
-        if self.module.getParameter("GRstatus") == 1:
-            self.ui.GRstatus_box.setChecked(1)
-        else:
-            self.ui.GRstatus_box.setChecked(0)
+        self.ui.GRstatus_box.setChecked(bool(int(self.module.getParameter("GRstatus"))))
 
         #--------- Greywater Tank/Treatment -----------------------------------#
-        if self.module.getParameter("GTstatus") == 1:
-            self.ui.GTstatus_box.setChecked(1)
-        else:
-            self.ui.GTstatus_box.setChecked(0)
+        self.ui.GTstatus_box.setChecked(bool(int(self.module.getParameter("GTstatus"))))
 
         #--------- Gross Pollutant Trap ---------------------------------------#
-        if self.module.getParameter("GPTstatus") == 1:
-            self.ui.GPTstatus_box.setChecked(1)
-        else:
-            self.ui.GPTstatus_box.setChecked(0)
+        self.ui.GPTstatus_box.setChecked(bool(int(self.module.getParameter("GPTstatus"))))
 
         #--------- Infiltration System ----------------------------------------#
-        if self.module.getParameter("ISstatus") == 1:
-            self.ui.ISstatus_box.setChecked(1)
-        else:
-            self.ui.ISstatus_box.setChecked(0)
+        self.ui.ISstatus_box.setChecked(bool(int(self.module.getParameter("ISstatus"))))
 
         #Available Scales
-        if self.module.getParameter("ISlot") == 1:
-            self.ui.ISlot_check.setChecked(1)
-        else:
-            self.ui.ISlot_check.setChecked(0)
-
-        if self.module.getParameter("ISstreet") == 1:
-            self.ui.ISstreet_check.setChecked(1)
-        else:
-            self.ui.ISstreet_check.setChecked(0)
-
-        if self.module.getParameter("ISneigh") == 1:
-            self.ui.ISneigh_check.setChecked(1)
-        else:
-            self.ui.ISneigh_check.setChecked(0)
+        self.ui.ISlot_check.setChecked(bool(int(self.module.getParameter("ISlot"))))
+        self.ui.ISstreet_check.setChecked(bool(int(self.module.getParameter("ISstreet"))))
+        self.ui.ISneigh_check.setChecked(bool(int(self.module.getParameter("ISneigh"))))
 
         #Available Applications
-        if self.module.getParameter("ISflow") == 1:
-            self.ui.ISflow_check.setChecked(1)
-        else:
-            self.ui.ISflow_check.setChecked(0)
-
-        if self.module.getParameter("ISpollute") == 1:
-            self.ui.ISpollute_check.setChecked(1)
-        else:
-            self.ui.ISpollute_check.setChecked(0)
+        self.ui.ISflow_check.setChecked(bool(int(self.module.getParameter("ISflow"))))
+        self.ui.ISpollute_check.setChecked(bool(int(self.module.getParameter("ISpollute"))))
 
         #Design Curves
         if self.module.getParameter("ISdesignUB") == 1:
@@ -667,7 +595,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
             self.ui.ISspecs_FD_combo.setCurrentIndex(2)
         elif self.module.getParameter("ISspec_FD") == 0.8:
             self.ui.ISspecs_FD_combo.setCurrentIndex(3)
-        print self.module.getParameter("ISexfil")
+        
         if self.module.getParameter("ISexfil") == 0.18:
             self.ui.ISexfil_combo.setCurrentIndex(0)
         elif self.module.getParameter("ISexfil") == 0.36:
@@ -682,49 +610,22 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.ui.ISavglifespin.setValue(int(self.module.getParameter("ISavglife")))
 
         #--------- Packaged Plant ---------------------------------------------#
-        if self.module.getParameter("PPLstatus") == 1:
-            self.ui.PPLstatus_box.setChecked(1)
-        else:
-            self.ui.PPLstatus_box.setChecked(0)
+        self.ui.PPLstatus_box.setChecked(bool(int(self.module.getParameter("PPLstatus"))))
 
         #--------- Ponds/Sedimentation Basin ----------------------------------#
-        if self.module.getParameter("PBstatus") == 1:
-            self.ui.PBstatus_box.setChecked(1)
-        else:
-            self.ui.PBstatus_box.setChecked(0)
+        self.ui.PBstatus_box.setChecked(bool(int(self.module.getParameter("PBstatus"))))
 
         #Available Scales
-        if self.module.getParameter("PBneigh") == 1:
-            self.ui.PBneigh_check.setChecked(1)
-        else:
-            self.ui.PBneigh_check.setChecked(0)
-
-        if self.module.getParameter("PBprec") == 1:
-            self.ui.PBprec_check.setChecked(1)
-        else:
-            self.ui.PBprec_check.setChecked(0)
+        self.ui.PBneigh_check.setChecked(bool(int(self.module.getParameter("PBneigh"))))
+        self.ui.PBprec_check.setChecked(bool(int(self.module.getParameter("PBprec"))))
 
         #Available Applications
-        if self.module.getParameter("PBflow") == 1:
-            self.ui.PBflow_check.setChecked(1)
-        else:
-            self.ui.PBflow_check.setChecked(0)
-
-        if self.module.getParameter("PBpollute") == 1:
-            self.ui.PBpollute_check.setChecked(1)
-        else:
-            self.ui.PBpollute_check.setChecked(0)
-
-        if self.module.getParameter("PBrecycle") == 1:
-            self.ui.PBrecycle_check.setChecked(1)
-        else:
-            self.ui.PBrecycle_check.setChecked(0)
+        self.ui.PBflow_check.setChecked(bool(int(self.module.getParameter("PBflow"))))
+        self.ui.PBpollute_check.setChecked(bool(int(self.module.getParameter("PBpollute"))))
+        self.ui.PBrecycle_check.setChecked(bool(int(self.module.getParameter("PBrecycle"))))
 
         #Design Curves
-        if self.module.getParameter("PBdesignUB") == 1:
-            self.ui.PBdesignUB_box.setChecked(1)
-        else:
-            self.ui.PBdesignUB_box.setChecked(0)
+        self.ui.PBdesignUB_box.setChecked(bool(int(self.module.getParameter("PBdesignUB"))))
 
         if self.module.getParameter("PBdesignUB") == 1:
             self.ui.PBdesignUB_box.setChecked(1)
@@ -770,39 +671,19 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #futher design info coming soon
 
         #---------- Porous/Pervious Pavement ----------------------------------#
-        if self.module.getParameter("PPstatus") == 1:
-            self.ui.PPstatus_box.setChecked(1)
-        else:
-            self.ui.PPstatus_box.setChecked(0)
+        self.ui.PPstatus_box.setChecked(bool(int(self.module.getParameter("PPstatus"))))
 
         #---------- Rainwater Tank --------------------------------------------#
-        if self.module.getParameter("RTstatus") == 1:
-            self.ui.RTstatus_box.setChecked(1)
-        else:
-            self.ui.RTstatus_box.setChecked(0)
+        self.ui.RTstatus_box.setChecked(bool(int(self.module.getParameter("RTstatus"))))
 
         self.ui.RT_maxdepth_box.setText(str(self.module.getParameter("RT_maxdepth")))
         self.ui.RT_mindead_box.setText(str(self.module.getParameter("RT_mindead")))
 
-        if self.module.getParameter("RTlot") == 1:
-            self.ui.RTscale_lot_box.setChecked(1)
-        else:
-            self.ui.RTscale_lot_box.setChecked(0)
+        self.ui.RTscale_lot_box.setChecked(bool(int(self.module.getParameter("RTlot"))))
+        self.ui.RTscale_neighb_box.setChecked(bool(int(self.module.getParameter("RTneigh"))))
 
-        if self.module.getParameter("RTneigh") == 1:
-            self.ui.RTscale_neighb_box.setChecked(1)
-        else:
-            self.ui.RTscale_neighb_box.setChecked(0)
-
-        if self.module.getParameter("RTflow") == 1:
-            self.ui.RTpurp_flood_box.setChecked(1)
-        else:
-            self.ui.RTpurp_flood_box.setChecked(0)
-
-        if self.module.getParameter("RTrecycle") == 1:
-            self.ui.RTpurp_recyc_box.setChecked(1)
-        else:
-            self.ui.RTpurp_recyc_box.setChecked(0)
+        self.ui.RTpurp_flood_box.setChecked(bool(int(self.module.getParameter("RTflow"))))
+        self.ui.RTpurp_recyc_box.setChecked(bool(int(self.module.getParameter("RTrecycle"))))
 
         if self.module.getParameter("RTdesignUB") == 1:
             self.ui.RTdesignUB_box.setChecked(1)
@@ -817,61 +698,28 @@ class TechplacementGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.RTdesignUB_box, QtCore.SIGNAL("clicked()"), self.RTdesign_enable)
 
         #---------- Sand/Peat/Gravel Filter -----------------------------------#
-        if self.module.getParameter("SFstatus") == 1:
-            self.ui.SFstatus_box.setChecked(1)
-        else:
-            self.ui.SFstatus_box.setChecked(0)
+        self.ui.SFstatus_box.setChecked(bool(int(self.module.getParameter("SFstatus"))))
 
         #---------- Subsurface Irrigation System ------------------------------#
-        if self.module.getParameter("IRRstatus") == 1:
-            self.ui.IRRstatus_box.setChecked(1)
-        else:
-            self.ui.IRRstatus_box.setChecked(0)
+        self.ui.IRRstatus_box.setChecked(bool(int(self.module.getParameter("IRRstatus"))))
 
         #---------- Subsurface Wetland/Reed Bed -------------------------------#
-        if self.module.getParameter("WSUBstatus") == 1:
-            self.ui.WSUBstatus_box.setChecked(1)
-        else:
-            self.ui.WSUBstatus_box.setChecked(0)
+        self.ui.WSUBstatus_box.setChecked(bool(int(self.module.getParameter("WSUBstatus"))))
 
         #---------- Surface Wetland -------------------------------------------#
-        if self.module.getParameter("WSURstatus") == 1:
-            self.ui.WSURstatus_box.setChecked(1)
-        else:
-            self.ui.WSURstatus_box.setChecked(0)
+        self.ui.WSURstatus_box.setChecked(bool(int(self.module.getParameter("WSURstatus"))))
 
         #Available Scales
-        if self.module.getParameter("WSURneigh") == 1:
-            self.ui.WSURneigh_check.setChecked(1)
-        else:
-            self.ui.WSURneigh_check.setChecked(0)
-
-        if self.module.getParameter("PBprec") == 1:
-            self.ui.WSURprec_check.setChecked(1)
-        else:
-            self.ui.WSURprec_check.setChecked(0)
+        self.ui.WSURneigh_check.setChecked(bool(int(self.module.getParameter("WSURneigh"))))
+        self.ui.WSURprec_check.setChecked(bool(int(self.module.getParameter("PBprec"))))
 
         #Available Applications
-        if self.module.getParameter("WSURflow") == 1:
-            self.ui.WSURflow_check.setChecked(1)
-        else:
-            self.ui.WSURflow_check.setChecked(0)
-
-        if self.module.getParameter("WSURpollute") == 1:
-            self.ui.WSURpollute_check.setChecked(1)
-        else:
-            self.ui.WSURpollute_check.setChecked(0)
-
-        if self.module.getParameter("WSURrecycle") == 1:
-            self.ui.WSURrecycle_check.setChecked(1)
-        else:
-            self.ui.WSURrecycle_check.setChecked(0)
+        self.ui.WSURflow_check.setChecked(bool(int(self.module.getParameter("WSURflow"))))
+        self.ui.WSURpollute_check.setChecked(bool(int(self.module.getParameter("WSURpollute"))))
+        self.ui.WSURrecycle_check.setChecked(bool(int(self.module.getParameter("WSURrecycle"))))
 
         #Design Curves
-        if self.module.getParameter("WSURdesignUB") == 1:
-            self.ui.WSURdesignUB_box.setChecked(1)
-        else:
-            self.ui.WSURdesignUB_box.setChecked(0)
+        self.ui.WSURdesignUB_box.setChecked(bool(int(self.module.getParameter("WSURdesignUB"))))
 
         if self.module.getParameter("WSURdesignUB") == 1:
             self.ui.WSURdesignUB_box.setChecked(1)
@@ -886,7 +734,6 @@ class TechplacementGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.WSURdesignUB_box, QtCore.SIGNAL("clicked()"), self.WSURdesign_enable)
 
         #Design Information
-
         #combo box with specs
         if self.module.getParameter("WSURspec_EDD") == 0.25:
             self.ui.WSURspecs_combo.setCurrentIndex(0)
@@ -918,38 +765,18 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #futher design info coming soon
 
         #---------- Swales/Buffer Strips --------------------------------------#
-        if self.module.getParameter("SWstatus") == 1:
-            self.ui.SWstatus_box.setChecked(1)
-        else:
-            self.ui.SWstatus_box.setChecked(0)
+        self.ui.SWstatus_box.setChecked(bool(int(self.module.getParameter("SWstatus"))))
 
         #Available Scales
-        if self.module.getParameter("SWstreet") == 1:
-            self.ui.SWstreet_check.setChecked(1)
-        else:
-            self.ui.SWstreet_check.setChecked(0)
-
-        if self.module.getParameter("SWneigh") == 1:
-            self.ui.SWneigh_check.setChecked(1)
-        else:
-            self.ui.SWneigh_check.setChecked(0)
+        self.ui.SWstreet_check.setChecked(bool(int(self.module.getParameter("SWstreet"))))
+        self.ui.SWneigh_check.setChecked(bool(int(self.module.getParameter("SWneigh"))))
 
         #Available Applications
-        if self.module.getParameter("SWflow") == 1:
-            self.ui.SWflow_check.setChecked(1)
-        else:
-            self.ui.SWflow_check.setChecked(0)
-
-        if self.module.getParameter("SWpollute") == 1:
-            self.ui.SWpollute_check.setChecked(1)
-        else:
-            self.ui.SWpollute_check.setChecked(0)
+        self.ui.SWflow_check.setChecked(bool(int(self.module.getParameter("SWflow"))))
+        self.ui.SWpollute_check.setChecked(bool(int(self.module.getParameter("SWpollute"))))
 
         #Design Curves
-        if self.module.getParameter("SWdesignUB") == 1:
-            self.ui.SWdesignUB_box.setChecked(1)
-        else:
-            self.ui.SWdesignUB_box.setChecked(0)
+        self.ui.SWdesignUB_box.setChecked(bool(int(self.module.getParameter("SWdesignUB"))))
 
         if self.module.getParameter("SWdesignUB") == 1:
             self.ui.SWdesignUB_box.setChecked(1)
@@ -964,7 +791,6 @@ class TechplacementGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.SWdesignUB_box, QtCore.SIGNAL("clicked()"), self.SWdesign_enable)
 
         #Design Information
-
         if self.module.getParameter("SWexfil") == 0:
             self.ui.SWexfil_combo.setCurrentIndex(0)
         elif self.module.getParameter("SWexfil") == 0.18:
@@ -983,28 +809,16 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #futher design info coming soon
 
         #--------- Tree Pits --------------------------------------------------#
-        if self.module.getParameter("TPSstatus") == 1:
-            self.ui.TPSstatus_box.setChecked(1)
-        else:
-            self.ui.TPSstatus_box.setChecked(0)
+        self.ui.TPSstatus_box.setChecked(bool(int(self.module.getParameter("TPSstatus"))))
 
         #---------- Urine-Separation Toilets ----------------------------------#
-        if self.module.getParameter("UTstatus") == 1:
-            self.ui.UTstatus_box.setChecked(1)
-        else:
-            self.ui.UTstatus_box.setChecked(0)
+        self.ui.UTstatus_box.setChecked(bool(int(self.module.getParameter("UTstatus"))))
 
         #---------- Wastewater Recovery/Recycling Plant -----------------------#
-        if self.module.getParameter("WWRRstatus") == 1:
-            self.ui.WWRRstatus_box.setChecked(1)
-        else:
-            self.ui.WWRRstatus_box.setChecked(0)
+        self.ui.WWRRstatus_box.setChecked(bool(int(self.module.getParameter("WWRRstatus"))))
 
         #---------- Waterless/Composting Toilet -------------------------------#
-        if self.module.getParameter("WTstatus") == 1:
-            self.ui.WTstatus_box.setChecked(1)
-        else:
-            self.ui.WTstatus_box.setChecked(0)
+        self.ui.WTstatus_box.setChecked(bool(int(self.module.getParameter("WTstatus"))))
 
         #--- ## --- Regional Information --------------------------------------#
         if self.module.getParameter("regioncity") == "Adelaide":
@@ -1043,25 +857,10 @@ class TechplacementGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.mca_scoringmat_check, QtCore.SIGNAL("clicked()"), self.mca_scoringmat_enable)
 
         #-------- Customize Evaluation Criteria--------------------------------#
-        if self.module.getParameter("bottomlines_tech") == 1:
-            self.ui.bottomlines_tech_check.setChecked(1)
-        else:
-            self.ui.bottomlines_tech_check.setChecked(0)
-
-        if self.module.getParameter("bottomlines_env") == 1:
-            self.ui.bottomlines_env_check.setChecked(1)
-        else:
-            self.ui.bottomlines_env_check.setChecked(0)
-
-        if self.module.getParameter("bottomlines_ecn") == 1:
-            self.ui.bottomlines_ecn_check.setChecked(1)
-        else:
-            self.ui.bottomlines_ecn_check.setChecked(0)
-
-        if self.module.getParameter("bottomlines_soc") == 1:
-            self.ui.bottomlines_soc_check.setChecked(1)
-        else:
-            self.ui.bottomlines_soc_check.setChecked(0)
+        self.ui.bottomlines_tech_check.setChecked(bool(int(self.module.getParameter("bottomlines_tech"))))
+        self.ui.bottomlines_env_check.setChecked(bool(int(self.module.getParameter("bottomlines_env"))))
+        self.ui.bottomlines_ecn_check.setChecked(bool(int(self.module.getParameter("bottomlines_ecn"))))
+        self.ui.bottomlines_soc_check.setChecked(bool(int(self.module.getParameter("bottomlines_soc"))))
 
         self.ui.bottomlines_techN_spin.setValue(int(self.module.getParameter("bottomlines_tech_n")))
         self.ui.bottomlines_envN_spin.setValue(int(self.module.getParameter("bottomlines_env_n")))
@@ -1110,7 +909,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
 
         #CONNECT DETAILS WITH THE OK BUTTON SO THAT GUI UPDATES MODULE
         QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
-        
+
     ### GENERAL TAB ###
     def enableLotRigour(self):
         if self.ui.strategy_lot_check.isChecked() == True:
@@ -1342,30 +1141,28 @@ class TechplacementGUILaunch(QtGui.QDialog):
 
     #OK BUTTON PRESS FUNCTION
     def save_values(self):
-
         ################################
         #Select Design Criteria Tab
         ################################
-
         #-------- DESIGN RATIONALE --------------------------------------------#
         self.module.setParameter("ration_runoff", int(self.ui.ration_runoff_check.isChecked()))
         self.module.setParameter("ration_pollute", int(self.ui.ration_pollute_check.isChecked()))
         self.module.setParameter("ration_harvest", int(self.ui.ration_harvest_check.isChecked()))
-        self.module.setParameter("runoff_pri", self.ui.runoff_pri_spin.value())
-        self.module.setParameter("pollute_pri", self.ui.pollute_pri_spin.value())
-        self.module.setParameter("harvest_pri", self.ui.harvest_pri_spin.value())
+        self.module.setParameter("runoff_pri", float(self.ui.runoff_pri_spin.value()))
+        self.module.setParameter("pollute_pri", float(self.ui.pollute_pri_spin.value()))
+        self.module.setParameter("harvest_pri", float(self.ui.harvest_pri_spin.value()))
 
         #-------- MANAGEMENT TARGETS ------------------------------------------#
-        self.module.setParameter("targets_runoff", self.ui.targets_runoff_spin.value())
-        self.module.setParameter("targets_TSS", self.ui.targets_TSS_spin.value())
-        self.module.setParameter("targets_TN", self.ui.targets_TN_spin.value())
-        self.module.setParameter("targets_TP", self.ui.targets_TP_spin.value())
-        self.module.setParameter("targets_reliability", self.ui.targets_reliability_spin.value())
+        self.module.setParameter("targets_runoff", float(self.ui.targets_runoff_spin.value()))
+        self.module.setParameter("targets_TSS", float(self.ui.targets_TSS_spin.value()))
+        self.module.setParameter("targets_TN", float(self.ui.targets_TN_spin.value()))
+        self.module.setParameter("targets_TP", float(self.ui.targets_TP_spin.value()))
+        self.module.setParameter("targets_reliability", float(self.ui.targets_reliability_spin.value()))
 
         #-------- SERVICE LEVELS ----------------------------------------------#
-        self.module.setParameter("service_swmQty", self.ui.service_swmQty.value())
-        self.module.setParameter("service_swmWQ", self.ui.service_swmWQ.value())
-        self.module.setParameter("service_rec", self.ui.service_rec.value())
+        self.module.setParameter("service_swmQty", float(self.ui.service_swmQty.value()))
+        self.module.setParameter("service_swmWQ", float(self.ui.service_swmWQ.value()))
+        self.module.setParameter("service_rec", float(self.ui.service_rec.value()))
 
         self.module.setParameter("service_res", int(self.ui.service_res.isChecked()))
         self.module.setParameter("service_hdr", int(self.ui.service_hdr.isChecked()))
@@ -1373,16 +1170,16 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("service_li", int(self.ui.service_li.isChecked()))
         self.module.setParameter("service_hi", int(self.ui.service_li.isChecked()))
 
-        self.module.setParameter("service_redundancy", self.ui.service_redundancy.value())
+        self.module.setParameter("service_redundancy", float(self.ui.service_redundancy.value()))
         #-------- STRATEGY SETUP ----------------------------------------------#
         self.module.setParameter("strategy_lot_check", int(self.ui.strategy_lot_check.isChecked()))
         self.module.setParameter("strategy_street_check", int(self.ui.strategy_street_check.isChecked()))
         self.module.setParameter("strategy_neigh_check", int(self.ui.strategy_neigh_check.isChecked()))
         self.module.setParameter("strategy_subbas_check", int(self.ui.strategy_subbas_check.isChecked()))
-        self.module.setParameter("lot_rigour", self.ui.strategy_lot_rigour.value())
-        self.module.setParameter("street_rigour", self.ui.strategy_street_rigour.value())
-        self.module.setParameter("neigh_rigour", self.ui.strategy_neigh_rigour.value())
-        self.module.setParameter("subbas_rigour", self.ui.strategy_subbas_rigour.value())
+        self.module.setParameter("lot_rigour", float(self.ui.strategy_lot_rigour.value()))
+        self.module.setParameter("street_rigour", float(self.ui.strategy_street_rigour.value()))
+        self.module.setParameter("neigh_rigour", float(self.ui.strategy_neigh_rigour.value()))
+        self.module.setParameter("subbas_rigour", float(self.ui.strategy_subbas_rigour.value()))
 
         self.module.setParameter("scalepref", int(self.ui.strategy_scalepref_slider.value()))
 
@@ -1390,99 +1187,26 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #Retrofit Tab
         #######################################
         retrofit_scenario_matrix = ["N", "R", "F"]
-        retrofit_index = self.ui.area_retrofit_combo.currentIndex()
-        retrofit_scenario = retrofit_scenario_matrix[retrofit_index]
-        self.module.setParameter("retrofit_scenario", str(retrofit_scenario))
+        self.module.setParameter("retrofit_scenario", str(retrofit_scenario_matrix[self.ui.area_retrofit_combo.currentIndex()]))
 
-        if self.ui.retrofit_renewal_check.isChecked() == 1:
-            renewal_cycle_def = 1
-        else:
-            renewal_cycle_def = 0
-        self.module.setParameter("renewal_cycle_def", renewal_cycle_def)
-
-        renewal_lot_years = self.ui.renewal_lot_years.value()
-        self.module.setParameter("renewal_lot_years", renewal_lot_years)
-
-        renewal_lot_perc = self.ui.renewal_lot_spin.value()
-        self.module.setParameter("renewal_lot_perc", renewal_lot_perc)
-
-        renewal_street_years = self.ui.renewal_street_years.value()
-        self.module.setParameter("renewal_street_years", renewal_street_years)
-
-        renewal_neigh_years = self.ui.renewal_neigh_years.value()
-        self.module.setParameter("renewal_neigh_years", renewal_neigh_years)
-
-        if self.ui.retrofit_forced_street_check.isChecked() == 1:
-            force_street = 1
-        else:
-            force_street = 0
-        self.module.setParameter("force_street", force_street)
-
-        if self.ui.retrofit_forced_neigh_check.isChecked() == 1:
-            force_neigh = 1
-        else:
-            force_neigh = 0
-        self.module.setParameter("force_neigh", force_neigh)
-
-        if self.ui.retrofit_forced_prec_check.isChecked() == 1:
-            force_prec = 1
-        else:
-            force_prec = 0
-        self.module.setParameter("force_prec", force_prec)
-
-        if self.ui.lot_renew_check.isChecked() == 1:
-            lot_renew = 1
-        else:
-            lot_renew = 0
-        self.module.setParameter("lot_renew", lot_renew)
-
-        if self.ui.lot_decom_check.isChecked() == 1:
-            lot_decom = 1
-        else:
-            lot_decom = 0
-        self.module.setParameter("lot_decom", lot_decom)
-
-        if self.ui.street_renew_check.isChecked() == 1:
-            street_renew = 1
-        else:
-            street_renew = 0
-        self.module.setParameter("street_renew", street_renew)
-
-        if self.ui.street_decom_check.isChecked() == 1:
-            street_decom = 1
-        else:
-            street_decom = 0
-        self.module.setParameter("street_decom", street_decom)
-
-        if self.ui.neigh_renew_check.isChecked() == 1:
-            neigh_renew = 1
-        else:
-            neigh_renew = 0
-        self.module.setParameter("neigh_renew", neigh_renew)
-
-        if self.ui.neigh_decom_check.isChecked() == 1:
-            neigh_decom = 1
-        else:
-            neigh_decom = 0
-        self.module.setParameter("neigh_decom", neigh_decom)
-
-        if self.ui.prec_renew_check.isChecked() == 1:
-            prec_renew = 1
-        else:
-            prec_renew = 0
-        self.module.setParameter("prec_renew", prec_renew)
-
-        if self.ui.prec_decom_check.isChecked() == 1:
-            prec_decom = 1
-        else:
-            prec_decom = 0
-        self.module.setParameter("prec_decom", prec_decom)
-
-        decom_thresh = self.ui.decom_slider.value()
-        self.module.setParameter("decom_thresh", decom_thresh)
-
-        renewal_thresh = self.ui.renew_slider.value()
-        self.module.setParameter("renewal_thresh", renewal_thresh)
+        self.module.setParameter("renewal_cycle_def", int(self.ui.retrofit_renewal_check.isChecked()))
+        self.module.setParameter("renewal_lot_years", float(self.ui.renewal_lot_years.value()))
+        self.module.setParameter("renewal_lot_perc", float(self.ui.renewal_lot_spin.value()))
+        self.module.setParameter("renewal_street_years", float(self.ui.renewal_street_years.value()))
+        self.module.setParameter("renewal_neigh_years", float(self.ui.renewal_neigh_years.value()))
+        self.module.setParameter("force_street", int(self.ui.retrofit_forced_street_check.isChecked()))
+        self.module.setParameter("force_neigh", int(self.ui.retrofit_forced_neigh_check.isChecked()))
+        self.module.setParameter("force_prec", int(self.ui.retrofit_forced_prec_check.isChecked()))
+        self.module.setParameter("lot_renew", int(self.ui.lot_renew_check.isChecked()))
+        self.module.setParameter("lot_decom", int(self.ui.lot_decom_check.isChecked()))
+        self.module.setParameter("street_renew", int(self.ui.street_renew_check.isChecked()))
+        self.module.setParameter("street_decom", int(self.ui.street_decom_check.isChecked()))
+        self.module.setParameter("neigh_renew", int(self.ui.neigh_renew_check.isChecked()))
+        self.module.setParameter("neigh_decom", int(self.ui.neigh_decom_check.isChecked()))
+        self.module.setParameter("prec_renew", int(self.ui.prec_renew_check.isChecked()))
+        self.module.setParameter("prec_decom", int(self.ui.prec_decom_check.isChecked()))
+        self.module.setParameter("decom_thresh", float(self.ui.decom_slider.value()))
+        self.module.setParameter("renewal_thresh", float(self.ui.renew_slider.value()))
 
         if self.ui.radioKeep.isChecked() == True:
             renewal_alternative = "K"
@@ -1532,31 +1256,12 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("public_irr_wq", str(ffp_matrix[self.ui.public_irr_wq.currentIndex()]))
 
         #--> Water Efficiency
-        if self.ui.WEF_consider.isChecked() == 1:
-            WEFstatus = 1
-        else:
-            WEFstatus = 0
-        self.module.setParameter("WEFstatus", WEFstatus)
-
+        self.module.setParameter("WEFstatus", int(self.ui.WEF_consider.isChecked()))
         ###NOTE: NOT LINKING COMBO BOX WITH RATING SYSTEM, AS6400 the only one for now
 
-        if self.ui.WEF_loc_house_check.isChecked() == 1:
-            WEF_loc_house = 1
-        else:
-            WEF_loc_house = 0
-        self.module.setParameter("WEF_loc_house", WEF_loc_house)
-
-        if self.ui.WEF_loc_apart_check.isChecked() == 1:
-            WEF_loc_apart = 1
-        else:
-            WEF_loc_apart = 0
-        self.module.setParameter("WEF_loc_apart", WEF_loc_apart)
-
-        if self.ui.WEF_loc_nonres_check.isChecked() == 1:
-            WEF_loc_nonres = 1
-        else:
-            WEF_loc_nonres = 0
-        self.module.setParameter("WEF_loc_nonres", WEF_loc_nonres)
+        self.module.setParameter("WEF_loc_house", int(self.ui.WEF_loc_house_check.isChecked()))
+        self.module.setParameter("WEF_loc_apart", int(self.ui.WEF_loc_apart_check.isChecked()))
+        self.module.setParameter("WEF_loc_nonres", int(self.ui.WEF_loc_nonres_check.isChecked()))
 
         if self.ui.WEF_constant_radio.isChecked() == 1:
             WEF_method = "C"
@@ -1586,102 +1291,45 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("hs_strategy", str(hs_strategy))
 
         self.module.setParameter("sb_method", str(self.sbmethod[self.ui.rec_assessment_combo.currentIndex()]))
-        self.module.setParameter("rain_length", self.ui.rec_rainfall_spin.value())
+        self.module.setParameter("rain_length", float(self.ui.rec_rainfall_spin.value()))
 
         #######################################
         #Choose & Customize Technologies Tab
         #######################################
 
         #--------- Advanced Stormwater Harvesting Plant -----------------------#
-        if self.ui.ASHPstatus_box.isChecked() == 1:
-            ASHPstatus = 1
-        else:
-            ASHPstatus = 0
-        self.module.setParameter("ASHPstatus", ASHPstatus)
+        self.module.setParameter("ASHPstatus", int(self.ui.ASHPstatus_box.isChecked()))
 
         #--------- Aquaculture/Living Systems ---------------------------------#
-        if self.ui.AQstatus_box.isChecked() == 1:
-            AQstatus = 1
-        else:
-            AQstatus = 0
-        self.module.setParameter("AQstatus", AQstatus)
+        self.module.setParameter("AQstatus", int(self.ui.AQstatus_box.isChecked()))
 
         #--------- Aquifer Storage & Recovery ---------------------------------#
-        if self.ui.ASRstatus_box.isChecked() == 1:
-            ASRstatus = 1
-        else:
-            ASRstatus = 0
-        self.module.setParameter("ASRstatus", ASRstatus)
+        self.module.setParameter("ASRstatus", int(self.ui.ASRstatus_box.isChecked()))
 
         #--------- Biofiltration/Raingardens ----------------------------------#
-        if self.ui.BFstatus_box.isChecked() == 1:
-            BFstatus = 1
-        else:
-            BFstatus = 0
-        self.module.setParameter("BFstatus", BFstatus)
+        self.module.setParameter("BFstatus", int(self.ui.BFstatus_box.isChecked()))
 
         #Available Scales
-        if self.ui.BFlot_check.isChecked() == 1:
-            BFlot = 1
-        else:
-            BFlot = 0
-        self.module.setParameter("BFlot", BFlot)
-
-        if self.ui.BFstreet_check.isChecked() == 1:
-            BFstreet = 1
-        else:
-            BFstreet = 0
-        self.module.setParameter("BFstreet", BFstreet)
-
-        if self.ui.BFneigh_check.isChecked() == 1:
-            BFneigh = 1
-        else:
-            BFneigh = 0
-        self.module.setParameter("BFneigh", BFneigh)
-
-        if self.ui.BFprec_check.isChecked() == 1:
-            BFprec = 1
-        else:
-            BFprec = 0
-        self.module.setParameter("BFprec", BFprec)
+        self.module.setParameter("BFlot", int(self.ui.BFlot_check.isChecked()))
+        self.module.setParameter("BFstreet", int(self.ui.BFstreet_check.isChecked()))
+        self.module.setParameter("BFneigh", int(self.ui.BFneigh_check.isChecked()))
+        self.module.setParameter("BFprec", int(self.ui.BFprec_check.isChecked()))
 
         #Available Applications
-        if self.ui.BFflow_check.isChecked() == 1:
-            BFflow = 1
-        else:
-            BFflow = 0
-        self.module.setParameter("BFflow", BFflow)
-
-        if self.ui.BFpollute_check.isChecked() == 1:
-            BFpollute = 1
-        else:
-            BFpollute = 0
-        self.module.setParameter("BFpollute", BFpollute)
-
-        if self.ui.BFrecycle_check.isChecked() == 1:
-            BFrecycle = 1
-        else:
-            BFrecycle = 0
-        self.module.setParameter("BFrecycle", BFrecycle)
+        self.module.setParameter("BFflow", int(self.ui.BFflow_check.isChecked()))
+        self.module.setParameter("BFpollute", int(self.ui.BFpollute_check.isChecked()))
+        self.module.setParameter("BFrecycle", int(self.ui.BFrecycle_check.isChecked()))
 
         #Design Curves
-        if self.ui.BFdesignUB_box.isChecked() == 1:
-            BFdesignUB = 1
-        else:
-            BFdesignUB = 0
-        self.module.setParameter("BFdesignUB", BFdesignUB)
-
-        BFdescur_path = str(self.ui.BFdesigncurve_pathbox.text())
-        self.module.setParameter("BFdescur_path", BFdescur_path)
+        self.module.setParameter("BFdesignUB", int(self.ui.BFdesignUB_box.isChecked()))
+        self.module.setParameter("BFdescur_path", str(self.ui.BFdesigncurve_pathbox.text()))
 
         #Design Information
 
         #combo box
         BFspec_matrix = [[0,0.1,0.2,0.3,0.4],[0.2,0.4,0.6,0.8]]
-        BFspec_EDDindex = self.ui.BFspecs_EDD_combo.currentIndex()
-        BFspec_FDindex = self.ui.BFspecs_FD_combo.currentIndex()
-        BFspec_EDD = BFspec_matrix[0][BFspec_EDDindex]
-        BFspec_FD = BFspec_matrix[1][BFspec_FDindex]
+        BFspec_EDD = BFspec_matrix[0][self.ui.BFspecs_EDD_combo.currentIndex()]
+        BFspec_FD = BFspec_matrix[1][self.ui.BFspecs_FD_combo.currentIndex()]
         self.module.setParameter("BFspec_EDD", BFspec_EDD)
         self.module.setParameter("BFspec_FD", BFspec_FD)
 
@@ -1690,87 +1338,40 @@ class TechplacementGUILaunch(QtGui.QDialog):
 
         self.module.setParameter("BFminsize", float(self.ui.BFminsize_box.text()))
         self.module.setParameter("BFmaxsize", float(self.ui.BFmaxsize_box.text()))
-        self.module.setParameter("BFavglife", self.ui.BFavglifespin.value())
+        self.module.setParameter("BFavglife", float(self.ui.BFavglifespin.value()))
 
         #further design parameters coming soon...
 
         #--------- Green Roof -------------------------------------------------#
-        if self.ui.GRstatus_box.isChecked() == 1:
-            GRstatus = 1
-        else:
-            GRstatus = 0
-        self.module.setParameter("GRstatus", GRstatus)
+        self.module.setParameter("GRstatus", int(self.ui.GRstatus_box.isChecked()))
 
         #--------- Greywater Tank/Treatment -----------------------------------#
-        if self.ui.GTstatus_box.isChecked() == 1:
-            GTstatus = 1
-        else:
-            GTstatus = 0
-        self.module.setParameter("GTstatus", GTstatus)
+        self.module.setParameter("GTstatus", int(self.ui.GTstatus_box.isChecked()))
 
         #--------- Gross Pollutant Trap ---------------------------------------#
-        if self.ui.GPTstatus_box.isChecked() == 1:
-            GPTstatus = 1
-        else:
-            GPTstatus = 0
-        self.module.setParameter("GPTstatus", GPTstatus)
+        self.module.setParameter("GPTstatus", int(self.ui.GPTstatus_box.isChecked()))
 
         #--------- Infiltration System ----------------------------------------#
-        if self.ui.ISstatus_box.isChecked() == 1:
-            ISstatus = 1
-        else:
-            ISstatus = 0
-        self.module.setParameter("ISstatus", ISstatus)
+        self.module.setParameter("ISstatus", int(self.ui.ISstatus_box.isChecked()))
 
         #Available Scales
-        if self.ui.ISlot_check.isChecked() == 1:
-            ISlot = 1
-        else:
-            ISlot = 0
-        self.module.setParameter("ISlot", ISlot)
-
-        if self.ui.ISstreet_check.isChecked() == 1:
-            ISstreet = 1
-        else:
-            ISstreet = 0
-        self.module.setParameter("ISstreet", ISstreet)
-
-        if self.ui.ISneigh_check.isChecked() == 1:
-            ISneigh = 1
-        else:
-            ISneigh = 0
-        self.module.setParameter("ISneigh", ISneigh)
+        self.module.setParameter("ISlot", int(self.ui.ISlot_check.isChecked()))
+        self.module.setParameter("ISstreet", int(self.ui.ISstreet_check.isChecked()))
+        self.module.setParameter("ISneigh", int(self.ui.ISneigh_check.isChecked()))
 
         #Available Applications
-        if self.ui.ISflow_check.isChecked() == 1:
-            ISflow = 1
-        else:
-            ISflow = 0
-        self.module.setParameter("ISflow", ISflow)
-
-        if self.ui.ISpollute_check.isChecked() == 1:
-            ISpollute = 1
-        else:
-            ISpollute = 0
-        self.module.setParameter("ISpollute", ISpollute)
+        self.module.setParameter("ISflow", int(self.ui.ISflow_check.isChecked()))
+        self.module.setParameter("ISpollute", int(self.ui.ISpollute_check.isChecked()))
 
         #Design Curves
-        if self.ui.ISdesignUB_box.isChecked() == 1:
-            ISdesignUB = 1
-        else:
-            ISdesignUB = 0
-        self.module.setParameter("ISdesignUB", ISdesignUB)
-
-        ISdescur_path = str(self.ui.ISdesigncurve_pathbox.text())
-        self.module.setParameter("ISdescur_path", ISdescur_path)
+        self.module.setParameter("ISdesignUB", int(self.ui.ISdesignUB_box.isChecked()))
+        self.module.setParameter("ISdescur_path", str(self.ui.ISdesigncurve_pathbox.text()))
 
         #Design Information
         #combo box
         ISspec_matrix = [[0.1,0.2,0.3,0.4,0.5],[0.2,0.4,0.6,0.8]]
-        ISspec_EDDindex = self.ui.ISspecs_EDD_combo.currentIndex()
-        ISspec_FDindex = self.ui.ISspecs_FD_combo.currentIndex()
-        ISspec_EDD = ISspec_matrix[0][ISspec_EDDindex]
-        ISspec_FD = ISspec_matrix[1][ISspec_FDindex]
+        ISspec_EDD = ISspec_matrix[0][self.ui.ISspecs_EDD_combo.currentIndex()]
+        ISspec_FD = ISspec_matrix[1][self.ui.ISspecs_FD_combo.currentIndex()]
         self.module.setParameter("ISspec_EDD", ISspec_EDD)
         self.module.setParameter("ISspec_FD", ISspec_FD)
 
@@ -1782,67 +1383,28 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("ISavglife", float(self.ui.ISavglifespin.value()))
 
         #--------- Packaged Plants --------------------------------------------#
-        if self.ui.PPLstatus_box.isChecked() == 1:
-            PPLstatus = 1
-        else:
-            PPLstatus = 0
-        self.module.setParameter("PPLstatus", PPLstatus)
+        self.module.setParameter("PPLstatus", int(self.ui.PPLstatus_box.isChecked()))
 
         #--------- Ponds/Sedimentation Basins ---------------------------------#
-        if self.ui.PBstatus_box.isChecked() == 1:
-            PBstatus = 1
-        else:
-            PBstatus = 0
-        self.module.setParameter("PBstatus", PBstatus)
+        self.module.setParameter("PBstatus", int(self.ui.PBstatus_box.isChecked()))
 
         #Available Scales
-        if self.ui.PBneigh_check.isChecked() == 1:
-            PBneigh = 1
-        else:
-            PBneigh = 0
-        self.module.setParameter("PBneigh", PBneigh)
-
-        if self.ui.PBprec_check.isChecked() == 1:
-            PBprec = 1
-        else:
-            PBprec = 0
-        self.module.setParameter("PBprec", PBprec)
+        self.module.setParameter("PBneigh", int(self.ui.PBneigh_check.isChecked()))
+        self.module.setParameter("PBprec", int(self.ui.PBprec_check.isChecked()))
 
         #Available Applications
-        if self.ui.PBflow_check.isChecked() == 1:
-            PBflow = 1
-        else:
-            PBflow = 0
-        self.module.setParameter("PBflow", PBflow)
-
-        if self.ui.PBpollute_check.isChecked() == 1:
-            PBpollute = 1
-        else:
-            PBpollute = 0
-        self.module.setParameter("PBpollute", PBpollute)
-
-        if self.ui.PBrecycle_check.isChecked() == 1:
-            PBrecycle = 1
-        else:
-            PBrecycle = 0
-        self.module.setParameter("PBrecycle", PBrecycle)
+        self.module.setParameter("PBflow", int(self.ui.PBflow_check.isChecked()))
+        self.module.setParameter("PBpollute", int(self.ui.PBpollute_check.isChecked()))
+        self.module.setParameter("PBrecycle", int(self.ui.PBrecycle_check.isChecked()))
 
         #Design Curves
-        if self.ui.PBdesignUB_box.isChecked() == 1:
-            PBdesignUB = 1
-        else:
-            PBdesignUB = 0
-        self.module.setParameter("PBdesignUB", PBdesignUB)
-
-        PBdescur_path = str(self.ui.PBdesigncurve_pathbox.text())
-        self.module.setParameter("PBdescur_path", PBdescur_path)
+        self.module.setParameter("PBdesignUB", int(self.ui.PBdesignUB_box.isChecked()))
+        self.module.setParameter("PBdescur_path", str(self.ui.PBdesigncurve_pathbox.text()))
 
         #Design Information
         #combo box
         PBspec_matrix = ["0.25", "0.50", "0.75", "1.00", "1.25"]
-        PBspec_MDindex = self.ui.PBspecs_combo.currentIndex()
-        PBspec_MD = PBspec_matrix[PBspec_MDindex]
-        self.module.setParameter("PBspec_MD", PBspec_MD)
+        self.module.setParameter("PBspec_MD", PBspec_matrix[self.ui.PBspecs_combo.currentIndex()])
 
         PBexfil_matrix = [0, 0.18, 0.36, 1.8, 3.6]
         self.module.setParameter("PBexfil", str(PBexfil_matrix[self.ui.PBexfil_combo.currentIndex()]))
@@ -1853,133 +1415,49 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #further design parameters coming soon...
 
         #---------- Porous/Pervious Pavements ---------------------------------#
-        if self.ui.PPstatus_box.isChecked() == 1:
-            PPstatus = 1
-        else:
-            PPstatus = 0
-        self.module.setParameter("PPstatus", PPstatus)
+        self.module.setParameter("PPstatus", int(self.ui.PPstatus_box.isChecked()))
 
         #---------- Rainwater Tank --------------------------------------------#
-        if self.ui.RTstatus_box.isChecked() == 1:
-            RTstatus = 1
-        else:
-            RTstatus = 0
-        self.module.setParameter("RTstatus", RTstatus)
+        self.module.setParameter("RTstatus", int(self.ui.RTstatus_box.isChecked()))
 
-        RT_maxdepth = float(self.ui.RT_maxdepth_box.text())
-        self.module.setParameter("RT_maxdepth", RT_maxdepth)
-        RT_mindead = float(self.ui.RT_mindead_box.text())
-        self.module.setParameter("RT_mindead", RT_mindead)
-
-        if self.ui.RTscale_lot_box.isChecked() == 1:
-            RTscale_lot = 1
-        else:
-            RTscale_lot = 0
-        self.module.setParameter("RTlot", RTscale_lot)
-
-        if self.ui.RTscale_neighb_box.isChecked() == 1:
-            RTscale_neigh = 1
-        else:
-            RTscale_neigh = 0
-        self.module.setParameter("RTneigh", RTscale_neigh)
-
-        if self.ui.RTpurp_flood_box.isChecked() == 1:
-            RTpurp_flood = 1
-        else:
-            RTpurp_flood = 0
-        self.module.setParameter("RTflow", RTpurp_flood)
-
-        if self.ui.RTpurp_recyc_box.isChecked() == 1:
-            RTpurp_recyc = 1
-        else:
-            RTpurp_recyc = 0
-        self.module.setParameter("RTrecycle", RTpurp_recyc)
-
-        if self.ui.RTdesignUB_box.isChecked() == 1:
-            RTdesignUB = 1
-        else:
-            RTdesignUB = 0
-        self.module.setParameter("RTdesignUB", RTdesignUB)
-
-        RTdescur_path = str(self.ui.RTdesigncurve_pathbox.text())
-        self.module.setParameter("RTdescur_path", RTdescur_path)
+        self.module.setParameter("RT_maxdepth", float(self.ui.RT_maxdepth_box.text()))
+        self.module.setParameter("RT_mindead", float(self.ui.RT_mindead_box.text()))
+        self.module.setParameter("RTlot", int(self.ui.RTscale_lot_box.isChecked()))
+        self.module.setParameter("RTneigh", int(self.ui.RTscale_neighb_box.isChecked()))
+        self.module.setParameter("RTflow", int(self.ui.RTpurp_flood_box.isChecked()))
+        self.module.setParameter("RTrecycle", int(self.ui.RTpurp_recyc_box.isChecked()))
+        self.module.setParameter("RTdesignUB", int(self.ui.RTdesignUB_box.isChecked()))
+        self.module.setParameter("RTdescur_path", str(self.ui.RTdesigncurve_pathbox.text()))
 
         #---------- Sand/Peat/Gravel Filter -----------------------------------#
-        if self.ui.SFstatus_box.isChecked() == 1:
-            SFstatus = 1
-        else:
-            SFstatus = 0
-        self.module.setParameter("SFstatus", SFstatus)
+        self.module.setParameter("SFstatus", int(self.ui.SFstatus_box.isChecked()))
 
         #---------- Subsurface Irrigation System ------------------------------#
-        if self.ui.IRRstatus_box.isChecked() == 1:
-            IRRstatus = 1
-        else:
-            IRRstatus = 0
-        self.module.setParameter("IRRstatus", IRRstatus)
+        self.module.setParameter("IRRstatus", int(self.ui.IRRstatus_box.isChecked()))
 
         #---------- Subsurface Wetland/Reed Bed -------------------------------#
-        if self.ui.WSUBstatus_box.isChecked() == 1:
-            WSUBstatus = 1
-        else:
-            WSUBstatus = 0
-        self.module.setParameter("WSUBstatus", WSUBstatus)
+        self.module.setParameter("WSUBstatus", int(self.ui.WSUBstatus_box.isChecked()))
 
         #---------- Surface Wetland -------------------------------------------#
-        if self.ui.WSURstatus_box.isChecked() == 1:
-            WSURstatus = 1
-        else:
-            WSURstatus = 0
-        self.module.setParameter("WSURstatus", WSURstatus)
+        self.module.setParameter("WSURstatus", int(self.ui.WSURstatus_box.isChecked()))
 
         #Available Scales
-        if self.ui.WSURneigh_check.isChecked() == 1:
-            WSURneigh = 1
-        else:
-            WSURneigh = 0
-        self.module.setParameter("WSURneigh", WSURneigh)
-
-        if self.ui.WSURprec_check.isChecked() == 1:
-            WSURprec = 1
-        else:
-            WSURprec = 0
-        self.module.setParameter("WSURprec", WSURprec)
+        self.module.setParameter("WSURneigh", int(self.ui.WSURneigh_check.isChecked()))
+        self.module.setParameter("WSURprec", int(self.ui.WSURprec_check.isChecked()))
 
         #Available Applications
-        if self.ui.WSURflow_check.isChecked() == 1:
-            WSURflow = 1
-        else:
-            WSURflow = 0
-        self.module.setParameter("WSURflow", WSURflow)
-
-        if self.ui.WSURpollute_check.isChecked() == 1:
-            WSURpollute = 1
-        else:
-            WSURpollute = 0
-        self.module.setParameter("WSURpollute", WSURpollute)
-
-        if self.ui.WSURrecycle_check.isChecked() == 1:
-            WSURrecycle = 1
-        else:
-            WSURrecycle = 0
-        self.module.setParameter("WSURrecycle", WSURrecycle)
+        self.module.setParameter("WSURflow", int(self.ui.WSURflow_check.isChecked()))
+        self.module.setParameter("WSURpollute", int(self.ui.WSURpollute_check.isChecked()))
+        self.module.setParameter("WSURrecycle", int(self.ui.WSURrecycle_check.isChecked()))
 
         #Design Curves
-        if self.ui.WSURdesignUB_box.isChecked() == 1:
-            WSURdesignUB = 1
-        else:
-            WSURdesignUB = 0
-        self.module.setParameter("WSURdesignUB", WSURdesignUB)
-
-        WSURdescur_path = str(self.ui.WSURdesigncurve_pathbox.text())
-        self.module.setParameter("WSURdescur_path", WSURdescur_path)
+        self.module.setParameter("WSURdesignUB", int(self.ui.WSURdesignUB_box.isChecked()))
+        self.module.setParameter("WSURdescur_path", str(self.ui.WSURdesigncurve_pathbox.text()))
 
         #Design Information
         #combo box
         WSURspec_matrix = ["0.25", "0.50", "0.75", "0.25", "0.50", "0.75"]
-        WSURspec_EDDindex = self.ui.WSURspecs_combo.currentIndex()
-        WSURspec_EDD = WSURspec_matrix[WSURspec_EDDindex]
-        self.module.setParameter("WSURspec_EDD", WSURspec_EDD)
+        self.module.setParameter("WSURspec_EDD", WSURspec_matrix[self.ui.WSURspecs_combo.currentIndex()])
 
         WSURexfil_matrix = [0, 0.18, 0.36, 1.8, 3.6]
         self.module.setParameter("WSURexfil", WSURexfil_matrix[self.ui.WSURexfil_combo.currentIndex()])
@@ -1990,47 +1468,19 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #further design parameters coming soon...
 
         #---------- Swales/Buffer Strips --------------------------------------#
-        if self.ui.SWstatus_box.isChecked() == 1:
-            SWstatus = 1
-        else:
-            SWstatus = 0
-        self.module.setParameter("SWstatus", SWstatus)
+        self.module.setParameter("SWstatus", int(self.ui.SWstatus_box.isChecked()))
 
         #Available Scales
-        if self.ui.SWstreet_check.isChecked() == 1:
-            SWstreet = 1
-        else:
-            SWstreet = 0
-        self.module.setParameter("SWstreet", SWstreet)
-
-        if self.ui.SWneigh_check.isChecked() == 1:
-            SWneigh = 1
-        else:
-            SWneigh = 0
-        self.module.setParameter("SWneigh", SWneigh)
+        self.module.setParameter("SWstreet", int(self.ui.SWstreet_check.isChecked()))
+        self.module.setParameter("SWneigh", int(self.ui.SWneigh_check.isChecked()))
 
         #Available Applications
-        if self.ui.SWflow_check.isChecked() == 1:
-            SWflow = 1
-        else:
-            SWflow = 0
-        self.module.setParameter("SWflow", SWflow)
-
-        if self.ui.SWpollute_check.isChecked() == 1:
-            SWpollute = 1
-        else:
-            SWpollute = 0
-        self.module.setParameter("SWpollute", SWpollute)
+        self.module.setParameter("SWflow", int(self.ui.SWflow_check.isChecked()))
+        self.module.setParameter("SWpollute", int(self.ui.SWpollute_check.isChecked()))
 
         #Design Curves
-        if self.ui.SWdesignUB_box.isChecked() == 1:
-            SWdesignUB = 1
-        else:
-            SWdesignUB = 0
-        self.module.setParameter("SWdesignUB", SWdesignUB)
-
-        SWdescur_path = str(self.ui.SWdesigncurve_pathbox.text())
-        self.module.setParameter("SWdescur_path", SWdescur_path)
+        self.module.setParameter("SWdesignUB", int(self.ui.SWdesignUB_box.isChecked()))
+        self.module.setParameter("SWdescur_path", str(self.ui.SWdesigncurve_pathbox.text()))
 
         #Design Information
         #combo box
@@ -2044,115 +1494,47 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #further design parameters coming soon...
 
         #--------- Tree Pits --------------------------------------------------#
-        if self.ui.TPSstatus_box.isChecked() == 1:
-            TPSstatus = 1
-        else:
-            TPSstatus = 0
-        self.module.setParameter("TPSstatus", TPSstatus)
+        self.module.setParameter("TPSstatus", int(self.ui.TPSstatus_box.isChecked()))
 
         #---------- Urine-separating Toilets ----------------------------------#
-        if self.ui.UTstatus_box.isChecked() == 1:
-            UTstatus = 1
-        else:
-            UTstatus = 0
-        self.module.setParameter("UTstatus", UTstatus)
+        self.module.setParameter("UTstatus", int(self.ui.UTstatus_box.isChecked()))
 
         #---------- Wastwater Recovery/Recycling Plant ------------------------#
-        if self.ui.WWRRstatus_box.isChecked() == 1:
-            WWRRstatus = 1
-        else:
-            WWRRstatus = 0
-        self.module.setParameter("WWRRstatus", WWRRstatus)
+        self.module.setParameter("WWRRstatus", int(self.ui.WWRRstatus_box.isChecked()))
 
         #---------- Waterless/Composting Toilets ------------------------------#
-        if self.ui.WTstatus_box.isChecked() == 1:
-            WTstatus = 1
-        else:
-            WTstatus = 0
-        self.module.setParameter("WTstatus", WTstatus)
+        self.module.setParameter("WTstatus",int(self.ui.WTstatus_box.isChecked()))
 
         #--- ## --- REGIONAL INFORMATION---------------------------------------#
         regioncity_matrix = ["Adelaide", "Brisbane", "Melbourne", "Perth", "Sydney"]
-
-        regioncity_index = self.ui.regioncity_combo.currentIndex()
-        regioncity = regioncity_matrix[regioncity_index]
-        self.module.setParameter("regioncity", regioncity)
-
+        self.module.setParameter("regioncity", regioncity_matrix[self.ui.regioncity_combo.currentIndex()])
 
         ################################
         #Select Evaluation Criteria Tab
         ################################
-
         #-------- Evaluation Metrics Select------------------------------------#
-        if self.ui.mca_scoringmat_check.isChecked() == 1:
-            scoringmatrix_default = 1
-        else:
-            scoringmatrix_default = 0
-        self.module.setParameter("scoringmatrix_default", scoringmatrix_default)
-
-        scoringmatrix_path = str(self.ui.mca_scoringmat_box.text())
-        self.module.setParameter("scoringmatrix_path", scoringmatrix_path)
+        self.module.setParameter("scoringmatrix_default", int(self.ui.mca_scoringmat_check.isChecked()))
+        self.module.setParameter("scoringmatrix_path", str(self.ui.mca_scoringmat_box.text()))
 
         #-------- Customize Evaluation Criteria--------------------------------#
-        if self.ui.bottomlines_tech_check.isChecked() == 1:
-            bottomlines_tech = 1
-        else:
-            bottomlines_tech = 0
-        self.module.setParameter("bottomlines_tech", bottomlines_tech)
-
-        if self.ui.bottomlines_env_check.isChecked() == 1:
-            bottomlines_env = 1
-        else:
-            bottomlines_env = 0
-        self.module.setParameter("bottomlines_env", bottomlines_env)
-
-        if self.ui.bottomlines_ecn_check.isChecked() == 1:
-            bottomlines_ecn = 1
-        else:
-            bottomlines_ecn = 0
-        self.module.setParameter("bottomlines_ecn", bottomlines_ecn)
-
-        if self.ui.bottomlines_soc_check.isChecked() == 1:
-            bottomlines_soc = 1
-        else:
-            bottomlines_soc = 0
-        self.module.setParameter("bottomlines_soc", bottomlines_soc)
-
-        bottomlines_tech_n = self.ui.bottomlines_techN_spin.value()
-        self.module.setParameter("bottomlines_tech_n", bottomlines_tech_n)
-
-        bottomlines_env_n = self.ui.bottomlines_envN_spin.value()
-        self.module.setParameter("bottomlines_env_n", bottomlines_env_n)
-
-        bottomlines_ecn_n = self.ui.bottomlines_ecnN_spin.value()
-        self.module.setParameter("bottomlines_ecn_n", bottomlines_ecn_n)
-
-        bottomlines_soc_n = self.ui.bottomlines_socN_spin.value()
-        self.module.setParameter("bottomlines_soc_n", bottomlines_soc_n)
-
-        bottomlines_tech_w = self.ui.bottomlines_techW_spin.value()
-        self.module.setParameter("bottomlines_tech_w", bottomlines_tech_w)
-
-        bottomlines_env_w = self.ui.bottomlines_envW_spin.value()
-        self.module.setParameter("bottomlines_env_w", bottomlines_env_w)
-
-        bottomlines_ecn_w = self.ui.bottomlines_ecnW_spin.value()
-        self.module.setParameter("bottomlines_ecn_w", bottomlines_ecn_w)
-
-        bottomlines_soc_w = self.ui.bottomlines_socW_spin.value()
-        self.module.setParameter("bottomlines_soc_w", bottomlines_soc_w)
+        self.module.setParameter("bottomlines_tech", int(self.ui.bottomlines_tech_check.isChecked()))
+        self.module.setParameter("bottomlines_env", int(self.ui.bottomlines_env_check.isChecked()))
+        self.module.setParameter("bottomlines_ecn", int(self.ui.bottomlines_ecn_check.isChecked()))
+        self.module.setParameter("bottomlines_soc", int(self.ui.bottomlines_soc_check.isChecked()))
+        self.module.setParameter("bottomlines_tech_n", float(self.ui.bottomlines_techN_spin.value()))
+        self.module.setParameter("bottomlines_env_n", float(self.ui.bottomlines_envN_spin.value()))
+        self.module.setParameter("bottomlines_ecn_n", float(self.ui.bottomlines_ecnN_spin.value()))
+        self.module.setParameter("bottomlines_soc_n", float(self.ui.bottomlines_socN_spin.value()))
+        self.module.setParameter("bottomlines_tech_w", float(self.ui.bottomlines_techW_spin.value()))
+        self.module.setParameter("bottomlines_env_w", float(self.ui.bottomlines_envW_spin.value()))
+        self.module.setParameter("bottomlines_ecn_w", float(self.ui.bottomlines_ecnW_spin.value()))
+        self.module.setParameter("bottomlines_soc_w", float(self.ui.bottomlines_socW_spin.value()))
 
         #-------- EVALUATION SCOPE & METHOD -----------------------------------#
         score_method_matrix = ["WPM", "WSM"]
-        score_index = self.ui.eval_method_combo.currentIndex()
-        score_method = score_method_matrix[score_index]
-        self.module.setParameter("score_method", score_method)
+        self.module.setParameter("score_method", score_method_matrix[self.ui.eval_method_combo.currentIndex()])
 
-        if self.ui.scope_stoch_check.isChecked() == 1:
-            scope_stoch = 1
-        else:
-            scope_stoch = 0
-        self.module.setParameter("scope_stoch", scope_stoch)
+        self.module.setParameter("scope_stoch", int(self.ui.scope_stoch_check.isChecked()))
 
         if self.ui.radioScoreAvg.isChecked() == True:
             ingroup_scoring = "Avg"
@@ -2166,12 +1548,6 @@ class TechplacementGUILaunch(QtGui.QDialog):
 
         #-------- RANKING OF STRATEGIES ---------------------------------------#
         rank_method_matrix = ["RK", "CI"]
-        rank_index = self.ui.top_score_combo.currentIndex()
-        ranktype = rank_method_matrix[rank_index]
-        self.module.setParameter("ranktype", ranktype)
-
-        topranklimit = self.ui.top_rank_spin.value()
-        self.module.setParameter("topranklimit", topranklimit)
-
-        conf_int = self.ui.top_CI_spin.value()
-        self.module.setParameter("conf_int", conf_int)
+        self.module.setParameter("ranktype", rank_method_matrix[self.ui.top_score_combo.currentIndex()])
+        self.module.setParameter("topranklimit", float(self.ui.top_rank_spin.value()))
+        self.module.setParameter("conf_int", float(self.ui.top_CI_spin.value()))
