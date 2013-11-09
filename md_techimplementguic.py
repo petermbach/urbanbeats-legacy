@@ -47,15 +47,8 @@ class TechimplementGUILaunch(QtGui.QDialog):
         elif self.module.getParameter("bb_lot_rule") == "STRICT":
             self.ui.lot_strict_radio.setChecked(1)
 
-        if self.module.getParameter("bb_street_zone") == 1:
-            self.ui.street_forceimplement_check.setChecked(1)
-        else:
-            self.ui.street_forceimplement_check.setChecked(0)
-
-        if self.module.getParameter("bb_neigh_zone") == 1:
-            self.ui.neigh_forceimplement_check.setChecked(1)
-        else:
-            self.ui.neigh_forceimplement_check.setChecked(0)
+        self.ui.street_forceimplement_check.setChecked(bool(int(self.module.getParameter("bb_street_zone"))))
+        self.ui.neigh_forceimplement_check.setChecked(bool(int(self.module.getParameter("bb_neigh_zone"))))
 
         if self.module.getParameter("pb_lot_rule") == "G":
             self.ui.parcel_rule_lot.setCurrentIndex(0)
@@ -78,10 +71,7 @@ class TechimplementGUILaunch(QtGui.QDialog):
         elif self.module.getParameter("pb_neigh_rule") == "D":
             self.ui.parcel_rule_neigh.setCurrentIndex(2)
 
-        if self.module.getParameter("pb_neigh_zone_ignore") == 1:
-            self.ui.parcel_rule_neigh_check.setChecked(1)
-        else:
-            self.ui.parcel_rule_neigh_check.setChecked(0)
+        self.ui.parcel_rule_neigh_check.setChecked(bool(int(self.module.getParameter("pb_neigh_zone_ignore"))))
 
         if self.module.getParameter("prec_rule") == "G":
             self.ui.prec_impl_rule.setCurrentIndex(0)
@@ -90,10 +80,7 @@ class TechimplementGUILaunch(QtGui.QDialog):
         elif self.module.getParameter("prec_rule") == "D":
             self.ui.prec_impl_rule.setCurrentIndex(2)
 
-        if self.module.getParameter("prec_zone_ignore") == 1:
-            self.ui.prec_impl_force_check.setChecked(1)
-        else:
-            self.ui.prec_impl_force_check.setChecked(0)
+        self.ui.prec_impl_force_check.setChecked(bool(int(self.module.getParameter("prec_zone_ignore"))))
 
         if self.module.getParameter("prec_dev_threshold") == 1:
             self.ui.prec_impl_thresh_check.setChecked(1)
@@ -105,24 +92,12 @@ class TechimplementGUILaunch(QtGui.QDialog):
         self.ui.prec_impl_thresh_spin.setValue(float(self.module.getParameter("prec_dev_percent")))
 
         #DRIVERS
-        if self.module.getParameter("driver_people") == 1:
-            self.ui.peoplepref_check.setChecked(1)
-        else:
-            self.ui.peoplepref_check.setChecked(0)
-
-        if self.module.getParameter("driver_legal") == 1:
-            self.ui.legal_check.setChecked(1)
-        else:
-            self.ui.legal_check.setChecked(0)
-
-        if self.module.getParameter("driver_establish") == 1:
-            self.ui.establish_check.setChecked(1)
-        else:
-            self.ui.establish_check.setChecked(0)
+        self.ui.peoplepref_check.setChecked(self.module.getParameter("driver_people"))
+        self.ui.legal_check.setChecked(self.module.getParameter("driver_legal"))
+        self.ui.establish_check.setChecked(self.module.getParameter("driver_establish"))
 
         QtCore.QObject.connect(self.ui.prec_impl_thresh_check, QtCore.SIGNAL("clicked()"), self.prec_threshold_enable)
         QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
-
 
     def prec_threshold_enable(self):
         if self.ui.prec_impl_thresh_check.isChecked() == 1:
@@ -130,17 +105,11 @@ class TechimplementGUILaunch(QtGui.QDialog):
         else:
             self.ui.prec_impl_thresh_spin.setEnabled(0)
 
-
     def save_values(self):
-
         #RULES AT ALL SCALES
         dynamic_rule_matrix = ["B", "P"]
-        dynamic_rule_index = self.ui.implementdynamics_combo.currentIndex()
-        dynamic_rule = dynamic_rule_matrix[dynamic_rule_index]
-        self.module.setParameter("dynamic_rule", dynamic_rule)
-
-        block_based_thresh = self.ui.block_dev_threshold.value()
-        self.module.setParameter("block_based_thresh", block_based_thresh)
+        self.module.setParameter("dynamic_rule", dynamic_rule_matrix[self.ui.implementdynamics_combo.currentIndex()])
+        self.module.setParameter("block_based_thresh", float(self.ui.block_dev_threshold.value()))
 
         if self.ui.lot_amap_radio.isChecked() == 1:
             bb_lot_rule = "AMAP"
@@ -148,74 +117,25 @@ class TechimplementGUILaunch(QtGui.QDialog):
             bb_lot_rule = "STRICT"
         self.module.setParameter("bb_lot_rule", str(bb_lot_rule))
 
-        if self.ui.street_forceimplement_check.isChecked() == 1:
-            bb_street_zone = 1
-        else:
-            bb_street_zone = 0
-        self.module.setParameter("bb_street_zone", bb_street_zone)
-
-        if self.ui.neigh_forceimplement_check.isChecked() == 1:
-            bb_neigh_zone = 1
-        else:
-            bb_neigh_zone = 0
-        self.module.setParameter("bb_neigh_zone", bb_neigh_zone)
+        self.module.setParameter("bb_street_zone", int(self.ui.street_forceimplement_check.isChecked()))
+        self.module.setParameter("bb_neigh_zone", int(self.ui.neigh_forceimplement_check.isChecked()))
 
         rules_matrix = ["G", "I", "D"]
+        self.module.setParameter("pb_lot_rule", rules_matrix[self.ui.parcel_rule_lot.currentIndex()])
+        self.module.setParameter("pb_street_rule", rules_matrix[self.ui.parcel_rule_street.currentIndex()])
+        self.module.setParameter("pb_neigh_rule", rules_matrix[self.ui.parcel_rule_neigh.currentIndex()])
+        self.module.setParameter("prec_rule", rules_matrix[self.ui.prec_impl_rule.currentIndex()])
 
-        lot_rule_index = self.ui.parcel_rule_lot.currentIndex()
-        street_rule_index = self.ui.parcel_rule_street.currentIndex()
-        neigh_rule_index = self.ui.parcel_rule_neigh.currentIndex()
-        prec_rule_index = self.ui.prec_impl_rule.currentIndex()
+        self.module.setParameter("pb_neigh_zone_ignore", int(self.ui.parcel_rule_neigh_check.isChecked()))
+        self.module.setParameter("prec_zone_ignore", int(self.ui.prec_impl_force_check.isChecked()))
+        self.module.setParameter("prec_dev_threshold", int(self.ui.prec_impl_thresh_check.isChecked()))
 
-        pb_lot_rule = rules_matrix[lot_rule_index]
-        pb_street_rule = rules_matrix[street_rule_index]
-        pb_neigh_rule = rules_matrix[neigh_rule_index]
-        prec_rule = rules_matrix[prec_rule_index]
-
-        self.module.setParameter("pb_lot_rule", pb_lot_rule)
-        self.module.setParameter("pb_street_rule", pb_street_rule)
-        self.module.setParameter("pb_neigh_rule", pb_neigh_rule)
-        self.module.setParameter("prec_rule", prec_rule)
-
-        if self.ui.parcel_rule_neigh_check.isChecked() == 1:
-            pb_neigh_zone_ignore = 1
-        else:
-            pb_neigh_zone_ignore = 0
-        self.module.setParameter("pb_neigh_zone_ignore", pb_neigh_zone_ignore)
-
-        if self.ui.prec_impl_force_check.isChecked() == 1:
-            prec_zone_ignore = 1
-        else:
-            prec_zone_ignore = 0
-        self.module.setParameter("prec_zone_ignore", prec_zone_ignore)
-
-        if self.ui.prec_impl_thresh_check.isChecked() == 1:
-            prec_dev_threshold = 1
-        else:
-            prec_dev_threshold = 0
-        self.module.setParameter("prec_dev_threshold", prec_dev_threshold)
-
-        prec_dev_percent = str(self.ui.prec_impl_thresh_spin.value())
-        self.module.setParameter("prec_dev_percent", prec_dev_percent)
+        self.module.setParameter("prec_dev_percent", float(self.ui.prec_impl_thresh_spin.value()))
 
         #DRIVERS
-        if self.ui.peoplepref_check.isChecked() == 1:
-            driver_people = 1
-        else:
-            driver_people = 0
-        self.module.setParameter("driver_people", driver_people)
-
-        if self.ui.legal_check.isChecked() == 1:
-            driver_legal = 1
-        else:
-            driver_legal = 0
-        self.module.setParameter("driver_legal", driver_legal)
-
-        if self.ui.establish_check.isChecked() == 1:
-            driver_establish = 1
-        else:
-            driver_establish = 0
-        self.module.setParameter("driver_establish", driver_establish)
+        self.module.setParameter("driver_people", int(self.ui.peoplepref_check.isChecked()))
+        self.module.setParameter("driver_legal", int(self.ui.legal_check.isChecked()))
+        self.module.setParameter("driver_establish", int(self.ui.establish_check.isChecked()))
 
 
         

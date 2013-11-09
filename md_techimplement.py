@@ -24,10 +24,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 """
 
 from md_techimplementguic import *
-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-
 #from pydynamind import *
 import math
 import urbanbeatsdatatypes as ubdata    #UBCORE
@@ -218,8 +216,10 @@ class Techimplement(UBModule):
         map_attr = self.activesim.getAssetWithName("MapAttributes")
 
         #Find out how many systems are in the list of systems to be implemented
-        strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
-        totsystems = city.getComponent(strvec[0]).getAttribute("TotalSystems")
+        #strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
+        #totsystems = city.getComponent(strvec[0]).getAttribute("TotalSystems")
+        totsystems = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("TotalSystems")
+
         self.notify("Total Systems in map: "+str(totsystems))
         
         #Get block number, etc.
@@ -227,35 +227,38 @@ class Techimplement(UBModule):
         blocks_size = map_attr.getAttribute("BlockSize") #size of block
 
         #Get all systems for current block, also do a double-check on system location
-        blockXY = self.getBlockXYcentres(city, blocks_num)
+        blockXY = self.getBlockXYcentres(blocks_num)
         sysList = {}
         for i in range(int(blocks_num)):
             sysList[i+1] = []   #Initialize the vector
-        sysuuids = city.getUUIDsOfComponentsInView(self.sysAttr)
-        for uuid in sysuuids:
-            location = int(city.getComponent(uuid).getAttribute("Location"))
+        #sysuuids = city.getUUIDsOfComponentsInView(self.sysAttr)
+        sysuuids = self.activesim.getAssetsWithIdentifier("SysPrevID")
+        for curSys in sysuuids:
+            location = int(curSys.getAttribute("Location"))
             if location == 0:
-                posX = city.getComponent(uuid).getAttribute("posX")
-                posY = city.getComponent(uuid).getAttribute("posY")
+                posX = curSys.getAttribute("posX")
+                posY = curSys.getAttribute("posY")
                 location = self.determineSystemBlockLocation(posX, posY, blockXY, blocks_size)
-            if self.skipIfStatusZero(location, city):
+            if self.skipIfStatusZero(location):
                 continue        #If system is not within simulation bounds i.e. active blocks, skip
             else:
-                sysList[int(location)].append(city.getComponent(uuid))  #Append the UUID for the current matrix
+                sysList[int(location)].append(curSys)  #Append the UUID for the current matrix
                 
-        #self.notify(sysList
+        #self.notify(sysList)
         
         #Begin looping across blocks
         for i in range(int(blocks_num)):
             currentID = i + 1
-            currentAttList = self.getBlockUUID(currentID,city) #attribute list of current block structure
-            masterplanAttList = self.getPrevBlockUUID(currentID, city)
+            #currentAttList = self.getBlockUUID(currentID,city) #attribute list of current block structure
+            currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
+            #masterplanAttList = self.getPrevBlockUUID(currentID, city)
+            masterplanAttList = self.activesim.getAssetWithName("PrevBlockID"+str(currentID))
             
             #-----------------------------------------------------------------#
             # DETERMINE WHETHER TO IMPLEMENT IN CURRENT BLOCK AT ALL #
             #-----------------------------------------------------------------#
             ### QUIT CONDITION #1 - BLOCK STATUS = 0 ###
-            if self.skipIfStatusZero(currentID, city):
+            if self.skipIfStatusZero(currentID):
                 continue
             
             ### QUIT CONDITION #2 - NO SYSTEMS PLANNED FOR BLOCK AT ALL ###
@@ -265,55 +268,56 @@ class Techimplement(UBModule):
  
             ### QUIT CONDITION #3 - DYNAMIC-MODE = Block-based and DEVELOPMENT < Threshold ###
             if self.dynamic_rule == "B":
-                block_skip = self.skipIfBelowBlockThreshold(currentID, float(self.block_based_thresh/100), city)
+                block_skip = self.skipIfBelowBlockThreshold(currentID, float(self.block_based_thresh/100))
                 #use block_skip to determine whether to skip the next few steps
  
-            self.notify("BlockID", currentID, " has systems to be implemented"
+            self.notify("BlockID"+str(currentID)+" has systems to be implemented")
             
             #LOOP ACROSS SYSTEMS IN THE sysList and implement them if necessary
             for sys in sysList[currentID]:
                 if sys.getAttribute("Scale") in ["L_RES"]:
                     qty, curImpT, year = self.implementLotSystem(currentAttList, masterplanAttList, sys)
                     if qty != 0:
-                        self.writeSystemAttributesToOutput(sys, year, qty, curImpT, currentAttList, blocks_size, city)
+                        self.writeSystemAttributesToOutput(sys, year, qty, curImpT, currentAttList, blocks_size)
                     
                 elif sys.getAttribute("Scale") in ["L_COM", "L_HDR", "L_LI", "L_HI"]:
                     qty, curImpT, year = self.implementLotSystem(currentAttList, masterplanAttList, sys)
                     if qty != 0:
-                        self.writeSystemAttributesToOutput(sys, year, qty, curImpT, currentAttList, blocks_size, city)
+                        self.writeSystemAttributesToOutput(sys, year, qty, curImpT, currentAttList, blocks_size)
                     
                 elif sys.getAttribute("Scale") in ["S", "N"]:
                     curImpT, year = self.implementStreetNeighSystem(currentAttList, masterplanAttList, sys)
                     if curImpT != 0:
-                        self.writeSystemAttributesToOutput(sys, year, 1, curImpT, currentAttList, blocks_size, city)
+                        self.writeSystemAttributesToOutput(sys, year, 1, curImpT, currentAttList, blocks_size)
                     
                 elif sys.getAttribute("Scale") in ["B"]:
-                    curImpT, year = self.implementBasinSystem(currentAttList, masterplanAttList, sys, city)
+                    curImpT, year = self.implementBasinSystem(currentAttList, masterplanAttList, sys)
                     if curImpT != 0:
-                        self.writeSystemAttributesToOutput(sys, year, 1, curImpT, currentAttList, blocks_size, city)
+                        self.writeSystemAttributesToOutput(sys, year, 1, curImpT, currentAttList, blocks_size)
             
             #BLOCK FOR LOOP END (Repeat for next BlockID)
             
-        self.notify("End of Implementation Module"
+        self.notify("End of Implementation Module")
 
     ########################################################
     #TECHIMPLEMENT FUNCTIONS                               #
     ########################################################
-    def skipIfStatusZero(self, ID, city):
+    def skipIfStatusZero(self, ID):
         """Determines if the current BlockID's status is 1 or 0, if 0 transfers all its data
         to the output vector and returns true. If main function receives true"""
-        if self.getBlockUUID(ID,city).getAttribute("Status") == 0:
-            self.notify("BlockID"+str(ID)+" is not active in simulation"
+        if self.activesim.getAssetWithName("BlockID"+str(ID)).getAttribute("Status")==0:
+            self.notify("BlockID"+str(ID)+" is not active in simulation")
             return True
         else:
             return False
     
-    def getBlockXYcentres(self, city, blocks_num):
+    def getBlockXYcentres(self, blocks_num):
         """Scans the array of Blocks and creates an XY vector of block coordinates"""
         blockXY = {}
         for i in range(int(blocks_num)):
             currentID = i+1
-            currentAttList = self.getBlockUUID(currentID, city)
+            currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
+            #currentAttList = self.getBlockUUID(currentID, city)
             cX = currentAttList.getAttribute("CentreX")
             cY = currentAttList.getAttribute("CentreY")
             blockXY[currentID] = [cX, cY]
@@ -332,9 +336,11 @@ class Techimplement(UBModule):
                     return int(i)        #Found the BlockID
         return 0
     
-    def skipIfBelowBlockThreshold(self, ID, threshold,city):
-        undevland = self.getBlockUUID(ID, city).getAttribute("pLU_UND")
-        undevprev = self.getPrevBlockUUID(ID, city).getAttribute("pLU_UND") #This is the final value
+    def skipIfBelowBlockThreshold(self, ID, threshold):
+        undevland = self.activesim.getAssetWithName("BlockID"+str(ID)).getAttribute("pLU_UND")
+        undevprev = self.activesim.getAssetWithName("PrevBlockID"+str(ID)).getAttribute("pLU_UND")
+        #undevland = self.getBlockUUID(ID, city).getAttribute("pLU_UND")
+        #undevprev = self.getPrevBlockUUID(ID, city).getAttribute("pLU_UND") #This is the final value
         devtot = 1 - undevprev  #Developed = Masterplan, i.e. once 1-%UND has been developed
         if ((1-undevland)/devtot) < threshold:
             #If the developmed land (according to masterplan) has reached a threshold for development, implement
@@ -342,7 +348,7 @@ class Techimplement(UBModule):
         else:
             return False        #Otherwise skip
     
-    def writeSystemAttributesToOutput(self, sys, year, qty, currentImpT, currentAttList, block_size, city):
+    def writeSystemAttributesToOutput(self, sys, year, qty, currentImpT, currentAttList, block_size):
         """Writes the attributes to module output of the systems implemented"""
         centreX = currentAttList.getAttribute("CentreX")
         centreY = currentAttList.getAttribute("CentreY") 
@@ -361,7 +367,7 @@ class Techimplement(UBModule):
         coordinates = offsets_matrix[blockscale_names.index(sys.getAttribute("Scale"))]
         
         #WRITE THE ATTRIBUTES
-        sysAttr = Component()
+        sysAttr = ubdata.UBComponent()
         sysAttr.addAttribute("StrategyID", int(sys.getAttribute("StrategyID")))
         sysAttr.addAttribute("posX", coordinates[0])
         sysAttr.addAttribute("posY", coordinates[1])
@@ -381,7 +387,9 @@ class Techimplement(UBModule):
         sysAttr.addAttribute("WDepth", sys.getAttribute("WDepth")) #Done in the retrofit/implementation part
         sysAttr.addAttribute("FDepth", sys.getAttribute("FDepth")) #Done in the retrofit/implementation part
         sysAttr.addAttribute("Exfil", sys.getAttribute("Exfil")) #Done in the retrofit/implementation part
-        city.addComponent(sysAttr, self.techimplAttr)
+        #city.addComponent(sysAttr, self.techimplAttr)
+        sysID = len(self.activesim.getAssetsWithIdentifier("SysID"))+1
+        self.activesim.addAsset("SysID"+str(sysID), sysAttr)
         return True
     
     def implementLotSystem(self, currentAttList, masterAttList, sys):
@@ -421,7 +429,7 @@ class Techimplement(UBModule):
             masterunits = currentAttList.getAttribute("HasFlats")
                 
         if units == 0:
-            self.notify("Current Block has no units for that particular land use to implement on"
+            self.notify("Current Block has no units for that particular land use to implement on")
             return 0,0,0
         
         goallots = sys.getAttribute("GoalQty")      #Saved from Techplacement
@@ -453,7 +461,6 @@ class Techimplement(UBModule):
                 year = int(sys.getAttribute("Year"))
         
         #SPACE FOR FUTURE DECISION VARIABLES
-        
         currentImpT = lotqty * sys.getAttribute("ImpT")
         return lotqty, currentImpT, year
     
@@ -507,7 +514,7 @@ class Techimplement(UBModule):
             return curImpT, year
         return 0,0
     
-    def implementBasinSystem(self, currentAttList, masterAttList, sys, city):
+    def implementBasinSystem(self, currentAttList, masterAttList, sys):
         """Performs the checks to determine whether a sub-basin scale technology can be
         implemented in the current Block using current Block data and masterplan data"""
         if int(sys.getAttribute("Status")) == 1:    #Only for S and N systems
@@ -529,7 +536,7 @@ class Techimplement(UBModule):
         #CRITERIA X - Future space for further criteria
         
         #CRITERIA 2 - Check development status of upstream area
-        curUD, mastUD = self.retrieveUndevelopedAreas(currentAttList, masterAttList, city, "upstream")
+        curUD, mastUD = self.retrieveUndevelopedAreas(currentAttList, masterAttList, "upstream")
         if self.prec_dev_threshold == True: 
             if (1-curUD)/(1-mastUD) < float(self.prec_dev_percent/100):
                 #self.notify("Upstream area not developed enough, skipping..."
@@ -540,7 +547,7 @@ class Techimplement(UBModule):
         curImpT = sys.getAttribute("ImpT")
         return curImpT, year
 
-    def retrieveUndevelopedAreas(self, currentAttList, prevAttList, city, direction):
+    def retrieveUndevelopedAreas(self, currentAttList, prevAttList, direction):
         """Retrieves the proportion of undeveloped area in all upstream blocks including
         the current block being implemented with WSUD. Returns current and masterplan
         proportions."""
@@ -565,9 +572,11 @@ class Techimplement(UBModule):
         activetrack = currentAttList.getAttribute("Active")
         
         for i in range(len(streamIDs)):
-            self.notify(streamIDs[i]
-            blockattr = self.getBlockUUID(streamIDs[i], city)
-            mastattr = self.getPrevBlockUUID(streamIDs[i], city)
+            self.notify(streamIDs[i])
+            blockattr = self.activesim.getAssetWithName("BlockID"+str(streamIDs[i]))
+            mastattr = self.activesim.getAssetWithName("PrevBlockID"+str(streamIDs[i]))
+            #blockattr = self.getBlockUUID(streamIDs[i], city)
+            #mastattr = self.getPrevBlockUUID(streamIDs[i], city)
             undevarea += blockattr.getAttribute("pLU_UND") * \
                 blockattr.getAttribute("Active")
             mastplanundev += mastattr.getAttribute("pLU_UND") * \
