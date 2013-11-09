@@ -406,9 +406,11 @@ class Techplacement(UBModule):
         self.createParameter("ISlot", BOOL,"")
         self.createParameter("ISstreet", BOOL,"")
         self.createParameter("ISneigh", BOOL,"")
+        self.createParameter("ISprec", BOOL, "")
         self.ISlot = 1
         self.ISstreet = 1
         self.ISneigh = 1
+        self.ISprec = 1
         
         #Available Applications
         self.createParameter("ISflow", BOOL,"")
@@ -621,7 +623,7 @@ class Techplacement(UBModule):
         #SELECT EVALUATION METRICS
         self.createParameter("scoringmatrix_path", STRING,"")
         self.createParameter("scoringmatrix_default", BOOL,"")
-        self.scoringmatrix_path = "C:/UrbanBEATSv1Dev/ub_modules/resources/mcadefault.csv"
+        self.scoringmatrix_path = "D:/Coding Projects/UrbanBEATSv1/ancillary/mcadefault.csv"
         self.scoringmatrix_default = 0
         
         #CUSTOMIZE EVALUATION CRITERIA
@@ -875,7 +877,7 @@ class Techplacement(UBModule):
         for i in range(len(self.priorities)):                                   #e.g. ALL and priorities 3,2,1 --> [3/6, 2/6, 1/6]
             self.priorities[i] = self.priorities[i]/prioritiessum               #1, 2 and priorities 3,2,1 --> [3/5, 2/5, 0]
         self.notify(self.priorities)
-        
+        self.notify("Now planning technologies")
         ###-------------------------------------------------------------------###
         #--- FIRST LOOP - WATER DEMANDS AND EFFICIENCY
         ###-------------------------------------------------------------------###
@@ -1009,6 +1011,7 @@ class Techplacement(UBModule):
         subbas_options = {}
         
         #Initialize increment variables
+        self.notify(str(self.lot_rigour)+" "+str(self.street_rigour)+" "+str(self.neigh_rigour)+" "+str(self.subbas_rigour))
         self.lot_incr = self.setupIncrementVector(self.lot_rigour)
         self.street_incr = self.setupIncrementVector(self.street_rigour)
         self.neigh_incr = self.setupIncrementVector(self.neigh_rigour)
@@ -1026,7 +1029,7 @@ class Techplacement(UBModule):
             
         for i in range(int(blocks_num)):
             currentID = i+1
-            self.notify("Currently on Block ",currentID)
+            self.notify("Currently on Block "+str(currentID))
             currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
             #currentAttList = self.getBlockUUID(currentID, city)
             if currentAttList.getAttribute("Status") == 0:
@@ -1093,20 +1096,20 @@ class Techplacement(UBModule):
             
             self.notify("Basin Totals: "+str([basinRemainQTY, basinRemainWQ, basinRemainREC]))
             self.notify("Previous Treated Efficiency for: "+str([basinTreatedQTY/basinEIA, basinTreatedWQ/basinEIA, basinTreatedREC/basinDem]))
-            self.notify("Must choose a strategy now that treats: "+str([dP_QTY*100, dP_WQ*100, dP_REC*100])+"% of basin")
+            self.notify("Must choose a strategy now that treats: "+str([dP_QTY*100.0, dP_WQ*100.0, dP_REC*100.0])+"% of basin")
             
             subbasPartakeIDs = self.findSubbasinPartakeIDs(basinBlockIDs, subbas_options) #Find locations of possible WSUD
             
             updatedService = [dP_QTY, dP_WQ, dP_REC]
             
             #SKIP CONDITIONS
-            if basinRemainQTY == 0 and basinRemainWQ == 0 and basinRemainREC == 0:
+            if basinRemainQTY == 0.0 and basinRemainWQ == 0.0 and basinRemainREC == 0.0:
                 #self.notify("Basin ID: ", currentBasinID, " has no remaining service requirements, skipping!"
                 continue
             if sum(updatedService) == 0:
                 continue
             
-            iterations = 20000   #MONTE CARLO ITERATIONS - CAN SET TO SENSITIVITY VALUE IN FUTURE RELATIVE TO BASIN SIZE
+            iterations = 1000   #MONTE CARLO ITERATIONS - CAN SET TO SENSITIVITY VALUE IN FUTURE RELATIVE TO BASIN SIZE
             
             if len(basinBlockIDs) == 1: #if we are dealing with a single-block basin, reduce the number of iterations
                 iterations = 100        #If only one block in basin, do different/smaller number of iterations
@@ -1128,7 +1131,9 @@ class Techplacement(UBModule):
                                            inblock_options, subbas_options, basinBlockIDs)
                 
                 tt.updateBasinService(current_bstrategy)
-                
+                self.notify(current_bstrategy.getSubbasinArray())
+                self.notify(current_bstrategy.getInBlocksArray())
+
                 tt.calculateBasinStrategyMCAScores(current_bstrategy,self.priorities, self.mca_techlist, self.mca_tech, \
                                                   self.mca_env, self.mca_ecn, self.mca_soc, \
                                                       [self.bottomlines_tech_w, self.bottomlines_env_w, \
@@ -1225,6 +1230,8 @@ class Techplacement(UBModule):
                         if eval("self."+str(j)+str(k_scale)+"==1"):
                             userTechList[j][k] = 1
                     except NameError:
+                        pass
+                    except AttributeError:
                         pass
         return userTechList
     
@@ -2327,9 +2334,9 @@ class Techplacement(UBModule):
             - Then Increment List will be:  [0, 0.25, 0.5, 0.75, 1.0]
         Returns the increment list
         """
-        incr_matrix = [0]
+        incr_matrix = [0.0]
         for i in range(int(increment)):
-            incr_matrix.append(round(float(1/increment)*(i+1),3))
+            incr_matrix.append(round(float(1.0/float(increment))*(float(i)+1.0),3))
         return incr_matrix
     
     
@@ -2700,11 +2707,11 @@ class Techplacement(UBModule):
         """
         if eval("self."+techType+"designUB"):
             if techType in ["BF", "IS"]:
-                return self.ubeatsdir+"/wsudcurves/"+techType+"-EDD"+str(eval("self."+techType+"spec_EDD"))+"m-FD"+str(eval("self."+techType+"spec_FD"))+"m-DC.dcv"
+                return self.ubeatsdir+"/ancillary/wsudcurves/Melbourne/"+techType+"-EDD"+str(eval("self."+techType+"spec_EDD"))+"m-FD"+str(eval("self."+techType+"spec_FD"))+"m-DC.dcv"
             elif techType in ["PB"]:
-                return self.ubeatsdir+"/wsudcurves/"+techType+"-MD"+str(eval("self."+techType+"spec_MD"))+"m-DC.dcv"
+                return self.ubeatsdir+"/ancillary/wsudcurves/Melbourne/"+techType+"-MD"+str(eval("self."+techType+"spec_MD"))+"m-DC.dcv"
             elif techType in ["WSUR"]:
-                return self.ubeatsdir+"/wsudcurves/"+techType+"-EDD"+str(eval("self."+techType+"spec_EDD"))+"m-DC.dcv"
+                return self.ubeatsdir+"/ancillary/wsudcurves/Melbourne/"+techType+"-EDD"+str(eval("self."+techType+"spec_EDD"))+"m-DC.dcv"
             else:
                 return "No DC Located"
         else:
@@ -2721,17 +2728,23 @@ class Techplacement(UBModule):
                 purposeQ = 0
         except NameError:
             purposeQ = 0
+        except AttributeError:
+            purposeQ = 0
         try:
             purposeWQ = eval("self."+j+"pollute")
             if purposeWQ == None:
                 purposeWQ = 0
         except NameError:
             purposeWQ = 0
+        except AttributeError:
+            purposeWQ = 0
         try:
             purposeREC = eval("self."+j+"recycle")
             if purposeREC == None:
                 purposeREC = 0
         except NameError:
+            purposeREC = 0
+        except AttributeError:
             purposeREC = 0
         purposes = [purposeQ, purposeWQ, purposeREC]
         purposebooleans = [int(self.ration_runoff), int(self.ration_pollute), int(self.ration_harvest)]
@@ -2874,6 +2887,7 @@ class Techplacement(UBModule):
             attname = "DownstrIDs"
             
         streamstring = currentAttList.getAttribute(attname)
+        #self.activesim.debugAssets("BlockID", attname)
         streamIDs = streamstring.split(',')
         streamIDs.remove('')
         
@@ -3596,23 +3610,23 @@ class Techplacement(UBModule):
         basinTreated = self.retrieveAttributeFromIDs(basinBlockIDs, "Serv"+str(type), "sum")
         basinTreated += self.retrieveAttributeFromIDs(basinBlockIDs, "ServUp"+str(type), "sum")
         if int(basinTreated) == 0:
-            basinTreated = 0
+            basinTreated = 0.0
         #self.notify("Treated ImpArea: "+str(basinTreated))
         rationales = {"QTY": bool(int(self.ration_runoff)), "WQ": bool(int(self.ration_pollute)),
                       "REC": bool(int(self.ration_harvest)) }
-        services = {"QTY": self.servicevector[0], "WQ": self.servicevector[1], "REC": self.servicevector[2]}
+        services = {"QTY": float(self.servicevector[0]), "WQ": float(self.servicevector[1]), "REC": float(self.servicevector[2])}
         
         if rationales[type]:
             basinRemain = max(total - basinTreated, 0)
         else:
             basinRemain = 0
         
-        prevService = basinTreated/total
+        prevService = float(basinTreated)/float(total)
         #self.notify("Prev Service")
         if max(1- prevService, 0) == 0:
-            delta_percent = 0
+            delta_percent = 0.0
         else:
-            delta_percent = max(services[type]/100*rationales[type] - prevService,0) / (1 - prevService)
+            delta_percent = max(services[type]/100.0*rationales[type] - prevService,0.0) / (1.0 - prevService)
         return delta_percent, basinRemain, basinTreated, total
     
     
@@ -3768,11 +3782,10 @@ class Techplacement(UBModule):
                     continue                            #then skip to next one, no point otherwise
                 
                 max_deg_matrix = [1]
-                
                 #block_Aimp = self.getBlockUUID(rbID, city).getAttribute("Manage_EIA")
                 block_Aimp = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Manage_EIA")
                 #block_Dem = self.getBlockUUID(rbID, city).getAttribute("Blk_WD") - self.getBlockUUID(rbID, city).getAttribute("wd_Nres_IN")
-                block_Dem = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Blk)WD") - self.activesim.getAssetWithName("BlockID"+str(rbID).getAttribute("wd_Nres_IN"))
+                block_Dem = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Blk_WD") - self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("wd_Nres_IN")
                 #self.notify("Block details: "+str(block_Aimp)+" "+str(block_Dem))
                 if block_Aimp == 0:     #Impervious governs pretty much everything, if it is zero, don't even bother
                     continue
@@ -3956,6 +3969,7 @@ class Techplacement(UBModule):
         """Creates a cumulative distribution for an input list of values by normalizing
         these first and subsequently summing probabilities.
         """
+
         pdf = []
         cdf = []
         for i in range(len(score_matrix)):

@@ -53,7 +53,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
+       <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="tech_subheading">
@@ -1505,7 +1505,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources/dialogimg.qrc">:/techplacement/techdesigncrit.png</pixmap>
+             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/techdesigncrit.png</pixmap>
             </property>
            </widget>
           </item>
@@ -1546,7 +1546,7 @@ p, li { white-space: pre-wrap; }
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>465</width>
+               <width>279</width>
                <height>598</height>
               </rect>
              </property>
@@ -2406,7 +2406,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech-retrofit.png</pixmap>
+             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech-retrofit.png</pixmap>
             </property>
            </widget>
           </item>
@@ -2447,7 +2447,7 @@ p, li { white-space: pre-wrap; }
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>465</width>
+               <width>387</width>
                <height>1181</height>
               </rect>
              </property>
@@ -4103,7 +4103,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="resources/dialogimg.qrc">:/techplacement/swhc.png</pixmap>
+                  <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/swhc.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QRadioButton" name="radio_hsdown">
@@ -4138,7 +4138,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="resources/dialogimg.qrc">:/techplacement/swhb.png</pixmap>
+                  <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/swhb.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QLabel" name="hs_select_lbl">
@@ -4173,7 +4173,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="resources/dialogimg.qrc">:/techplacement/swha.png</pixmap>
+                  <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/swha.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QRadioButton" name="radio_hsall">
@@ -4380,7 +4380,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources/dialogimg.qrc">:/techplacement/D4Wrecycle.png</pixmap>
+             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/D4Wrecycle.png</pixmap>
             </property>
            </widget>
           </item>
@@ -4903,7 +4903,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources/dialogimg.qrc">:/techplacement/Wsud.png</pixmap>
+             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/Wsud.png</pixmap>
             </property>
            </widget>
           </item>
@@ -5140,7 +5140,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_aquaculture.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_aquaculture.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -5180,7 +5180,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_asr.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_asr.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -5278,7 +5278,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_biofilter.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_biofilter.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="BFscales_lbl">
@@ -5684,7 +5684,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_greenroof.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_greenroof.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -5804,7 +5804,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_greywater.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_greywater.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="label_57">
@@ -5969,7 +5969,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_gpt.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_gpt.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="label_60">
@@ -6069,7 +6069,7 @@ p, li { white-space: pre-wrap; }
              </widget>
              <widget class="QCheckBox" name="ISprec_check">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="geometry">
                <rect>
@@ -6148,7 +6148,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_infil.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_infil.png</pixmap>
               </property>
              </widget>
              <widget class="QCheckBox" name="ISpollute_check">
@@ -6504,7 +6504,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_packplant.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_packplant.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -6644,7 +6644,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_pond.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_pond.png</pixmap>
               </property>
              </widget>
              <widget class="QToolButton" name="PBdesigncurve_browse">
@@ -6961,7 +6961,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_porouspavement.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_porouspavement.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -7072,7 +7072,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_raintank.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_raintank.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="RTscale_lbl">
@@ -7405,7 +7405,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_sandfilter.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_sandfilter.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="label_42">
@@ -7490,7 +7490,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_subirrigate.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_subirrigate.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -7594,7 +7594,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_reedbed.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_reedbed.png</pixmap>
               </property>
              </widget>
              <widget class="QCheckBox" name="checkBox_110">
@@ -7753,7 +7753,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_wetlands.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_wetlands.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="WSURscales_lbl">
@@ -8172,7 +8172,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_swale.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_swale.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="SWscales_lbl">
@@ -8548,7 +8548,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_ustoilets.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_ustoilets.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -8588,7 +8588,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_wwrecycle.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_wwrecycle.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -8628,7 +8628,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources/dialogimg.qrc">:/techplacement/tech_composttoilet.png</pixmap>
+               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_composttoilet.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -9458,7 +9458,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources/dialogimg.qrc">:/techplacement/techevalcrit.png</pixmap>
+             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/techevalcrit.png</pixmap>
             </property>
            </widget>
           </item>
@@ -9532,6 +9532,7 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <resources>
+  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
   <include location="resources/dialogimg.qrc"/>
  </resources>
  <connections>

@@ -37,25 +37,25 @@ def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, t
         - bracketwidth = 
     """
     techs = strategyobject.getTechnologies()    #grab the array of technologies in the block
-    mca_tech = 0        #Initialize trackers
-    mca_env = 0
-    mca_ecn = 0
-    mca_soc = 0
+    mca_tech = 0.0        #Initialize trackers
+    mca_env = 0.0
+    mca_ecn = 0.0
+    mca_soc = 0.0
     
     service_abbr = ["Qty", "WQ", "Rec"]       #these are the four main services for the objectives
     for j in range(len(totalvalues)):
         abbr = service_abbr[j]  #current service abbr to find value from object
-        mca_techsub, mca_envsub, mca_ecnsub, mca_socsub = 0,0,0,0       #Initialize sub-trackers
+        mca_techsub, mca_envsub, mca_ecnsub, mca_socsub = 0.0,0.0,0.0,0.0       #Initialize sub-trackers
         for i in techs: #loop across techs
             if i == 0:  #no score
                 continue
             lotcount = float(strategyobject.getQuantity(i.getLandUse()))        #get lot-count based on land use
             
             #Sub-Score = (individual Tech score) x (imp served by tech / imp served by strategy) X number of techs implemented
-            mca_techsub += sum(tech[techarray.index(i.getType())]) * i.getService(abbr)/totalvalues[j] * lotcount
-            mca_envsub += sum(env[techarray.index(i.getType())]) * i.getService(abbr)/totalvalues[j] * lotcount
-            mca_ecnsub += sum(ecn[techarray.index(i.getType())]) * i.getService(abbr)/totalvalues[j] * lotcount
-            mca_socsub += sum(soc[techarray.index(i.getType())]) * i.getService(abbr)/totalvalues[j] * lotcount
+            mca_techsub += sum(tech[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+            mca_envsub += sum(env[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+            mca_ecnsub += sum(ecn[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+            mca_socsub += sum(soc[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
         
         mca_tech += mca_techsub * priorities[j]   #Before next loop, add the sub-scores, scaled by their priorities
         mca_env += mca_envsub * priorities[j]     #to the total criteria scores
@@ -90,9 +90,9 @@ def rescaleList(list, method):
     (method='length') or the sum of its values (method='normalize')."""
     if method == 'length':
         for i in range(len(list)):
-            list[i] = list[i]/float(len(list))
+            list[i] = float(list[i])/float(len(list))
     elif method == 'normalize':
-        j = sum(list)
+        j = float(sum(list))
         for i in range(len(list)):
             list[i] = list[i]/j
     return list
@@ -130,9 +130,7 @@ def updateBasinService(basinstrategyobject):
     """
     subbasin = basinstrategyobject.getSubbasinArray()
     inblocks = basinstrategyobject.getInBlocksArray()
-    print subbasin
-    print inblocks
-    
+
     #Loop across four different objectives
     abbr_matrix = ["Qty", "WQ", "Rec"]
     for j in range(len(abbr_matrix)):
@@ -177,20 +175,20 @@ def calculateBasinStrategyMCAScores(basinstrategyobject, priorities, techarray, 
     service_abbr = ["Qty", "WQ", "Rec"]       #these are the four main services for the objectives
     for j in range(len(totalvalues)):   #loop across four service objectives
         abbr = service_abbr[j]          #Current abbreviation used to retrieve service values
-        mca_techsub, mca_envsub, mca_ecnsub, mca_socsub = 0,0,0,0       #initialize sub-trackers
+        mca_techsub, mca_envsub, mca_ecnsub, mca_socsub = 0.0,0.0,0.0,0.0       #initialize sub-trackers
                        
         for i in subbasin:
-            if subbasin[i] == 0:
+            if subbasin[i] == 0.0:
                 continue
-            mca_techsub += sum(tech[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/totalvalues[j]
-            mca_envsub += sum(env[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/totalvalues[j]
-            mca_ecnsub += sum(ecn[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/totalvalues[j]
-            mca_socsub += sum(soc[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/totalvalues[j]
+            mca_techsub += sum(tech[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
+            mca_envsub += sum(env[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
+            mca_ecnsub += sum(ecn[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
+            mca_socsub += sum(soc[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
 
-        techcumu += mca_techsub * priorities[j] #add to the cumulative MCA scores, scaled by their relative priorities
-        envcumu += mca_envsub * priorities[j]
-        ecncumu += mca_ecnsub * priorities[j]
-        soccumu += mca_socsub * priorities[j]
+        techcumu += mca_techsub * float(priorities[j]) #add to the cumulative MCA scores, scaled by their relative priorities
+        envcumu += mca_envsub * float(priorities[j])
+        ecncumu += mca_ecnsub * float(priorities[j])
+        soccumu += mca_socsub * float(priorities[j])
 
     #Normalize the weightings
     weightings = rescaleList(weightings, 'normalize')
@@ -361,8 +359,8 @@ class BlockStrategy(object):
         
         self.__allotments = allotments  #a list of lotcounts [RES Lots, HDR Lots, LI estates, HI estates, COM estates]
         self.lucmatrix = ["RES", "HDR", "LI", "HI", "COM", "Street", "Neigh"]
-        self.__MCA_scores = [0,0,0,0]
-        self.__MCA_totscore = 0
+        self.__MCA_scores = [0.0,0.0,0.0,0.0]
+        self.__MCA_totscore = 0.0
         self.criteriamatrix = ["tec", "env", "ecn", "soc"]
     
     def getBlockBin(self):
@@ -383,7 +381,7 @@ class BlockStrategy(object):
         return self.__MCA_scores[self.criteriamatrix.index(criteria)]
     
     def setTotalMCAscore(self, score):
-        self.__MCA_totscore = score
+        self.__MCA_totscore = float(score)
     
     def getTotalMCAscore(self):
         return self.__MCA_totscore
@@ -425,28 +423,28 @@ class BasinManagementStrategy(object):
         self.__basinDemRec = basin_info[2]         #Basin demand to be managed
         
         #Service Metrics
-        self.__basin_services = {"Qty":0, "WQ":0, "Rec":0}
+        self.__basin_services = {"Qty":0.0, "WQ":0.0, "Rec":0.0}
                                         #Qty: effective impervious area served
                                         #WQ: effective impervious area served
                                         #Rec: total potable supply substituted
-        self.__basin_serviceP = [0,0,0]
+        self.__basin_serviceP = [0.0,0.0,0.0]
         
         self.criteriamatrix = ["tec", "env", "ecn", "soc"]
-        self.__MCA_scores = [0,0,0,0]
-        self.__MCA_totscore = 0
+        self.__MCA_scores = [0.0,0.0,0.0,0.0]
+        self.__MCA_totscore = 0.0
         
         #Create Arrays to hold the strategy information
         self.__basindetails = {}        #Holds the information on all upstream IDs
         self.__subbasinarray = {}
         for i in partakeIDs:
-            self.__subbasinarray[i] = 0
-            self.__basindetails[i] = 0
+            self.__subbasinarray[i] = 0.0
+            self.__basindetails[i] = 0.0
         
         self.__degreesarray = {}    
         self.__inblockarray = {}
         for i in basinblockIDs:
-            self.__inblockarray[i] = 0
-            self.__degreesarray[i] = [0,0]
+            self.__inblockarray[i] = 0.0
+            self.__degreesarray[i] = [0.0,0.0]
     
     def getBasinEIA(self):
         return self.__basinAimp

@@ -557,6 +557,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.ui.ISlot_check.setChecked(bool(int(self.module.getParameter("ISlot"))))
         self.ui.ISstreet_check.setChecked(bool(int(self.module.getParameter("ISstreet"))))
         self.ui.ISneigh_check.setChecked(bool(int(self.module.getParameter("ISneigh"))))
+        self.ui.ISprec_check.setChecked(bool(int(self.module.getParameter("ISprec"))))
 
         #Available Applications
         self.ui.ISflow_check.setChecked(bool(int(self.module.getParameter("ISflow"))))
@@ -1358,6 +1359,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("ISlot", int(self.ui.ISlot_check.isChecked()))
         self.module.setParameter("ISstreet", int(self.ui.ISstreet_check.isChecked()))
         self.module.setParameter("ISneigh", int(self.ui.ISneigh_check.isChecked()))
+        self.module.setParameter("ISprec", int(self.ui.ISprec_check.isChecked()))
 
         #Available Applications
         self.module.setParameter("ISflow", int(self.ui.ISflow_check.isChecked()))

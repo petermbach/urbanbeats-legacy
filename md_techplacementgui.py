@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'techplacementgui.ui'
+# Form implementation generated from reading ui file 'md_techplacementgui.ui'
 #
-# Created: Wed Oct 02 10:42:14 2013
+# Created: Sat Nov 09 16:23:22 2013
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -593,7 +593,7 @@ class Ui_TechPlace_Dialog(object):
         self.design_crit_inputs_2.setWidgetResizable(True)
         self.design_crit_inputs_2.setObjectName(_fromUtf8("design_crit_inputs_2"))
         self.design_crit_inputs_widget_2 = QtGui.QWidget()
-        self.design_crit_inputs_widget_2.setGeometry(QtCore.QRect(0, 0, 465, 598))
+        self.design_crit_inputs_widget_2.setGeometry(QtCore.QRect(0, 0, 279, 598))
         self.design_crit_inputs_widget_2.setObjectName(_fromUtf8("design_crit_inputs_widget_2"))
         self.verticalLayout_6 = QtGui.QVBoxLayout(self.design_crit_inputs_widget_2)
         self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
@@ -940,7 +940,7 @@ class Ui_TechPlace_Dialog(object):
         self.design_crit_inputs_3.setWidgetResizable(True)
         self.design_crit_inputs_3.setObjectName(_fromUtf8("design_crit_inputs_3"))
         self.design_crit_inputs_widget_3 = QtGui.QWidget()
-        self.design_crit_inputs_widget_3.setGeometry(QtCore.QRect(0, 0, 465, 1181))
+        self.design_crit_inputs_widget_3.setGeometry(QtCore.QRect(0, 0, 387, 1181))
         self.design_crit_inputs_widget_3.setObjectName(_fromUtf8("design_crit_inputs_widget_3"))
         self.verticalLayout_9 = QtGui.QVBoxLayout(self.design_crit_inputs_widget_3)
         self.verticalLayout_9.setObjectName(_fromUtf8("verticalLayout_9"))
@@ -2290,7 +2290,7 @@ class Ui_TechPlace_Dialog(object):
         self.ISneigh_check.setText(QtGui.QApplication.translate("TechPlace_Dialog", "Neighbourhood", None, QtGui.QApplication.UnicodeUTF8))
         self.ISneigh_check.setObjectName(_fromUtf8("ISneigh_check"))
         self.ISprec_check = QtGui.QCheckBox(self.IS_inputgroup)
-        self.ISprec_check.setEnabled(False)
+        self.ISprec_check.setEnabled(True)
         self.ISprec_check.setGeometry(QtCore.QRect(40, 100, 101, 17))
         self.ISprec_check.setText(QtGui.QApplication.translate("TechPlace_Dialog", "Sub-basin", None, QtGui.QApplication.UnicodeUTF8))
         self.ISprec_check.setObjectName(_fromUtf8("ISprec_check"))
@@ -3585,4 +3585,5 @@ class Ui_TechPlace_Dialog(object):
         self.techplace_input.setTabText(self.techplace_input.indexOf(self.CustomizeTech), QtGui.QApplication.translate("TechPlace_Dialog", "Customize Technologies", None, QtGui.QApplication.UnicodeUTF8))
         self.techplace_input.setTabText(self.techplace_input.indexOf(self.EvalCriteria), QtGui.QApplication.translate("TechPlace_Dialog", "Evaluation Criteria", None, QtGui.QApplication.UnicodeUTF8))
 
+import dialogimg_rc
 import dialogimg_rc

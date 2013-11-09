@@ -526,6 +526,13 @@ class UrbanBeatsSim(threading.Thread):
         """Returns the dictionary containing all assets from the simulation"""
         return self.__assets
 
+    def debugAssets(self, assetid, attname):
+        """Returns the attribute value denoted by attname of all assets that have the identifier assetid"""
+        assets = self.getAssetsWithIdentifier(assetid)
+        print assets
+        for i in assets:
+            print i.getAttribute("BlockID"), i.getAttribute(attname)
+
     def retrieveAssetsFromCollection(self, cycle, tabindex):
         """To be used only once the simulation has completed, returns assets
         from a particular cycle and snapshot/time period to be used in plotting results
@@ -614,10 +621,10 @@ class UrbanBeatsSim(threading.Thread):
                 getSystems.detach(self.__observers)
                 self.updateObservers("PROGRESSUPDATE||"+str(int(60.0*progressincrement+incrementcount)))
 
-                #techplacement = self.getModuleTechplacement(tab)
-                #techplacement.attach(self.__observers)
-                #techplacement.run()
-                #techplacement.detach(self.__observers)
+                techplacement = self.getModuleTechplacement(tab)
+                techplacement.attach(self.__observers)
+                techplacement.run()
+                techplacement.detach(self.__observers)
                 #musicExport = self.__getModuleWrite2MUSIC[0]
                 #musicExport.setParameter("curcycle", "pc")
                 #musicExport.setParameter("tabindex", tab)

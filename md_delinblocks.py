@@ -1977,7 +1977,21 @@ class Delinblocks(UBModule):      #UBCORE
             for j in upstreamIDs:
                 outputstring += str(j)+","
             currentAttList.addAttribute("UpstrIDs", outputstring)
-            
+
+            downstreamIDs = [currentID]
+            for id in downstreamIDs:
+                for j in range(len(hash_table[0])):
+                    if id == hash_table[0][j]:
+                        if hash_table[1][j] not in downstreamIDs:
+                            downstreamIDs.append(hash_table[1][j])
+            downstreamIDs.remove(currentID)
+            downstreamIDs.remove(0)
+            self.notify("BlockID"+str(currentID)+" Downstream: "+str(downstreamIDs))
+            outputstring = ""
+            for j in downstreamIDs:
+                outputstring += str(j)+","
+            currentAttList.addAttribute("DownstrIDs", outputstring)
+
             #Set Basin IDs
             if hash_table[1][hash_table[0].index(currentID)] == 0:
                 #print "Found a basin outlet at Block: ", currentID
