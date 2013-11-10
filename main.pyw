@@ -77,6 +77,8 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.actionOpen, QtCore.SIGNAL("triggered()"), self.openExistingProject)
         self.connect(self.ui.actionSave, QtCore.SIGNAL("triggered()"), self.saveProject)
         self.connect(self.ui.actionSave_As, QtCore.SIGNAL("triggered()"), self.saveProjectAs)
+        #self.connect(self.ui.actionImportProject, QtCore.SIGNAL("triggered()"), self.importProject)
+        #self.connect(self.ui.actionExportProject, QtCore.SIGNAL("triggered()"), self.exportProject)
         #Quit function already implemented        
         #----------------------------------------------------------------------------------------------<<<
         
@@ -88,10 +90,13 @@ class MainWindow(QtGui.QMainWindow):
         
         #View Menu
         self.connect(self.ui.actionProject_Description, QtCore.SIGNAL("triggered()"), self.viewProjectInfo)
+        self.connect(self.ui.actionSimulation_Results, QtCore.SIGNAL("triggered()"), self.showResultsBrowseDialog)
         #----------------------------------------------------------------------------------------------<<<
         
         #Data Menu
         self.connect(self.ui.actionAddData, QtCore.SIGNAL("triggered()"), self.showAddDataDialog)
+        #self.connect(self.ui.actionAdd_Data_from_File, QtCore.SIGNAL("triggered()"), self.importProjectArchive)
+        #self.connect(self.ui.actionExportDataArchive, QtCore.SIGNAL("triggered()"), self.exportProjectArchive)
         self.connect(self.ui.addDataButton, QtCore.SIGNAL("clicked()"), self.showAddDataDialog)
         self.connect(self.ui.removeDataButton, QtCore.SIGNAL("clicked()"), self.removeDataEntry)
         self.connect(self.ui.collex_button, QtCore.SIGNAL("clicked()"), self.collexTreeWidget)        
@@ -133,6 +138,7 @@ class MainWindow(QtGui.QMainWindow):
         #self.connect(self.ui.pa_assessic, QtCore.SIGNAL("clicked()"), lambda ctype="ic": self.callPrepareperfGui(ctype))
         self.connect(self.ui.actionVerify_Simulation_Setup, QtCore.SIGNAL("triggered()"), self.verifySimulation)
         self.connect(self.ui.resetSimButton, QtCore.SIGNAL("clicked()"), self.resetSimulationAssets)
+        self.connect(self.ui.actionReset_Simulation, QtCore.SIGNAL("triggered()"), self.resetSimulationAssets)
         self.connect(self.ui.actionRun_Simulation, QtCore.SIGNAL("triggered()"), self.run_simulation)
         self.connect(self.ui.runButton, QtCore.SIGNAL("clicked()"), self.run_simulation)
         self.connect(self.ui.pc_dataset, QtCore.SIGNAL("clicked()"), lambda curstate="pc": self.customize_dataset(curstate))
@@ -352,8 +358,7 @@ class MainWindow(QtGui.QMainWindow):
             self.verticalLayout.addWidget(self.revise_check)
         self.updateSummaryBox(self.ui.simconfig_tabs.currentIndex())
         return True
-    
-    
+
     ################################
     ## Functions for Signal/Slots ##
     ################################

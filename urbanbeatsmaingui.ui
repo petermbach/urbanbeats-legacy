@@ -928,7 +928,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -940,6 +940,8 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionSave"/>
     <addaction name="actionSave_As"/>
     <addaction name="separator"/>
+    <addaction name="actionImportProject"/>
+    <addaction name="actionExportProject"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -963,6 +965,7 @@ p, li { white-space: pre-wrap; }
      <string>View</string>
     </property>
     <addaction name="actionProject_Description"/>
+    <addaction name="actionSimulation_Results"/>
    </widget>
    <widget class="QMenu" name="menuData">
     <property name="title">
@@ -990,6 +993,7 @@ p, li { white-space: pre-wrap; }
     </widget>
     <addaction name="actionAddData"/>
     <addaction name="actionAdd_Data_from_File"/>
+    <addaction name="actionExportDataArchive"/>
     <addaction name="actionImport_Data_Archive"/>
     <addaction name="menuAdd_GIS_Data"/>
     <addaction name="menuAdd_Climate_Data"/>
@@ -1016,6 +1020,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuSetup_Performance_Assessment"/>
     <addaction name="separator"/>
     <addaction name="actionVerify_Simulation_Setup"/>
+    <addaction name="actionReset_Simulation"/>
     <addaction name="actionRun_Simulation"/>
    </widget>
    <widget class="QMenu" name="menuAdvanced">
@@ -1044,9 +1049,18 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionNon_Residential"/>
      <addaction name="menuFacilities"/>
     </widget>
+    <widget class="QMenu" name="menuExternal_Programs">
+     <property name="title">
+      <string>External Programs</string>
+     </property>
+     <addaction name="actionMUSIC_Model"/>
+     <addaction name="actionGoogle_Earth"/>
+    </widget>
     <addaction name="menuUrban_Form"/>
     <addaction name="actionSimulation_Options"/>
     <addaction name="actionOutput_Options"/>
+    <addaction name="separator"/>
+    <addaction name="menuExternal_Programs"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
     <property name="title">
@@ -1055,6 +1069,8 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionMinimize"/>
     <addaction name="separator"/>
     <addaction name="actionActiveWindow"/>
+    <addaction name="actionOpen_Project_Folder"/>
+    <addaction name="actionResults_Viewer"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1118,6 +1134,9 @@ p, li { white-space: pre-wrap; }
      <width>310</width>
      <height>331</height>
     </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="allowedAreas">
     <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
@@ -1322,7 +1341,7 @@ p, li { white-space: pre-wrap; }
     <string>Exit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+W</string>
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionSet_Spatial_Delineation">
@@ -1737,12 +1756,61 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionAdd_Data_from_File">
    <property name="text">
-    <string>Add Data from File...</string>
+    <string>Import Archive File...</string>
    </property>
   </action>
   <action name="actionImport_Data_Archive">
    <property name="text">
     <string>Import Archive from Project...</string>
+   </property>
+  </action>
+  <action name="actionReset_Simulation">
+   <property name="text">
+    <string>Reset Simulation</string>
+   </property>
+  </action>
+  <action name="actionExportDataArchive">
+   <property name="text">
+    <string>Export Data Archive File...</string>
+   </property>
+  </action>
+  <action name="actionImportProject">
+   <property name="text">
+    <string>Import Project...</string>
+   </property>
+  </action>
+  <action name="actionExportProject">
+   <property name="text">
+    <string>Export Project...</string>
+   </property>
+  </action>
+  <action name="actionResults_Viewer">
+   <property name="text">
+    <string>Results Viewer</string>
+   </property>
+  </action>
+  <action name="actionOpen_Project_Folder">
+   <property name="text">
+    <string>Open Project Folder</string>
+   </property>
+  </action>
+  <action name="actionMUSIC_Model">
+   <property name="text">
+    <string>MUSIC Model</string>
+   </property>
+  </action>
+  <action name="actionGoogle_Earth">
+   <property name="text">
+    <string>Google Earth</string>
+   </property>
+  </action>
+  <action name="actionSimulation_Results">
+   <property name="icon">
+    <iconset resource="toolbaricons/guitoolbaricons.qrc">
+     <normaloff>:/guitoolbaricons/outputs.png</normaloff>:/guitoolbaricons/outputs.png</iconset>
+   </property>
+   <property name="text">
+    <string>Simulation Results</string>
    </property>
   </action>
  </widget>

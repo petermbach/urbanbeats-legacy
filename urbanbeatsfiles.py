@@ -258,15 +258,33 @@ def exportDataArchiveFile(activesim, filename):
 
     return True
 
-def importDataArchiveFile(activesim, filename):
+def importDataArchiveFile(guiobject, activesim, filename):
     """Loads the data archive from a specific file and adds whatever is available to the existing data archive
     """
-
-    return True
+    #f = open(filename, 'r')     #Category, then read lines until '---eol---'
+    #dataarray = []
+    #categories = []
+    #for lines in f:
+    #    dataarray.append(lines.split('*||*'))
+    #category = dataarray[0][0]      #Set the initial category
+    #i = 1
+    #while i <= (len(dataarray)-1):
+    #    if 'eol' in dataarray[i][0]:
+    #        i += 1
+    #        if i < len(dataarray):
+    #            category = dataarray[i][0]
+    #            i += 1
+    #            continue
+    #        else:
+    #            continue
+    #    activesim.addDataToArchive(category, dataarray[i][0])
+    #    guiobject.update
+    #    i += 1
+    #f.close()
+    #return True
 
 def importDataArchiveFromProject(activesim, filename):
-    """Loads a .ubs file and transfers only the data archive data into the archive of the current simulation.
-    """
+    """Loads a .ubs file and transfers only the data archive data into the archive of the current simulation."""
 
 
     return True
