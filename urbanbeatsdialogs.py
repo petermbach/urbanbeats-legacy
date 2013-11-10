@@ -23,7 +23,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
-import sys, os
+import sys, os, webbrowser
 from urbanbeatscore import *
 from PyQt4 import QtGui, QtCore
 
@@ -262,13 +262,135 @@ class AboutDialogLaunch(QtGui.QDialog):
         self.ui = Ui_AboutDialog()
         self.ui.setupUi(self)
 
-
 class PreferencesDialogLaunch(QtGui.QDialog):
-    def __init__(self, parent = None):
+    def __init__(self, msim, parent = None):
         QtGui.QDialog.__init__(self, parent)
         self.ui = Ui_PreferencesDialog()
         self.ui.setupUi(self)
+        self.module = msim
 
+        self.ui.modeller_name_box.setText(self.module.getConfigOptions("defaultmodeller"))
+        self.ui.modeller_affil_box.setText(self.module.getConfigOptions("defaultaffil"))
+
+        self.ui.techplan_iter_spin.setValue(self.module.getConfigOptions("iterations"))
+
+        cities = ["Adelaide", "Brisbane", "Darwin", "Melbourne", "Perth", "Sydney"]
+        self.ui.techplan_city_combo.setCurrentIndex(int(cities.index(self.module.getConfigOptions("city"))))
+
+        if self.module.getConfigOptions("decisiontype") == "N":
+            self.ui.tech_leaveempty_radio.setChecked(1)
+        else:
+            self.ui.tech_highest_radio.setChecked(1)
+
+        self.ui.perf_musicauto_check.setChecked(bool(int(self.module.getConfigOptions("MUSICauto"))))
+        self.ui.perf_musicpath_box.setText(self.module.getConfigOptions("MUSICpath"))
+        self.connect(self.ui.perf_musicauto_check, QtCore.SIGNAL("clicked()"), self.enabledisableMUSICoptions)
+        self.connect(self.ui.perf_musicpath_browse, QtCore.SIGNAL("clicked()"), self.searchMUSICexe)
+        self.enabledisableMUSICoptions()
+
+        musicversions = ["Version5", "Version6"]
+        self.ui.perf_musicvercombo.setCurrentIndex(int(musicversions.index(self.module.getConfigOptions("MUSICver"))))
+
+        self.ui.perf_tte_check.setChecked(bool(int(self.module.getConfigOptions("MUSICtte"))))
+        self.ui.perf_flux_check.setChecked(bool(int(self.module.getConfigOptions("MUSICflux"))))
+
+        if self.module.getConfigOptions("mapstyle") == "Style1":
+            self.ui.style1_radio.setChecked(1)
+        elif self.module.getConfigOptions("mapstyle") == "Style2":
+            self.ui.style2_radio.setChecked(1)
+        elif self.module.getConfigOptions("mapstyle") == "StyleCust":
+            self.ui.stylecustom_radio.setChecked(1)
+        self.enabledisableMapStyle()
+        self.connect(self.ui.stylecustom_radio, QtCore.SIGNAL("clicked()"), self.enabledisableMapStyle)
+
+        self.ui.results_tileserver_box.setText(str(self.module.getConfigOptions("tileserverURL")))
+
+        self.connect(self.ui.gearth_get, QtCore.SIGNAL("clicked()"), self.launchGoogleEarthURL)
+        self.connect(self.ui.gearth_path_browse, QtCore.SIGNAL("clicked()"), self.browseGEarthExe)
+
+        self.ui.gearth_path_box.setText(self.module.getConfigOptions("gearth_path"))
+        self.ui.gearth_auto_check.setChecked(bool(int(self.module.getConfigOptions("gearth_auto"))))
+
+        self.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
+        self.connect(self.ui.optionsReset_button, QtCore.SIGNAL("clicked()"), self.reset_values)
+
+    def enabledisableMUSICoptions(self):
+        if self.ui.perf_musicauto_check.isChecked():
+            self.ui.perf_flux_check.setEnabled(1)
+            self.ui.perf_tte_check.setEnabled(1)
+            self.ui.perf_musicpath_box.setEnabled(1)
+            self.ui.perf_musicpath_browse.setEnabled(1)
+            self.ui.perf_musicvercombo.setEnabled(1)
+        else:
+            self.ui.perf_flux_check.setEnabled(0)
+            self.ui.perf_tte_check.setEnabled(0)
+            self.ui.perf_musicpath_box.setEnabled(0)
+            self.ui.perf_musicpath_browse.setEnabled(0)
+            self.ui.perf_musicvercombo.setEnabled(0)
+        return True
+
+    def searchMUSICexe(self):
+        fname = QtGui.QFileDialog.getOpenFileName(self, "Locate MUSIC .exe...", os.curdir, str("Executable (*.exe)"))
+        if fname:
+            self.ui.perf_musicpath_box.setText(fname)
+        return True
+
+    def enabledisableMapStyle(self):
+        if self.ui.stylecustom_radio.isChecked():
+            self.ui.results_tileserver_box.setEnabled(1)
+        else:
+            self.ui.results_tileserver_box.setEnabled(0)
+        return True
+
+    def browseGEarthExe(self):
+        fname = QtGui.QFileDialog.getOpenFileName(self, "Locate Google Earth .exe...", os.curdir, str("Executable (*.exe)"))
+        if fname:
+            self.ui.gearth_path_box.setText(fname)
+        return True
+
+    def launchGoogleEarthURL(self):
+        webbrowser.open("http://www.google.com")
+        return True
+
+    def reset_values(self):
+        self.accept()
+        self.emit(QtCore.SIGNAL("resetOptions"))
+
+    def save_values(self):
+        self.module.setConfigOptions("defaultmodeller", str(self.ui.modeller_name_box.text()))
+        self.module.setConfigOptions("defaultaffil", str(self.ui.modeller_affil_box.text()))
+
+        self.module.setConfigOptions("iterations", float(self.ui.techplan_iter_spin.value()))
+
+        cities = ["Adelaide", "Brisbane", "Darwin", "Melbourne", "Perth", "Sydney"]
+        self.module.setConfigOptions("city", cities[self.ui.techplan_city_combo.currentIndex()])
+
+        if self.ui.tech_leaveempty_radio.isChecked():
+            self.module.setConfigOptions("decisiontype", "N")
+        elif self.ui.tech_highest_radio.isChecked():
+            self.module.setConfigOptions("decisiontype", "H")
+
+        self.module.setConfigOptions("MUSICauto", int(self.ui.perf_musicauto_check.isChecked()))
+        self.module.setConfigOptions("MUSICpath", str(self.ui.perf_musicpath_box.text()))
+
+        musicversions = ["Version5", "Version6"]
+        self.module.setConfigOptions("MUSICver", musicversions[self.ui.perf_musicvercombo.currentIndex()])
+
+        self.module.setConfigOptions("MUSICtte", int(self.ui.perf_tte_check.isChecked()))
+        self.module.setConfigOptions("MUSICflux", int(self.ui.perf_flux_check.isChecked()))
+
+        if self.ui.style1_radio.isChecked():
+            self.module.setConfigOptions("mapstyle", "Style1")
+        elif self.ui.style2_radio.isChecked():
+            self.module.setConfigOptions("mapstyle", "Style2")
+        else:
+            self.module.setConfigOptions("mapstyle", "StyleCust")
+
+        self.module.setConfigOptions("tileserverURL", str(self.ui.results_tileserver_box.text()))
+        self.module.setConfigOptions("gearth_path", str(self.ui.gearth_path_box.text()))
+        self.module.setConfigOptions("gearth_auto", int(self.ui.gearth_auto_check.isChecked()))
+
+        self.emit(QtCore.SIGNAL("update_cfg"))
 
 class AddDataLaunch(QtGui.QDialog):
     def __init__(self, parent = None):

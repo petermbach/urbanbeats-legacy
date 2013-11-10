@@ -15,13 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="title_frame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QWidget" name="widget" native="true">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -34,70 +28,6 @@
        <height>50</height>
       </size>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QLabel" name="dbtitle">
-      <property name="geometry">
-       <rect>
-        <x>55</x>
-        <y>5</y>
-        <width>441</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Preferences</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="dbsubtitle">
-      <property name="geometry">
-       <rect>
-        <x>55</x>
-        <y>25</y>
-        <width>561</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Configure the program</string>
-      </property>
-     </widget>
-     <widget class="Line" name="line">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>40</y>
-        <width>573</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>573</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
      <widget class="QLabel" name="preferences_cogs">
       <property name="geometry">
        <rect>
@@ -123,26 +53,759 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../../../../UBEATS/main_user_interface/toolbaricons/guitoolbaricons.qrc">:/images/bevel-gear-icon.png</pixmap>
+       <pixmap resource="toolbaricons/guitoolbaricons.qrc">:/images/bevel-gear-icon.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="dbtitle">
+      <property name="geometry">
+       <rect>
+        <x>55</x>
+        <y>5</y>
+        <width>241</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Preferences</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="dbsubtitle">
+      <property name="geometry">
+       <rect>
+        <x>55</x>
+        <y>25</y>
+        <width>361</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Configure the program, simulation options, paths and export options.</string>
       </property>
      </widget>
     </widget>
    </item>
    <item>
     <widget class="QWidget" name="main_preferences_widget" native="true">
-     <widget class="QLabel" name="nopref_lbl">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>120</y>
-        <width>181</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Curently no preferences available</string>
-      </property>
-     </widget>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QTabWidget" name="options_tabs">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="general_tab">
+         <attribute name="title">
+          <string>General</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QScrollArea" name="scrollArea">
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>401</width>
+               <height>459</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <item>
+               <widget class="QWidget" name="widget_2" native="true">
+                <widget class="QLabel" name="projinfo_options">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>141</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Project Details&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="modeller_name_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>40</y>
+                   <width>141</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Default Modeller Name:</string>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="modeller_name_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>160</x>
+                   <y>40</y>
+                   <width>181</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="modeller_affil_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>70</y>
+                   <width>141</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Default Affiliation:</string>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="modeller_affil_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>160</x>
+                   <y>70</y>
+                   <width>181</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="simulation_tab">
+         <attribute name="title">
+          <string>Simulation</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QScrollArea" name="scrollArea_2">
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents_2">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>401</width>
+               <height>459</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QWidget" name="widget_5" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>150</height>
+                 </size>
+                </property>
+                <widget class="QLabel" name="techplan_options">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>141</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Technologies Planning&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="techplan_city_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>70</y>
+                   <width>141</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Default City:</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="tech_leaveempty_radio">
+                 <property name="geometry">
+                  <rect>
+                   <x>220</x>
+                   <y>100</y>
+                   <width>151</width>
+                   <height>18</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Leave Basin Empty</string>
+                 </property>
+                </widget>
+                <widget class="QSpinBox" name="techplan_iter_spin">
+                 <property name="geometry">
+                  <rect>
+                   <x>240</x>
+                   <y>35</y>
+                   <width>131</width>
+                   <height>22</height>
+                  </rect>
+                 </property>
+                 <property name="suffix">
+                  <string> realisations</string>
+                 </property>
+                 <property name="minimum">
+                  <number>500</number>
+                 </property>
+                 <property name="maximum">
+                  <number>10000</number>
+                 </property>
+                 <property name="singleStep">
+                  <number>500</number>
+                 </property>
+                </widget>
+                <widget class="QComboBox" name="techplan_city_combo">
+                 <property name="geometry">
+                  <rect>
+                   <x>180</x>
+                   <y>65</y>
+                   <width>191</width>
+                   <height>22</height>
+                  </rect>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Adelaide</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Brisbane</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Darwin</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Melbourne</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Perth</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Sydney</string>
+                  </property>
+                 </item>
+                </widget>
+                <widget class="QLabel" name="techplan_decision_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>100</y>
+                   <width>201</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Decision to make if no solutions found:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="techplan_iter_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>40</y>
+                   <width>201</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Default Monte Carlo Iteration Count:</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="tech_highest_radio">
+                 <property name="geometry">
+                  <rect>
+                   <x>220</x>
+                   <y>120</y>
+                   <width>151</width>
+                   <height>18</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Choose Highest Service</string>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="widget_3" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>280</height>
+                 </size>
+                </property>
+                <widget class="QLineEdit" name="perf_musicpath_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>160</x>
+                   <y>70</y>
+                   <width>141</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="perf_musicpath_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>50</x>
+                   <y>70</y>
+                   <width>141</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Path to MUSIC.exe:</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="perf_tte_check">
+                 <property name="geometry">
+                  <rect>
+                   <x>70</x>
+                   <y>160</y>
+                   <width>221</width>
+                   <height>18</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Treatment Train Effectiveness</string>
+                 </property>
+                </widget>
+                <widget class="QPushButton" name="perf_musicpath_browse">
+                 <property name="geometry">
+                  <rect>
+                   <x>310</x>
+                   <y>70</y>
+                   <width>61</width>
+                   <height>23</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Browse...</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="perf_musicver_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>50</x>
+                   <y>100</y>
+                   <width>141</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>MUSIC Version:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="perf_export_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>50</x>
+                   <y>130</y>
+                   <width>141</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Select Results to Export:</string>
+                 </property>
+                </widget>
+                <widget class="QComboBox" name="perf_musicvercombo">
+                 <property name="geometry">
+                  <rect>
+                   <x>160</x>
+                   <y>100</y>
+                   <width>211</width>
+                   <height>22</height>
+                  </rect>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>eWater MUSIC Version 5</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>eWater MUSIC Version 6</string>
+                  </property>
+                 </item>
+                </widget>
+                <widget class="QLabel" name="perfassess_options">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>171</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Performance Assessment&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="perf_musicauto_check">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>40</y>
+                   <width>311</width>
+                   <height>18</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>AutoRun MUSIC Simulation Files</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="perf_flux_check">
+                 <property name="geometry">
+                  <rect>
+                   <x>70</x>
+                   <y>190</y>
+                   <width>211</width>
+                   <height>18</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Flow and Pollution Time Series</string>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="results_tab">
+         <attribute name="title">
+          <string>Results</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QScrollArea" name="scrollArea_3">
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents_3">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>401</width>
+               <height>459</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <item>
+               <widget class="QWidget" name="widget_7" native="true">
+                <widget class="QRadioButton" name="style2_radio">
+                 <property name="geometry">
+                  <rect>
+                   <x>145</x>
+                   <y>160</y>
+                   <width>111</width>
+                   <height>18</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>OpenStreetMap</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="label_17">
+                 <property name="geometry">
+                  <rect>
+                   <x>40</x>
+                   <y>80</y>
+                   <width>41</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Style1</string>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="results_tileserver_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>110</x>
+                   <y>190</y>
+                   <width>251</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="label_19">
+                 <property name="geometry">
+                  <rect>
+                   <x>310</x>
+                   <y>80</y>
+                   <width>41</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Style3</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="results_tileserver_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>190</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Tile Server URL:</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="stylecustom_radio">
+                 <property name="geometry">
+                  <rect>
+                   <x>270</x>
+                   <y>160</y>
+                   <width>91</width>
+                   <height>18</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Custom Tiles</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="style1_radio">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>160</y>
+                   <width>111</width>
+                   <height>18</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>OpenStreetMap</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="label_18">
+                 <property name="geometry">
+                  <rect>
+                   <x>180</x>
+                   <y>80</y>
+                   <width>41</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Style2</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="results_mapstyle_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>30</y>
+                   <width>191</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Select Map Viewer Style:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="resultsviewer_options">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>171</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Results Viewer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QWidget" name="widget_8" native="true">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>60</y>
+                   <width>101</width>
+                   <height>91</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QWidget" name="widget_9" native="true">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>60</y>
+                   <width>101</width>
+                   <height>91</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QWidget" name="widget_10" native="true">
+                 <property name="geometry">
+                  <rect>
+                   <x>260</x>
+                   <y>60</y>
+                   <width>101</width>
+                   <height>91</height>
+                  </rect>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="widget_6" native="true">
+                <widget class="QPushButton" name="gearth_path_browse">
+                 <property name="geometry">
+                  <rect>
+                   <x>310</x>
+                   <y>70</y>
+                   <width>61</width>
+                   <height>23</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Browse...</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="gearth_path_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>70</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Program Path:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="gearth_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>171</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Google Earth&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="gearth_auto_check">
+                 <property name="geometry">
+                  <rect>
+                   <x>110</x>
+                   <y>100</y>
+                   <width>251</width>
+                   <height>18</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Automatically load Earth Maps upon export</string>
+                 </property>
+                </widget>
+                <widget class="QPushButton" name="gearth_get">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>40</y>
+                   <width>121</width>
+                   <height>23</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Get Google Earth</string>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="gearth_path_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>110</x>
+                   <y>70</y>
+                   <width>191</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -181,13 +844,21 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="optionsReset_button">
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
  <resources>
-  <include location="../../../../../UBEATS/main_user_interface/toolbaricons/guitoolbaricons.qrc"/>
+  <include location="toolbaricons/guitoolbaricons.qrc"/>
+  <include location="toolbaricons/guitoolbaricons.qrc"/>
  </resources>
  <connections>
   <connection>

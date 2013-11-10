@@ -32,7 +32,6 @@ def saveSimFile(activesim, filename):
     Note that for the module files, one txt is created per instantiation of module, filenames delimited with an index
     number representing the tabindex.
     """
-
     tempfiles = []
     directory = os.path.dirname(str(filename))
     if os.path.exists(str(filename)): os.remove(str(filename))
@@ -237,8 +236,6 @@ def loadSimFile(activesim, filename):
     #                "techplacement":activesim.getModuleTechplacement,
     #                "techimplement":activesim.getModuleTechimplement}
 
-
-
     #def updateUrbplanbbFromDict(self, paramdict):
     #    simmodule = self.__urbplanbb
     #    for key in paramdict:
@@ -251,7 +248,25 @@ def loadSimFile(activesim, filename):
     #                simmodule[i].setParameter(key, type(simmodule[i].getParameter(key))(paramdict[key][i]))
     #    return True
 
-
-
     archive.close()
+    return True
+
+def exportDataArchiveFile(activesim, filename):
+    """Saves the current data archive to a separate file, which can be independently imported into a new project. This
+    saves the user from reloading the data archive.
+    """
+
+    return True
+
+def importDataArchiveFile(activesim, filename):
+    """Loads the data archive from a specific file and adds whatever is available to the existing data archive
+    """
+
+    return True
+
+def importDataArchiveFromProject(activesim, filename):
+    """Loads a .ubs file and transfers only the data archive data into the archive of the current simulation.
+    """
+
+
     return True

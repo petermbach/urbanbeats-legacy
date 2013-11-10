@@ -65,6 +65,9 @@ class MainWindow(QtGui.QMainWindow):
         #ATTRIBUTES
         self.__activeSimulationObject = None
         self.__activeprojectpath = "C:\\"
+        self.__global_options = {"defaultmodeller": "", "defaultaffil":"", "iterations":1000, "city": "Melbourne",
+                                "decisiontype":"H", "MUSICauto":0, "MUSICpath":"", "MUSICver":"Version5", "MUSICtte":0,
+                                "MUSICflux":0, "mapstyle":"Style1", "tileserverURL":"", "gearth_path": "", "gearth_auto": 0 }
         
         ###########################################
         ### GUI Signals & Slots                 ###
@@ -190,7 +193,52 @@ class MainWindow(QtGui.QMainWindow):
         else:
             self.ui.ubeatsConsole.appendPlainText(str(time.asctime())+" | "+str(textmessage))
         return True
-        
+
+    def setOptionsFromConfig(self):
+        """Sets current program options based on the .cfg file in the root folder"""
+        f = open(os.path.dirname(__file__)+"/config.cfg",'r')
+        if f == None:
+            self.resetConfigFile()
+            f = open(os.path.dirname(__file__)+"/config.cfg",'r')
+        for lines in f:
+            if lines == "":
+                continue
+            line = lines.rstrip("\n")
+            line = line.split("*||*")
+            print line
+            self.__global_options[line[0]] = type(self.__global_options[line[0]])(line[1])
+        f.close()
+
+    def getConfigOptions(self, name):
+        if name == "all":
+            return self.__global_options
+        else:
+            return self.__global_options[name]
+
+    def setConfigOptions(self, name, value):
+        self.__global_options[name] = type(self.__global_options[name])(value)
+
+    def updateConfigFromOptions(self):
+        """Updates the configuration of the program and its simulations by overwriting the config file"""
+        f = open(os.path.dirname(__file__)+"/config.cfg", 'w')
+        for entry in self.__global_options.keys():
+            f.write(str(entry)+"*||*"+str(self.__global_options[entry])+"\n")
+        f.close()
+        return True
+
+    def resetConfigFile(self):
+        """Resets the .cfg file in the root directory to the original options"""
+        defaultoptions = {"defaultmodeller": "", "defaultaffil":"", "iterations":1000, "city": "Melbourne",
+                                "decisiontype":"H", "MUSICauto":0, "MUSICpath":"", "MUSICver":"Version5", "MUSICtte":0,
+                                "MUSICflux":0, "mapstyle":"Style1", "tileserverURL":"", "gearth_path": "", "gearth_auto": 0 }
+
+        f = open(os.path.dirname(__file__)+"/config.cfg", 'w')
+        for key in defaultoptions.keys():
+            f.write(str(key)+"*||*"+str(defaultoptions[key])+"\n")
+        f.close()
+        self.setOptionsFromConfig()
+        return True
+
     ################################
     ## GUI Preparation Functions  ##
     ################################
@@ -385,9 +433,11 @@ class MainWindow(QtGui.QMainWindow):
         return True
     
     def editPreferences(self):
-        preferencesdialog = ubdialogs.PreferencesDialogLaunch()
+        preferencesdialog = ubdialogs.PreferencesDialogLaunch(self)
+        self.connect(preferencesdialog, QtCore.SIGNAL("update_cfg"), self.updateConfigFromOptions)
+        self.connect(preferencesdialog, QtCore.SIGNAL("resetOptions"), self.resetConfigFile)
         preferencesdialog.exec_()
-        #need to add more about preferences
+        return True
     
     #View Menu
     def viewProjectInfo(self):
@@ -795,6 +845,7 @@ if __name__ == "__main__":
     #Enter the main loop
 
     start_screen = StartScreenLaunch()
+    main_window.setOptionsFromConfig()
     QtCore.QObject.connect(start_screen, QtCore.SIGNAL("startupOpen"), main_window.openExistingProject)
     QtCore.QObject.connect(start_screen, QtCore.SIGNAL("startupNew"), main_window.beginNewProjectDialog) 
     start_screen.exec_()    
