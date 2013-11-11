@@ -41,9 +41,11 @@ def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, t
     mca_env = 0.0
     mca_ecn = 0.0
     mca_soc = 0.0
-    
+
     service_abbr = ["Qty", "WQ", "Rec"]       #these are the four main services for the objectives
     for j in range(len(totalvalues)):
+        if totalvalues[j] == 0:
+            continue    #Skip or else there will be a zero division, it doesn't add to the score anyway
         abbr = service_abbr[j]  #current service abbr to find value from object
         mca_techsub, mca_envsub, mca_ecnsub, mca_socsub = 0.0,0.0,0.0,0.0       #Initialize sub-trackers
         for i in techs: #loop across techs

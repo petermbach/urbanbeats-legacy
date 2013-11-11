@@ -3352,7 +3352,10 @@ class Techplacement(UBModule):
         
         AblockEIA = currentAttList.getAttribute("Manage_EIA")          #Total block imp area to manage
         blockDem = currentAttList.getAttribute("Blk_WD") - currentAttList.getAttribute("wd_Nres_IN")
-        
+
+        if AblockEIA == 0 and blockDem == 0:
+            return {}
+
         #CREATE COMBINATIONS MATRIX FOR ALL LOT SCALE TECHNOLOGIES FIRST
         #   for lot-scale technologies, these are pieced together based on the same increment
         #   combinations are either 0 or the technologies that fit at that increment
@@ -3494,8 +3497,11 @@ class Techplacement(UBModule):
     def identifyBin(self, servicematrix, AblockEIA, totdemand):
         """Determines what bin to sort a particular service into, used when determining
         which bin a BlockStrategy should go into"""
+        if AblockEIA == 0: AblockEIA = 0.0001    #Make infinitesimally small because the only case
+        if totdemand == 0: totdemand = 0.0001    #that results from this would be where service == 0
+
         servicelevels = [servicematrix[0]/AblockEIA, servicematrix[1]/AblockEIA, servicematrix[2]/totdemand]
-        
+        print servicelevels
         bracketwidth = 1.0/float(self.subbas_rigour)   #Used to bin the score within the bracket and penalise MCA score
         blockstratservice = max(servicelevels)
         #self.notify("Maximum service achieved is: "+str(blockstratservice)+" "+str(servicelevels))
