@@ -866,7 +866,7 @@ class Delinblocks(UBModule):      #UBCORE
                     curblock_node.addAttribute("BlockID", blockIDcount)
                     curblock_node.addAttribute("AvgElev", raster_sum_elev/total_n_elev)
                     curblock_node.addAttribute("Type", "Block")
-                    self.activesim.addAsset("CPBlockID"+str(blockIDcount), curblock_node)   #UBCORE
+                    self.activesim.addAsset("BlockCPID"+str(blockIDcount), curblock_node)   #UBCORE
                 
                 if self.include_soc_par1:
                     block_attr.addAttribute("SocPar1", soc_par1/total_n_soc_par1)
