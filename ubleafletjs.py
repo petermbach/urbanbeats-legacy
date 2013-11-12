@@ -61,7 +61,11 @@ def writeLeafletHeader(viewmode):
 
 def writeLeafletBody(viewmode, filepath, filename):
     """Writes the main body of the leaflet map"""
-    #L.geoJson('"""+filepath+filename+"_Blocks.geojson"+"""').addTo(map);
+    #L.geoJson('"""+filepath+"Blocks.geojson"+"""').addTo(map);
+    #L.geoJson('"""+filepath+"Networks.geojson"+"""').addTo(map);
+    #L.geoJson('"""+filepath+"WSUDPlan.geojson"+"""').addTo(map);
+    #L.geoJson('"""+filepath+"WSUDImpl.geojson"+"""').addTo(map);
+    #L.geoJson('"""+filepath+"Localities.geojson"+"""').addTo(map);
 
     if viewmode == "on":
         linkrel = """<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>"""

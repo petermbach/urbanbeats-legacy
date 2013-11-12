@@ -208,10 +208,6 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
 
         self.ui.sm_WebView.setHtml(self.htmlscript0)
 
-
-
-
-
     def plotHighChart(self):
         print "plotting highchart"        
         treewitem = self.ui.ps_categoryTree.currentItem().text(0)

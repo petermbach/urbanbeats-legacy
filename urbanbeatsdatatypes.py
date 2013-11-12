@@ -28,6 +28,7 @@ import os, time
 import ogr2ogr
 
 proj4wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
+geojsonattnamekey = {}
 
 def importRasterData(filepath):
     """Imports a raster data file and creates an output rasterdata object, which contains
@@ -64,7 +65,6 @@ def importRasterData(filepath):
     return rasterdata            
 
 ### GIS EXPORT FUNCTIONS
-
 def exportGISShapeFile(activesim, tabindex, curcycle):
     """Exports the Active Simulation's Asset Data to the specified shapefiles requested
     using the Osgeo GDAL library"""
@@ -728,7 +728,7 @@ def exportFlowPaths(filename, assets, miscoptions, map_attr, kmlbool):
     
     return True
 
-def exportBlockLocalities(filename, assets, miscoptions, map_attr):
+def exportBlockLocalities(filename, assets, miscoptions, map_attr, kmlbool):
     
     spatialRef = osr.SpatialReference()                #Define Spatial Reference
     spatialRef.ImportFromProj4(miscoptions[0])
@@ -776,6 +776,11 @@ def exportBlockLocalities(filename, assets, miscoptions, map_attr):
         layer.CreateFeature(feature)
     
     shapefile.Destroy()
+
+    convertSHPtoGEOJSON(str(filename)+"_Localities")
+    if kmlbool:
+        convertSHPtoKML(str(filename)+"_Localities")
+
     return True
 
 def exportPlannedWSUD(filename, assets, miscoptions, map_attr, kmlbool):
@@ -860,6 +865,10 @@ def exportPlannedWSUD(filename, assets, miscoptions, map_attr, kmlbool):
             layer.CreateFeature(feature)
 
         shapefile.Destroy()
+        convertSHPtoGEOJSON(str(filename)+"_PlannedWSUD")
+        if kmlbool:
+            convertSHPtoKML(str(filename)+"_PlannedWSUD")
+
     return True
 
 
@@ -938,6 +947,11 @@ def exportImplementWSUD(filename, assets, miscoptions, map_attr, kmlbool):
         layer.CreateFeature(feature)
 
     shapefile.Destroy()
+
+    convertSHPtoGEOJSON(str(filename)+"_ImplementWSUD")
+    if kmlbool:
+        convertSHPtoKML(str(filename)+"_ImplementWSUD")
+
     return True
 
 def exportBlockCentre(filename, assets, miscoptions, map_attr, kmlbool):
@@ -984,6 +998,29 @@ def exportBlockCentre(filename, assets, miscoptions, map_attr, kmlbool):
     shapefile.Destroy()
     return True
 
+def writeGeoJSONTempFiles(activesim, tabindex, curcycle):
+
+    return True
+
+def writeBuildingBlocksGeoJSON(assets, miscoptions, map_attr, tech_incl):
+    return True
+
+def writeFlowPathsGeoJSON(assets, miscoptions, map_attr):
+
+    return True
+
+def writeBlockLocalitiesGeoJSON(assets, miscoptions, map_attr):
+
+    return True
+
+def writePlannedWSUDGeoJSON(assets, miscoptions, map_attr):
+
+    return True
+
+def writeImplementWSUDGeoJSON(assets, miscoptions, map_attr):
+
+    return True
+
 def convertSHPtoKML(filename):
     output_filename = str(filename)+"KML"
     input_filename = filename
@@ -997,6 +1034,21 @@ def convertSHPtoGEOJSON(filename):
     return True
 
 ### DATA CLASSES
+
+def writeFeatureGeoJSON(asset, sourceprojection, offsetX, offsetY):
+    """Writes asset data to GeoJSON format. Offsets are determined based on extents, coordinates then transformed
+    into WGS1984 so that the geoJSON file is compatible with the leaflet viewer of UrbanBEATS.
+    """
+    filecodeTop = """{
+        "type": "FeatureCollection",
+        "features": [
+        """
+
+    filecodeBottom = """]
+    }"""
+
+
+    return filecodeTop + filecodeBottom
 
 class RasterData(object):
     def __init__(self, cols, rows, xc, yc, cs, ndv):
@@ -1117,5 +1169,27 @@ class UBCollection(object):
     def getAssetByAttribute(self, asset, attribute, value):
         return True
 
+class CoordTrans(object):
+    def __init__(self, sourceProj4, targetProj4):
+        self.__sourceSR = osr.SpatialReference()
+        self.__sourceSR.ImportFromProj4(sourceProj4)
+        self.__targetSR = osr.SpatialReference()
+        self.__targetSR.ImportFromProj4(targetProj4)
+        self.__coordtrans = osr.CoordinateTransformation(self.__sourceSR, self.__targetSR)
+
+    def transformPointsForGeoJSON(self, points):
+        out = self.transformPoints(points)
+        geojsonstring = "["
+        for i in out:
+            geojsonstring += ("["+str(i[0])+", "+str(i[1])+"], ")
+        geojsonstring.rstrip(',')
+        geojsonstring += ("]")
+        return geojsonstring
+
+    def transformPoints(self, points):
+        return self.__coordtrans.TransformPoints(points)
+
+    def transformPoint(self, x,y):
+        return self.__coordtrans.TransformPoint([x, y])
 
         
