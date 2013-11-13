@@ -116,11 +116,22 @@ def saveSimFile(activesim, filename):
     tempfiles.append("delinblocks.txt")
 
     #---OTHER PLANNING-SUPPORT MODULES----
-    #modulefnames = {"urbplanbb":activesim.getModuleUrbplanbb,
-    #                "techplacement":activesim.getModuleTechplacement,
-    #                "techimplement":activesim.getModuleTechimplement}
-    #for i in range(len(modulefnames)):
-    #    fname = modulefname[i]
+    modulefnames = {"urbplanbb":activesim.getModuleUrbplanbb,
+                    "techplacement":activesim.getModuleTechplacement,
+                    "techimplement":activesim.getModuleTechimplement}
+    for modname in modulefnames.keys():
+        modules = modulefnames[modname](9999)   #Calls the representative function
+        for i in range(len(modules)):
+            fname = str(modname)+str(i)+".txt"
+            if os.path.exists(directory+"/"+fname): os.remove(directory+"/"+fname)
+            f = open(directory+"/"+fname, 'w')
+            curmodule = modules[i]
+            parameters = curmodule.getModuleParameterList()
+            for par in parameters.keys():
+                f.write(str(par)+"*||*"+str(curmodule.__dict__[par])+"*||*\n")
+            f.close()
+            archive.add(directory+"/"+fname, arcname=fname)
+            tempfiles.append(fname)
 
     #Save the archive and finish up
     archive.close()
@@ -232,21 +243,27 @@ def loadSimFile(activesim, filename):
             delinblocksmodule.setParameter(keys, type(delinblocksmodule.getParameter(keys))(moduledata[keys]))
     f.close()
 
-    #modulenames = {"urbplanbb":activesim.getModuleUrbplanbb,
-    #                "techplacement":activesim.getModuleTechplacement,
-    #                "techimplement":activesim.getModuleTechimplement}
+    modulenames = {"urbplanbb":activesim.getModuleUrbplanbb,
+                    "techplacement":activesim.getModuleTechplacement,
+                    "techimplement":activesim.getModuleTechimplement}
 
-    #def updateUrbplanbbFromDict(self, paramdict):
-    #    simmodule = self.__urbplanbb
-    #    for key in paramdict:
-    #        if key == "":
-    #            continue
-    #        for i in range(len(simmodule)):
-    #            if type(simmodule[i].getParameter(key)) == bool:
-    #                simmodule[i].setParameter(key, type(simmodule[i].getParameter(key))(int(paramdict[key][i])))
-    #            else:
-    #                simmodule[i].setParameter(key, type(simmodule[i].getParameter(key))(paramdict[key][i]))
-    #    return True
+    for modname in modulenames.keys():
+        modules = modulenames[modname](9999)
+        for i in range(len(modules)):
+            curmodule = modules[i]
+            moduledata = {}
+            fname = str(modname)+str(i)+".txt"
+            f = archive.extractfile(fname)
+            for lines in f:
+                data = lines.split("*||*")
+                moduledata[data[0]] = data[1]
+            for keys in moduledata.keys():
+                print keys, (moduledata[keys]), type(curmodule.getParameter(keys))
+                if type(curmodule.getParameterType(keys)) == 'BOOL':
+                    curmodule.setParameter(keys, type(curmodule.getParameter(keys))(int(moduledata[keys])))
+                else:
+                    curmodule.setParameter(keys, type(curmodule.getParameter(keys))(moduledata[keys]))
+            f.close()
 
     archive.close()
     return True

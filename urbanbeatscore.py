@@ -115,6 +115,7 @@ class UrbanBeatsSim(threading.Thread):
 
         self.__getprevBlocks = []   #md_getpreviousblocks module, is initialize and parameters automatically set based on project details ["pc", "ic"]
         self.__getSystems = []      #md_getsystems module, parameters set based on cycle data set and whether dynamic simulation ["pc", "ic"]
+        self.__musicexport = []     #md_writeMUSICsim
 
         #DATA SETS
         self.__data_geographic_pc = []      #contains the geographic data set for different snapshots/milestones for planning
@@ -193,6 +194,7 @@ class UrbanBeatsSim(threading.Thread):
                 self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, i+1))
 
         if self.__projectinfo["sf_techplaninclude"] == 1:     #If techplan is included
+            self.__musicexport.append(md_writeMUSICsim.WriteResults2MUSIC(self, 0))
             self.__techplacement.append(md_techplacement.Techplacement(self, 0))
             self.__getSystems.append(md_getsystems.GetSystems(self, 0))
             if self.__projectinfo["sf_techplanconstant"] == 0:
@@ -625,12 +627,15 @@ class UrbanBeatsSim(threading.Thread):
                 techplacement.attach(self.__observers)
                 techplacement.run()
                 techplacement.detach(self.__observers)
-                #musicExport = self.__getModuleWrite2MUSIC[0]
-                #musicExport.setParameter("curcycle", "pc")
-                #musicExport.setParameter("tabindex", tab)
-                #musicExport.attach(self.__observers)
-                #musicExport.run()
-                #musicExport.detach(self.__observers)
+
+                musicExport = self.__musicexport[0]
+                musicExport.setParameter("pathname", str(self.getActiveProjectPath))
+                musicExport.setParameter("filename", "MUSICSim")
+                musicExport.setParameter("masterplanmodel", 1)
+                musicExport.setParameter("currentyear", tab)
+                musicExport.attach(self.__observers)
+                musicExport.run()
+                musicExport.detach(self.__observers)
 
             self.updateObservers("PROGRESSUPDATE||"+str(int(80.0*progressincrement+incrementcount)))
 
