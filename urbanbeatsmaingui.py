@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatsmaingui.ui'
 #
-# Created: Sun Nov 10 21:37:31 2013
+# Created: Thu Nov 14 15:00:53 2013
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -346,7 +346,7 @@ class Ui_urbanbeatsMain(object):
         self.verticalLayout.addWidget(self.progressbarWidget)
         urbanbeatsMain.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(urbanbeatsMain)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setTitle(QtGui.QApplication.translate("urbanbeatsMain", "File", None, QtGui.QApplication.UnicodeUTF8))
@@ -752,12 +752,12 @@ class Ui_urbanbeatsMain(object):
         self.actionImplementation_Cycle.setIcon(icon40)
         self.actionImplementation_Cycle.setText(QtGui.QApplication.translate("urbanbeatsMain", "Implementation Cycle", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImplementation_Cycle.setObjectName(_fromUtf8("actionImplementation_Cycle"))
-        self.actionAdd_Data_from_File = QtGui.QAction(urbanbeatsMain)
-        self.actionAdd_Data_from_File.setText(QtGui.QApplication.translate("urbanbeatsMain", "Import Archive File...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAdd_Data_from_File.setObjectName(_fromUtf8("actionAdd_Data_from_File"))
-        self.actionImport_Data_Archive = QtGui.QAction(urbanbeatsMain)
-        self.actionImport_Data_Archive.setText(QtGui.QApplication.translate("urbanbeatsMain", "Import Archive from Project...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionImport_Data_Archive.setObjectName(_fromUtf8("actionImport_Data_Archive"))
+        self.actionImport_UDA = QtGui.QAction(urbanbeatsMain)
+        self.actionImport_UDA.setText(QtGui.QApplication.translate("urbanbeatsMain", "Import Archive File...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionImport_UDA.setObjectName(_fromUtf8("actionImport_UDA"))
+        self.actionImport_UDAfromUBS = QtGui.QAction(urbanbeatsMain)
+        self.actionImport_UDAfromUBS.setText(QtGui.QApplication.translate("urbanbeatsMain", "Import Archive from Project...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionImport_UDAfromUBS.setObjectName(_fromUtf8("actionImport_UDAfromUBS"))
         self.actionReset_Simulation = QtGui.QAction(urbanbeatsMain)
         self.actionReset_Simulation.setText(QtGui.QApplication.translate("urbanbeatsMain", "Reset Simulation", None, QtGui.QApplication.UnicodeUTF8))
         self.actionReset_Simulation.setObjectName(_fromUtf8("actionReset_Simulation"))
@@ -818,9 +818,9 @@ class Ui_urbanbeatsMain(object):
         self.menuAdd_Climate_Data.addAction(self.actionEvapotranspiration)
         self.menuAdd_Climate_Data.addAction(self.actionSolar_Radiation)
         self.menuData.addAction(self.actionAddData)
-        self.menuData.addAction(self.actionAdd_Data_from_File)
+        self.menuData.addAction(self.actionImport_UDA)
+        self.menuData.addAction(self.actionImport_UDAfromUBS)
         self.menuData.addAction(self.actionExportDataArchive)
-        self.menuData.addAction(self.actionImport_Data_Archive)
         self.menuData.addAction(self.menuAdd_GIS_Data.menuAction())
         self.menuData.addAction(self.menuAdd_Climate_Data.menuAction())
         self.menuData.addSeparator()

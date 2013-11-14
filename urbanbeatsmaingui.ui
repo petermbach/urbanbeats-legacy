@@ -928,7 +928,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -992,9 +992,9 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionSolar_Radiation"/>
     </widget>
     <addaction name="actionAddData"/>
-    <addaction name="actionAdd_Data_from_File"/>
+    <addaction name="actionImport_UDA"/>
+    <addaction name="actionImport_UDAfromUBS"/>
     <addaction name="actionExportDataArchive"/>
-    <addaction name="actionImport_Data_Archive"/>
     <addaction name="menuAdd_GIS_Data"/>
     <addaction name="menuAdd_Climate_Data"/>
     <addaction name="separator"/>
@@ -1754,12 +1754,12 @@ p, li { white-space: pre-wrap; }
     <string>Implementation Cycle</string>
    </property>
   </action>
-  <action name="actionAdd_Data_from_File">
+  <action name="actionImport_UDA">
    <property name="text">
     <string>Import Archive File...</string>
    </property>
   </action>
-  <action name="actionImport_Data_Archive">
+  <action name="actionImport_UDAfromUBS">
    <property name="text">
     <string>Import Archive from Project...</string>
    </property>

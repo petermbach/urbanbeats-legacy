@@ -270,38 +270,47 @@ def loadSimFile(activesim, filename):
 
 def exportDataArchiveFile(activesim, filename):
     """Saves the current data archive to a separate file, which can be independently imported into a new project. This
-    saves the user from reloading the data archive.
+    saves the user from reloading the data archive. The file extension is .uda for "UrbanBEATS Data Archive"
     """
-
+    if os.path.exists(str(filename)): os.remove(str(filename))
+    f = open(str(filename), 'w')
+    dataarchive = activesim.showDataArchive()   #Obtains the data archive dictionary
+    for datatype in dataarchive.keys():
+        f.write(str(datatype)+"*||*\n")
+        for files in dataarchive[datatype]:
+            f.write(str(files)+"*||*\n")
+        f.write("---eol---\n")  #End of line marker for that particular data type, file is read until this is encountered
+    f.close()
     return True
 
-def importDataArchiveFile(guiobject, activesim, filename):
-    """Loads the data archive from a specific file and adds whatever is available to the existing data archive
-    """
-    #f = open(filename, 'r')     #Category, then read lines until '---eol---'
-    #dataarray = []
-    #categories = []
-    #for lines in f:
-    #    dataarray.append(lines.split('*||*'))
-    #category = dataarray[0][0]      #Set the initial category
-    #i = 1
-    #while i <= (len(dataarray)-1):
-    #    if 'eol' in dataarray[i][0]:
-    #        i += 1
-    #        if i < len(dataarray):
-    #            category = dataarray[i][0]
-    #            i += 1
-    #            continue
-    #        else:
-    #            continue
-    #    activesim.addDataToArchive(category, dataarray[i][0])
-    #    guiobject.update
-    #    i += 1
-    #f.close()
-    #return True
+def importDataArchiveFile(activesim, filename, filetype):
+    """Loads the data archive from a specific file (filetype = 'uda') or project (filetype = 'ubs') and adds
+    whatever is available to the existing data archive."""
+    if filetype == "ubs":   #Code to extract archive file from the project archive
+        arch = tarfile.open(str(filename), 'r')
+        f = arch.extractfile("dataarch.txt")     #Category, then read lines until '---eol---'
+    elif filetype == "uda": #Code to load the file as per normal
+        f = open(filename, 'r')     #Category, then read lines until '---eol---'
 
-def importDataArchiveFromProject(activesim, filename):
-    """Loads a .ubs file and transfers only the data archive data into the archive of the current simulation."""
+    else:
+        return True
+    dataarray = []
+    for lines in f:
+        dataarray.append(lines.split('*||*'))
+    category = dataarray[0][0]      #Set the initial category
+    i = 1
+    while i <= (len(dataarray)-1):
+        if 'eol' in dataarray[i][0]:
+            i += 1
+            if i < len(dataarray):
+                category = dataarray[i][0]
+                i += 1
+                continue
+            else:
+                continue
+        activesim.addDataToArchive(category, dataarray[i][0])
+        i += 1
+    f.close()
 
-
+    if filetype == "ubs": arch.close()
     return True

@@ -95,8 +95,9 @@ class MainWindow(QtGui.QMainWindow):
         
         #Data Menu
         self.connect(self.ui.actionAddData, QtCore.SIGNAL("triggered()"), self.showAddDataDialog)
-        #self.connect(self.ui.actionAdd_Data_from_File, QtCore.SIGNAL("triggered()"), self.importProjectArchive)
-        #self.connect(self.ui.actionExportDataArchive, QtCore.SIGNAL("triggered()"), self.exportProjectArchive)
+        self.connect(self.ui.actionImport_UDA, QtCore.SIGNAL("triggered()"), lambda filetype="uda": self.importDataArchive(filetype))
+        self.connect(self.ui.actionImport_UDAfromUBS, QtCore.SIGNAL("triggered()"), lambda filetype="ubs": self.importDataArchive(filetype))
+        self.connect(self.ui.actionExportDataArchive, QtCore.SIGNAL("triggered()"), self.exportDataArchive)
         self.connect(self.ui.addDataButton, QtCore.SIGNAL("clicked()"), self.showAddDataDialog)
         self.connect(self.ui.removeDataButton, QtCore.SIGNAL("clicked()"), self.removeDataEntry)
         self.connect(self.ui.collex_button, QtCore.SIGNAL("clicked()"), self.collexTreeWidget)        
@@ -110,7 +111,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.actionRainfall, QtCore.SIGNAL("triggered()"), lambda dtype="Rainfall": self.directAddData(dtype))        
         self.connect(self.ui.actionEvapotranspiration, QtCore.SIGNAL("triggered()"), lambda dtype="Evapotranspiration": self.directAddData(dtype))
         self.connect(self.ui.actionSolar_Radiation, QtCore.SIGNAL("triggered()"), lambda dtype="Solar Radiation": self.directAddData(dtype))        
-        self.connect(self.ui.actionReset_Project_Databank, QtCore.SIGNAL("triggered()"), self.resetDatabank)
+        self.connect(self.ui.actionReset_Project_Databank, QtCore.SIGNAL("triggered()"), lambda asc=1: self.resetDatabank(asc))
         self.connect(self.ui.actionCross_check_GIS_Extents, QtCore.SIGNAL("triggered()"), self.crosscheckGIS)
         self.connect(self.ui.actionView_Active_Simulation_Data, QtCore.SIGNAL("triggered()"), self.viewSimData)
         #----------------------------------------------------------------------------------------------<<<
@@ -312,7 +313,7 @@ class MainWindow(QtGui.QMainWindow):
     def setupNewProject(self):
         self.setActiveSimulationObject(None)        
         self.enabledisable_sim_guis(1)
-        self.resetDatabank()
+        self.resetDatabank(1)
         self.resetConfigInterface()        
         newsimulation = self.createNewProjectInstance()
         self.setActiveSimulationObject(newsimulation)        
@@ -456,8 +457,32 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(adddatadialog, QtCore.SIGNAL("added_data"), self.updateTreeWidget)
         self.connect(adddatadialog, QtCore.SIGNAL("added_data"), self.updateDataArchive)
         adddatadialog.exec_()
-        return True            
-    
+        return True
+
+    def exportDataArchive(self):
+        activesim = self.getActiveSimulationObject()
+        fname = str(QtGui.QFileDialog.getSaveFileName(self, "Export Data Archive As...", os.curdir, "Data Archive (*.uda)"))
+        if fname:
+            ubfiles.exportDataArchiveFile(activesim, fname)
+        return True
+
+    def importDataArchive(self, filetype):
+        activesim = self.getActiveSimulationObject()
+        if filetype == "ubs":
+            fileconstrain = "UrbanBEATS (*.ubs)"
+        elif filetype == "uda":
+            fileconstrain = "Data Archive (*.uda)"
+        else:
+            fileconstrain = ""
+        fname = str(QtGui.QFileDialog.getOpenFileName(self, "Import Data Archive...", os.curdir, fileconstrain))
+        if fname:
+            ubfiles.importDataArchiveFile(activesim, fname, filetype)
+            self.ui.databrowseTree.clear()
+            self.resetDatabank(0)
+            self.setupTreeWidgetFromDict()
+
+        return True
+
     def directAddData(self, dtype):
         fname = QtGui.QFileDialog.getOpenFileName(self, "Locate "+str(dtype)+" Data File...", os.curdir, "")
         if fname:        
@@ -535,7 +560,7 @@ class MainWindow(QtGui.QMainWindow):
             if typeindex == -1:
                 return True
             dataname = self.__dtype_names[typeindex]
-            activeSim.addDataToArchive(dataname, fname)
+            activeSim.addDataToArchive(dataname, str(fname))
         elif useraction == False:
             dataname = self.__dtype_names[typeindex]
             activeSim.removeDataFromArchive(dataname, fname)            
@@ -567,7 +592,7 @@ class MainWindow(QtGui.QMainWindow):
             self.printc("Cannot remove this!")
         return True
         
-    def resetDatabank(self):
+    def resetDatabank(self, activesimclear):
         self.ui.databrowseTree.clear()        
         elevation = QtGui.QTreeWidgetItem()
         elevation.setText(0, "Elevation")       
@@ -618,9 +643,10 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.databrowseTree.addTopLevelItems(toplevitems)     
         for i in range(len(none_list)):
             self.ui.databrowseTree.topLevelItem(i).addChild(none_list[i])
-        activeSim = self.getActiveSimulationObject()
-        if activeSim:
-            activeSim.resetDataArchive()
+        if activesimclear:
+            activeSim = self.getActiveSimulationObject()
+            if activeSim:
+                activeSim.resetDataArchive()
         return True
     
     def crosscheckGIS(self):
