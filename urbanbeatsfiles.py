@@ -216,7 +216,7 @@ def loadSimFile(activesim, filename):
         dataset = {}    #individual data sets for different cycles
         while j <= len(dataarray):
             if 'eol' in dataarray[j]:        #If an 'end of line' is encountered, set data set
-                activesim.setCycleDataSet(cycle, tabindex, dataset)
+                activesim.setCycleDataSet(cycle, tabindex, dataset, "F")
                 print dataset
                 dataset = {}
                 tabindex += 1

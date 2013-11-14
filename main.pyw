@@ -462,7 +462,7 @@ class MainWindow(QtGui.QMainWindow):
         fname = QtGui.QFileDialog.getOpenFileName(self, "Locate "+str(dtype)+" Data File...", os.curdir, "")
         if fname:        
             newdata = QtGui.QTreeWidgetItem()
-            newdata.setText(0, fname)
+            newdata.setText(0, os.path.basename(fname))
             #determine index
             final_index = self.__dtype_names.index(dtype)
             if final_index in [7, 8, 9]:
@@ -476,7 +476,7 @@ class MainWindow(QtGui.QMainWindow):
     
     def updateTreeWidget(self, fname, typeindex, datastate):
         newdata = QtGui.QTreeWidgetItem()
-        newdata.setText(0, fname)
+        newdata.setText(0, os.path.basename(str(fname)))
         typeindex -= 1  #decrement by 1 because of the <undefined> row in the add data dialog        
         if typeindex == -1:
             self.printc("ERROR: PLEASE DEFINE DATA TYPE!")

@@ -582,7 +582,7 @@ class DataSelectGUILaunch(QtGui.QDialog):
                         for j in range(len(dataarchive[alts])):
                             fname = dataarchive[alts][j]
                             fchild = QtGui.QTreeWidgetItem()
-                            fchild.setText(0, fname)
+                            fchild.setText(0, os.path.basename(str(fname)))
                             fchild.setText(1, alts)
                             i.addChild(fchild)
                 continue
@@ -594,7 +594,7 @@ class DataSelectGUILaunch(QtGui.QDialog):
                         for j in range(len(dataarchive[alts])):
                             fname = dataarchive[alts][j]
                             fchild = QtGui.QTreeWidgetItem()
-                            fchild.setText(0, fname)
+                            fchild.setText(0, os.path.basename(str(fname)))
                             fchild.setText(1, alts)
                             i.addChild(fchild)
                 continue
@@ -606,7 +606,7 @@ class DataSelectGUILaunch(QtGui.QDialog):
                         for j in range(len(dataarchive[alts])):
                             fname = dataarchive[alts][j]
                             fchild = QtGui.QTreeWidgetItem()
-                            fchild.setText(0, fname)
+                            fchild.setText(0, os.path.basename(str(fname)))
                             fchild.setText(1, alts)
                             i.addChild(fchild)
                 continue                            
@@ -617,7 +617,7 @@ class DataSelectGUILaunch(QtGui.QDialog):
                 for j in range(len(dataarchive[str(label)])):
                     fname = dataarchive[str(label)][j]
                     fchild = QtGui.QTreeWidgetItem()
-                    fchild.setText(0, fname)
+                    fchild.setText(0, os.path.basename(str(fname)))
                     fchild.setText(1, str(label))
                     i.addChild(fchild)
         
@@ -628,7 +628,7 @@ class DataSelectGUILaunch(QtGui.QDialog):
         for key in self.__activedataitems:
             activebrowseitem = QtGui.QTreeWidgetItem()
             activebrowseitem.setText(1, key)
-            activebrowseitem.setText(0, self.__activedataitems[key])
+            activebrowseitem.setText(0, os.path.basename(str(self.__activedataitems[key])))
             self.ui.activedatabrowser.addTopLevelItem(activebrowseitem)
         
         #Signal/Slots
@@ -671,8 +671,8 @@ class DataSelectGUILaunch(QtGui.QDialog):
         
     def save_values(self):
         self.updateActiveDataItems()
-        self.module.setCycleDataSet(self.__curstate, self.__tabindex, self.__activedataitems)
-        print self.__activedataitems
+        self.module.setCycleDataSet(self.__curstate, self.__tabindex, self.__activedataitems, "B")
+        #print self.__activedataitems
         return True
 
 

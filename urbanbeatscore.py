@@ -103,6 +103,8 @@ class UrbanBeatsSim(threading.Thread):
                 "Evapotranspiration" : [],
                 "Solar Radiation" : []                }       #will contain the full library of data for the simulation
 
+        self.__basename_archive = {}        #Contains the basename vs. full path name translations
+
         self.__narratives = []  #N narratives based on the number of snapshots or timelines or the single benchmark operation
                                 #Will take the form: [heading, narrative] and added to the array
 
@@ -277,6 +279,10 @@ class UrbanBeatsSim(threading.Thread):
         #        for i in range(int(paramlength-1)):
         #            self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", i+1))
 
+        self.__narratives = []
+        for i in range(int(paramlength)):
+            self.__narratives.append(["Header"+str(i), "insert current narrative here..."])
+
         if self.__projectinfo["dd_samemaster"] == 0:                     #If masterplan should change
             for i in range(int(paramlength)):
                 self.__data_geographic_pc.append({})
@@ -312,6 +318,9 @@ class UrbanBeatsSim(threading.Thread):
     def addDataToArchive(self, datatype, fname):
         #print datatype
         self.__data_archive_fnames[datatype].append(str(fname))
+        self.__basename_archive[os.path.basename(str(fname))] = str(fname)
+        print fname
+        print os.path.basename(fname)
         return True
 
     def removeDataFromArchive(self, datatype, fname):
@@ -327,34 +336,44 @@ class UrbanBeatsSim(threading.Thread):
             if fname in self.__data_archive_fnames["Employment"]:
                 datatype = "Employment"
         try:
-            self.__data_archive_fnames[datatype].remove(str(fname))
+            fpath = self.__basename_archive[fname]
+            self.__data_archive_fnames[datatype].remove(str(fpath))
+            self.__basename_archive.pop(str(fname))
         except KeyError:
+            print "Something wrong"
             return True
 
     def resetDataArchive(self):
         for key in self.__data_archive_fnames:
             self.__data_archive_fnames[key] = []
+        self.__basename_archive = {}
         return True
 
     def showDataArchive(self):
         return self.__data_archive_fnames
 
-    def setCycleDataSet(self,curstate, tabindex, dataset):
+    def setCycleDataSet(self, curstate, tabindex, dataset, fnameoption):
+        if fnameoption == "B":  #Basename in the arrays? Refer to dictionary
+            datasetfull = {}
+            for dt in dataset.keys():
+                datasetfull[dt] = self.__basename_archive[dataset[dt]]
+        else:
+            datasetfull = dataset
         if curstate == "pc":
             if len(self.__data_geographic_pc) > 1:
-                self.__data_geographic_pc[tabindex] = dataset
+                self.__data_geographic_pc[tabindex] = datasetfull
             else:
-                self.__data_geographic_pc[0] = dataset
+                self.__data_geographic_pc[0] = datasetfull
         elif curstate == "ic":
             if len(self.__data_geographic_ic) > 1:
-                self.__data_geographic_ic[tabindex] = dataset
+                self.__data_geographic_ic[tabindex] = datasetfull
             else:
-                self.__data_geographic_ic[0] = dataset
+                self.__data_geographic_ic[0] = datasetfull
         elif curstate == "pa":
             if len(self.__data_climate) > 1:
-                self.__data_climate[tabindex] = dataset
+                self.__data_climate[tabindex] = datasetfull
             else:
-                self.__data_climate[0] = dataset
+                self.__data_climate[0] = datasetfull
         return True
 
     def getCycleDataSet(self, curstate, tabindex):
