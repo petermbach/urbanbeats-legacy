@@ -26,6 +26,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 import md_delinblocks, md_urbplanbb
 import urbanbeatscore as ub
 
+def getProjectSummary(activesim):
+
+
+    htmlstring = ""
+
+
+    return htmlstring
+
 def getSummaryStringNarrative(activesim, tabindex):
     narrative = activesim.getNarrative(tabindex)
     htmlstring = """<strong>"""+narrative[0]+"""</strong>

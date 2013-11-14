@@ -33,6 +33,13 @@ from PyQt4 import QtGui, QtCore, QtWebKit
 from urbanbeatsresultsgui import Ui_ResultsBrowseDialog
 import ubhighcharts, ubleafletjs
 
+
+def createTopLevelItem(name):
+    """Creates a top level item for a tree widget"""
+    category = QtGui.QTreeWidgetItem()
+    category.setText(0, str(name))
+    return category
+
 class ResultsBrowseDialogLaunch(QtGui.QDialog):
     def __init__(self, activesim, parent = None):
         QtGui.QDialog.__init__(self, parent)
@@ -40,12 +47,25 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.ui.setupUi(self)
         self.module = activesim
         #Add children to TreeWidget
-        self.ui.ps_categoryTree.clear()        
+        self.ui.ue_categoryTree.clear()
 
         self.project_path = activesim.getActiveProjectPath()
         self.gis_details = activesim.getGISExportDetails()
         self.map_files = self.gis_details["Filename"]
 
+        #PROJECT SUMMARY WINDOW
+        toplevitems = [createTopLevelItem("General Info"), createTopLevelItem("Synopsis")]
+        narratives = activesim.getAllNarratives()
+        print narratives
+        for i in range(len(narratives)):
+            toplevitems.append[createTopLevelItem(str(narratives[i][0]))]
+        self.ui.ps_categoryTree.addTopLevelItems(toplevitems)
+
+        #SPATIAL MAP VIEWER - LEAFLET MAP TILES
+        self.htmlscript0 = ubleafletjs.writeLeafletScript("off", self.project_path, self.map_files)
+        self.ui.sm_WebView.setHtml(self.htmlscript0)
+
+        #URBAN ENVIRONMENT RESULTS
         category1 = QtGui.QTreeWidgetItem()
         category1.setText(0, "BasicLinePlot")
         category2 = QtGui.QTreeWidgetItem()
@@ -67,10 +87,7 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         category10 = QtGui.QTreeWidgetItem()
         category10.setText(0, "")
         toplevitems = [category1, category2, category3, category4, category5, category6, category7, category8, category9]
-        self.ui.ps_categoryTree.addTopLevelItems(toplevitems)
-
-
-        self.htmlscript0 = ubleafletjs.writeLeafletScript("off", self.project_path, self.map_files)
+        self.ui.ue_categoryTree.addTopLevelItems(toplevitems)
 
 
         #Data Prep for CATEGORY 1
@@ -202,33 +219,32 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         testdatadict = {"John":[2, 3, 2, 5], "Kate":[1, 5, 4, 2], "Elizabeth":[3, 3, 2, 1], "James":[2, 1, 2, 2]}
         self.htmlscript9 = ubhighcharts.column_stacked(testcharttitle,testcategories,"Total Consumption", testdatadict)
 
-
         #Test - Click on Export Button to plot a chart in the GUI
-        self.connect(self.ui.ps_categoryTree, QtCore.SIGNAL("itemSelectionChanged()"), self.plotHighChart)
+        self.connect(self.ui.ue_categoryTree, QtCore.SIGNAL("itemSelectionChanged()"), self.plotHighChart)
 
-        self.ui.sm_WebView.setHtml(self.htmlscript0)
+
 
     def plotHighChart(self):
         print "plotting highchart"        
-        treewitem = self.ui.ps_categoryTree.currentItem().text(0)
+        treewitem = self.ui.ue_categoryTree.currentItem().text(0)
         if treewitem == "BasicLinePlot":
-            self.ui.ps_WebView.setHtml(self.htmlscript1)
+            self.ui.ue_WebView.setHtml(self.htmlscript1)
         elif treewitem == "PieChart":
-            self.ui.ps_WebView.setHtml(self.htmlscript2)
+            self.ui.ue_WebView.setHtml(self.htmlscript2)
         elif treewitem == "BasicBarChart":
-            self.ui.ps_WebView.setHtml(self.htmlscript3)
+            self.ui.ue_WebView.setHtml(self.htmlscript3)
         elif treewitem == "BasicColumnChart":
-            self.ui.ps_WebView.setHtml(self.htmlscript4)
+            self.ui.ue_WebView.setHtml(self.htmlscript4)
         elif treewitem == "ScatterPlotExample":
-            self.ui.ps_WebView.setHtml(self.htmlscript5)
+            self.ui.ue_WebView.setHtml(self.htmlscript5)
         elif treewitem == "SpiderWeb":
-            self.ui.ps_WebView.setHtml(self.htmlscript6)
+            self.ui.ue_WebView.setHtml(self.htmlscript6)
         elif treewitem == "BoxPlotExample":
-            self.ui.ps_WebView.setHtml(self.htmlscript7)
+            self.ui.ue_WebView.setHtml(self.htmlscript7)
         elif treewitem == "BarNegativeStack":
-            self.ui.ps_WebView.setHtml(self.htmlscript8)
+            self.ui.ue_WebView.setHtml(self.htmlscript8)
         elif treewitem == "ColumnStackedExample":
-            self.ui.ps_WebView.setHtml(self.htmlscript9)
+            self.ui.ue_WebView.setHtml(self.htmlscript9)
 
 
         
