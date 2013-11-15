@@ -214,7 +214,7 @@ p, li { white-space: pre-wrap; }
                <x>0</x>
                <y>0</y>
                <width>401</width>
-               <height>459</height>
+               <height>504</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -223,7 +223,7 @@ p, li { white-space: pre-wrap; }
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>150</height>
+                  <height>200</height>
                  </size>
                 </property>
                 <widget class="QLabel" name="techplan_options">
@@ -370,6 +370,57 @@ p, li { white-space: pre-wrap; }
                   <string>Choose Highest Service</string>
                  </property>
                 </widget>
+                <widget class="QSpinBox" name="techplan_strats_spin">
+                 <property name="geometry">
+                  <rect>
+                   <x>240</x>
+                   <y>145</y>
+                   <width>131</width>
+                   <height>22</height>
+                  </rect>
+                 </property>
+                 <property name="suffix">
+                  <string> strategies</string>
+                 </property>
+                 <property name="minimum">
+                  <number>0</number>
+                 </property>
+                 <property name="maximum">
+                  <number>10</number>
+                 </property>
+                 <property name="singleStep">
+                  <number>1</number>
+                 </property>
+                 <property name="value">
+                  <number>5</number>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="techplan_strats_lbl1">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>150</y>
+                   <width>201</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Number of chosen strategies to export:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="techplan_strats_lbl2">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>170</y>
+                   <width>201</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>(static simulations only)</string>
+                 </property>
+                </widget>
                </widget>
               </item>
               <item>
@@ -381,6 +432,9 @@ p, li { white-space: pre-wrap; }
                  </size>
                 </property>
                 <widget class="QLineEdit" name="perf_musicpath_box">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="geometry">
                   <rect>
                    <x>160</x>
@@ -404,6 +458,9 @@ p, li { white-space: pre-wrap; }
                  </property>
                 </widget>
                 <widget class="QCheckBox" name="perf_tte_check">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="geometry">
                   <rect>
                    <x>70</x>
@@ -417,6 +474,9 @@ p, li { white-space: pre-wrap; }
                  </property>
                 </widget>
                 <widget class="QPushButton" name="perf_musicpath_browse">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="geometry">
                   <rect>
                    <x>310</x>
@@ -456,6 +516,9 @@ p, li { white-space: pre-wrap; }
                  </property>
                 </widget>
                 <widget class="QComboBox" name="perf_musicvercombo">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="geometry">
                   <rect>
                    <x>160</x>
@@ -493,6 +556,9 @@ p, li { white-space: pre-wrap; }
                  </property>
                 </widget>
                 <widget class="QCheckBox" name="perf_musicauto_check">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="geometry">
                   <rect>
                    <x>20</x>
@@ -506,6 +572,9 @@ p, li { white-space: pre-wrap; }
                  </property>
                 </widget>
                 <widget class="QCheckBox" name="perf_flux_check">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="geometry">
                   <rect>
                    <x>70</x>

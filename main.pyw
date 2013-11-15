@@ -66,7 +66,7 @@ class MainWindow(QtGui.QMainWindow):
         self.__activeSimulationObject = None
         self.__activeprojectpath = "C:\\"
         self.__global_options = {"defaultmodeller": "", "defaultaffil":"", "iterations":1000, "city": "Melbourne",
-                                "decisiontype":"H", "MUSICauto":0, "MUSICpath":"", "MUSICver":"Version5", "MUSICtte":0,
+                                "decisiontype":"H", "numstrats":5, "MUSICauto":0, "MUSICpath":"", "MUSICver":"Version5", "MUSICtte":0,
                                 "MUSICflux":0, "mapstyle":"Style1", "tileserverURL":"", "gearth_path": "", "gearth_auto": 0 }
         
         ###########################################
@@ -203,18 +203,8 @@ class MainWindow(QtGui.QMainWindow):
 
     def setOptionsFromConfig(self):
         """Sets current program options based on the .cfg file in the root folder"""
-        f = open(os.path.dirname(__file__)+"/config.cfg",'r')
-        if f == None:
-            self.resetConfigFile()
-            f = open(os.path.dirname(__file__)+"/config.cfg",'r')
-        for lines in f:
-            if lines == "":
-                continue
-            line = lines.rstrip("\n")
-            line = line.split("*||*")
-            print line
-            self.__global_options[line[0]] = type(self.__global_options[line[0]])(line[1])
-        f.close()
+        self.__global_options = ubfiles.readGlobalOptionsConfig()
+        return True
 
     def getConfigOptions(self, name):
         if name == "all":
@@ -227,22 +217,11 @@ class MainWindow(QtGui.QMainWindow):
 
     def updateConfigFromOptions(self):
         """Updates the configuration of the program and its simulations by overwriting the config file"""
-        f = open(os.path.dirname(__file__)+"/config.cfg", 'w')
-        for entry in self.__global_options.keys():
-            f.write(str(entry)+"*||*"+str(self.__global_options[entry])+"\n")
-        f.close()
+        ubfiles.updateConfigFromOptions(self.__global_options)
         return True
 
     def resetConfigFile(self):
-        """Resets the .cfg file in the root directory to the original options"""
-        defaultoptions = {"defaultmodeller": "", "defaultaffil":"", "iterations":1000, "city": "Melbourne",
-                                "decisiontype":"H", "MUSICauto":0, "MUSICpath":"", "MUSICver":"Version5", "MUSICtte":0,
-                                "MUSICflux":0, "mapstyle":"Style1", "tileserverURL":"", "gearth_path": "", "gearth_auto": 0 }
-
-        f = open(os.path.dirname(__file__)+"/config.cfg", 'w')
-        for key in defaultoptions.keys():
-            f.write(str(key)+"*||*"+str(defaultoptions[key])+"\n")
-        f.close()
+        ubfiles.resetGlobalOptions()
         self.setOptionsFromConfig()
         return True
 

@@ -715,6 +715,10 @@ class Techplacement(UBModule):
         self.relTolerance = 1
         self.maxSBiterations = 100
 
+        self.createParameter("maxMCiterations", DOUBLE, "")
+        self.createParameter("defaultdecision", STRING, "")
+        self.maxMCiterations = 1000
+        self.defaultdecision = "H"
         #########################################################################
         #
         ##Views
@@ -1109,10 +1113,10 @@ class Techplacement(UBModule):
             if sum(updatedService) == 0:
                 continue
             
-            iterations = 1000   #MONTE CARLO ITERATIONS - CAN SET TO SENSITIVITY VALUE IN FUTURE RELATIVE TO BASIN SIZE
+            iterations = self.maxMCiterations   #MONTE CARLO ITERATIONS - CAN SET TO SENSITIVITY VALUE IN FUTURE RELATIVE TO BASIN SIZE
             
             if len(basinBlockIDs) == 1: #if we are dealing with a single-block basin, reduce the number of iterations
-                iterations = 100        #If only one block in basin, do different/smaller number of iterations
+                iterations = self.maxMCiterations/10        #If only one block in basin, do different/smaller number of iterations
             #Begin Monte Carlo
             basin_strategies = []
             for iteration in range(iterations):   #1000 monte carlo simulations

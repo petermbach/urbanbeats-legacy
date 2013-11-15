@@ -316,3 +316,40 @@ def importDataArchiveFile(activesim, filename, filetype):
 
     if filetype == "ubs": arch.close()
     return True
+
+def readGlobalOptionsConfig():
+    """Reads the config file of global options and returns the dictionary of global options."""
+    global_options = {}
+    f = open(os.path.dirname(__file__)+"/config.cfg",'r')
+    if f == None:
+        resetGlobalOptions()
+        f = open(os.path.dirname(__file__)+"/config.cfg",'r')
+    for lines in f:
+        if lines == "":
+            continue
+        line = lines.rstrip("\n")
+        line = line.split("*||*")
+        print line
+        global_options[line[0]] = type(default_global_options[line[0]])(line[1])
+    f.close()
+    return global_options
+
+def updateConfigFromOptions(newoptions):
+    """Updates the configuration of the program and its simulations by overwriting the config file"""
+    f = open(os.path.dirname(__file__)+"/config.cfg", 'w')
+    for entry in newoptions.keys():
+        f.write(str(entry)+"*||*"+str(newoptions[entry])+"\n")
+    f.close()
+    return True
+
+def resetGlobalOptions():
+    """Resets the .cfg file in the root directory to the original options"""
+    f = open(os.path.dirname(__file__)+"/config.cfg", 'w')
+    for key in default_global_options.keys():
+        f.write(str(key)+"*||*"+str(default_global_options[key])+"\n")
+    f.close()
+    return True
+
+default_global_options = {"defaultmodeller": "<none>", "defaultaffil":"<none>", "iterations":1000, "city": "Melbourne",
+                      "decisiontype":"H", "numstrats":5,  "MUSICauto":0, "MUSICpath":"", "MUSICver":"Version5", "MUSICtte":0,
+                      "MUSICflux":0, "mapstyle":"Style1", "tileserverURL":"", "gearth_path": "", "gearth_auto": 0}

@@ -282,6 +282,8 @@ class PreferencesDialogLaunch(QtGui.QDialog):
         else:
             self.ui.tech_highest_radio.setChecked(1)
 
+        self.ui.techplan_strats_spin.setValue(self.module.getConfigOptions("numstrats"))
+
         self.ui.perf_musicauto_check.setChecked(bool(int(self.module.getConfigOptions("MUSICauto"))))
         self.ui.perf_musicpath_box.setText(self.module.getConfigOptions("MUSICpath"))
         self.connect(self.ui.perf_musicauto_check, QtCore.SIGNAL("clicked()"), self.enabledisableMUSICoptions)
@@ -369,6 +371,8 @@ class PreferencesDialogLaunch(QtGui.QDialog):
             self.module.setConfigOptions("decisiontype", "N")
         elif self.ui.tech_highest_radio.isChecked():
             self.module.setConfigOptions("decisiontype", "H")
+
+        self.module.setConfigOptions("numstrats", int(self.ui.techplan_strats_spin.value()))
 
         self.module.setConfigOptions("MUSICauto", int(self.ui.perf_musicauto_check.isChecked()))
         self.module.setConfigOptions("MUSICpath", str(self.ui.perf_musicpath_box.text()))

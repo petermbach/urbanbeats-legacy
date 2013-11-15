@@ -29,6 +29,7 @@ import threading, gc, os
 
 #Dependencies
 import urbanbeatsdatatypes as ubdata
+import urbanbeatsfiles as ubfiles
 
 #Modules
 import md_delinblocks, md_urbplanbb, md_techplacement, md_techimplement#, md_perfassess
@@ -43,7 +44,7 @@ class UrbanBeatsSim(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         #Simulation object of UrbanBEATS, contains the full details of one simulation
-
+        global_options = ubfiles.readGlobalOptionsConfig()
         #Observer, Status and Filename
         self.__observers = []         #Observers of the current simulation
         self.__simulation_has_completed = 0
@@ -56,8 +57,8 @@ class UrbanBeatsSim(threading.Thread):
                 "region" : "<none specified>",
                 "state" : "<none>",
                 "country" : "<none specified>",
-                "modeller" : "<none specified>",
-                "affiliation" : "<none specified>",
+                "modeller" : global_options["defaultmodeller"],
+                "affiliation" : global_options["defaultaffil"],
                 "otherpersons" : "<none specified>",
                 "synopsis" : "<none specified>",
                 "simtype" : "S",
@@ -577,6 +578,7 @@ class UrbanBeatsSim(threading.Thread):
 
     def run(self):
         self.updateObservers("Starting Simulation")
+        global_options = ubfiles.readGlobalOptionsConfig()
 
         if len(self.__techimplement) == 0:
             progressincrement = 1.0/float(self.__tabs)   #1 divided by number of tabs e.g. 4 tabs, each tab will be 25% of progress bar
@@ -644,6 +646,9 @@ class UrbanBeatsSim(threading.Thread):
                 self.updateObservers("PROGRESSUPDATE||"+str(int(60.0*progressincrement+incrementcount)))
 
                 techplacement = self.getModuleTechplacement(tab)
+                techplacement.setParameter("num_output_strats", global_options["numstrats"])
+                techplacement.setParameter("maxMCiterations", global_options["iterations"])
+                techplacement.setParameter("defaultdecision", global_options["decisiontype"])
                 techplacement.attach(self.__observers)
                 techplacement.run()
                 techplacement.detach(self.__observers)
