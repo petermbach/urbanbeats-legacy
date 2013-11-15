@@ -28,7 +28,7 @@ import os, time
 import ogr2ogr
 
 proj4wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
-geojsonattnamekey = {}
+filepath = os.path.dirname(__file__)
 
 def importRasterData(filepath):
     """Imports a raster data file and creates an output rasterdata object, which contains
@@ -607,7 +607,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
     
     shapefile.Destroy()
 
-    convertSHPtoGEOJSON(str(filename)+"_Blocks")
+    #convertSHPtoGEOJSON(str(filename)+"_Blocks")
     if kmlbool:
         convertSHPtoKML(str(filename)+"_Blocks")
     return True
@@ -722,7 +722,7 @@ def exportFlowPaths(filename, assets, miscoptions, map_attr, kmlbool):
     
     shapefile.Destroy()
 
-    convertSHPtoGEOJSON(str(filename)+"_Network")
+    #convertSHPtoGEOJSON(str(filename)+"_Network")
     if kmlbool:
         convertSHPtoKML(str(filename)+"_Network")
     
@@ -777,7 +777,7 @@ def exportBlockLocalities(filename, assets, miscoptions, map_attr, kmlbool):
     
     shapefile.Destroy()
 
-    convertSHPtoGEOJSON(str(filename)+"_Localities")
+    #convertSHPtoGEOJSON(str(filename)+"_Localities")
     if kmlbool:
         convertSHPtoKML(str(filename)+"_Localities")
 
@@ -865,7 +865,7 @@ def exportPlannedWSUD(filename, assets, miscoptions, map_attr, kmlbool):
             layer.CreateFeature(feature)
 
         shapefile.Destroy()
-        convertSHPtoGEOJSON(str(filename)+"_PlannedWSUD")
+        #convertSHPtoGEOJSON(str(filename)+"_PlannedWSUD")
         if kmlbool:
             convertSHPtoKML(str(filename)+"_PlannedWSUD")
 
@@ -948,7 +948,7 @@ def exportImplementWSUD(filename, assets, miscoptions, map_attr, kmlbool):
 
     shapefile.Destroy()
 
-    convertSHPtoGEOJSON(str(filename)+"_ImplementWSUD")
+    #convertSHPtoGEOJSON(str(filename)+"_ImplementWSUD")
     if kmlbool:
         convertSHPtoKML(str(filename)+"_ImplementWSUD")
 
@@ -999,13 +999,92 @@ def exportBlockCentre(filename, assets, miscoptions, map_attr, kmlbool):
     return True
 
 def writeGeoJSONTempFiles(activesim, tabindex, curcycle):
+    gisoptions = activesim.getGISExportDetails()
+    map_data = activesim.getAssetWithName("MapAttributes")
+    fname = "tempgeojson_"+str(tabindex)+str(curcycle)
+    if gisoptions["ProjUser"] == True:
+        proj = gisoptions["Proj4"]
+    else:
+        proj = gisoptions["Projection"]
 
+    if gisoptions["Offset"] == "I":
+        offsets = [map_data.getAttribute("xllcorner"), map_data.getAttribute("yllcorner")]
+    elif gisoptions["Offset"] == "C":
+        offsets = [gisoptions["OffsetCustX"], gisoptions["OffsetCustY"]]
+    miscoptions = [proj, offsets[0], offsets[1]]
+    os.chdir(str(activesim.getActiveProjectPath()))
+    #Conditions for exporting techplacement attributes
+    if len(activesim.getModuleTechplacement(9999)) == 0:
+        tech_incl = 0
+    else:
+        tech_incl = 1
+    if len(activesim.getModuleTechimplement(9999)) == 0:
+        tech_impl = 0
+    else:
+        tech_impl = 1
+
+    #Get all assets from activesim
+    assets = activesim.getAssetsWithIdentifier("BlockID")
+    writeBuildingBlocksGeoJSON(fname, assets, miscoptions, map_data, tech_incl)
+    writeFlowPathsGeoJSON(fname, assets, miscoptions, map_data)
     return True
 
-def writeBuildingBlocksGeoJSON(assets, miscoptions, map_attr, tech_incl):
-    return True
+def writeBuildingBlocksGeoJSON(filename, assets, miscoptions, map_attr, tech_incl):
+    """Writes all Blocks to a GeoJSON output file, which is then loaded in the leaflet viewer of UrbanBEATS.
+    One file per simulation snapshot/time step is written and loaded individually based on the position in the
+    timeline in the results viewer.
+    """
+    ctrans = CoordTrans(miscoptions[0], proj4wgs84)
+    attkeys = [["BlockID","BlockID"], ["BasinID","BasinID"], ["Active Area [%]","Active"], ["Soil k","Soil_k"], ["Elevation","AvgElev"],
+    ["Population","Pop"], ["%Residential","pLU_RES"], ["%Commercial","pLU_COM"], ["%Light Industry","pLU_LI"]]
 
-def writeFlowPathsGeoJSON(assets, miscoptions, map_attr):
+    geojsonstring = """ """
+    geojsonstring += """ { "type": "FeatureCollection",
+
+    "features": [
+
+    """
+
+    revisedassets = []
+    for i in range(len(assets)):
+        if assets[i].getAttribute("Status") == 0:
+            continue
+        revisedassets.append(assets[i])
+    for i in range(len(revisedassets)):
+        currentAttList = revisedassets[i]
+        geojsonstring += """{"type": "Feature", "properties": { """
+        propertiesstring = ""
+        for attr in range(len(attkeys)):
+            if "pLU" in attkeys[attr][1]:
+                propertiesstring += "\""+str(attkeys[attr][0])+"\": "+str(int(currentAttList.getAttribute(attkeys[attr][1])*100))
+            else:
+                propertiesstring += "\""+str(attkeys[attr][0])+"\": "+str(currentAttList.getAttribute(attkeys[attr][1]))
+            if attr < (len(attkeys)-1):
+                propertiesstring += ", "
+        geojsonstring += propertiesstring
+        geojsonstring += """ }, "geometry": { "type": "Polygon", "coordinates": ["""
+        nl = currentAttList.getCoordinates()
+        newnl = []
+        for points in nl:
+            x = points[0] + miscoptions[1]
+            y = points[1] + miscoptions[2]
+            newnl.append([x,y])
+        newcoord = ctrans.transformPointsForGeoJSON(newnl)
+
+        if i < (len(revisedassets)-1):
+            geojsonstring += str(newcoord)+""" ] }},
+            """
+        else:
+            geojsonstring += str(newcoord)+""" ] }}
+            """
+    geojsonstring += """
+    ] } """
+    f = open(filepath+"/temp/"+filename+"_Blocks.geojson", 'w')
+    f.write(geojsonstring)
+    f.close()
+    return geojsonstring
+
+def writeFlowPathsGeoJSON(filename, assets, miscoptions, map_attr):
 
     return True
 
@@ -1027,28 +1106,14 @@ def convertSHPtoKML(filename):
     ogr2ogr.main(["", "-f", "KML", str(output_filename)+".kml", str(input_filename)+".shp"])
     return True
 
-def convertSHPtoGEOJSON(filename):
-    output_filename = str(filename)+"GeoJSON"
-    input_filename = filename
-    ogr2ogr.main(["", "-f", "geoJSON", str(output_filename)+".geojson", str(input_filename)+".shp"])
-    return True
+#def convertSHPtoGEOJSON(filename):
+#    output_filename = str(filename)+"GeoJSON"
+#    input_filename = filename
+#    ogr2ogr.main(["", "-f", "geoJSON", str(output_filename)+".geojson", str(input_filename)+".shp"])
+#    return True
 
 ### DATA CLASSES
 
-def writeFeatureGeoJSON(asset, sourceprojection, offsetX, offsetY):
-    """Writes asset data to GeoJSON format. Offsets are determined based on extents, coordinates then transformed
-    into WGS1984 so that the geoJSON file is compatible with the leaflet viewer of UrbanBEATS.
-    """
-    filecodeTop = """{
-        "type": "FeatureCollection",
-        "features": [
-        """
-
-    filecodeBottom = """]
-    }"""
-
-
-    return filecodeTop + filecodeBottom
 
 class RasterData(object):
     def __init__(self, cols, rows, xc, yc, cs, ndv):
@@ -1180,9 +1245,10 @@ class CoordTrans(object):
     def transformPointsForGeoJSON(self, points):
         out = self.transformPoints(points)
         geojsonstring = "["
-        for i in out:
-            geojsonstring += ("["+str(i[0])+", "+str(i[1])+"], ")
-        geojsonstring.rstrip(',')
+        for i in range(len(out)):
+            geojsonstring += ("["+str(out[i][0])+", "+str(out[i][1])+"]")
+            if i != (len(out)-1):
+                geojsonstring += ", "
         geojsonstring += ("]")
         return geojsonstring
 

@@ -31,8 +31,7 @@ from urbanbeatscore import *
 import PyQt4
 from PyQt4 import QtGui, QtCore, QtWebKit
 from urbanbeatsresultsgui import Ui_ResultsBrowseDialog
-import ubhighcharts, ubleafletjs
-
+import ubhighcharts, ubleafletjs, urbanbeatssummaries
 
 def createTopLevelItem(name):
     """Creates a top level item for a tree widget"""
@@ -54,16 +53,24 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.map_files = self.gis_details["Filename"]
 
         #PROJECT SUMMARY WINDOW
-        toplevitems = [createTopLevelItem("General Info"), createTopLevelItem("Synopsis")]
+        toplevitems = [createTopLevelItem("FULL SUMMARY"), createTopLevelItem("General Info"), createTopLevelItem("Synopsis"), createTopLevelItem("Simulation Details")]
         narratives = activesim.getAllNarratives()
-        print narratives
         for i in range(len(narratives)):
-            toplevitems.append[createTopLevelItem(str(narratives[i][0]))]
+            toplevitems.append(createTopLevelItem(str(narratives[i][0])))
+        toplevitems.append(createTopLevelItem("Available Outputs"))
         self.ui.ps_categoryTree.addTopLevelItems(toplevitems)
+        summaryhtml = urbanbeatssummaries.getProjectSummary(activesim, 'all')
+        self.ui.ps_WebView.setHtml(summaryhtml)
 
         #SPATIAL MAP VIEWER - LEAFLET MAP TILES
         self.htmlscript0 = ubleafletjs.writeLeafletScript("off", self.project_path, self.map_files)
         self.ui.sm_WebView.setHtml(self.htmlscript0)
+
+
+
+
+
+
 
         #URBAN ENVIRONMENT RESULTS
         category1 = QtGui.QTreeWidgetItem()
@@ -222,6 +229,12 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         #Test - Click on Export Button to plot a chart in the GUI
         self.connect(self.ui.ue_categoryTree, QtCore.SIGNAL("itemSelectionChanged()"), self.plotHighChart)
 
+
+    def changeLeafletMap(self, tabindex):
+
+        htmlscript = """ """
+
+        return htmlscript
 
 
     def plotHighChart(self):

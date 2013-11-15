@@ -56,16 +56,17 @@ def writeLeafletHeader(viewmode):
 		"""+linkrel+"""
 	</head>
     """
-
     return htmlscript
 
 def writeLeafletBody(viewmode, filepath, filename):
     """Writes the main body of the leaflet map"""
-    #L.geoJson('"""+filepath+"Blocks.geojson"+"""').addTo(map);
-    #L.geoJson('"""+filepath+"Networks.geojson"+"""').addTo(map);
-    #L.geoJson('"""+filepath+"WSUDPlan.geojson"+"""').addTo(map);
-    #L.geoJson('"""+filepath+"WSUDImpl.geojson"+"""').addTo(map);
-    #L.geoJson('"""+filepath+"Localities.geojson"+"""').addTo(map);
+    blocksfile = open(os.path.dirname(__file__)+"\\temp\\tempgeojson_0pc_Blocks.geojson")
+    blockscode = """ """
+    for lines in blocksfile:
+        blockscode += lines
+    blocksfile.close()
+
+
 
     if viewmode == "on":
         linkrel = """<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>"""
@@ -92,23 +93,28 @@ def writeLeafletBody(viewmode, filepath, filename):
 				//The cloudmade numbers after the URL represents the API-key, which you will need to get the tiling is done
 				//automatically
 
+            function onEachFeature(feature, layer) {
+                var popupContent = "<p>I started out as a GeoJSON " +
+                        feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
+
+                if (feature.properties && feature.properties.popupContent) {
+                    popupContent += feature.properties.popupContent;
+                }
+
+                layer.bindPopup(popupContent);
+            }
+
+            //Add layers to Leaflet: Blocks, Flowpaths, Planned WSUD, Implemented WSUD, Localities
+            var geoJsonBlocks = """+blockscode+""";
+            L.geoJson(geoJsonBlocks).addTo(map);
+
+            //add other layers
+
+
 			//Up to this point: Basic Map has been generated and you can browse through it
 
-			//DEALING WITH EVENTS
+            //Add the layer control
 
-			var popuponmapclick = L.popup();
-
-			function onMapClick(e) {
-
-				//alert("You clicked the map at " + e.latlng);	//actually calls the browser's alert feature, opens a dialog box with the msg
-
-				popuponmapclick
-					.setLatLng(e.latlng)
-					.setContent("You clicked the map at " + e.latlng.toString())
-					.openOn(map);
-			}
-
-			map.on('click', onMapClick);
 		</script>
 	</body>
     """

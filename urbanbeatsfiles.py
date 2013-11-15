@@ -259,10 +259,12 @@ def loadSimFile(activesim, filename):
                 moduledata[data[0]] = data[1]
             for keys in moduledata.keys():
                 print keys, (moduledata[keys]), type(curmodule.getParameter(keys))
-                if type(curmodule.getParameterType(keys)) == 'BOOL':
-                    curmodule.setParameter(keys, type(curmodule.getParameter(keys))(int(moduledata[keys])))
-                else:
+                if curmodule.getParameterType(keys) == 'BOOL':
+                    curmodule.setParameter(keys, type(curmodule.getParameter(keys))(int(float(moduledata[keys]))))
+                elif curmodule.getParameterType(keys) == 'STRING':
                     curmodule.setParameter(keys, type(curmodule.getParameter(keys))(moduledata[keys]))
+                else:
+                    curmodule.setParameter(keys, type(curmodule.getParameter(keys))(float(moduledata[keys])))
             f.close()
 
     archive.close()

@@ -99,9 +99,9 @@ class Techplacement(UBModule):
         self.ration_runoff = 0                #Design for flood mitigation?
         self.ration_pollute = 1               #Design for pollution management?
         self.ration_harvest = 0              #Design for harvesting & reuse? Adds storage-sizing to certain systems
-        self.runoff_pri = 0                      #Priority of flood mitigation?
-        self.pollute_pri = 1                     #Priority of pollution management?
-        self.harvest_pri = 0                     #Priority for harvesting & reuse
+        self.runoff_pri = 0.0                      #Priority of flood mitigation?
+        self.pollute_pri = 1.0                     #Priority of pollution management?
+        self.harvest_pri = 0.0                     #Priority for harvesting & reuse
 	
         self.priorities = []            #ADVANCED PARAMETER, holds the final weights for MCA
 	
@@ -111,11 +111,11 @@ class Techplacement(UBModule):
         self.createParameter("targets_TP", DOUBLE,"")
         self.createParameter("targets_TN", DOUBLE,"")
         self.createParameter("targets_reliability", DOUBLE, "")
-        self.targets_runoff = 80            #Runoff reduction target [%]
-        self.targets_TSS = 70               #TSS Load reduction target [%]
-        self.targets_TP = 30                #TP Load reduction target [%]
-        self.targets_TN = 30                #TN Load reduction target [%]
-        self.targets_reliability = 80       #required reliability of harvesting systems    
+        self.targets_runoff = 80.0            #Runoff reduction target [%]
+        self.targets_TSS = 70.0               #TSS Load reduction target [%]
+        self.targets_TP = 30.0                #TP Load reduction target [%]
+        self.targets_TN = 30.0                #TN Load reduction target [%]
+        self.targets_reliability = 80.0       #required reliability of harvesting systems
         
         self.system_tarQ = 0            #INITIALIZE THESE VARIABLES
         self.system_tarTSS = 0
@@ -134,15 +134,15 @@ class Techplacement(UBModule):
         self.createParameter("service_li", BOOL, "")
         self.createParameter("service_hi", BOOL, "")
         self.createParameter("service_redundancy", DOUBLE, "")
-        self.service_swmQty = 50                #required service level for stormwater management
-        self.service_swmWQ = 80                 #required service level for stormwater management
-        self.service_rec = 50                   #required service level for substituting potable water demand through recycling
+        self.service_swmQty = 50.0                #required service level for stormwater management
+        self.service_swmWQ = 80.0                 #required service level for stormwater management
+        self.service_rec = 50.0                   #required service level for substituting potable water demand through recycling
         self.service_res = 1
         self.service_hdr = 1
         self.service_com = 1
         self.service_li = 1
         self.service_hi = 1
-        self.service_redundancy = 25
+        self.service_redundancy = 25.0
         self.servicevector = []
         
         #STRATEGY CUSTOMIZE
@@ -158,14 +158,14 @@ class Techplacement(UBModule):
         self.strategy_street_check = 1
         self.strategy_neigh_check = 1
         self.strategy_subbas_check = 1
-        self.lot_rigour = 4
-        self.street_rigour = 4
-        self.neigh_rigour = 4
-        self.subbas_rigour = 4
+        self.lot_rigour = 4.0
+        self.street_rigour = 4.0
+        self.neigh_rigour = 4.0
+        self.subbas_rigour = 4.0
         
         #ADDITIONAL STRATEGIES
         self.createParameter("scalepref", DOUBLE,"")
-        self.scalepref = 3  #Ranges from 1 (high priority on at-source) to 5 (high priority on end-of-pipe)
+        self.scalepref = 3.0  #Ranges from 1 (high priority on at-source) to 5 (high priority on end-of-pipe)
         
         ##########################################################################
         #---WATER USE EFFICIENCY AND RECYCLING STRATEGY DESIGN INPUTS            
@@ -189,12 +189,12 @@ class Techplacement(UBModule):
         self.createParameter("ffp_laundry", STRING, "")
         self.createParameter("priv_irr_vol", DOUBLE, "")
         self.createParameter("ffp_garden", STRING, "")
-        self.freq_kitchen = 2                   #Household Demands START
-        self.freq_shower = 2
-        self.freq_toilet = 2
-        self.freq_laundry = 2
-        self.dur_kitchen = 10
-        self.dur_shower = 5
+        self.freq_kitchen = 2.0                   #Household Demands START
+        self.freq_shower = 2.0
+        self.freq_toilet = 2.0
+        self.freq_laundry = 2.0
+        self.dur_kitchen = 10.0
+        self.dur_shower = 5.0
         self.demandvary_kitchen = 0.00
         self.demandvary_shower = 0.00
         self.demandvary_toilet = 0.00
@@ -203,7 +203,7 @@ class Techplacement(UBModule):
         self.ffp_shower = "SW"
         self.ffp_toilet = "SW"
         self.ffp_laundry = "SW"
-        self.priv_irr_vol = 1                   #Private irrigation volume [ML/ha/yr]
+        self.priv_irr_vol = 1.0                   #Private irrigation volume [ML/ha/yr]
         self.ffp_garden = "SW"
         
         self.createParameter("com_demand", DOUBLE, "")
@@ -216,23 +216,23 @@ class Techplacement(UBModule):
         self.createParameter("hi_demandvary", DOUBLE, "")
         self.createParameter("hi_demandunits", STRING, "")
         self.createParameter("ffp_nonres", STRING, "")
-        self.com_demand = 40
-        self.com_demandvary = 10
+        self.com_demand = 40.0
+        self.com_demandvary = 10.0
         self.com_demandunits = 'cap'    #sqm = per square metres floor area, cap = per capita
-        self.li_demand = 40
-        self.li_demandvary = 10
+        self.li_demand = 40.0
+        self.li_demandvary = 10.0
         self.li_demandunits = 'cap'
-        self.hi_demand = 40
-        self.hi_demandvary = 10
+        self.hi_demand = 40.0
+        self.hi_demandvary = 10.0
         self.hi_demandunits = 'cap'
         self.ffp_nonres = "SW"
 
         self.createParameter("public_irr_vol", DOUBLE, "")
-        self.createParameter("irrigate_nonres", DOUBLE, "")
+        self.createParameter("irrigate_nonres", BOOL, "")
         self.createParameter("irrigate_parks", BOOL, "")
         self.createParameter("irrigate_refs", BOOL, "")
         self.createParameter("public_irr_wq", STRING, "")
-        self.public_irr_vol = 1
+        self.public_irr_vol = 1.0
         self.irrigate_nonres = 1
         self.irrigate_parks = 1
         self.irrigate_refs = 0
@@ -257,8 +257,8 @@ class Techplacement(UBModule):
         self.createParameter("WEF_distribution", STRING, "")
         self.createParameter("WEF_includezero", BOOL, "")
         self.WEF_method = 'C'   #C = constant, D = distribution
-        self.WEF_c_rating = 2   #Number of stars
-        self.WEF_d_rating = 5  #Maximum number of stars
+        self.WEF_c_rating = 2.0   #Number of stars
+        self.WEF_d_rating = 5.0  #Maximum number of stars
         self.WEF_distribution = "UF"     #UF = Uniform, LH = log-normal (high-end), LL = log-normal (low-end), NM = normal
         self.WEF_includezero = 1
         
@@ -270,8 +270,8 @@ class Techplacement(UBModule):
         self.createParameter("ww_toilet", BOOL, "")
         self.createParameter("ww_laundry", BOOL, "")
         self.createParameter("hs_strategy", STRING, "")
-        self.rec_demrange_min = 10
-        self.rec_demrange_max = 100
+        self.rec_demrange_min = 10.0
+        self.rec_demrange_max = 100.0
         self.ww_kitchen = 0         #Kitchen WQ default = GW
         self.ww_shower = 0          #Shower WQ default = GW
         self.ww_toilet = 0          #Toilet WQ default = BW --> MUST BE RECYCLED
@@ -282,7 +282,7 @@ class Techplacement(UBModule):
         self.createParameter("sb_method", STRING, "")
         self.createParameter("rain_length", DOUBLE, "")
         self.sb_method = "Sim"  #Sim = simulation, Eqn = equation
-        self.rain_length = 2   #number of years.
+        self.rain_length = 2.0   #number of years.
         
         ##########################################################################
         #---RETROFIT CONDITIONS INPUTS                                           
@@ -300,10 +300,10 @@ class Techplacement(UBModule):
         self.createParameter("force_prec", BOOL,"")
         self.retrofit_scenario = "N"    #N = Do Nothing, R = With Renewal, F = Forced
         self.renewal_cycle_def = 1      #Defined renewal cycle?
-        self.renewal_lot_years = 10         #number of years to apply renewal rate
-        self.renewal_street_years = 20      #cycle of years for street-scale renewal
-        self.renewal_neigh_years = 40       #cycle of years for neighbourhood-precinct renewal
-        self.renewal_lot_perc = 5           #renewal percentage
+        self.renewal_lot_years = 10.0         #number of years to apply renewal rate
+        self.renewal_street_years = 20.0      #cycle of years for street-scale renewal
+        self.renewal_neigh_years = 40.0       #cycle of years for neighbourhood-precinct renewal
+        self.renewal_lot_perc = 5.0           #renewal percentage
         self.force_street = 0              #forced renewal on lot?
         self.force_neigh = 0           #forced renewal on street?
         self.force_prec = 0            #forced renewal on neighbourhood and precinct?
@@ -328,8 +328,8 @@ class Techplacement(UBModule):
         self.neigh_decom = 0
         self.prec_renew = 0
         self.prec_decom = 0
-        self.decom_thresh = 40
-        self.renewal_thresh = 30
+        self.decom_thresh = 40.0
+        self.renewal_thresh = 30.0
         self.renewal_alternative = "K"          #if renewal cannot be done, what to do then? K=Keep, D=Decommission
         
         ##########################################################################
@@ -389,10 +389,10 @@ class Techplacement(UBModule):
         self.createParameter("BFexfil", DOUBLE,"")
         self.BFspec_EDD = 0.4
         self.BFspec_FD = 0.6
-        self.BFminsize = 5              #minimum surface area of the system in sqm
-        self.BFmaxsize = 999999         #maximum surface area of system in sqm
-        self.BFavglife = 20             #average life span of a biofilter
-        self.BFexfil = 0
+        self.BFminsize = 5.0              #minimum surface area of the system in sqm
+        self.BFmaxsize = 999999.0         #maximum surface area of system in sqm
+        self.BFavglife = 20.0             #average life span of a biofilter
+        self.BFexfil = 0.0
         
         #---GREEN ROOF [GR]---###TBA###-----------------------------------------
         self.createParameter("GRstatus", BOOL,"")
@@ -433,9 +433,9 @@ class Techplacement(UBModule):
         self.createParameter("ISexfil", DOUBLE, "")
         self.ISspec_EDD = 0.2
         self.ISspec_FD = 0.8
-        self.ISminsize = 5
-        self.ISmaxsize = 99999          #maximum surface area of system in sqm
-        self.ISavglife = 20             #average life span of an infiltration system
+        self.ISminsize = 5.0
+        self.ISmaxsize = 99999.0          #maximum surface area of system in sqm
+        self.ISavglife = 20.0             #average life span of an infiltration system
         self.ISexfil = 3.6
         
         #---GROSS POLLUTANT TRAP [GPT]------------------------------------------
@@ -481,9 +481,9 @@ class Techplacement(UBModule):
         self.createParameter("PBavglife", DOUBLE,"")
         self.createParameter("PBexfil", DOUBLE, "")
         self.PBspec_MD = "0.75" 	#need a string for the combo box
-        self.PBminsize = 100
-        self.PBmaxsize = 9999999           #maximum surface area of system in sqm
-        self.PBavglife = 20             #average life span of a pond/basin
+        self.PBminsize = 100.0
+        self.PBmaxsize = 9999999.0           #maximum surface area of system in sqm
+        self.PBavglife = 20.0             #average life span of a pond/basin
         self.PBexfil = 0.36
 
         #---POROUS/PERVIOUS PAVEMENT [PP]---###TBA###---------------------------
@@ -508,14 +508,14 @@ class Techplacement(UBModule):
         self.createParameter("RTdesignUB", BOOL,"")
         self.createParameter("RTdescur_path", STRING,"")
         self.createParameter("RTavglife", DOUBLE,"")
-        self.RT_maxdepth = 2            #max tank depth [m]
+        self.RT_maxdepth = 2.0            #max tank depth [m]
         self.RT_mindead = 0.1           #minimum dead storage level [m]
         self.RTdesignUB = 1         #use DAnCE4Water's default curves to design system?
         self.RTdescur_path = "no file"  #path for design curve
-        self.RTavglife = 20             #average life span of a raintank
+        self.RTavglife = 20.0             #average life span of a raintank
         
-        self.RT_minsize = 0             #placeholders, do not actually matter
-        self.RT_maxsize = 9999  
+        self.RT_minsize = 0.0             #placeholders, do not actually matter
+        self.RT_maxsize = 9999.0
         
         #---SAND/PEAT/GRAVEL FILTER [SF]----------------------------------------
         self.createParameter("SFstatus", BOOL,"")
@@ -560,9 +560,9 @@ class Techplacement(UBModule):
         self.createParameter("WSURavglife", DOUBLE,"")
         self.createParameter("WSURexfil", DOUBLE, "") 
         self.WSURspec_EDD = 0.75
-        self.WSURminsize = 200
-        self.WSURmaxsize = 9999999           #maximum surface area of system in sqm
-        self.WSURavglife = 20             #average life span of a wetland
+        self.WSURminsize = 200.0
+        self.WSURmaxsize = 9999999.0           #maximum surface area of system in sqm
+        self.WSURavglife = 20.0             #average life span of a wetland
         self.WSURexfil = 0.36
 
         #---SWALES & BUFFER STRIPS [SW]-----------------------------------------
@@ -593,10 +593,10 @@ class Techplacement(UBModule):
         self.createParameter("SWmaxsize", DOUBLE,"")
         self.createParameter("SWavglife", DOUBLE,"")
         self.createParameter("SWexfil", DOUBLE, "")
-        self.SWspec = 0
-        self.SWminsize = 20
-        self.SWmaxsize = 9999           #maximum surface area of system in sqm
-        self.SWavglife = 20             #average life span of a swale
+        self.SWspec = 0.0
+        self.SWminsize = 20.0
+        self.SWmaxsize = 9999.0           #maximum surface area of system in sqm
+        self.SWavglife = 20.0             #average life span of a swale
         self.SWexfil = 3.6              
         
         #---TREE PITS [TPS]---###TBA###-----------------------------------------
@@ -643,14 +643,14 @@ class Techplacement(UBModule):
         self.bottomlines_env = 1
         self.bottomlines_ecn = 1
         self.bottomlines_soc = 1
-        self.bottomlines_tech_n = 4     #Metric numbers
-        self.bottomlines_env_n = 5
-        self.bottomlines_ecn_n = 2
-        self.bottomlines_soc_n = 4
-        self.bottomlines_tech_w = 1     #Criteria Weights
-        self.bottomlines_env_w = 1
-        self.bottomlines_ecn_w = 1
-        self.bottomlines_soc_w = 1
+        self.bottomlines_tech_n = 4.0     #Metric numbers
+        self.bottomlines_env_n = 5.0
+        self.bottomlines_ecn_n = 2.0
+        self.bottomlines_soc_n = 4.0
+        self.bottomlines_tech_w = 1.0     #Criteria Weights
+        self.bottomlines_env_w = 1.0
+        self.bottomlines_ecn_w = 1.0
+        self.bottomlines_soc_w = 1.0
         self.mca_techlist, self.mca_tech, self.mca_env, self.mca_ecn, self.mca_soc = [], [], [], [], [] #initialize as globals
         
         #SCORING OF STRATEGIES
@@ -666,8 +666,8 @@ class Techplacement(UBModule):
         self.createParameter("topranklimit", DOUBLE,"")
         self.createParameter("conf_int", DOUBLE,"")
         self.ranktype = "RK"            #CI = Confidence Interval, RK = ranking
-        self.topranklimit = 10
-        self.conf_int = 95
+        self.topranklimit = 10.0
+        self.conf_int = 95.0
         
         ########################################################################
         #---ADVANCED PARAMETERS & VARIABLES

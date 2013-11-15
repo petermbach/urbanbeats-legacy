@@ -26,18 +26,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 import md_delinblocks, md_urbplanbb
 import urbanbeatscore as ub
 
-def getProjectSummary(activesim):
+def getProjectSummary(activesim, content):
+    htmlstring = """
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Project Summary</title>
+        </head>
 
+    <body>
+        <h3>Project Name Goes Here...</h3>
 
-    htmlstring = ""
-
-
+    """
+    htmlstring += """</body></html>"""
     return htmlstring
 
 def getSummaryStringNarrative(activesim, tabindex):
     narrative = activesim.getNarrative(tabindex)
     htmlstring = """<strong>"""+narrative[0]+"""</strong>
-    <p>"""+narrative[1]+"""</p>
+    <div id=\"N"""+str(tabindex)+"""\"><p>"""+narrative[1]+"""</p></div>
     """
     return htmlstring
 

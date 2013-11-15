@@ -146,7 +146,7 @@ class Urbplanbb(UBModule):
         self.w_driveway_min = float(2.6)               #minimum driveway width [m]
         self.patio_area_max = float(2.0)                 #maximum patio area [sqm]
         self.patio_covered = 0              #is patio covered by roof?
-        self.floor_num_max = 2                  #maximum number of floors
+        self.floor_num_max = 2.0                 #maximum number of floors
         self.occup_flat_avg = float(1.5)               #average occupancy of apartment
         self.commspace_indoor = float(10.0)              #communal space % indoor
         self.commspace_outdoor = float(5.0)              #communal space % outdoor
