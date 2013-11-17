@@ -329,7 +329,6 @@ def readGlobalOptionsConfig():
             continue
         line = lines.rstrip("\n")
         line = line.split("*||*")
-        print line
         global_options[line[0]] = type(default_global_options[line[0]])(line[1])
     f.close()
     return global_options
