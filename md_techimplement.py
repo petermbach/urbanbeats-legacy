@@ -252,7 +252,6 @@ class Techimplement(UBModule):
             #currentAttList = self.getBlockUUID(currentID,city) #attribute list of current block structure
             currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
             #masterplanAttList = self.getPrevBlockUUID(currentID, city)
-            masterplanAttList = self.activesim.getAssetWithName("PrevBlockID"+str(currentID))
             
             #-----------------------------------------------------------------#
             # DETERMINE WHETHER TO IMPLEMENT IN CURRENT BLOCK AT ALL #
@@ -260,12 +259,15 @@ class Techimplement(UBModule):
             ### QUIT CONDITION #1 - BLOCK STATUS = 0 ###
             if self.skipIfStatusZero(currentID):
                 continue
-            
+
             ### QUIT CONDITION #2 - NO SYSTEMS PLANNED FOR BLOCK AT ALL ###
+            print sysList
             syscount = len(sysList[currentID])
             if syscount == 0:
                 continue
- 
+
+            masterplanAttList = self.activesim.getAssetWithName("PrevID"+str(currentID))
+
             ### QUIT CONDITION #3 - DYNAMIC-MODE = Block-based and DEVELOPMENT < Threshold ###
             if self.dynamic_rule == "B":
                 block_skip = self.skipIfBelowBlockThreshold(currentID, float(self.block_based_thresh/100))
@@ -338,7 +340,7 @@ class Techimplement(UBModule):
     
     def skipIfBelowBlockThreshold(self, ID, threshold):
         undevland = self.activesim.getAssetWithName("BlockID"+str(ID)).getAttribute("pLU_UND")
-        undevprev = self.activesim.getAssetWithName("PrevBlockID"+str(ID)).getAttribute("pLU_UND")
+        undevprev = self.activesim.getAssetWithName("PrevID"+str(ID)).getAttribute("pLU_UND")
         #undevland = self.getBlockUUID(ID, city).getAttribute("pLU_UND")
         #undevprev = self.getPrevBlockUUID(ID, city).getAttribute("pLU_UND") #This is the final value
         devtot = 1 - undevprev  #Developed = Masterplan, i.e. once 1-%UND has been developed
@@ -402,7 +404,7 @@ class Techimplement(UBModule):
             #-LI - always implemented in all estates, but can only be done if they're built
             #-HI - same as LI
             #-COM - same as LI
-        
+        print sys.getAttribute("Scale")
         if sys.getAttribute("Scale") == "L_RES":
             unitEIA = currentAttList.getAttribute("ResLotEIA")
             if sys.getAttribute("Type") in ["BF", "IS"]:    #Pick the correct units to use
@@ -414,20 +416,20 @@ class Techimplement(UBModule):
         elif sys.getAttribute("Scale") == "L_LI":
             unitEIA = currentAttList.getAttribute("LIAeEIA")
             units = currentAttList.getAttribute("LIestates")
-            masterunits = currentAttList.getAttribute("LIestates")
+            masterUnits = masterAttList.getAttribute("LIestates")
         elif sys.getAttribute("Scale") == "L_HI":
             unitEIA = currentAttList.getAttribute("HIAeEIA")
             units = currentAttList.getAttribute("HIestates")
-            masterunits = currentAttList.getAttribute("HIestates")
+            masterUnits = masterAttList.getAttribute("HIestates")
         elif sys.getAttribute("Scale") == "L_COM":
             unitEIA = currentAttList.getAttribute("COMAeEIA")
             units = currentAttList.getAttribute("COMestates")
-            masterunits = currentAttList.getAttribute("COMestates")
+            masterUnits = masterAttList.getAttribute("COMestates")
         elif sys.getAttribute("Scale") == "L_HDR":
             unitEIA = currentAttList.getAttribute("HDR_EIA")
             units = currentAttList.getAttribute("HasFlats")             #Simple yes/no
-            masterunits = currentAttList.getAttribute("HasFlats")
-                
+            masterUnits = masterAttList.getAttribute("HasFlats")
+        print masterUnits
         if units == 0:
             self.notify("Current Block has no units for that particular land use to implement on")
             return 0,0,0
@@ -443,7 +445,7 @@ class Techimplement(UBModule):
                 year = int(self.currentyear)
             elif self.bb_lot_rule == "STRICT":
                 #Maintain ratio as development is built
-                lotqty = (goallots/masterUnits) * units   #Envisioned ratio x current number of units
+                lotqty = min(goallots, (goallots/masterUnits) * units)   #Envisioned ratio x current number of units
                 year = int(self.currentyear)
                 
         elif int(sys.getAttribute("Year")) != 9999:     #Code is duplicated in case of future algorithms
@@ -453,7 +455,7 @@ class Techimplement(UBModule):
                 year = int(self.currentyear)
                 
             elif remainingQty > 0 and self.bb_lot_rule == "STRICT":
-                lotqty = (goallots/masterUnits) * units   #New systems
+                lotqty = min(goallots, (goallots/masterUnits) * units)   #New systems
                 year = int(self.currentyear)
                 
             elif remainingQty <= 0:
@@ -574,7 +576,7 @@ class Techimplement(UBModule):
         for i in range(len(streamIDs)):
             self.notify(streamIDs[i])
             blockattr = self.activesim.getAssetWithName("BlockID"+str(streamIDs[i]))
-            mastattr = self.activesim.getAssetWithName("PrevBlockID"+str(streamIDs[i]))
+            mastattr = self.activesim.getAssetWithName("PrevID"+str(streamIDs[i]))
             #blockattr = self.getBlockUUID(streamIDs[i], city)
             #mastattr = self.getPrevBlockUUID(streamIDs[i], city)
             undevarea += blockattr.getAttribute("pLU_UND") * \

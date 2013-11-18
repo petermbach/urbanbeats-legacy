@@ -650,8 +650,8 @@ class Urbplanbb(UBModule):
             blk_avspace += avail_ref
             
             #---Services & Utilities
-            print A_svu
-            print self.svu_water
+            #print A_svu
+            #print self.svu_water
             Asvu_water = float(A_svu) * float(self.svu_water)/100.0
             Asvu_others = A_svu - Asvu_water
             

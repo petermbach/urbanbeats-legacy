@@ -93,14 +93,14 @@ class GetSystems(UBModule):
         #self.addData("City", datastream)
         
     def run(self):
+        self.notify("Start GetSystems Module")
         #city = self.getData("City")
         sys_global = ubdata.UBComponent() #write all general attributes in here
         #city.addComponent(sys_global, self.sysGlobal)
         #Get the correct driver (we are working with ESRI Shapefiles)
         driver = ogr.GetDriverByName('ESRI Shapefile')
         
-        #Use the following file for testing: C:/UBEATS/0_UrbanBEATS-SC-500m_points.shp
-        #self.path_name = "C:/UBEATS/Replicate100/0_SCreekTest1-500msys-1970_points.shp"
+        #Use the following file for testing
         save_file = "ubeats_out.shp"
         if self.ongoing_sim == True:
             file_name = self.path_name + save_file

@@ -93,15 +93,16 @@ class WriteResults2MUSIC(UBModule):
         input_res = map_attr.getAttribute("InputReso")      #resolution of input data
         totalbasins = map_attr.getAttribute("TotalBasins")  #total number of basins in map
         strats = map_attr.getAttribute("OutputStrats")      #Number of MUSIC files to write
-        
-        self.notify("Total Basins: "+str(totalbasins))
-        self.notify("Total Strategies :"+str(strats))
-        
+
         if self.masterplanmodel == 1:   #differentiate between planning and implementation models
             filesuffix = "PC"
         else:
             filesuffix = "IC"
-        
+            strats = 1
+
+        self.notify("Total Basins: "+str(totalbasins))
+        self.notify("Total Strategies :"+str(strats))
+
         #Begin writing music files
         for s in range(int(strats)):
             currentStratID = s+1

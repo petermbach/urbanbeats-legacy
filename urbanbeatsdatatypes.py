@@ -124,14 +124,14 @@ def exportGISShapeFile(activesim, tabindex, curcycle):
         if len(assets) > 0:
             exportBlockLocalities(fname, assets, miscoptions, map_data, kmlbool)
 
-    if gisoptions["PlannedWSUD"] == 1:
+    if gisoptions["PlannedWSUD"] == 1 and curcycle == "pc":
         print "Exporting WSUD Planned"
         #Get all assets from activesim
         assets = activesim.getAssetsWithIdentifier("SysID")
         if len(assets) > 0 and tech_incl == 1:
             exportPlannedWSUD(fname, assets, miscoptions, map_data, kmlbool)
 
-    if gisoptions["ImplementedWSUD"] == 1:
+    if gisoptions["ImplementedWSUD"] == 1 and curcycle == "ic":
         print "Exporting WSUD Implemented"
         #Get all assets from activesim
         assets = activesim.getAssetsWithIdentifier("SysID")
@@ -1179,7 +1179,7 @@ class UBComponent(object):
         if name in self.__attributes.keys():
             self.__attributes[name] = value
         else:
-            print "NOTE: ", name, "not originally in Attributes list, adding..."
+            #print "NOTE: ", name, "not originally in Attributes list, adding..."
             self.__attributes[name] = value
 
     def getAttribute(self, name):

@@ -177,8 +177,8 @@ class GetPreviousBlocks(UBModule):
 
         #Loop through each Block and obtain all attributes
         for i in range(int(total_blocks)):
-            currentID = i+1
             currentBlock = blocklayer.GetFeature(i)          #obtains feature with FID = i
+
             if self.patchesavailable: currentPatches = patchlayer.GetFeature(i)        #obtains patches from patch file
             
             #Transfer all Block Attributes to Block Output
@@ -194,7 +194,9 @@ class GetPreviousBlocks(UBModule):
                     block_attr.addAttribute(str(name), value)                    #assign to block_attr vector
 
             currentBlock.Destroy()      #destroy to save memory
-            self.activesim.addAsset("PrevBlockID"+str(currentID))
+            currentID = block_attr.getAttribute("BlockID")
+            print "PrevID"+str(currentID)
+            self.activesim.addAsset("PrevID"+str(currentID), block_attr)
 
             if self.patchesavailable:
                 #Transfer all Patch Attributes to Patch Output
@@ -210,7 +212,7 @@ class GetPreviousBlocks(UBModule):
                         patch_attr.addAttribute(str(name), value)
                 
                 currentPatches.Destroy()    #destroy to save memory
-                self.activesim.addAsset("PrevPatchID"+str(currentID))
+                self.activesim.addAsset("PatchPrevID"+str(currentID), patch_attr)
         
         #Destroy the shapefile
         blockdatasource.Destroy()

@@ -5,7 +5,7 @@
 @version 0.5
 @section LICENSE
 
-This file is part of VIBe2
+This file is part of UrbanBEATS
 Copyright (C) 2013  Peter M Bach
 
 This program is free software; you can redistribute it and/or
@@ -34,7 +34,6 @@ import urbanbeatsfiles as ubfiles
 #Modules
 import md_delinblocks, md_urbplanbb, md_techplacement, md_techimplement#, md_perfassess
 import md_getpreviousblocks, md_getsystems, md_writeMUSICsim
-
 
 emptyBlockPath = os.path.dirname(__file__)+str("/ancillary/emptyblockmap.shp")
 emptySysPath = os.path.dirname(__file__)+str("/ancillary/emptysystemsmap.shp")
@@ -262,6 +261,7 @@ class UrbanBeatsSim(threading.Thread):
         self.__delinblocks.append(md_delinblocks.Delinblocks(self, 0))         #ONLY ONE DELINBLOCKS NEEDED
         self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, 0))         #Add the first one, then check if more needed
         self.__getprevBlocks.append(md_getpreviousblocks.GetPreviousBlocks(self, 0))  #planning cycle modules
+        self.__musicexport.append(md_writeMUSICsim.WriteResults2MUSIC(self, 0))
 
         if self.__projectinfo["df_ubpconstant"] == 0: #if NOT same urbanplanning rules
             for i in range(int(paramlength-1)):
@@ -599,7 +599,10 @@ class UrbanBeatsSim(threading.Thread):
             progressincrement = 1.0/(float(self.__tabs * 2.0))  #if there is implementation, one progress increment is twice as short
 
         incrementcount = 0.0
+        prevfile_basename_pc = ""   #Initializing
+        prevfile_basename_ic = ""   #Initializing
         for tab in range(self.__tabs):
+
             #Current iteration index = tab's value
             self.updateObservers("Tab No. "+str(tab+1))
             #-------------------- BASIC SIMULATION STRUCTURE BEGINS HERE -----------------
@@ -608,18 +611,23 @@ class UrbanBeatsSim(threading.Thread):
             #----------------------------------------#
             self.resetAssets()  #Reset the asset vector
             #(1) Set files for previous systems and blocks
-            if tab == 0:
+            if tab == 0:    #First iteration
                 self.__getprevBlocks[0].setParameter("block_path_name", emptyBlockPath)
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
                 self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
-            else:
+            elif self.getParameter("simtype") in ["S", "B"]:   #Static or benchmarking simulation?
                 self.__getprevBlocks[0].setParameter("block_path_name", emptyBlockPath) #PREVIOUS SIMULATION
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
                 self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
-                #Set previous simulation files name+tab-1
-                pass
+            else:   #We're in a dynamic simulation
+                prevblocksfname = str(self.getActiveProjectPath()+"/"+prevfile_basename_ic+"_Blocks.shp")
+                self.updateObservers("Obtaining previous Blocks: "+str(prevblocksfname))
+                self.__getprevBlocks[0].setParameter("block_path_name", prevblocksfname) #PREVIOUS SIMULATION
+                self.__getprevBlocks[0].setParameter("patchesavailable", 0)
+                self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
+                self.__getprevBlocks[0].setParameter("patchesavailable", 0)
 
             #(2) Delinblocks
             self.updateObservers("PROGRESSUPDATE||"+str(int(10.0*progressincrement+incrementcount)))
@@ -649,8 +657,14 @@ class UrbanBeatsSim(threading.Thread):
                 if tab == 0:
                     self.__getSystems[0].setParameter("ubeats_file", 1)
                     self.__getSystems[0].setParameter("path_name", emptySysPath)
+                elif self.getParameter("simtype") in ["S", "B"]:
+                    self.__getSystems[0].setParameter("ubeats_file", 1)
+                    self.__getSystems[0].setParameter("path_name", emptySysPath)
                 else:
-                    pass
+                    prevsysfile = str(str(self.getActiveProjectPath())+"/"+prevfile_basename_ic+"_ImplementedWSUD.shp")
+                    self.__getSystems[0].setParameter("ubeats_file", 1)
+                    self.__getSystems[0].setParameter("path_name", prevsysfile)
+                    self.__getSystems[0].setParameter("ongoing_sim", 0)
 
                 getSystems = self.__getSystems[0]
                 getSystems.attach(self.__observers)
@@ -681,6 +695,7 @@ class UrbanBeatsSim(threading.Thread):
             self.updateObservers("PROGRESSUPDATE||"+str(int(90.0*progressincrement+incrementcount)))
             self.transferCurrentAssetsToCollection("pc")
             self.exportGIS(tab, "pc")
+            prevfile_basename_pc = self.getGISExportDetails()["Filename"]+"_"+str(tab)+"pc"    #Used to for dynamic cycle
             self.updateObservers("PROGRESSUPDATE||"+str(int(100.0*progressincrement+incrementcount)))
             incrementcount += 100.0*progressincrement
 
@@ -692,13 +707,7 @@ class UrbanBeatsSim(threading.Thread):
             self.resetAssets()  #Reset the asset vector
             incrementcount += 1
 
-            #(1) Set parameters for modules that load previous blocks and systems
-            #self.__getprevBlocks[0].setParameter("block_path_name", emptyBlockPath)
-            #self.__getprevBlocks[0].setParameter("patchesavailable", 0)
-            #self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
-            #self.__getprevBlocks[0].setParameter("patchesavailable", 0)
-
-            #(2) Delinblocks
+            #(1) Delinblocks
             self.updateObservers("PROGRESSUPDATE||"+str(int(10*progressincrement+incrementcount)))
             delinblocks = self.getModuleDelinblocks()
             delinblocks.setParameter("curcycle", "ic")
@@ -708,37 +717,58 @@ class UrbanBeatsSim(threading.Thread):
             delinblocks.detach(self.__observers)   #Deregister the observer after run completion
             self.updateObservers("PROGRESSUPDATE||"+str(int(30*progressincrement+incrementcount)))
 
-            #(3) Urbplanbb
-            #getPrevBlocks = self.__getprevBlocks[0]
-            #getPrevBlocks.attach(self.__observers)
-            #getPrevBlocks.run()
-            #getPrevBlocks.detach(self.__observers)
+            #(2) Urbplanbb
+            prevblocksfname = str(self.getActiveProjectPath()+"/"+prevfile_basename_pc+"_Blocks.shp")
+            self.updateObservers("Obtaining previous Blocks: "+str(prevblocksfname))
+            self.__getprevBlocks[0].setParameter("block_path_name", prevblocksfname)
+            self.__getprevBlocks[0].setParameter("patchesavailable", 0)
+            self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
+            self.__getprevBlocks[0].setParameter("implementationcycle", 1)
+
+            getPrevBlocks = self.__getprevBlocks[0]
+            getPrevBlocks.attach(self.__observers)
+            getPrevBlocks.run()
+            getPrevBlocks.detach(self.__observers)
             self.updateObservers("PROGRESSUPDATE||"+str(int(30.0*progressincrement+incrementcount)))
+            urbplanbb = self.getModuleUrbplanbb(tab)
+            urbplanbb.attach(self.__observers)  #Register the observer
+            urbplanbb.run()
+            urbplanbb.detach(self.__observers)
+            self.updateObservers("PROGRESSUPDATE||"+str(int(50*progressincrement+incrementcount)))
 
-            self.updateObservers("PROGRESSUPDATE||"+str(int(40*progressincrement+incrementcount)))
+            #(3) Techimplement
+            masterplansysfile = str(self.getActiveProjectPath()+"/"+prevfile_basename_pc+"_PlannedWSUD"+str(1)+".shp") #stratID = 1
+            self.updateObservers("Now loading master plan of systems: "+str(masterplansysfile))
+            self.__getSystems[0].setParameter("ubeats_file", 1)
+            self.__getSystems[0].setParameter("ongoing_sim", 0)
+            self.__getSystems[0].setParameter("path_name", masterplansysfile)
 
-            self.updateObservers("PROGRESSUPDATE||"+str(int(60*progressincrement+incrementcount)))
-
-            #(4) Techimplement
-            #self.__getSystems[0].setParameter("ubeats_file", 1)
-            #self.__getSystems[0].setParameter("path_name", emptySysPath)
+            getSystems = self.__getSystems[0]
+            getSystems.attach(self.__observers)
+            getSystems.run()
+            getSystems.detach(self.__observers)
             self.updateObservers("PROGRESSUPDATE||"+str(int(70*progressincrement+incrementcount)))
 
+            techimplement = self.getModuleTechimplement(tab)
+            techimplement.attach(self.__observers)
+            techimplement.run()
+            techimplement.detach(self.__observers)
 
-
+            musicExport = self.__musicexport[0]
+            musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
+            musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
+            musicExport.setParameter("masterplanmodel", 0)
+            musicExport.setParameter("currentyear", tab)
+            musicExport.attach(self.__observers)
+            musicExport.run()
+            musicExport.detach(self.__observers)
             self.updateObservers("PROGRESSUPDATE||"+str(int(90*progressincrement+incrementcount)))
 
             #(5) Export
-            #musicExport = self.__getModuleWrite2MUSIC[0]
-            #musicExport.setParameter("curcycle", "ic")
-            #musicExport.setParameter("tabindex", tab)
-            #musicExport.attach(self.__observers)
-            #musicExport.run()
-            #musicExport.detach(self.__observers)
-            self.updateObservers("PROGRESSUPDATE||"+str(int(90.0*progressincrement+incrementcount)))
-
+            self.updateObservers("Exporting Results")
             self.transferCurrentAssetsToCollection("ic")
             self.exportGIS(tab, "ic")
+            prevfile_basename_ic = self.getGISExportDetails()["Filename"]+"_"+str(tab)+"ic"    #Used for dynamic cycle
             self.updateObservers("PROGRESSUPDATE||"+str(int(100*progressincrement+incrementcount)))
             incrementcount += 100.0*progressincrement
 
