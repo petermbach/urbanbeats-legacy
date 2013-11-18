@@ -28,7 +28,7 @@ import numpy as np
 def retrieveDesign(pathname, systemtype, ksat, targets):
     #Step 1: Read DCV file
     dcv = readDCVFile(pathname, systemtype)
-#    print "Designing for : ", ksat
+    #print "Designing for : ", ksat
     #Step 2: Get Brackets
     k0, k1, lowbrack, upbrack = bracketDCVFile(dcv, ksat)
     
@@ -47,7 +47,7 @@ def readDCVFile(pathfname, systemtype):
     designcurve = []
     for lines in f:
         designcurve.append(lines.split(','))          
-    f.close()    
+    f.close()
     finaldcv = [[],[],[],[],[],[],[]]
     for i in range(len(designcurve)):
         if i == 0:
@@ -70,11 +70,11 @@ def bracketDCVFile(array, ksat):
         if i in kuniques:
             continue
         kuniques.append(i)
-    #print kuniques    
+    #print kuniques
     
     #Step 2a: check if ksat falls within the k-values of the dcv, if not, only work with one bracket
     kmin = min(array[1])
-#    print "Kmin ", kmin
+    #print "Kmin ", kmin
     kmax = max(array[1])
     if ksat <= kmin or ksat >= kmax:
         #print "Warning, ksat is not within bounds of dcv file, using single value"
