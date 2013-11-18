@@ -419,11 +419,63 @@ class AddDataLaunch(QtGui.QDialog):
    
 
 class ReportOptionsDialogLaunch(QtGui.QDialog):
-    def __init__(self, parent = None):
+    def __init__(self, activesim, parent = None):
         QtGui.QDialog.__init__(self, parent)
         self.ui = Ui_ReportOptionsDialog()
         self.ui.setupUi(self)
-        
+        self.parameters = activesim.getReportingOptions()
+        self.module = activesim
+
+        if self.parameters["ReportType"] == "html":
+            self.ui.radioHTML.setChecked(1)
+        elif self.parameters["ReportType"] == "ptext":
+            self.ui.radioPlainText.setChecked(1)
+
+        self.ui.filename_box.setText(str(self.parameters["ReportFile"]))
+
+        reportsections = self.parameters["SectionInclude"]
+        self.ui.checkProjectDetails.setChecked(bool(int(reportsections[0])))
+        self.ui.checkSetupDetails.setChecked(bool(int(reportsections[1])))
+        self.ui.checkDataDetails.setChecked(bool(int(reportsections[2])))
+        self.ui.checkSpatialData.setChecked(bool(int(reportsections[3])))
+        self.ui.checkWaterPlan.setChecked(bool(int(reportsections[4])))
+        self.ui.checkImplement.setChecked(bool(int(reportsections[5])))
+        self.ui.checkSpatialStats.setChecked(bool(int(reportsections[6])))
+        self.ui.checkWaterAlts.setChecked(bool(int(reportsections[7])))
+        self.ui.checkPerformance.setChecked(bool(int(reportsections[8])))
+
+        self.ui.exportSimLog.setChecked(bool(int(self.parameters["ExportLog"])))
+        self.ui.exportBlocksCSV.setChecked(bool(int(self.parameters["ExportBlocksCSV"])))
+
+        self.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
+
+    def save_values(self):
+        resultoptions = {}
+
+        if self.ui.radioHTML.isChecked():
+            resultoptions["ReportType"] = "html"
+        elif self.ui.radioPlainText.isChecked():
+            resultoptions["ReportType"] = "ptext"
+
+        resultoptions["ReportFile"] = str(self.ui.filename_box.text())
+
+        sectionincludes = [0,0,0,0,0,0,0,0,0]
+        sectionincludes[0] = int(bool(self.ui.checkProjectDetails.isChecked()))
+        sectionincludes[1] = int(bool(self.ui.checkSetupDetails.isChecked()))
+        sectionincludes[2] = int(bool(self.ui.checkDataDetails.isChecked()))
+        sectionincludes[3] = int(bool(self.ui.checkSpatialData.isChecked()))
+        sectionincludes[4] = int(bool(self.ui.checkWaterPlan.isChecked()))
+        sectionincludes[5] = int(bool(self.ui.checkImplement.isChecked()))
+        sectionincludes[6] = int(bool(self.ui.checkSpatialStats.isChecked()))
+        sectionincludes[7] = int(bool(self.ui.checkWaterAlts.isChecked()))
+        sectionincludes[8] = int(bool(self.ui.checkPerformance.isChecked()))
+        resultoptions["SectionInclude"] = sectionincludes
+
+        resultoptions["ExportLog"] = int(bool(self.ui.exportSimLog.isChecked()))
+        resultoptions["ExportBlocksCSV"] = int(bool(self.ui.exportBlocksCSV.isChecked()))
+
+        self.module.setReportingOptions(resultoptions)
+
 
 class GISOptionsDialogLaunch(QtGui.QDialog):
     def __init__(self, activesim, parent = None):

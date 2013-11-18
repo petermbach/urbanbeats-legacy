@@ -146,7 +146,13 @@ class UrbanBeatsSim(threading.Thread):
                 "GoogleEarth" : int(0),
                 "Localities" : int(0)   }
 
-        self.__optionsinfo = {}       #contains all the reporting options and other options
+        self.__optionsinfo = {
+                "ReportType": "html",
+                "ReportFile": "unnamed",
+                "SectionInclude": [0,0,0,0,0,0,0,0,0],
+                "ExportLog": 0,
+                "ExportBlocksCSV": 0  }       #contains all the reporting options and other options
+                #SectionInclude reads down the column
 
     ### --------- UTILITY FUNCTIONS -----------------------------
     def registerObserver(self, observerobj):
@@ -438,6 +444,13 @@ class UrbanBeatsSim(threading.Thread):
 
     def getProjectDetails(self):
         return self.__projectinfo
+
+    def getReportingOptions(self):
+        return self.__optionsinfo
+
+    def setReportingOptions(self, reportoptions):
+        self.__optionsinfo = reportoptions
+        return True
 
     def getGISExportDetails(self):
         return self.__gis_options

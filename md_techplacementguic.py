@@ -597,13 +597,13 @@ class TechplacementGUILaunch(QtGui.QDialog):
         elif self.module.getParameter("ISspec_FD") == 0.8:
             self.ui.ISspecs_FD_combo.setCurrentIndex(3)
 
-        if self.module.getParameter("ISexfil") == 0.18:
+        if self.module.getParameter("ISexfil") == 1.8:
             self.ui.ISexfil_combo.setCurrentIndex(0)
-        elif self.module.getParameter("ISexfil") == 0.36:
-            self.ui.ISexfil_combo.setCurrentIndex(1)
-        elif self.module.getParameter("ISexfil") == 1.8:
-            self.ui.ISexfil_combo.setCurrentIndex(2)
         elif self.module.getParameter("ISexfil") == 3.6:
+            self.ui.ISexfil_combo.setCurrentIndex(1)
+        elif self.module.getParameter("ISexfil") == 18:
+            self.ui.ISexfil_combo.setCurrentIndex(2)
+        elif self.module.getParameter("ISexfil") == 36:
             self.ui.ISexfil_combo.setCurrentIndex(3)
 
         self.ui.ISminsize_box.setText(str(self.module.getParameter("ISminsize")))
@@ -1335,7 +1335,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("BFspec_FD", BFspec_FD)
 
         BFexfil_matrix = [0, 0.18, 0.36, 1.8, 3.6]
-        self.module.setParameter("BFexfil", int(BFexfil_matrix[self.ui.BFexfil_combo.currentIndex()]))
+        self.module.setParameter("BFexfil", BFexfil_matrix[self.ui.BFexfil_combo.currentIndex()])
 
         self.module.setParameter("BFminsize", float(self.ui.BFminsize_box.text()))
         self.module.setParameter("BFmaxsize", float(self.ui.BFmaxsize_box.text()))
@@ -1378,7 +1378,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("ISspec_FD", ISspec_FD)
 
         ISexfil_matrix = [1.8, 3.6, 18, 36]
-        self.module.setParameter("ISexfil", int(ISexfil_matrix[self.ui.ISexfil_combo.currentIndex()]))
+        self.module.setParameter("ISexfil", ISexfil_matrix[self.ui.ISexfil_combo.currentIndex()])
 
         self.module.setParameter("ISminsize", float(self.ui.ISminsize_box.text()))
         self.module.setParameter("ISmaxsize", float(self.ui.ISmaxsize_box.text()))
@@ -1409,7 +1409,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("PBspec_MD", PBspec_matrix[self.ui.PBspecs_combo.currentIndex()])
 
         PBexfil_matrix = [0, 0.18, 0.36, 1.8, 3.6]
-        self.module.setParameter("PBexfil", str(PBexfil_matrix[self.ui.PBexfil_combo.currentIndex()]))
+        self.module.setParameter("PBexfil", PBexfil_matrix[self.ui.PBexfil_combo.currentIndex()])
 
         self.module.setParameter("PBminsize", str(self.ui.PBminsize_box.text()))
         self.module.setParameter("PBmaxsize", str(self.ui.PBmaxsize_box.text()))

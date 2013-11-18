@@ -81,6 +81,15 @@ def saveSimFile(activesim, filename):
     archive.add(directory+"/outputcfg.txt", arcname="outputcfg.txt")
     tempfiles.append("outputcfg.txt")
 
+    if os.path.exists(directory+"/reportcfg.txt"): os.remove(directory+"/reportcfg.txt")
+    f = open(directory+"/reportcfg.txt", 'w')
+    reportoptions = activesim.getReportingOptions()
+    for keys in reportoptions.keys():
+        f.write(str(keys)+"*||*"+str(reportoptions[keys])+"*||*\n")
+    f.close()
+    archive.add(directory+"/reportcfg.txt", arcname="reportcfg.txt")
+    tempfiles.append("reportcfg.txt")
+
     #Transfer Data Arrays into three separate text files for planning, implementation and performance assessment cycles
     datafname = ["pcycledata.txt", "icycledata.txt", "perfdata.txt"]
     datacycles = ["pc", "ic", "pa"]
@@ -196,14 +205,31 @@ def loadSimFile(activesim, filename):
         activesim.setGISExportDetails(keys, type(gisoptions[keys])(outputoptions[keys]))
     f.close()
 
+    reportingoptions = {}
+    reporttemplate = activesim.getReportingOptions()
+    f = archive.extractfile("reportcfg.txt")
+    for lines in f:
+        data = lines.split("*||*")
+        if data[0] == "SectionInclude":
+            data[1] = data[1].split(",")
+            data[1][0] = data[1][0].strip("[")
+            data[1][len(data[1])-1] = data[1][len(data[1])-1].strip("]")
+            for i in range(len(data[1])):
+                data[1][i] = int(data[1][i])
+            reportingoptions[str(data[0])] = data[1]
+        else:
+            reportingoptions[str(data[0])] = type(reporttemplate[str(data[0])])(data[1])
+    activesim.setReportingOptions(reportingoptions)
+    print reportingoptions
+
     #Set Cycle Data Sets
     datafname = ["pcycledata.txt", "icycledata.txt", "perfdata.txt"]
     datacycles = ["pc", "ic", "pa"]
     for i in range(len(datafname)):
         fname = datafname[i]
-        print fname
+        #print fname
         cycle = datacycles[i]
-        print archive.getnames()
+        #print archive.getnames()
         if fname not in archive.getnames():   #if the datafname file is not in the archive, skip
             continue
         f = archive.extractfile(fname)
@@ -217,13 +243,13 @@ def loadSimFile(activesim, filename):
         while j <= len(dataarray):
             if 'eol' in dataarray[j]:        #If an 'end of line' is encountered, set data set
                 activesim.setCycleDataSet(cycle, tabindex, dataset, "F")
-                print dataset
+                #print dataset
                 dataset = {}
                 tabindex += 1
                 j += 2  #Skips two lines ahead (the next header onto the first line
                 continue
             line = dataarray[j].split("*||*")
-            print line
+            #print line
             dataset[line[0]] = line[1]
             j += 1
         f.close()
@@ -236,7 +262,7 @@ def loadSimFile(activesim, filename):
         data = lines.split("*||*")
         moduledata[data[0]] = data[1]
     for keys in moduledata.keys():
-        print keys, moduledata[keys], type(delinblocksmodule.getParameter(keys))
+        #print keys, moduledata[keys], type(delinblocksmodule.getParameter(keys))
         if type(delinblocksmodule.getParameterType(keys)) == 'BOOL':
             delinblocksmodule.setParameter(keys, type(delinblocksmodule.getParameter(keys))(int(moduledata[keys])))
         else:
@@ -258,7 +284,7 @@ def loadSimFile(activesim, filename):
                 data = lines.split("*||*")
                 moduledata[data[0]] = data[1]
             for keys in moduledata.keys():
-                print keys, (moduledata[keys]), type(curmodule.getParameter(keys))
+                #print keys, (moduledata[keys]), type(curmodule.getParameter(keys))
                 if curmodule.getParameterType(keys) == 'BOOL':
                     curmodule.setParameter(keys, type(curmodule.getParameter(keys))(int(float(moduledata[keys]))))
                 elif curmodule.getParameterType(keys) == 'STRING':

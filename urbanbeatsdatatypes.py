@@ -237,7 +237,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
     fielddefmatrix.append(ogr.FieldDefn("ASquare", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("PG_av", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("REF_av", ogr.OFTReal))
-    fielddefmatrix.append(ogr.FieldDefn("ANonW_Utils", ogr.OFTReal))
+    fielddefmatrix.append(ogr.FieldDefn("ANonW_Util", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("SVU_avWS", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("SVU_avWW", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("SVU_avSW", ogr.OFTReal))
@@ -469,7 +469,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         feature.SetField("ASquare", currentAttList.getAttribute("ASquare"))
         feature.SetField("PG_av", currentAttList.getAttribute("PG_av"))
         feature.SetField("REF_av", currentAttList.getAttribute("REF_av"))
-        feature.SetField("ANonW_Utils", currentAttList.getAttribute("ANonW_Utils"))
+        feature.SetField("ANonW_Util", currentAttList.getAttribute("ANonW_Util"))
         feature.SetField("SVU_avWS", currentAttList.getAttribute("SVU_avWS"))
         feature.SetField("SVU_avWW", currentAttList.getAttribute("SVU_avWW"))
         feature.SetField("SVU_avSW", currentAttList.getAttribute("SVU_avSW"))
@@ -796,8 +796,8 @@ def exportPlannedWSUD(filename, assets, miscoptions, map_attr, kmlbool):
 
         driver = ogr.GetDriverByName('ESRI Shapefile')
 
-        if os.path.exists(str(filename+"_PlannedWSUD"+str(stratID)+".shp")): os.remove(filename+"_PlannedWSUD"+str(stratID)+".shp")
-        shapefile = driver.CreateDataSource(filename+"_PlannedWSUD"+str(stratID)+".shp")
+        if os.path.exists(str(filename)+"_PlannedWSUD"+str(stratID)+".shp"): os.remove(str(filename)+"_PlannedWSUD"+str(stratID)+".shp")
+        shapefile = driver.CreateDataSource(str(filename)+"_PlannedWSUD"+str(stratID)+".shp")
 
         layer = shapefile.CreateLayer('layer1', spatialRef, ogr.wkbPoint)
         layerDefinition = layer.GetLayerDefn()

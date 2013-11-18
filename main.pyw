@@ -740,7 +740,7 @@ class MainWindow(QtGui.QMainWindow):
         
     #Output Reporting Functions
     def showReportingOptionsDialog(self):
-        reportingoptionsdialog = ubdialogs.ReportOptionsDialogLaunch()
+        reportingoptionsdialog = ubdialogs.ReportOptionsDialogLaunch(self.getActiveSimulationObject())
         reportingoptionsdialog.exec_()
 
     def showGISOptionsDialog(self):

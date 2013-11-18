@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'reportoptionsdialog.ui'
 #
-# Created: Wed Apr 03 16:37:18 2013
+# Created: Mon Nov 18 10:30:52 2013
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_ReportOptionsDialog(object):
     def setupUi(self, ReportOptionsDialog):
         ReportOptionsDialog.setObjectName(_fromUtf8("ReportOptionsDialog"))
-        ReportOptionsDialog.resize(480, 450)
+        ReportOptionsDialog.resize(480, 482)
         ReportOptionsDialog.setWindowTitle(QtGui.QApplication.translate("ReportOptionsDialog", "Preferences", None, QtGui.QApplication.UnicodeUTF8))
         self.verticalLayout = QtGui.QVBoxLayout(ReportOptionsDialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
@@ -137,6 +137,10 @@ class Ui_ReportOptionsDialog(object):
         self.exportSimLog.setGeometry(QtCore.QRect(50, 305, 151, 17))
         self.exportSimLog.setText(QtGui.QApplication.translate("ReportOptionsDialog", "Export Simulation Log", None, QtGui.QApplication.UnicodeUTF8))
         self.exportSimLog.setObjectName(_fromUtf8("exportSimLog"))
+        self.exportBlocksCSV = QtGui.QCheckBox(self.main_options_widget)
+        self.exportBlocksCSV.setGeometry(QtCore.QRect(50, 330, 261, 17))
+        self.exportBlocksCSV.setText(QtGui.QApplication.translate("ReportOptionsDialog", "Export Blocks Attributes Table", None, QtGui.QApplication.UnicodeUTF8))
+        self.exportBlocksCSV.setObjectName(_fromUtf8("exportBlocksCSV"))
         self.verticalLayout.addWidget(self.main_options_widget)
         self.widget_4 = QtGui.QWidget(ReportOptionsDialog)
         self.widget_4.setMinimumSize(QtCore.QSize(0, 38))
@@ -150,7 +154,7 @@ class Ui_ReportOptionsDialog(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS.reporting</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS v1.0 - (C) 2013 Peter M. Bach</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.remarks.setObjectName(_fromUtf8("remarks"))
         self.horizontalLayout_2.addWidget(self.remarks)
         self.buttonBox = QtGui.QDialogButtonBox(self.widget_4)
@@ -171,5 +175,5 @@ class Ui_ReportOptionsDialog(object):
 import guitoolbaricons_rc
 import guitoolbaricons_rc
 import guitoolbaricons_rc
-import guitoolbaricons_rc
+import dialogimg_rc
 import guitoolbaricons_rc
