@@ -470,6 +470,7 @@ class Delinblocks(UBModule):      #UBCORE
         ## Retrieve the raster data UBCORE VERSION ###############################################################################
         ## 4 BASIC INPUTS ###
         cycledataset = self.activesim.getCycleDataSet(self.cycletype, self.tabindex)
+        self.notify(str(cycledataset))
         elevationraster = self.loadRaster(cycledataset, "Elevation")   #ELEVATION AND SOIL DATA ARE NOT URBANSIM DEPENDENT!
         self.xllcorner = elevationraster.getExtents()[0] 
         self.yllcorner = elevationraster.getExtents()[1]    #spatial extents of the input map

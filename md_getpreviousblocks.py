@@ -195,7 +195,7 @@ class GetPreviousBlocks(UBModule):
 
             currentBlock.Destroy()      #destroy to save memory
             currentID = block_attr.getAttribute("BlockID")
-            print "PrevID"+str(currentID)
+            #print "PrevID"+str(currentID)
             self.activesim.addAsset("PrevID"+str(currentID), block_attr)
 
             if self.patchesavailable:

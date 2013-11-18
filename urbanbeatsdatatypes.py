@@ -69,9 +69,16 @@ def exportGISShapeFile(activesim, tabindex, curcycle):
     """Exports the Active Simulation's Asset Data to the specified shapefiles requested
     using the Osgeo GDAL library"""
     #Get the following info:
+    if activesim.getParamaeter("simtype") == "D":
+        timestep = float(activesim.getParameter("dyn_totyears"))/float(activesim.getParameter("dyn_breaks"))
+        startyear = float(activesim.getParameter("dyn_startyear"))
+        current = int(startyear + float(tabindex)*timestep)
+    else:
+        current = tabindex
+
     gisoptions = activesim.getGISExportDetails()
     map_data = activesim.getAssetWithName("MapAttributes")
-    fname = gisoptions["Filename"]+"_"+str(tabindex)+str(curcycle)
+    fname = gisoptions["Filename"]+"_"+str(current)+str(curcycle)
     if gisoptions["ProjUser"] == True:
         proj = gisoptions["Proj4"]
     else:
@@ -880,7 +887,7 @@ def exportImplementWSUD(filename, assets, miscoptions, map_attr, kmlbool):
 
     driver = ogr.GetDriverByName('ESRI Shapefile')
 
-    if os.path.exists(str(filename+"_ImplementedWSUD.shp")): os.remove(filename+"_ImplementedWSUD.shp")
+    if os.path.exists(str(str(filename+"_ImplementedWSUD.shp"))): os.remove(str(str(filename)+"_ImplementedWSUD.shp"))
     shapefile = driver.CreateDataSource(str(str(filename)+"_ImplementedWSUD.shp"))
 
     layer = shapefile.CreateLayer('layer1', spatialRef, ogr.wkbPoint)
@@ -949,7 +956,7 @@ def exportImplementWSUD(filename, assets, miscoptions, map_attr, kmlbool):
 
     #convertSHPtoGEOJSON(str(filename)+"_ImplementWSUD")
     if kmlbool:
-        convertSHPtoKML(str(str(filename)+"_ImplementWSUD"))
+        convertSHPtoKML(str(str(filename)+"_ImplementedWSUD"))
 
     return True
 

@@ -590,6 +590,15 @@ class UrbanBeatsSim(threading.Thread):
         return True
 
     def run(self):
+        if self.getParameter("simtype") == "D":
+            totaltime = self.getParameter("dyn_totyears")
+            numbreaks = self.getParameter("dyn_breaks")
+            startyear = self.getParameter("dyn_startyear")
+            timestep = float(totaltime)/float(numbreaks)
+        else:
+            startyear = 9999
+            timestep = 0
+
         self.updateObservers("Starting Simulation")
         global_options = ubfiles.readGlobalOptionsConfig()
 
@@ -602,9 +611,15 @@ class UrbanBeatsSim(threading.Thread):
         prevfile_basename_pc = ""   #Initializing
         prevfile_basename_ic = ""   #Initializing
         for tab in range(self.__tabs):
+            if self.getParameter("simtype") == "D":
+                current = int(startyear + float(tab)*timestep)
+                self.updateObservers("Current Year: "+str(current))
+            else:
+                current = 9999
+                self.updateObservers("Tab No. "+str(tab+1))
 
             #Current iteration index = tab's value
-            self.updateObservers("Tab No. "+str(tab+1))
+
             #-------------------- BASIC SIMULATION STRUCTURE BEGINS HERE -----------------
             #----------------------------------------#
             #PLANNING CYCLE START                    #
@@ -676,6 +691,9 @@ class UrbanBeatsSim(threading.Thread):
                 techplacement.setParameter("num_output_strats", global_options["numstrats"])
                 techplacement.setParameter("maxMCiterations", global_options["iterations"])
                 techplacement.setParameter("defaultdecision", global_options["decisiontype"])
+                techplacement.setParameter("currentyear", current)
+                techplacement.setParameter("startyear", startyear)
+                techplacement.setParameter("prevyear", int(current) - int(timestep))
                 techplacement.attach(self.__observers)
                 techplacement.run()
                 techplacement.detach(self.__observers)
@@ -684,7 +702,7 @@ class UrbanBeatsSim(threading.Thread):
                 musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
                 musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
                 musicExport.setParameter("masterplanmodel", 1)
-                musicExport.setParameter("currentyear", tab)
+                musicExport.setParameter("currentyear", current)
                 musicExport.attach(self.__observers)
                 musicExport.run()
                 musicExport.detach(self.__observers)
@@ -710,7 +728,7 @@ class UrbanBeatsSim(threading.Thread):
             #(1) Delinblocks
             self.updateObservers("PROGRESSUPDATE||"+str(int(10*progressincrement+incrementcount)))
             delinblocks = self.getModuleDelinblocks()
-            delinblocks.setParameter("curcycle", "ic")
+            delinblocks.setParameter("cycletype", "ic")
             delinblocks.setParameter("tabindex", tab)
             delinblocks.attach(self.__observers)   #Register the observer
             delinblocks.run()
@@ -750,6 +768,8 @@ class UrbanBeatsSim(threading.Thread):
             self.updateObservers("PROGRESSUPDATE||"+str(int(70*progressincrement+incrementcount)))
 
             techimplement = self.getModuleTechimplement(tab)
+            techimplement.setParameter("currentyear", current)
+            techimplement.setParameter("startyear", startyear)
             techimplement.attach(self.__observers)
             techimplement.run()
             techimplement.detach(self.__observers)
@@ -758,7 +778,7 @@ class UrbanBeatsSim(threading.Thread):
             musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
             musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
             musicExport.setParameter("masterplanmodel", 0)
-            musicExport.setParameter("currentyear", tab)
+            musicExport.setParameter("currentyear", current)
             musicExport.attach(self.__observers)
             musicExport.run()
             musicExport.detach(self.__observers)

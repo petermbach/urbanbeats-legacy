@@ -123,7 +123,7 @@ class WriteResults2MUSIC(UBModule):
                 musicnodedb["BlockID"+str(currentID)] = {}
                 current_soilK = currentAttList.getAttribute("Soil_k")
                 blocksystems = self.getBlockSystems(currentID, systemlist)      #Get all systems for the current block
-                self.notify(str(blocksystems))
+                #self.notify(str(blocksystems))
                 
                 blockX = currentAttList.getAttribute("CentreX")
                 blockY = currentAttList.getAttribute("CentreY")
@@ -193,7 +193,7 @@ class WriteResults2MUSIC(UBModule):
                     self.notify("GOT AN OUTLET at BlockID"+str(currentID))
                     basinID = int(currentAttList.getAttribute("BasinID"))
                     jname = "OUT_Bas"+str(basinID)+"-BlkID"+str(currentID)
-                    self.notify(str(jname))
+                    #self.notify(str(jname))
                 else:
                     jname = "Block"+str(currentID)+"J"
                 ubmusic.writeMUSICjunction(ufile, jname, ncount, (blockX+offsets[0])*scalar, (blockY+offsets[1])*scalar)

@@ -261,7 +261,7 @@ class Techimplement(UBModule):
                 continue
 
             ### QUIT CONDITION #2 - NO SYSTEMS PLANNED FOR BLOCK AT ALL ###
-            print sysList
+            #print sysList
             syscount = len(sysList[currentID])
             if syscount == 0:
                 continue
@@ -404,7 +404,7 @@ class Techimplement(UBModule):
             #-LI - always implemented in all estates, but can only be done if they're built
             #-HI - same as LI
             #-COM - same as LI
-        print sys.getAttribute("Scale")
+        #print sys.getAttribute("Scale")
         if sys.getAttribute("Scale") == "L_RES":
             unitEIA = currentAttList.getAttribute("ResLotEIA")
             if sys.getAttribute("Type") in ["BF", "IS"]:    #Pick the correct units to use
@@ -429,7 +429,7 @@ class Techimplement(UBModule):
             unitEIA = currentAttList.getAttribute("HDR_EIA")
             units = currentAttList.getAttribute("HasFlats")             #Simple yes/no
             masterUnits = masterAttList.getAttribute("HasFlats")
-        print masterUnits
+        #print masterUnits
         if units == 0:
             self.notify("Current Block has no units for that particular land use to implement on")
             return 0,0,0

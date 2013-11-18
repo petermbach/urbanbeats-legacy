@@ -1135,8 +1135,8 @@ class Techplacement(UBModule):
                                            inblock_options, subbas_options, basinBlockIDs)
                 
                 tt.updateBasinService(current_bstrategy)
-                self.notify(current_bstrategy.getSubbasinArray())
-                self.notify(current_bstrategy.getInBlocksArray())
+                #self.notify(current_bstrategy.getSubbasinArray())
+                #self.notify(current_bstrategy.getInBlocksArray())
 
                 tt.calculateBasinStrategyMCAScores(current_bstrategy,self.priorities, self.mca_techlist, self.mca_tech, \
                                                   self.mca_env, self.mca_ecn, self.mca_soc, \
@@ -1159,7 +1159,7 @@ class Techplacement(UBModule):
                     continue
                 else:
                     acceptable_options.append(basin_strategies[j])
-            self.notify(acceptable_options)
+            #self.notify(acceptable_options)
             if self.ranktype == "RK":
                 acceptable_options = acceptable_options[0:int(self.topranklimit)]
             elif self.ranktype == "CI":
