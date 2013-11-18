@@ -461,7 +461,7 @@ class Urbplanbb(UBModule):
         #self.blocks.addAttribute("ASquare")
         #self.blocks.addAttribute("PG_av")
         #self.blocks.addAttribute("REF_av")
-        #self.blocks.addAttribute("ANonW_Utils")
+        #self.blocks.addAttribute("ANonW_Util")
         #self.blocks.addAttribute("SVU_avWS")
         #self.blocks.addAttribute("SVU_avWW")
         #self.blocks.addAttribute("SVU_avSW")
@@ -673,7 +673,7 @@ class Urbplanbb(UBModule):
             Asvu_SW = float(Asvu_water*self.svu4storm*svu_props[2])
             Asvu_OTH = Asvu_water - Asvu_WS - Asvu_WW - Asvu_SW         #non-accounted for water area, use for anything
             
-            currentAttList.addAttribute("ANonW_Utils", Asvu_others)
+            currentAttList.addAttribute("ANonW_Util", Asvu_others)
             currentAttList.addAttribute("SVU_avWS", Asvu_WS)
             currentAttList.addAttribute("SVU_avWW", Asvu_WW)
             currentAttList.addAttribute("SVU_avSW", Asvu_SW)
@@ -1798,7 +1798,7 @@ class Urbplanbb(UBModule):
         currentAttList.addAttribute("ASquare", prevAttList.getAttribute("ASquare"))
         currentAttList.addAttribute("PG_av", prevAttList.getAttribute("PG_av"))
         currentAttList.addAttribute("REF_av", prevAttList.getAttribute("REF_av"))
-        currentAttList.addAttribute("ANonW_Utils", prevAttList.getAttribute("ANonW_Utils"))
+        currentAttList.addAttribute("ANonW_Util", prevAttList.getAttribute("ANonW_Util"))
         currentAttList.addAttribute("SVU_avWS", prevAttList.getAttribute("SVU_avWS"))
         currentAttList.addAttribute("SVU_avWW", prevAttList.getAttribute("SVU_avWW"))
         currentAttList.addAttribute("SVU_avSW", prevAttList.getAttribute("SVU_avSW"))

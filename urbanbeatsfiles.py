@@ -220,7 +220,6 @@ def loadSimFile(activesim, filename):
         else:
             reportingoptions[str(data[0])] = type(reporttemplate[str(data[0])])(data[1])
     activesim.setReportingOptions(reportingoptions)
-    print reportingoptions
 
     #Set Cycle Data Sets
     datafname = ["pcycledata.txt", "icycledata.txt", "perfdata.txt"]

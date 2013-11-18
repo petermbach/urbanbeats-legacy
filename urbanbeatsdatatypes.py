@@ -796,8 +796,8 @@ def exportPlannedWSUD(filename, assets, miscoptions, map_attr, kmlbool):
 
         driver = ogr.GetDriverByName('ESRI Shapefile')
 
-        if os.path.exists(str(filename)+"_PlannedWSUD"+str(stratID)+".shp"): os.remove(str(filename)+"_PlannedWSUD"+str(stratID)+".shp")
-        shapefile = driver.CreateDataSource(str(filename)+"_PlannedWSUD"+str(stratID)+".shp")
+        if os.path.exists(str(str(filename)+"_PlannedWSUD"+str(stratID)+".shp")): os.remove(str(str(filename)+"_PlannedWSUD"+str(stratID)+".shp"))
+        shapefile = driver.CreateDataSource(str(str(filename)+"_PlannedWSUD"+str(stratID)+".shp"))
 
         layer = shapefile.CreateLayer('layer1', spatialRef, ogr.wkbPoint)
         layerDefinition = layer.GetLayerDefn()
@@ -867,8 +867,7 @@ def exportPlannedWSUD(filename, assets, miscoptions, map_attr, kmlbool):
         shapefile.Destroy()
         #convertSHPtoGEOJSON(str(filename)+"_PlannedWSUD")
         if kmlbool:
-            convertSHPtoKML(str(filename)+"_PlannedWSUD")
-
+            convertSHPtoKML(str(str(filename)+"_PlannedWSUD"+str(stratID)))
     return True
 
 
@@ -882,7 +881,7 @@ def exportImplementWSUD(filename, assets, miscoptions, map_attr, kmlbool):
     driver = ogr.GetDriverByName('ESRI Shapefile')
 
     if os.path.exists(str(filename+"_ImplementedWSUD.shp")): os.remove(filename+"_ImplementedWSUD.shp")
-    shapefile = driver.CreateDataSource(filename+"_ImplementedWSUD.shp")
+    shapefile = driver.CreateDataSource(str(str(filename)+"_ImplementedWSUD.shp"))
 
     layer = shapefile.CreateLayer('layer1', spatialRef, ogr.wkbPoint)
     layerDefinition = layer.GetLayerDefn()
@@ -950,7 +949,7 @@ def exportImplementWSUD(filename, assets, miscoptions, map_attr, kmlbool):
 
     #convertSHPtoGEOJSON(str(filename)+"_ImplementWSUD")
     if kmlbool:
-        convertSHPtoKML(str(filename)+"_ImplementWSUD")
+        convertSHPtoKML(str(str(filename)+"_ImplementWSUD"))
 
     return True
 

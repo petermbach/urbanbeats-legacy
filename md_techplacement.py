@@ -3505,7 +3505,7 @@ class Techplacement(UBModule):
         if totdemand == 0: totdemand = 0.0001    #that results from this would be where service == 0
 
         servicelevels = [servicematrix[0]/AblockEIA, servicematrix[1]/AblockEIA, servicematrix[2]/totdemand]
-        print servicelevels
+        #print servicelevels
         bracketwidth = 1.0/float(self.subbas_rigour)   #Used to bin the score within the bracket and penalise MCA score
         blockstratservice = max(servicelevels)
         #self.notify("Maximum service achieved is: "+str(blockstratservice)+" "+str(servicelevels))

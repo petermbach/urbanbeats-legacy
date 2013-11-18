@@ -666,14 +666,14 @@ class UrbanBeatsSim(threading.Thread):
                 techplacement.run()
                 techplacement.detach(self.__observers)
 
-                #musicExport = self.__musicexport[0]
-                #musicExport.setParameter("pathname", str(self.getActiveProjectPath))
-                #musicExport.setParameter("filename", "MUSICSim")
-                #musicExport.setParameter("masterplanmodel", 1)
-                #musicExport.setParameter("currentyear", tab)
-                #musicExport.attach(self.__observers)
-                #musicExport.run()
-                #musicExport.detach(self.__observers)
+                musicExport = self.__musicexport[0]
+                musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
+                musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
+                musicExport.setParameter("masterplanmodel", 1)
+                musicExport.setParameter("currentyear", tab)
+                musicExport.attach(self.__observers)
+                musicExport.run()
+                musicExport.detach(self.__observers)
 
             self.updateObservers("PROGRESSUPDATE||"+str(int(80.0*progressincrement+incrementcount)))
 
