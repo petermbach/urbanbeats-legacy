@@ -247,14 +247,38 @@ class NarrativesGuiLaunch(QtGui.QDialog):
         self.ui.heading_box.setText(self.module.getNarrative(self.tabindex)[0])
         self.ui.narrative_box.setPlainText(self.module.getNarrative(self.tabindex)[1])
 
+        #Year Spin Box - set based on simulation type. If "S" or "B", disabled, set to 1900
+        #               - if "D" and time steps NOT irregular, set based on inputs
+        #               - if "D" and time steps are regular, then user can modify
+        if self.module.getParameter("simtype") == "D":
+            startyear = self.module.getParameter("dyn_startyear")
+            timestep = float(self.module.getParameter("dyn_totyears"))/float(self.module.getParameter("dyn_breaks"))
+            if self.tabindex == 0:
+                self.ui.year_spin.setEnabled(0)
+                self.ui.year_spin.setValue(int(startyear))
+            elif self.tabindex == self.module.getParameter("dyn_breaks"):
+                self.ui.year_spin.setEnabled(0)
+                self.ui.year_spin.setValue(int(startyear+self.module.getParameter("dyn_totyears")))
+            elif self.module.getParameter("dyn_irregulardt") == 1:
+                self.ui.year_spin.setEnabled(1)
+                self.ui.year_spin.setValue(int(self.module.getNarrative(self.tabindex)[2]))
+            else:
+                self.ui.year_spin.setEnabled(0)
+                self.ui.year_spin.setValue(int(startyear + timestep * float(self.tabindex)))
+        else:
+            self.ui.year_spin.setEnabled(0)
+            self.ui.year_spin.setValue(2014)
+
         self.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
 
     def save_values(self):
         narrative = []
         narrative.append(self.ui.heading_box.text())
         narrative.append(self.ui.narrative_box.toPlainText())
+        narrative.append(self.ui.year_spin.value())
         self.module.setNarrative(self.tabindex, narrative)
         self.emit(QtCore.SIGNAL("updatedDetails"))
+
 
 class AboutDialogLaunch(QtGui.QDialog):
     def __init__(self, parent = None):

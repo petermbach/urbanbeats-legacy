@@ -223,7 +223,7 @@ class UrbanBeatsSim(threading.Thread):
 
         self.__narratives = []
         for i in range(int(paramlength)):
-            self.__narratives.append(["Header"+str(i), "insert current narrative here..."])
+            self.__narratives.append(["Header"+str(i), "insert current narrative here...", 2014])
 
         if self.__projectinfo["sf_techimplinclude"] == 1:
             if self.__projectinfo["sd_samedata"] == 'M':   #No change in MASTERPLAN        STATICDATAOPTIONS[0] = 0 --> MASTERPLAN CHANGES
@@ -288,7 +288,12 @@ class UrbanBeatsSim(threading.Thread):
 
         self.__narratives = []
         for i in range(int(paramlength)):
-            self.__narratives.append(["Header"+str(i), "insert current narrative here..."])
+            if self.getParameter("dyn_irregulardt") == 1:
+                self.__narratives.append(["Header"+str(i), "insert current narrative here...", 1900])
+            else:
+                startyear = self.getParameter("dyn_startyear")
+                timestep = float(self.getParameter("dyn_totyears"))/float(self.getParameter("dyn_breaks"))
+                self.__narratives.append(["Header"+str(i), "insert current narrative here...", int(startyear+float(i)*timestep)])
 
         if self.__projectinfo["dd_samemaster"] == 0:                     #If masterplan should change
             for i in range(int(paramlength)):
@@ -596,7 +601,7 @@ class UrbanBeatsSim(threading.Thread):
             startyear = self.getParameter("dyn_startyear")
             timestep = float(totaltime)/float(numbreaks)
         else:
-            startyear = 9999
+            startyear = 0
             timestep = 0
 
         self.updateObservers("Starting Simulation")
@@ -615,7 +620,8 @@ class UrbanBeatsSim(threading.Thread):
                 current = int(startyear + float(tab)*timestep)
                 self.updateObservers("Current Year: "+str(current))
             else:
-                current = 9999
+                startyear = tab
+                current = tab
                 self.updateObservers("Tab No. "+str(tab+1))
 
             #Current iteration index = tab's value
@@ -713,7 +719,7 @@ class UrbanBeatsSim(threading.Thread):
             self.updateObservers("PROGRESSUPDATE||"+str(int(90.0*progressincrement+incrementcount)))
             self.transferCurrentAssetsToCollection("pc")
             self.exportGIS(tab, "pc")
-            prevfile_basename_pc = self.getGISExportDetails()["Filename"]+"_"+str(tab)+"pc"    #Used to for dynamic cycle
+            prevfile_basename_pc = self.getGISExportDetails()["Filename"]+"_"+str(current)+"pc"    #Used to for dynamic cycle
             self.updateObservers("PROGRESSUPDATE||"+str(int(100.0*progressincrement+incrementcount)))
             incrementcount += 100.0*progressincrement
 
@@ -788,7 +794,7 @@ class UrbanBeatsSim(threading.Thread):
             self.updateObservers("Exporting Results")
             self.transferCurrentAssetsToCollection("ic")
             self.exportGIS(tab, "ic")
-            prevfile_basename_ic = self.getGISExportDetails()["Filename"]+"_"+str(tab)+"ic"    #Used for dynamic cycle
+            prevfile_basename_ic = self.getGISExportDetails()["Filename"]+"_"+str(current)+"ic"    #Used for dynamic cycle
             self.updateObservers("PROGRESSUPDATE||"+str(int(100*progressincrement+incrementcount)))
             incrementcount += 100.0*progressincrement
 

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'narrativegui.ui'
 #
-# Created: Fri Nov 01 14:01:21 2013
+# Created: Tue Nov 19 10:50:44 2013
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -59,7 +59,8 @@ class Ui_NarrativeDialog(object):
         self.horizontalLayout.setMargin(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.heading_lbl = QtGui.QLabel(self.heading_widget)
-        self.heading_lbl.setMinimumSize(QtCore.QSize(100, 0))
+        self.heading_lbl.setMinimumSize(QtCore.QSize(70, 0))
+        self.heading_lbl.setMaximumSize(QtCore.QSize(70, 16777215))
         self.heading_lbl.setWhatsThis(QtGui.QApplication.translate("NarrativeDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
         self.heading_lbl.setText(QtGui.QApplication.translate("NarrativeDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -71,6 +72,23 @@ class Ui_NarrativeDialog(object):
         self.heading_box = QtGui.QLineEdit(self.heading_widget)
         self.heading_box.setObjectName(_fromUtf8("heading_box"))
         self.horizontalLayout.addWidget(self.heading_box)
+        self.year_lbl = QtGui.QLabel(self.heading_widget)
+        self.year_lbl.setMinimumSize(QtCore.QSize(50, 0))
+        self.year_lbl.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.year_lbl.setWhatsThis(QtGui.QApplication.translate("NarrativeDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.year_lbl.setText(QtGui.QApplication.translate("NarrativeDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Year</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.year_lbl.setObjectName(_fromUtf8("year_lbl"))
+        self.horizontalLayout.addWidget(self.year_lbl)
+        self.year_spin = QtGui.QSpinBox(self.heading_widget)
+        self.year_spin.setMinimumSize(QtCore.QSize(50, 0))
+        self.year_spin.setMinimum(1900)
+        self.year_spin.setMaximum(3000)
+        self.year_spin.setObjectName(_fromUtf8("year_spin"))
+        self.horizontalLayout.addWidget(self.year_spin)
         self.verticalLayout_2.addWidget(self.heading_widget)
         self.narrative_box = QtGui.QPlainTextEdit(self.widget)
         self.narrative_box.setPlainText(QtGui.QApplication.translate("NarrativeDialog", "insert narrative description here...", None, QtGui.QApplication.UnicodeUTF8))

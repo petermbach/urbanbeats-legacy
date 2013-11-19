@@ -69,7 +69,7 @@ def exportGISShapeFile(activesim, tabindex, curcycle):
     """Exports the Active Simulation's Asset Data to the specified shapefiles requested
     using the Osgeo GDAL library"""
     #Get the following info:
-    if activesim.getParamaeter("simtype") == "D":
+    if activesim.getParameter("simtype") == "D":
         timestep = float(activesim.getParameter("dyn_totyears"))/float(activesim.getParameter("dyn_breaks"))
         startyear = float(activesim.getParameter("dyn_startyear"))
         current = int(startyear + float(tabindex)*timestep)
