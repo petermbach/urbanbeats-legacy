@@ -386,7 +386,8 @@ class WriteResults2MUSIC(UBModule):
         sysqty = self.getSystemQuantity(curSys)        
         sysarea = self.getEffectiveSystemArea(curSys)*sysqty
         sysedd = curSys.getAttribute("WDepth")
-        parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd)))), 72.0]
+        print sysarea, sysedd, sysqty
+        parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000.0*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd)))), 72.0]
         return parameter_list
     
     def prepareParametersPB(self, curSys, current_soilK):
