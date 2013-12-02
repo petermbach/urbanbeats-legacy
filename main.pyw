@@ -246,7 +246,7 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.pa_assessic.setEnabled(setstate)
         self.ui.pa_assesspc_help.setEnabled(setstate)
         self.ui.pa_assessic_help.setEnabled(setstate)
-        self.ui.pa_skippc.setEnabled(setstate)
+        self.ui.pa_skippc.setEnabled(0)
 
         self.ui.out_textrep_select.setEnabled(setstate)        
         self.ui.out_gis_maps.setEnabled(setstate)
@@ -276,7 +276,49 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.actionTechnology_Implementation.setEnabled(setstate)
         self.ui.actionPlanning_Cycle.setEnabled(setstate)
         self.ui.actionImplementation_Cycle.setEnabled(setstate)
-        
+
+    def disable_select_guis(self, state):
+        if state == "all":
+            self.ui.pa_skippc.setEnabled(0)
+        elif state == "basic":
+            self.ui.pc_techplacement.setEnabled(0)
+            self.ui.pc_techplacement_help.setEnabled(0)
+            self.ui.ic_dataset.setEnabled(0)
+            self.ui.ic_techimplement.setEnabled(0)
+            self.ui.ic_techimplement_help.setEnabled(0)
+            self.ui.pa_dataset.setEnabled(0)
+            self.ui.pa_assesspc.setEnabled(0)
+            self.ui.pa_assessic.setEnabled(0)
+            self.ui.pa_assesspc_help.setEnabled(0)
+            self.ui.pa_assessic_help.setEnabled(0)
+            self.ui.pa_skippc.setEnabled(0)
+            self.ui.actionCustomize_Technologies.setEnabled(0)
+            self.ui.actionTechnology_Implementation.setEnabled(0)
+            self.ui.actionPlanning_Cycle.setEnabled(0)
+            self.ui.actionImplementation_Cycle.setEnabled(0)
+        elif state == "techplan":
+            self.ui.ic_dataset.setEnabled(0)
+            self.ui.ic_techimplement.setEnabled(0)
+            self.ui.ic_techimplement_help.setEnabled(0)
+            self.ui.pa_dataset.setEnabled(0)
+            self.ui.pa_assesspc.setEnabled(0)
+            self.ui.pa_assessic.setEnabled(0)
+            self.ui.pa_assesspc_help.setEnabled(0)
+            self.ui.pa_assessic_help.setEnabled(0)
+            self.ui.pa_skippc.setEnabled(0)
+            self.ui.actionTechnology_Implementation.setEnabled(0)
+            self.ui.actionPlanning_Cycle.setEnabled(0)
+            self.ui.actionImplementation_Cycle.setEnabled(0)
+        elif state == "techimpl":
+            self.ui.pa_dataset.setEnabled(0)
+            self.ui.pa_assesspc.setEnabled(0)
+            self.ui.pa_assessic.setEnabled(0)
+            self.ui.pa_assesspc_help.setEnabled(0)
+            self.ui.pa_assessic_help.setEnabled(0)
+            self.ui.pa_skippc.setEnabled(0)
+            self.ui.actionPlanning_Cycle.setEnabled(0)
+            self.ui.actionImplementation_Cycle.setEnabled(0)
+
     def resetConfigInterface(self):
         n = self.ui.simconfig_tabs.count()
         self.ui.summaryBox0.setHtml("")
@@ -295,7 +337,7 @@ class MainWindow(QtGui.QMainWindow):
         self.resetDatabank(1)
         self.resetConfigInterface()        
         newsimulation = self.createNewProjectInstance()
-        self.setActiveSimulationObject(newsimulation)        
+        self.setActiveSimulationObject(newsimulation)
         return True        
 
     def processSetupParameters(self):
@@ -359,6 +401,17 @@ class MainWindow(QtGui.QMainWindow):
         activesim = self.getActiveSimulationObject()
         activesim.initializeSimulationCore()
         self.updateNewProject()
+        if activesim.getParameter("simtype") == "S":
+            if activesim.getParameter("sf_perfinclude") == 1:
+                self.disable_select_guis("all")
+            elif activesim.getParameter("sf_techimplinclude") == 1:
+                self.disable_select_guis("techimpl")
+            elif activesim.getParameter("sf_techplaninclude") == 1:
+                self.disable_select_guis("techplan")
+            else:
+                self.disable_select_guis("basic")
+        elif activesim.getParameter("simtype") == "D" and activesim.getParameter("df_perfinclude") == 0:
+            self.disable_select_guis("techimpl")
 
     def updateNewProject(self):
         self.processSetupParameters()
