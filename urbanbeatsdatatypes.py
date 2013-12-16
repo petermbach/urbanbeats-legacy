@@ -52,7 +52,9 @@ def importRasterData(filepath):
     dataarray = []
     for lines in f:
         a = lines.split()
+        #print a
         if linecounter <= 5:
+            print linecounter
             infoarray.append(float(a[1]))
         else:
             dataarray.append(a)

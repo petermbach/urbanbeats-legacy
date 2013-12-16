@@ -117,6 +117,7 @@ class GetPreviousBlocks(UBModule):
         if blockdatasource is None:
             self.notify("Error, could not open Blocks " + str(blockfile_name))
             map_attr.addAttribute("Impl_cycle", 1)      #No data so fake impl_cycle so that urbplanbb does not check redev
+            map_attr.addAttribute("TotalBlocks", 0)
             return False
         if self.patchesavailable:
             if patchdatasource is None:

@@ -114,6 +114,7 @@ class GetSystems(UBModule):
         if dataSource is None:
             self.notify("Error, could not open "+str(file_name))
             sys_global.addAttribute("TotalSystems", 0)
+            self.activesim.addAsset("SysPrevGlobal", sys_global)
             return False
         
         layer = dataSource.GetLayer()

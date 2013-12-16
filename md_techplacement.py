@@ -878,8 +878,11 @@ class Techplacement(UBModule):
                            int(self.ration_pollute)*float(self.pollute_pri),
                            int(self.ration_harvest)*float(self.harvest_pri)]
         prioritiessum = sum(self.priorities)
-        for i in range(len(self.priorities)):                                   #e.g. ALL and priorities 3,2,1 --> [3/6, 2/6, 1/6]
-            self.priorities[i] = self.priorities[i]/prioritiessum               #1, 2 and priorities 3,2,1 --> [3/5, 2/5, 0]
+        for i in range(len(self.priorities)):       #e.g. ALL and priorities 3,2,1 --> [3/6, 2/6, 1/6]
+            if prioritiessum == 0:
+                self.priorities[i] = 1
+            else:
+                self.priorities[i] = self.priorities[i]/prioritiessum               #1, 2 and priorities 3,2,1 --> [3/5, 2/5, 0]
         self.notify(self.priorities)
         self.notify("Now planning technologies")
         ###-------------------------------------------------------------------###
@@ -1325,7 +1328,7 @@ class Techplacement(UBModule):
         
         for i in ["tech", "env", "ecn", "soc"]:                     #Runs the check if the criteria was selected
             if eval("self.bottomlines_"+str(i)) == False:           #if not, creates a zero-length empty array
-                eval("mca_"+str(i)+" = []")
+                exec("mca_"+str(i)+" = []")
         
         mca_tech = self.rescaleMCAscorelists(mca_tech)
         mca_env = self.rescaleMCAscorelists(mca_env)
@@ -2218,7 +2221,7 @@ class Techplacement(UBModule):
         if scaleconditions[1] == 1 and age > avglife: #decom
             #self.notify("System too old, decommission")
             decision_matrix.append(3)
-        elif scaleconditions[0] == 1 and age > avglife/2: #renew
+        elif scaleconditions[0] == 1 and age > avglife/float(2.0): #renew
             #self.notify("System needs renewal because of age")
             decision_matrix.append(2)
         else: #keep
@@ -3983,7 +3986,10 @@ class Techplacement(UBModule):
         pdf = []
         cdf = []
         for i in range(len(score_matrix)):
-            pdf.append(score_matrix[i]/sum(score_matrix))
+            if sum(score_matrix) == 0:
+                pdf.append(1.0/float(len(score_matrix)))
+            else:
+                pdf.append(score_matrix[i]/sum(score_matrix))
         cumu_p = 0
         for i in range(len(pdf)):
             cumu_p += pdf[i]

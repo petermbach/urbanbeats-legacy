@@ -54,10 +54,10 @@ def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, t
             lotcount = float(strategyobject.getQuantity(i.getLandUse()))        #get lot-count based on land use
             
             #Sub-Score = (individual Tech score) x (imp served by tech / imp served by strategy) X number of techs implemented
-            mca_techsub += sum(tech[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-            mca_envsub += sum(env[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-            mca_ecnsub += sum(ecn[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-            mca_socsub += sum(soc[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+            if len(tech) != 0: mca_techsub += sum(tech[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+            if len(env) != 0: mca_envsub += sum(env[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+            if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+            if len(soc) != 0: mca_socsub += sum(soc[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
         
         mca_tech += mca_techsub * priorities[j]   #Before next loop, add the sub-scores, scaled by their priorities
         mca_env += mca_envsub * priorities[j]     #to the total criteria scores
@@ -182,10 +182,10 @@ def calculateBasinStrategyMCAScores(basinstrategyobject, priorities, techarray, 
         for i in subbasin:
             if subbasin[i] == 0.0:
                 continue
-            mca_techsub += sum(tech[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
-            mca_envsub += sum(env[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
-            mca_ecnsub += sum(ecn[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
-            mca_socsub += sum(soc[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
+            if len(tech) != 0: mca_techsub += sum(tech[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
+            if len(env) != 0: mca_envsub += sum(env[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
+            if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
+            if len(soc) != 0: mca_socsub += sum(soc[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
 
         techcumu += mca_techsub * float(priorities[j]) #add to the cumulative MCA scores, scaled by their relative priorities
         envcumu += mca_envsub * float(priorities[j])

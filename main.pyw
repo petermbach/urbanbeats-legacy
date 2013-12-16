@@ -885,7 +885,8 @@ class StartScreenLaunch(QtGui.QDialog):
 #            event.ignore()
         
 if __name__ == "__main__":
-    random.seed()    
+
+    random.seed()
     #Someone is launching this directly
     #Create the QApplication
     app = QtGui.QApplication(sys.argv)
@@ -899,7 +900,7 @@ if __name__ == "__main__":
     app.processEvents()
 
     # Simulate something that takes time
-    time.sleep(0)
+    time.sleep(2)
 
     #Main Window
     main_window = MainWindow()
