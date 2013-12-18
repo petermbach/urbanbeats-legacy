@@ -1184,7 +1184,7 @@ class Urbplanbb(UBModule):
             Wlot = Alot / Dlot
             #self.notify(str(DWperLot)+str(Nallotments)+str(Alot)+str(Wlot))
         
-        #self.notify( "For this block, we need "+str(DWperLot)+" dwellings on each allotment")
+        self.notify( "For this block, we need "+str(DWperLot)+" dwellings on each allotment")
         
         resdict["ResAllots"] = Nallotments
         resdict["ResDWpLot"] = DWperLot

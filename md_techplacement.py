@@ -2050,7 +2050,10 @@ class Techplacement(UBModule):
         allotments = currentAttList.getAttribute("ResAllots")
         Aimplot = currentAttList.getAttribute("ResLotEIA")
         self.notify("Allotments = "+str(allotments)+" of each "+str(Aimplot)+" sqm impervious")
-        max_houses = min((inblock_impdeficit/Aimplot)/allotments, 1)
+        if allotments == 0:
+            max_houses = 0
+        else:
+            max_houses = min((inblock_impdeficit/Aimplot)/allotments, 1)
         self.notify("A Lot Strategy in this Block would permit a maximum implementation in: "+str(max_houses*100)+"% of houses")
         currentAttList.addAttribute("MaxLotDeg", max_houses)
         
@@ -3732,11 +3735,15 @@ class Techplacement(UBModule):
             remainAimp_subbasinQTY = max(totalAimpQTY - subbas_treatedAimpQTY, 0)
             if bool(int(self.ration_runoff)) and totalAimpQTY != 0:
                 max_deg_matrix.append(remainAimp_subbasinQTY / totalAimpQTY)
-            
+            #else:
+                #max_deg_matrix.append(0)
+
             remainAimp_subbasinWQ = max(totalAimpWQ - subbas_treatedAimpWQ, 0)
             if bool(int(self.ration_pollute)) and totalAimpWQ != 0:
                 max_deg_matrix.append(remainAimp_subbasinWQ / totalAimpWQ)
-            
+            #else:
+                #max_deg_matrix.append(0)
+
             if self.hs_strategy == 'ud':
                 totSupply = 0
                 downstreamIDs = []      #the complete matrix of all downstream IDs from all upstream sbIDs
@@ -3764,7 +3771,10 @@ class Techplacement(UBModule):
             
             if bool(int(self.ration_harvest)) and totalDemREC != 0:
                 max_deg_matrix.append(remainDem_subbasinRec / totalDemREC)
-                
+            #else:
+                #max_deg_matrix.append(0)
+
+            print "Max_deg_matrix", max_deg_matrix
             #self.notify("Max Degre matrix: "+str(max_deg_matrix)
             max_degree = min(max_deg_matrix)+float(self.service_redundancy/100.0)  #choose the minimum, bring in allowance using redundancy parameter
             
