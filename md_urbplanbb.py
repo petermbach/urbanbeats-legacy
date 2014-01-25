@@ -1664,7 +1664,7 @@ class Urbplanbb(UBModule):
                 #We have Afloor and the adjusted num_floors
             else:
                 #self.notify( "Even ignoring plot ratio, floors exceeded, readjusting employment density" )
-                #Recalculate building footself.notify( based on plot ratio and recalculate employees
+                #Recalculate building footprint based on plot ratio and recalculate employees
                 #Use maximum floors and maximum building size within limits of plot ratio
                 num_floors = self.nres_maxfloors
                 Afloor = Afootprintmax * num_floors        #total floor area is now building footself.notify( * max number of floors

@@ -704,14 +704,14 @@ class UrbanBeatsSim(threading.Thread):
                 techplacement.run()
                 techplacement.detach(self.__observers)
 
-                musicExport = self.__musicexport[0]
-                musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
-                musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
-                musicExport.setParameter("masterplanmodel", 1)
-                musicExport.setParameter("currentyear", current)
-                musicExport.attach(self.__observers)
-                musicExport.run()
-                musicExport.detach(self.__observers)
+                #musicExport = self.__musicexport[0]
+                #musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
+                #musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
+                #musicExport.setParameter("masterplanmodel", 1)
+                #musicExport.setParameter("currentyear", current)
+                #musicExport.attach(self.__observers)
+                #musicExport.run()
+                #musicExport.detach(self.__observers)
 
             self.updateObservers("PROGRESSUPDATE||"+str(int(80.0*progressincrement+incrementcount)))
 
@@ -780,14 +780,14 @@ class UrbanBeatsSim(threading.Thread):
             techimplement.run()
             techimplement.detach(self.__observers)
 
-            musicExport = self.__musicexport[0]
-            musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
-            musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
-            musicExport.setParameter("masterplanmodel", 0)
-            musicExport.setParameter("currentyear", current)
-            musicExport.attach(self.__observers)
-            musicExport.run()
-            musicExport.detach(self.__observers)
+            #musicExport = self.__musicexport[0]
+            #musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
+            #musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
+            #musicExport.setParameter("masterplanmodel", 0)
+            #musicExport.setParameter("currentyear", current)
+            #musicExport.attach(self.__observers)
+            #musicExport.run()
+            #musicExport.detach(self.__observers)
             self.updateObservers("PROGRESSUPDATE||"+str(int(90*progressincrement+incrementcount)))
 
             #(5) Export

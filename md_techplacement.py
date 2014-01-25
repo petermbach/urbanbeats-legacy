@@ -514,8 +514,8 @@ class Techplacement(UBModule):
         self.RTdescur_path = "no file"  #path for design curve
         self.RTavglife = 20.0             #average life span of a raintank
         
-        self.RT_minsize = 0.0             #placeholders, do not actually matter
-        self.RT_maxsize = 9999.0
+        self.RTminsize = 0.0             #placeholders, do not actually matter
+        self.RTmaxsize = 9999.0
         
         #---SAND/PEAT/GRAVEL FILTER [SF]----------------------------------------
         self.createParameter("SFstatus", BOOL,"")
@@ -554,12 +554,12 @@ class Techplacement(UBModule):
         self.WSURdescur_path = "no file"  #path for design curve
         
         #Design Information
-        self.createParameter("WSURspec_EDD", DOUBLE,"")
+        self.createParameter("WSURspec_EDD", STRING,"")
         self.createParameter("WSURminsize", DOUBLE, "")
         self.createParameter("WSURmaxsize", DOUBLE,"")
         self.createParameter("WSURavglife", DOUBLE,"")
         self.createParameter("WSURexfil", DOUBLE, "") 
-        self.WSURspec_EDD = 0.75
+        self.WSURspec_EDD = "0.75"
         self.WSURminsize = 200.0
         self.WSURmaxsize = 9999999.0           #maximum surface area of system in sqm
         self.WSURavglife = 20.0             #average life span of a wetland
@@ -951,7 +951,7 @@ class Techplacement(UBModule):
             currentAttList.addAttribute("Manage_EIA", block_EIA)
         
         ###-------------------------------------------------------------------###
-        #---  SECOND LOOP - RETROFIT ALGORITH
+        #---  SECOND LOOP - RETROFIT ALGORITHM
         ###-------------------------------------------------------------------###
         #strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
         #totsystems = city.getComponent(strvec[0]).getAttribute("TotalSystems")
@@ -999,7 +999,7 @@ class Techplacement(UBModule):
         ###-------------------------------------------------------------------###
         
         #INITIALIZE THE DATABASE
-        ubdbpath = self.ubeatsdir+"/temp/ubeatsdb.db"
+        ubdbpath = self.ubeatsdir+"/temp/ubeatsdb2.db"
         if os.path.isfile(ubdbpath):
             os.remove(ubdbpath)
         self.sqlDB = sqlite3.connect(ubdbpath)
@@ -2414,10 +2414,10 @@ class Techplacement(UBModule):
         for j in techList:
             tech_applications = self.getTechnologyApplications(j)
             #self.notify("Current Tech: "+str(j)+" applications: "+str(tech_applications))
-            
+
             minsize = eval("self."+j+"minsize")         #gets the specific system's minimum allowable size
             maxsize = eval("self."+j+"maxsize")          #gets the specific system's maximum size
-            
+
             #Design curve path
             dcvpath = self.getDCVPath(j)            #design curve file as a string
             #self.notify(dcvpath)

@@ -643,15 +643,15 @@ class TechplacementGUILaunch(QtGui.QDialog):
         #Design Information
 
         #combo box with specs
-        if self.module.getParameter("PBspec_MD") == 0.25:
+        if self.module.getParameter("PBspec_MD") == "0.25":
             self.ui.PBspecs_combo.setCurrentIndex(0)
-        elif self.module.getParameter("PBspec_MD") == 0.50:
+        elif self.module.getParameter("PBspec_MD") == "0.50":
             self.ui.PBspecs_combo.setCurrentIndex(1)
-        elif self.module.getParameter("PBspec_MD") == 0.75:
+        elif self.module.getParameter("PBspec_MD") == "0.75":
             self.ui.PBspecs_combo.setCurrentIndex(2)
-        elif self.module.getParameter("PBspec_MD") == 1.00:
+        elif self.module.getParameter("PBspec_MD") == "1.00":
             self.ui.PBspecs_combo.setCurrentIndex(3)
-        elif self.module.getParameter("PBspec_MD") == 1.25:
+        elif self.module.getParameter("PBspec_MD") == "1.25":
             self.ui.PBspecs_combo.setCurrentIndex(4)
 
         if self.module.getParameter("PBexfil") == 0:
@@ -736,17 +736,17 @@ class TechplacementGUILaunch(QtGui.QDialog):
 
         #Design Information
         #combo box with specs
-        if self.module.getParameter("WSURspec_EDD") == 0.25:
+        if self.module.getParameter("WSURspec_EDD") == "0.25":
             self.ui.WSURspecs_combo.setCurrentIndex(0)
-        elif self.module.getParameter("WSURspec_EDD") == 0.50:
+        elif self.module.getParameter("WSURspec_EDD") == "0.50":
             self.ui.WSURspecs_combo.setCurrentIndex(1)
-        elif self.module.getParameter("WSURspec_EDD") == 0.75:
+        elif self.module.getParameter("WSURspec_EDD") == "0.75":
             self.ui.WSURspecs_combo.setCurrentIndex(2)
-        elif self.module.getParameter("WSURspec_EDD") == 0.25:
+        elif self.module.getParameter("WSURspec_EDD") == "0.25":
             self.ui.WSURspecs_combo.setCurrentIndex(3)
-        elif self.module.getParameter("WSURspec_EDD") == 0.50:
+        elif self.module.getParameter("WSURspec_EDD") == "0.50":
             self.ui.WSURspecs_combo.setCurrentIndex(4)
-        elif self.module.getParameter("WSURspec_EDD") == 0.75:
+        elif self.module.getParameter("WSURspec_EDD") == "0.75":
             self.ui.WSURspecs_combo.setCurrentIndex(5)
 
         if self.module.getParameter("WSURexfil") == 0:
