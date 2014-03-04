@@ -28,12 +28,12 @@ __author__ = 'Peter M Bach'
 
 import os
 
-def writeLeafletScript(viewmode, filepath, filename):
+def writeLeafletScript(viewmode, filepath, filename, options_root):
     """Creates the HTML code for the leafletjs map, returns a string object with html code"""
 
     htmlscript = ""
     htmlscript += writeLeafletHeader(viewmode)
-    htmlscript += writeLeafletBody(viewmode, filepath, filename)
+    htmlscript += writeLeafletBody(viewmode, filepath, filename, options_root)
     htmlscript += """</html>"""
 
     return htmlscript
@@ -58,9 +58,9 @@ def writeLeafletHeader(viewmode):
     """
     return htmlscript
 
-def writeLeafletBody(viewmode, filepath, filename):
+def writeLeafletBody(viewmode, filepath, filename, options_root):
     """Writes the main body of the leaflet map"""
-    blocksfile = open(os.path.dirname(__file__)+"\\temp\\tempgeojson_0pc_Blocks.geojson")
+    blocksfile = open(options_root+"\\temp\\tempgeojson_0pc_Blocks.geojson")
     blockscode = """ """
     for lines in blocksfile:
         blockscode += lines
@@ -71,7 +71,7 @@ def writeLeafletBody(viewmode, filepath, filename):
     if viewmode == "on":
         linkrel = """<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>"""
     else:
-        linkrel = """<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/leafletjs-0.6.4/leaflet.js\"></script> """
+        linkrel = """<script src=\""""+options_root+"""/ancillary/leafletjs-0.6.4/leaflet.js\"></script> """
 
     htmlscript = """
     <body>

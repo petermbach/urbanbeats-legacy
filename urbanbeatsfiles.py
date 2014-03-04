@@ -342,13 +342,13 @@ def importDataArchiveFile(activesim, filename, filetype):
     if filetype == "ubs": arch.close()
     return True
 
-def readGlobalOptionsConfig():
+def readGlobalOptionsConfig(root_directory):
     """Reads the config file of global options and returns the dictionary of global options."""
     global_options = {}
-    f = open(os.path.dirname(__file__)+"/config.cfg",'r')
+    f = open(root_directory+"/config.cfg",'r')
     if f == None:
         resetGlobalOptions()
-        f = open(os.path.dirname(__file__)+"/config.cfg",'r')
+        f = open(root_directory+"/config.cfg",'r')
     for lines in f:
         if lines == "":
             continue
@@ -358,17 +358,17 @@ def readGlobalOptionsConfig():
     f.close()
     return global_options
 
-def updateConfigFromOptions(newoptions):
+def updateCFGFromOptions(newoptions, root_directory):
     """Updates the configuration of the program and its simulations by overwriting the config file"""
-    f = open(os.path.dirname(__file__)+"/config.cfg", 'w')
+    f = open(root_directory+"/config.cfg", 'w')
     for entry in newoptions.keys():
         f.write(str(entry)+"*||*"+str(newoptions[entry])+"\n")
     f.close()
     return True
 
-def resetGlobalOptions():
+def resetGlobalOptions(root_directory):
     """Resets the .cfg file in the root directory to the original options"""
-    f = open(os.path.dirname(__file__)+"/config.cfg", 'w')
+    f = open(root_directory+"/config.cfg", 'w')
     for key in default_global_options.keys():
         f.write(str(key)+"*||*"+str(default_global_options[key])+"\n")
     f.close()

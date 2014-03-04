@@ -46,7 +46,7 @@ def createDataStringFromData(datadict):
     datastrings += ']'
     return datastrings
 
-def line_basic(charttitle, categories, xlabel, ylabel, valueunits, datadict):
+def line_basic(options_root, charttitle, categories, xlabel, ylabel, valueunits, datadict):
     """Basic Line Chart (as seen @ http://www.highcharts.com/demo/line-basic)
         - charttitle = title of the chart
         - categories = categories for the chart, x-axis labels e.g. ['Jan', 'Feb', 'Mar', etc.] matrix form
@@ -112,7 +112,7 @@ def line_basic(charttitle, categories, xlabel, ylabel, valueunits, datadict):
     </script>
     </head>
     <body>
-        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; min-height: 400px; margin: 0 auto"></div>
     </body>
     </html>
@@ -252,15 +252,15 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
-<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts-more.js"></script>
+<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts-more.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 	</body>
 </html>"""
     return htmlscript    
 
-def bar_basic(charttitle, categories, axislabel, valueunits, datadict):
+def bar_basic(options_root, charttitle, categories, axislabel, valueunits, datadict):
     """Basic Bar Chart (Horizontal) (as seen @ http://www.highcharts.com/demo/bar-basic)
         - charttitle = title of the chart    
         - categories = categories for the chart, x-axis labels e.g. ['Jan', 'Feb', 'Mar', etc.] matrix form
@@ -335,13 +335,13 @@ def bar_basic(charttitle, categories, axislabel, valueunits, datadict):
         </script>
     </head>
     <body>
-        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
     </body>
     </html>"""    
     return htmlscript
     
-def bar_negative_stack(charttitle, categories, datadict):
+def bar_negative_stack(options_root, charttitle, categories, datadict):
     """Bar chart with negative stack (as seen @ http://www.highcharts.com/demo/bar-negative-stack)"""
     datastrings = createDataStringFromData(datadict)
     htmlscript = """ 
@@ -408,7 +408,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
 
 <div id="container" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
 
@@ -416,7 +416,7 @@ $(function () {
 </html>"""
     return htmlscript
 
-def column_basic(charttitle, categories, axislabel, labelformat, valueunits, datadict):
+def column_basic(options_root, charttitle, categories, axislabel, labelformat, valueunits, datadict):
     """Basic Column Chart (as seen @ http://www.highcharts.com/demo/column-basic)
         - charttitle = title of the chart
         - categories = categories of the column chart
@@ -476,7 +476,7 @@ def column_basic(charttitle, categories, axislabel, labelformat, valueunits, dat
         </script>
     </head>
     <body>
-        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
     </body>
     </html>
@@ -484,7 +484,7 @@ def column_basic(charttitle, categories, axislabel, labelformat, valueunits, dat
     """
     return htmlscript
 
-def column_stacked(charttitle, categories, ylabel, datadict):
+def column_stacked(options_root, charttitle, categories, ylabel, datadict):
     """Stacked column chart (as seen @ http://www.highcharts.com/demo/column-stacked)"""
     datastrings = createDataStringFromData(datadict)
     htmlscript = """ 
@@ -551,7 +551,7 @@ def column_stacked(charttitle, categories, ylabel, datadict):
 		</script>
 	</head>
 	<body>
-        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
     </html>"""
@@ -707,13 +707,13 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
 </html>"""    
     return htmlscript
 
-def pie_basic(charttitle, seriesname, datadict):
+def pie_basic(options_root, charttitle, seriesname, datadict):
     """Basic Pie Chart (as seen @ http://www.highcharts.com/demo/pie-basic)
         - charttitle = title of the chart 
         - seriesname = name of the data being passed through to the plotting function
@@ -767,7 +767,7 @@ def pie_basic(charttitle, seriesname, datadict):
         </script>
     </head>
     <body>
-        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
     </body>
     </html>"""
@@ -922,7 +922,7 @@ $(function () {
 </html>"""
     return htmlscript
 
-def scatter_plot(charttitle, xlabel, ylabel, markersize, valueunitsX, valueunitsY, datadict):
+def scatter_plot(options_root, charttitle, xlabel, ylabel, markersize, valueunitsX, valueunitsY, datadict):
     """Scatter Plot (as seen @ http://www.highcharts.com/demo/scatter)"""
     datastrings = createDataStringFromData(datadict)
     htmlscript = """ 
@@ -1000,7 +1000,7 @@ def scatter_plot(charttitle, xlabel, ylabel, markersize, valueunitsX, valueunits
 		</script>
 	</head>
 	<body>
-        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
     </html>"""
@@ -1197,14 +1197,14 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 	</body>
 </html>"""
     return htmlscript
 
-def box_plot(charttitle, categories, xlabel, ylabel, valueunits, datadict):
+def box_plot(options_root, charttitle, categories, xlabel, ylabel, valueunits, datadict):
     """Box & Whisker Plot (as seen @ http://www.highcharts.com/demo/box-plot)"""
     htmlscript = """
     <!DOCTYPE HTML>
@@ -1264,14 +1264,14 @@ def box_plot(charttitle, categories, xlabel, ylabel, valueunits, datadict):
         </script>
     </head>
     <body>
-        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
-        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts-more.js"></script>
+        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts-more.js"></script>
         <div id="container" style="height: 400px; margin: auto; min-width: 400px; max-width: 600px"></div>
     </body>
     </html>"""
     return htmlscript
 
-def spiderweb(charttitle, categories, valueunits, datadict):
+def spiderweb(options_root, charttitle, categories, valueunits, datadict):
     """Spiderweb Plot (as seen @ http://www.highcharts.com/demo/polar-spider)"""
     datastrings = createDataStringFromData(datadict)
     htmlscript = """ 
@@ -1320,8 +1320,8 @@ def spiderweb(charttitle, categories, valueunits, datadict):
 	</script>
 	</head>
 	<body>
-        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
-        <script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts-more.js"></script>
+        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts-more.js"></script>
         <div id="container" style="width: 700px; height: 400px; margin: 0 auto"></div>
 	</body>
     </html>"""
@@ -1694,7 +1694,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
 </html>"""

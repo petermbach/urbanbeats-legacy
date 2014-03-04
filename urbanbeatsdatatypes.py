@@ -28,7 +28,6 @@ import os, time
 import ogr2ogr
 
 proj4wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
-filepath = os.path.dirname(__file__)
 
 def importRasterData(filepath):
     """Imports a raster data file and creates an output rasterdata object, which contains
@@ -1007,6 +1006,7 @@ def exportBlockCentre(filename, assets, miscoptions, map_attr, kmlbool):
     return True
 
 def writeGeoJSONTempFiles(activesim, tabindex, curcycle):
+    filepath = activesim.getGlobalOptionsRoot()
     gisoptions = activesim.getGISExportDetails()
     map_data = activesim.getAssetWithName("MapAttributes")
     fname = "tempgeojson_"+str(tabindex)+str(curcycle)
@@ -1033,11 +1033,11 @@ def writeGeoJSONTempFiles(activesim, tabindex, curcycle):
 
     #Get all assets from activesim
     assets = activesim.getAssetsWithIdentifier("BlockID")
-    writeBuildingBlocksGeoJSON(fname, assets, miscoptions, map_data, tech_incl)
-    writeFlowPathsGeoJSON(fname, assets, miscoptions, map_data)
+    writeBuildingBlocksGeoJSON(filepath, fname, assets, miscoptions, map_data, tech_incl)
+    writeFlowPathsGeoJSON(filepath, fname, assets, miscoptions, map_data)
     return True
 
-def writeBuildingBlocksGeoJSON(filename, assets, miscoptions, map_attr, tech_incl):
+def writeBuildingBlocksGeoJSON(filepath, filename, assets, miscoptions, map_attr, tech_incl):
     """Writes all Blocks to a GeoJSON output file, which is then loaded in the leaflet viewer of UrbanBEATS.
     One file per simulation snapshot/time step is written and loaded individually based on the position in the
     timeline in the results viewer.
@@ -1092,7 +1092,7 @@ def writeBuildingBlocksGeoJSON(filename, assets, miscoptions, map_attr, tech_inc
     f.close()
     return geojsonstring
 
-def writeFlowPathsGeoJSON(filename, assets, miscoptions, map_attr):
+def writeFlowPathsGeoJSON(filepath, filename, assets, miscoptions, map_attr):
 
     return True
 

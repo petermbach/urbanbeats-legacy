@@ -45,6 +45,7 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.ui = Ui_ResultsBrowseDialog()
         self.ui.setupUi(self)
         self.module = activesim
+        self.options_root = activesim.getGlobalOptionsRoot()
         #Add children to TreeWidget
         self.ui.ue_categoryTree.clear()
 
@@ -63,13 +64,8 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.ui.ps_WebView.setHtml(summaryhtml)
 
         #SPATIAL MAP VIEWER - LEAFLET MAP TILES
-        self.htmlscript0 = ubleafletjs.writeLeafletScript("off", self.project_path, self.map_files)
+        self.htmlscript0 = ubleafletjs.writeLeafletScript("off", self.project_path, self.map_files, self.options_root)
         self.ui.sm_WebView.setHtml(self.htmlscript0)
-
-
-
-
-
 
 
         #URBAN ENVIRONMENT RESULTS
@@ -108,13 +104,13 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         testxlabel = "Month of the year"
         testylabel = "Temperature (degrees Celcius)"
         testunits = "oC"
-        self.htmlscript1 = ubhighcharts.line_basic(testcharttitle, testcategories, testxlabel, testylabel, testunits, testdatadict)
+        self.htmlscript1 = ubhighcharts.line_basic(self.options_root, testcharttitle, testcategories, testxlabel, testylabel, testunits, testdatadict)
 
         #Data Prep for CATEGORY 2
         testcharttitle = "Utilisation of WSUD within Project Region"
         testseriesname = "Technology Type"
         testdatadict = {"Biofilters":35.0, "Infiltration":10.0, "Swales":26.8, "Ponds":12.8, "Greywater":8.5, "Wetlands":6.2, "Raintanks":0.7}        
-        self.htmlscript2 = ubhighcharts.pie_basic(testcharttitle, testseriesname, testdatadict)
+        self.htmlscript2 = ubhighcharts.pie_basic(self.options_root, testcharttitle, testseriesname, testdatadict)
 
         #Data Prep for CATEGORY 3
         testcharttitle = "BasicBarChartExample"
@@ -125,7 +121,7 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
                         "Year 1900":[133, 156, 947, 408, 6],
                         "Year 2008":[973, 914, 4054, 732, 34],
                         "Year 2013":[1000, 999, 4800, 922, 100]}                
-        self.htmlscript3 = ubhighcharts.bar_basic(testcharttitle, testcategories, testlabel, testunits, testdatadict)        
+        self.htmlscript3 = ubhighcharts.bar_basic(self.options_root, testcharttitle, testcategories, testlabel, testunits, testdatadict)
         
         #Data Prep for CATEGORY 4
         testcharttitle = "BasicColumnChartExample"
@@ -137,7 +133,7 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         testlabel = "Rainfall [mm]"
         labelformat = [-45, 'right', 13, 'Verdana, sans-serif']
         testunits = "mm"        
-        self.htmlscript4 = ubhighcharts.column_basic(testcharttitle, testcategories, testlabel, labelformat, testunits, testdatadict)
+        self.htmlscript4 = ubhighcharts.column_basic(self.options_root, testcharttitle, testcategories, testlabel, labelformat, testunits, testdatadict)
 
         #Data Prep for CATEGORY 5
         testcharttitle = "ScatterPlotExample"
@@ -194,13 +190,13 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
                     [193.0, 95.9], [171.4, 91.4], [177.8, 81.8], [177.8, 96.8], [167.6, 69.1],[167.6, 82.7], [180.3, 75.5], [182.9, 79.5], [176.5, 73.6], [186.7, 91.8],
                     [188.0, 84.1], [188.0, 85.9], [177.8, 81.8], [174.0, 82.5], [177.8, 80.5],[171.4, 70.0], [185.4, 81.8], [185.4, 84.1], [188.0, 90.5], [188.0, 91.4],
                     [182.9, 89.1], [176.5, 85.0], [175.3, 69.1], [175.3, 73.6], [188.0, 80.5]]}
-        self.htmlscript5 = ubhighcharts.scatter_plot(testcharttitle, "Height(cm)", "Weight(cm)", 4, "cm", "kg", testdatadict)
+        self.htmlscript5 = ubhighcharts.scatter_plot(self.options_root, testcharttitle, "Height(cm)", "Weight(cm)", 4, "cm", "kg", testdatadict)
 
         #Data Prep for CATEGORY 6
         testcharttitle = "Spiderweb Example"
         testcategories = ["RES", "COM", "HI", "LI", "ORC", "PG", "REF", "RD", "TR", "CIV", "NA", "UND"]
         testdatadict = {"Block 57":[50, 0, 0, 0, 0, 10, 5, 7, 0,10,0,18], "Block 77": [30, 20, 0, 20, 0,0,30,0,0,0,0,0]}
-        self.htmlscript6 = ubhighcharts.spiderweb(testcharttitle,testcategories, "%", testdatadict)
+        self.htmlscript6 = ubhighcharts.spiderweb(self.options_root, testcharttitle,testcategories, "%", testdatadict)
 
         #Data Prep for CATEGORY 7
         testcharttitle = "Boxplot Example"
@@ -209,7 +205,7 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         #takes the index of the categories vector (starting from zero 0)
         testdatadict = {"Data": [[20, 23, 26, 28, 34], [11, 16, 18, 20, 27], [34, 37, 42, 49, 50], [23, 27, 33, 36, 40], [11, 13, 17, 21, 24], [54, 58, 61, 63, 68]],
                         "Outliers": [[0,13],[0, 14],[1, 44],[3, 70],[3,20],[5, 32]]}
-        self.htmlscript7 = ubhighcharts.box_plot(testcharttitle, testcategories, "Fruit Type", "Distribution", "kg", testdatadict)
+        self.htmlscript7 = ubhighcharts.box_plot(self.options_root, testcharttitle, testcategories, "Fruit Type", "Distribution", "kg", testdatadict)
 
         #Data Prep for CATEGORY 8
         testcharttitle = "Negative Stack Example"
@@ -218,13 +214,13 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         testcategories = ["Population", "Developed Area", "Age", "Wealth", "Employment", "Runoff", "Evaporation", "Planning", "WSUD"]
         testdatadict = {'Basin 7':[-1746181, -1884428, -2089758, -2222362, -2537431, -2507081, -2443179,-2664537, -3556505],
                         'Basin 9':[1656154, 1787564, 1981671, 2108575, 2403438, 2366003, 2301402, 2519874,3360596]}
-        self.htmlscript8 = ubhighcharts.bar_negative_stack(testcharttitle, testcategories, testdatadict)
+        self.htmlscript8 = ubhighcharts.bar_negative_stack(self.options_root, testcharttitle, testcategories, testdatadict)
 
         #Data Prep for CATEGORY 9
         testcharttitle = "StackedColumn Example"
         testcategories = ["Apples", "Oranges", "Grapes", "Watermelons"]
         testdatadict = {"John":[2, 3, 2, 5], "Kate":[1, 5, 4, 2], "Elizabeth":[3, 3, 2, 1], "James":[2, 1, 2, 2]}
-        self.htmlscript9 = ubhighcharts.column_stacked(testcharttitle,testcategories,"Total Consumption", testdatadict)
+        self.htmlscript9 = ubhighcharts.column_stacked(self.options_root, testcharttitle,testcategories,"Total Consumption", testdatadict)
 
         #Test - Click on Export Button to plot a chart in the GUI
         self.connect(self.ui.ue_categoryTree, QtCore.SIGNAL("itemSelectionChanged()"), self.plotHighChart)

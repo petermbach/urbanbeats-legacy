@@ -35,15 +35,16 @@ import urbanbeatsfiles as ubfiles
 import md_delinblocks, md_urbplanbb, md_techplacement, md_techimplement#, md_perfassess
 import md_getpreviousblocks, md_getsystems, md_writeMUSICsim
 
-emptyBlockPath = os.path.dirname(__file__)+str("/ancillary/emptyblockmap.shp")
-emptySysPath = os.path.dirname(__file__)+str("/ancillary/emptysystemsmap.shp")
-
 # ------ CLASS DEFINITION -------
 class UrbanBeatsSim(threading.Thread):
-    def __init__(self):
+    def __init__(self, options_root):
         threading.Thread.__init__(self)
         #Simulation object of UrbanBEATS, contains the full details of one simulation
-        global_options = ubfiles.readGlobalOptionsConfig()
+        self.__options_root = options_root
+        global_options = ubfiles.readGlobalOptionsConfig(self.__options_root)
+
+        self.emptyBlockPath = self.__options_root+str("/ancillary/emptyblockmap.shp")
+        self.emptySysPath = self.__options_root+str("/ancillary/emptysystemsmap.shp")
         #Observer, Status and Filename
         self.__observers = []         #Observers of the current simulation
         self.__simulation_has_completed = 0
@@ -157,6 +158,10 @@ class UrbanBeatsSim(threading.Thread):
     def registerObserver(self, observerobj):
         """Registers an object as an observer into the simulation's observer array"""
         self.__observers.append(observerobj)
+
+    def getGlobalOptionsRoot(self):
+        """Returns the path to the ancillary folder and options folder"""
+        return self.__options_root
 
     def updateObservers(self, message):
         for observer in self.__observers:
@@ -605,7 +610,7 @@ class UrbanBeatsSim(threading.Thread):
             timestep = 0
 
         self.updateObservers("Starting Simulation")
-        global_options = ubfiles.readGlobalOptionsConfig()
+        global_options = ubfiles.readGlobalOptionsConfig(self.__options_root)
 
         if len(self.__techimplement) == 0:
             progressincrement = 1.0/float(self.__tabs)   #1 divided by number of tabs e.g. 4 tabs, each tab will be 25% of progress bar
@@ -633,21 +638,21 @@ class UrbanBeatsSim(threading.Thread):
             self.resetAssets()  #Reset the asset vector
             #(1) Set files for previous systems and blocks
             if tab == 0:    #First iteration
-                self.__getprevBlocks[0].setParameter("block_path_name", emptyBlockPath)
+                self.__getprevBlocks[0].setParameter("block_path_name", self.emptyBlockPath)
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
-                self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
+                self.__getprevBlocks[0].setParameter("patch_path_name", self.emptyBlockPath)
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
             elif self.getParameter("simtype") in ["S", "B"]:   #Static or benchmarking simulation?
-                self.__getprevBlocks[0].setParameter("block_path_name", emptyBlockPath) #PREVIOUS SIMULATION
+                self.__getprevBlocks[0].setParameter("block_path_name", self.emptyBlockPath) #PREVIOUS SIMULATION
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
-                self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
+                self.__getprevBlocks[0].setParameter("patch_path_name", self.emptyBlockPath)
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
             else:   #We're in a dynamic simulation
                 prevblocksfname = str(self.getActiveProjectPath()+"/"+prevfile_basename_ic+"_Blocks.shp")
                 self.updateObservers("Obtaining previous Blocks: "+str(prevblocksfname))
                 self.__getprevBlocks[0].setParameter("block_path_name", prevblocksfname) #PREVIOUS SIMULATION
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
-                self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
+                self.__getprevBlocks[0].setParameter("patch_path_name", self.emptyBlockPath)
                 self.__getprevBlocks[0].setParameter("patchesavailable", 0)
 
             #(2) Delinblocks
@@ -677,10 +682,10 @@ class UrbanBeatsSim(threading.Thread):
             if len(self.__techplacement) > 0:
                 if tab == 0:
                     self.__getSystems[0].setParameter("ubeats_file", 1)
-                    self.__getSystems[0].setParameter("path_name", emptySysPath)
+                    self.__getSystems[0].setParameter("path_name", self.emptySysPath)
                 elif self.getParameter("simtype") in ["S", "B"]:
                     self.__getSystems[0].setParameter("ubeats_file", 1)
-                    self.__getSystems[0].setParameter("path_name", emptySysPath)
+                    self.__getSystems[0].setParameter("path_name", self.emptySysPath)
                 else:
                     prevsysfile = str(str(self.getActiveProjectPath())+"/"+prevfile_basename_ic+"_ImplementedWSUD.shp")
                     self.__getSystems[0].setParameter("ubeats_file", 1)
@@ -746,7 +751,7 @@ class UrbanBeatsSim(threading.Thread):
             self.updateObservers("Obtaining previous Blocks: "+str(prevblocksfname))
             self.__getprevBlocks[0].setParameter("block_path_name", prevblocksfname)
             self.__getprevBlocks[0].setParameter("patchesavailable", 0)
-            self.__getprevBlocks[0].setParameter("patch_path_name", emptyBlockPath)
+            self.__getprevBlocks[0].setParameter("patch_path_name", self.emptyBlockPath)
             self.__getprevBlocks[0].setParameter("implementationcycle", 1)
 
             getPrevBlocks = self.__getprevBlocks[0]

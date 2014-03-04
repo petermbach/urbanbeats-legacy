@@ -172,7 +172,7 @@ class MainWindow(QtGui.QMainWindow):
 
 
     def createNewProjectInstance(self):
-        newsimulation = ubc.UrbanBeatsSim()
+        newsimulation = ubc.UrbanBeatsSim(UBEATSROOT)
         newsimulation.registerObserver(self.consoleobserver)
         return newsimulation
     
@@ -201,9 +201,9 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.ubeatsConsole.appendPlainText(str(time.asctime())+" | "+str(textmessage))
         return True
 
-    def setOptionsFromConfig(self):
+    def setOptionsFromConfig(self, root_directory):
         """Sets current program options based on the .cfg file in the root folder"""
-        self.__global_options = ubfiles.readGlobalOptionsConfig()
+        self.__global_options = ubfiles.readGlobalOptionsConfig(root_directory)
         return True
 
     def getConfigOptions(self, name):
@@ -217,12 +217,12 @@ class MainWindow(QtGui.QMainWindow):
 
     def updateConfigFromOptions(self):
         """Updates the configuration of the program and its simulations by overwriting the config file"""
-        ubfiles.updateConfigFromOptions(self.__global_options)
+        ubfiles.updateCFGFromOptions(self.__global_options, UBEATSROOT)
         return True
 
     def resetConfigFile(self):
-        ubfiles.resetGlobalOptions()
-        self.setOptionsFromConfig()
+        ubfiles.resetGlobalOptions(UBEATSROOT)
+        self.setOptionsFromConfig(UBEATSROOT)
         return True
 
     ################################
@@ -883,14 +883,16 @@ class StartScreenLaunch(QtGui.QDialog):
 #            event.accept()
 #        else:
 #            event.ignore()
-        
+
 if __name__ == "__main__":
+
+    UBEATSROOT = os.path.dirname(sys.argv[0])
 
     random.seed()
     #Someone is launching this directly
     #Create the QApplication
     app = QtGui.QApplication(sys.argv)
-    
+
     splash_matrix = ["river", "city", "forest", "fountain"]
     #Splash Screen
     splash_pix = QtGui.QPixmap("splash"+splash_matrix[random.randint(0,3)]+"800.png")
@@ -909,7 +911,7 @@ if __name__ == "__main__":
     #Enter the main loop
 
     start_screen = StartScreenLaunch()
-    main_window.setOptionsFromConfig()
+    main_window.setOptionsFromConfig(UBEATSROOT)
     QtCore.QObject.connect(start_screen, QtCore.SIGNAL("startupOpen"), main_window.openExistingProject)
     QtCore.QObject.connect(start_screen, QtCore.SIGNAL("startupNew"), main_window.beginNewProjectDialog) 
     start_screen.exec_()    
