@@ -1034,22 +1034,29 @@ class Urbplanbb(UBModule):
             unc_Aperv = A_unc - unc_Aimp
             if self.unc_landirrigate:   #determine if land needs to be irrigated
                 irrigateextra = unc_Aperv  #Add area to public irrigation
-            
+            else:
+                irrigateextra = 0
+
             otherarea = A_unc
             otherimp = unc_Aimp
             undevextra, pgextra, refextra, rdextra = 0,0,0,0
         elif self.unc_merge and (A_park + A_ref + A_rd) > 0:            #Case 2: Merge area with other LUCs
-            weights = [self.unc_pgmerge * self.unc_pgmerge_w * bool(A_park > 0),
-                       self.unc_refmerge * self.unc_refmerge_w * bool(A_ref > 0),
-                       self.unc_rdmerge * self.unc_rdmerge_w * bool(A_rd > 0)]
-            finaldiv = []
-            for i in weights:
-                #Tally up division of areas
-                finaldiv.append(A_unc * i/sum(weights))
-            pgextra = finaldiv[0]
-            refextra = finaldiv[1]
-            rdextra = finaldiv[2]                       
-            undevextra, otherarea, otherimp, irrigateextra = 0, 0, 0, 0
+            weights = [self.unc_pgmerge * float(self.unc_pgmerge_w) * bool(A_park > 0),
+                       self.unc_refmerge * float(self.unc_refmerge_w) * bool(A_ref > 0),
+                       self.unc_rdmerge * float(self.unc_rdmerge_w) * bool(A_rd > 0)]
+
+            if sum(weights) == 0:
+                undevextra = A_unc
+                otherarea, otherimp, pgextra, refextra, rdextra, irrigateextra = 0, 0, 0, 0, 0, 0
+            else:
+                finaldiv = []
+                for i in weights:
+                    #Tally up division of areas
+                    finaldiv.append(A_unc * i/sum(weights))
+                pgextra = finaldiv[0]
+                refextra = finaldiv[1]
+                rdextra = finaldiv[2]
+                undevextra, otherarea, otherimp, irrigateextra = 0, 0, 0, 0
         else:                                                           #Case 3: Neither option was checked
             undevextra = A_unc
             pgextra, refextra, rdextra, otherarea, otherimp, irrigateextra = 0,0,0,0,0,0

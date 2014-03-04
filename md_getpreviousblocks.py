@@ -67,7 +67,6 @@ class GetPreviousBlocks(UBModule):
         self.cycletype = "pc"       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
         self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
         self.activesim = activesim      #UBCORE
-
         self.createParameter("implementationcycle", BOOL, "")
         self.createParameter("patchesavailable", BOOL, "")
         self.createParameter("block_path_name",STRING,"")
