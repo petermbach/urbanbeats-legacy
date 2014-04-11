@@ -2849,7 +2849,7 @@ class Techplacement(UBModule):
                     AsystemRecQty = eval('td.sizeStoreArea_PB('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
                     addstore = [storeObj, AsystemRecQty, "PB", 0]
                 #Calculate new area by adding BF area to Pond/Tank Area
-                if AsystemRecWQ[0] in [np.inf or None] or AsystemRecQty[0] in [None]:
+                if AsystemRecWQ[0] in [np.inf, None] or AsystemRecQty[0] in [np.inf, None]:
                     AsystemRec = [None, 1]
                 else:
                     AsystemRec = [AsystemRecWQ[0] + AsystemRecQty[0], AsystemRecWQ]       #Planning Area to check for
