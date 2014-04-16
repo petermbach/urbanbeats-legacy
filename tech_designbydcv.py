@@ -43,7 +43,7 @@ def retrieveDesign(pathname, systemtype, ksat, targets):
 
 
 def readDCVFile(pathfname, systemtype):
-    f = open(pathfname, 'r')
+    f = open(pathfname, 'r')    #Note: must do conversion to raw string or else will not work on some PCs
     designcurve = []
     for lines in f:
         designcurve.append(lines.split(','))          
