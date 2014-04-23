@@ -14,7 +14,7 @@
    <string>Spatial Delineation Module</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../ub_modules/resources/dialogimg.qrc">
+   <iconset resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">
     <normaloff>:/general/ublogo33.png</normaloff>:/general/ublogo33.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -96,7 +96,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
+       <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="dbsubtitle_2">
@@ -1073,7 +1073,7 @@ p, li { white-space: pre-wrap; }
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="../ub_modules/resources/dialogimg.qrc">:/delinblocks/MooreNH.png</pixmap>
+              <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/delinblocks/MooreNH.png</pixmap>
              </property>
             </widget>
             <widget class="QLabel" name="neighb_lbl">
@@ -1109,7 +1109,7 @@ p, li { white-space: pre-wrap; }
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="../ub_modules/resources/dialogimg.qrc">:/delinblocks/vNeumann.png</pixmap>
+              <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/delinblocks/vNeumann.png</pixmap>
              </property>
             </widget>
             <widget class="QRadioButton" name="radioMoore">
@@ -1617,7 +1617,7 @@ Correction proceeds as follows:
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../ub_modules/resources/dialogimg.qrc">:/delinblocks/BBcells.png</pixmap>
+            <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/delinblocks/BBcells.png</pixmap>
            </property>
           </widget>
          </item>
@@ -1703,8 +1703,61 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>helpButton</tabstop>
+  <tabstop>descr_blocks</tabstop>
+  <tabstop>blocksize_in</tabstop>
+  <tabstop>blocksize_auto</tabstop>
+  <tabstop>popdata_totradio</tabstop>
+  <tabstop>popdata_densradio</tabstop>
+  <tabstop>soildata_classify</tabstop>
+  <tabstop>soildata_infil</tabstop>
+  <tabstop>soildata_unitscombo</tabstop>
+  <tabstop>elev_sealevel</tabstop>
+  <tabstop>elev_custom</tabstop>
+  <tabstop>elev_referencebox</tabstop>
+  <tabstop>planmap_check</tabstop>
+  <tabstop>localmap_check</tabstop>
+  <tabstop>employment_check</tabstop>
+  <tabstop>jobdata_totradio</tabstop>
+  <tabstop>jobdata_densradio</tabstop>
+  <tabstop>rivers_check</tabstop>
+  <tabstop>lakes_check</tabstop>
+  <tabstop>groundwater_check</tabstop>
+  <tabstop>groundwater_datumcombo</tabstop>
+  <tabstop>roadnet_check</tabstop>
+  <tabstop>sewermains_check</tabstop>
+  <tabstop>supplymains_check</tabstop>
+  <tabstop>soc_par1_check</tabstop>
+  <tabstop>soc_par1_box</tabstop>
+  <tabstop>socpar1binary_radio</tabstop>
+  <tabstop>socpar1prop_radio</tabstop>
+  <tabstop>soc_par2_check</tabstop>
+  <tabstop>soc_par2_box</tabstop>
+  <tabstop>socpar2binary_radio</tabstop>
+  <tabstop>socpar2prop_radio</tabstop>
+  <tabstop>spatialpatches_check</tabstop>
+  <tabstop>spatialstats_check</tabstop>
+  <tabstop>radioMoore</tabstop>
+  <tabstop>radioVNeum</tabstop>
+  <tabstop>neighb_vnfp_check</tabstop>
+  <tabstop>neighb_vnpd_check</tabstop>
+  <tabstop>flowpath_combo</tabstop>
+  <tabstop>demsmooth_check</tabstop>
+  <tabstop>demsmooth_spin</tabstop>
+  <tabstop>considergeo_check</tabstop>
+  <tabstop>cbdknown_radio</tabstop>
+  <tabstop>cbd_combo</tabstop>
+  <tabstop>cbdmanual_radio</tabstop>
+  <tabstop>cbdlong_box</tabstop>
+  <tabstop>cbdlat_box</tabstop>
+  <tabstop>cbdmark_check</tabstop>
+ </tabstops>
  <resources>
-  <include location="../ub_modules/resources/dialogimg.qrc"/>
+  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
+  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
   <include location="../ub_modules/resources/dialogimg.qrc"/>
  </resources>
  <connections>

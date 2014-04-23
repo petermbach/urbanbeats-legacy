@@ -623,7 +623,7 @@ class Techplacement(UBModule):
         #SELECT EVALUATION METRICS
         self.createParameter("scoringmatrix_path", STRING,"")
         self.createParameter("scoringmatrix_default", BOOL,"")
-        self.scoringmatrix_path = "D:/Coding Projects/UrbanBEATSv1/ancillary/mcadefault.csv"
+        self.scoringmatrix_path = self.ubeatsdir+"/ancillary/mcadefault.csv"
         self.scoringmatrix_default = 0
         
         #CUSTOMIZE EVALUATION CRITERIA
@@ -697,11 +697,11 @@ class Techplacement(UBModule):
         
         #SWH Harvesting algorithms
         self.createParameter("rainfile", STRING, "")    #Rainfall file for SWH
-        self.rainfile = "C:/UrbanBEATSv1Dev/ub_modules/resources/MelbourneRain1998-2007-6min.csv"
+        self.rainfile = self.ubeatsdir+"/ancillary/MelbourneRain1998-2007-6min.csv"
         self.createParameter("rain_dt", DOUBLE, "")
         self.rain_dt = 6        #[mins]
         self.createParameter("evapfile", STRING, "")
-        self.evapfile = "C:/UrbanBEATSv1Dev/ub_modules/resources/MelbourneEvap1998-2007-Day.csv"
+        self.evapfile = self.ubeatsdir+"/ancillary/MelbourneEvap1998-2007-Day.csv"
         self.createParameter("evap_dt", DOUBLE, "")
         self.evap_dt = 1440     #[mins]
         self.lot_raintanksizes = [1,2,3,4,5,7.5,10,15,20]       #[kL]
@@ -999,9 +999,13 @@ class Techplacement(UBModule):
         ###-------------------------------------------------------------------###
         
         #INITIALIZE THE DATABASE
-        ubdbpath = self.ubeatsdir+"/temp/ubeatsdb2.db"
+        ubdbpath = self.ubeatsdir+"/temp/ubeatsdb1.db"
         if os.path.isfile(ubdbpath):
-            os.remove(ubdbpath)
+            try:
+                os.remove(ubdbpath)     #Attempts to remove the file, if it fails, it creates another with an incremented
+            except:                     #index.
+                ubdbpath = self.ubeatsdir+"/temp/ubeatsdb"+str(int(ubdbpath[len(ubdbpath)-4])+1)+".db"
+
         self.sqlDB = sqlite3.connect(ubdbpath)
         self.dbcurs = self.sqlDB.cursor()
         
@@ -4200,7 +4204,7 @@ class Techplacement(UBModule):
     #    return True
     
     def debugPlanning(self, basin_strategies_matrix, basinID):
-        f = open((self.ubeatsdir)+"/temp/"+str(basinID)+".csv", 'w')
+        f = open((self.ubeatsdir)+"/temp/"+"MCRSum-"+str(self.tabindex)+"-BasinID"+str(basinID)+".csv", 'w')
         for i in range(len(basin_strategies_matrix)):
             cbs = basin_strategies_matrix[i]
             f.write(str(cbs[0])+","+str(cbs[1])+","+str(cbs[2])+","+str(cbs[3])+"\n")

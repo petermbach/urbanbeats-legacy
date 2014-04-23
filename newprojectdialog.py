@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'newprojectdialog.ui'
 #
-# Created: Wed Apr 03 16:38:51 2013
+# Created: Wed Apr 23 15:56:14 2014
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,7 +45,7 @@ class Ui_NewProjectDialog(object):
         self.dbtitle.setObjectName(_fromUtf8("dbtitle"))
         self.dbsubtitle = QtGui.QLabel(self.title_widget)
         self.dbsubtitle.setGeometry(QtCore.QRect(50, 25, 561, 16))
-        self.dbsubtitle.setText(QtGui.QApplication.translate("NewProjectDialog", "Customize Simulation Type and Basic Information", None, QtGui.QApplication.UnicodeUTF8))
+        self.dbsubtitle.setText(QtGui.QApplication.translate("NewProjectDialog", "Include Project Information and Configure the Simulation", None, QtGui.QApplication.UnicodeUTF8))
         self.dbsubtitle.setObjectName(_fromUtf8("dbsubtitle"))
         self.verticalLayout.addWidget(self.title_widget)
         self.widget = QtGui.QWidget(NewProjectDialog)
@@ -222,10 +222,48 @@ class Ui_NewProjectDialog(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 401, 559))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 401, 578))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.filemgmnt_lbl = QtGui.QLabel(self.scrollAreaWidgetContents)
+        self.filemgmnt_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.filemgmnt_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Project Files Management</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.filemgmnt_lbl.setObjectName(_fromUtf8("filemgmnt_lbl"))
+        self.verticalLayout_2.addWidget(self.filemgmnt_lbl)
+        self.filemgmnt_widget = QtGui.QWidget(self.scrollAreaWidgetContents)
+        self.filemgmnt_widget.setMinimumSize(QtCore.QSize(0, 70))
+        self.filemgmnt_widget.setObjectName(_fromUtf8("filemgmnt_widget"))
+        self.projectpath_lbl = QtGui.QLabel(self.filemgmnt_widget)
+        self.projectpath_lbl.setGeometry(QtCore.QRect(20, 10, 141, 16))
+        self.projectpath_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Rainfall time series, obtain data from weather station or climate authority of your city. Time series should be in rainfall depth and have units millimetres.", None, QtGui.QApplication.UnicodeUTF8))
+        self.projectpath_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "Set Path for Project Folder:", None, QtGui.QApplication.UnicodeUTF8))
+        self.projectpath_lbl.setObjectName(_fromUtf8("projectpath_lbl"))
+        self.projectpath_button = QtGui.QToolButton(self.filemgmnt_widget)
+        self.projectpath_button.setGeometry(QtCore.QRect(310, 10, 61, 20))
+        self.projectpath_button.setText(QtGui.QApplication.translate("NewProjectDialog", "Set...", None, QtGui.QApplication.UnicodeUTF8))
+        self.projectpath_button.setObjectName(_fromUtf8("projectpath_button"))
+        self.projectpath_box = QtGui.QLineEdit(self.filemgmnt_widget)
+        self.projectpath_box.setGeometry(QtCore.QRect(160, 10, 141, 20))
+        self.projectpath_box.setObjectName(_fromUtf8("projectpath_box"))
+        self.projectpath_check = QtGui.QCheckBox(self.filemgmnt_widget)
+        self.projectpath_check.setGeometry(QtCore.QRect(40, 40, 231, 17))
+        self.projectpath_check.setText(QtGui.QApplication.translate("NewProjectDialog", "Save copy of data into project folder", None, QtGui.QApplication.UnicodeUTF8))
+        self.projectpath_check.setObjectName(_fromUtf8("projectpath_check"))
+        self.verticalLayout_2.addWidget(self.filemgmnt_widget)
+        self.filemgmnt_lbl_2 = QtGui.QLabel(self.scrollAreaWidgetContents)
+        self.filemgmnt_lbl_2.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
+        self.filemgmnt_lbl_2.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Simulation Settings</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.filemgmnt_lbl_2.setObjectName(_fromUtf8("filemgmnt_lbl_2"))
+        self.verticalLayout_2.addWidget(self.filemgmnt_lbl_2)
         self.simtype_widget = QtGui.QWidget(self.scrollAreaWidgetContents)
         self.simtype_widget.setMinimumSize(QtCore.QSize(0, 40))
         self.simtype_widget.setObjectName(_fromUtf8("simtype_widget"))
@@ -244,7 +282,7 @@ class Ui_NewProjectDialog(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Simulation Type:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Select Simulation Type:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.simtype_lbl.setObjectName(_fromUtf8("simtype_lbl"))
         self.verticalLayout_2.addWidget(self.simtype_widget)
         self.simtype_stack = QtGui.QStackedWidget(self.scrollAreaWidgetContents)
@@ -295,12 +333,12 @@ class Ui_NewProjectDialog(object):
         self.static_ubpconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Keep Urban Planning Rules constant", None, QtGui.QApplication.UnicodeUTF8))
         self.static_ubpconstant.setObjectName(_fromUtf8("static_ubpconstant"))
         self.staticsimfeatures = QtGui.QLabel(self.static_group)
-        self.staticsimfeatures.setGeometry(QtCore.QRect(10, 60, 131, 16))
+        self.staticsimfeatures.setGeometry(QtCore.QRect(10, 60, 191, 16))
         self.staticsimfeatures.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Simulation Features:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Customise Simulation Features:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.staticsimfeatures.setObjectName(_fromUtf8("staticsimfeatures"))
         self.staticdataoptions = QtGui.QLabel(self.static_group)
         self.staticdataoptions.setGeometry(QtCore.QRect(10, 240, 131, 16))
@@ -308,7 +346,7 @@ class Ui_NewProjectDialog(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Data Options:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Customise Data Options:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.staticdataoptions.setObjectName(_fromUtf8("staticdataoptions"))
         self.static_climateconstant = QtGui.QCheckBox(self.static_group)
         self.static_climateconstant.setGeometry(QtCore.QRect(30, 350, 221, 17))
@@ -388,15 +426,15 @@ class Ui_NewProjectDialog(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Data Options:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Customise Data Options:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dyndataoptions.setObjectName(_fromUtf8("dyndataoptions"))
         self.dynsimfeatures = QtGui.QLabel(self.dynamic_group)
-        self.dynsimfeatures.setGeometry(QtCore.QRect(10, 130, 131, 16))
+        self.dynsimfeatures.setGeometry(QtCore.QRect(10, 130, 231, 16))
         self.dynsimfeatures.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Simulation Features:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Customise Simulation Features:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dynsimfeatures.setObjectName(_fromUtf8("dynsimfeatures"))
         self.dyn_climateconstant = QtGui.QCheckBox(self.dynamic_group)
         self.dyn_climateconstant.setGeometry(QtCore.QRect(30, 320, 321, 17))
@@ -449,35 +487,6 @@ class Ui_NewProjectDialog(object):
         self.verticalLayout_6.addWidget(self.dynamic_group_2)
         self.simtype_stack.addWidget(self.page_3)
         self.verticalLayout_2.addWidget(self.simtype_stack)
-        self.filemgmnt_lbl = QtGui.QLabel(self.scrollAreaWidgetContents)
-        self.filemgmnt_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Width of the square cell in the city grid in metres", None, QtGui.QApplication.UnicodeUTF8))
-        self.filemgmnt_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Project Files Management</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.filemgmnt_lbl.setObjectName(_fromUtf8("filemgmnt_lbl"))
-        self.verticalLayout_2.addWidget(self.filemgmnt_lbl)
-        self.filemgmnt_widget = QtGui.QWidget(self.scrollAreaWidgetContents)
-        self.filemgmnt_widget.setMinimumSize(QtCore.QSize(0, 70))
-        self.filemgmnt_widget.setObjectName(_fromUtf8("filemgmnt_widget"))
-        self.projectpath_lbl = QtGui.QLabel(self.filemgmnt_widget)
-        self.projectpath_lbl.setGeometry(QtCore.QRect(20, 10, 141, 16))
-        self.projectpath_lbl.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Rainfall time series, obtain data from weather station or climate authority of your city. Time series should be in rainfall depth and have units millimetres.", None, QtGui.QApplication.UnicodeUTF8))
-        self.projectpath_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "Set Path for Project Folder:", None, QtGui.QApplication.UnicodeUTF8))
-        self.projectpath_lbl.setObjectName(_fromUtf8("projectpath_lbl"))
-        self.projectpath_button = QtGui.QToolButton(self.filemgmnt_widget)
-        self.projectpath_button.setGeometry(QtCore.QRect(310, 10, 61, 20))
-        self.projectpath_button.setText(QtGui.QApplication.translate("NewProjectDialog", "Set...", None, QtGui.QApplication.UnicodeUTF8))
-        self.projectpath_button.setObjectName(_fromUtf8("projectpath_button"))
-        self.projectpath_box = QtGui.QLineEdit(self.filemgmnt_widget)
-        self.projectpath_box.setGeometry(QtCore.QRect(160, 10, 141, 20))
-        self.projectpath_box.setObjectName(_fromUtf8("projectpath_box"))
-        self.projectpath_check = QtGui.QCheckBox(self.filemgmnt_widget)
-        self.projectpath_check.setGeometry(QtCore.QRect(40, 40, 231, 17))
-        self.projectpath_check.setText(QtGui.QApplication.translate("NewProjectDialog", "Save copy of data into project folder", None, QtGui.QApplication.UnicodeUTF8))
-        self.projectpath_check.setObjectName(_fromUtf8("projectpath_check"))
-        self.verticalLayout_2.addWidget(self.filemgmnt_widget)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout_3.addWidget(self.scrollArea)
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
@@ -495,7 +504,7 @@ class Ui_NewProjectDialog(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS.projectinfo</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS v1.0 - 2014 - Peter M. Bach</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.remarks.setObjectName(_fromUtf8("remarks"))
         self.horizontalLayout_2.addWidget(self.remarks)
         self.buttonBox = QtGui.QDialogButtonBox(self.widget_4)
@@ -512,10 +521,47 @@ class Ui_NewProjectDialog(object):
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), NewProjectDialog.reject)
         QtCore.QObject.connect(self.simtype_combo, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), self.simtype_stack.setCurrentIndex)
         QtCore.QMetaObject.connectSlotsByName(NewProjectDialog)
+        NewProjectDialog.setTabOrder(self.tabWidget, self.buttonBox)
+        NewProjectDialog.setTabOrder(self.buttonBox, self.scrollArea_2)
+        NewProjectDialog.setTabOrder(self.scrollArea_2, self.name_box)
+        NewProjectDialog.setTabOrder(self.name_box, self.date_spin)
+        NewProjectDialog.setTabOrder(self.date_spin, self.city_box)
+        NewProjectDialog.setTabOrder(self.city_box, self.state_box)
+        NewProjectDialog.setTabOrder(self.state_box, self.country_box)
+        NewProjectDialog.setTabOrder(self.country_box, self.modellername_box)
+        NewProjectDialog.setTabOrder(self.modellername_box, self.affiliation_box)
+        NewProjectDialog.setTabOrder(self.affiliation_box, self.othermodellers_box)
+        NewProjectDialog.setTabOrder(self.othermodellers_box, self.synopsis_box)
+        NewProjectDialog.setTabOrder(self.synopsis_box, self.scrollArea)
+        NewProjectDialog.setTabOrder(self.scrollArea, self.projectpath_box)
+        NewProjectDialog.setTabOrder(self.projectpath_box, self.projectpath_button)
+        NewProjectDialog.setTabOrder(self.projectpath_button, self.projectpath_check)
+        NewProjectDialog.setTabOrder(self.projectpath_check, self.simtype_combo)
+        NewProjectDialog.setTabOrder(self.simtype_combo, self.snapshots_spin)
+        NewProjectDialog.setTabOrder(self.snapshots_spin, self.static_ubpconstant)
+        NewProjectDialog.setTabOrder(self.static_ubpconstant, self.static_techplaninclude)
+        NewProjectDialog.setTabOrder(self.static_techplaninclude, self.static_techplanconstant)
+        NewProjectDialog.setTabOrder(self.static_techplanconstant, self.static_techimplinclude)
+        NewProjectDialog.setTabOrder(self.static_techimplinclude, self.static_techimplconstant)
+        NewProjectDialog.setTabOrder(self.static_techimplconstant, self.static_perfinclude)
+        NewProjectDialog.setTabOrder(self.static_perfinclude, self.radioMasterplan)
+        NewProjectDialog.setTabOrder(self.radioMasterplan, self.radioEnvironment)
+        NewProjectDialog.setTabOrder(self.radioEnvironment, self.static_climateconstant)
+        NewProjectDialog.setTabOrder(self.static_climateconstant, self.dynamicperiod_spin)
+        NewProjectDialog.setTabOrder(self.dynamicperiod_spin, self.dynamicstart_spin)
+        NewProjectDialog.setTabOrder(self.dynamicstart_spin, self.dynamicbreaks_spin)
+        NewProjectDialog.setTabOrder(self.dynamicbreaks_spin, self.dynamicinterval_check)
+        NewProjectDialog.setTabOrder(self.dynamicinterval_check, self.dyn_ubpconstant)
+        NewProjectDialog.setTabOrder(self.dyn_ubpconstant, self.dyn_techplanconstant)
+        NewProjectDialog.setTabOrder(self.dyn_techplanconstant, self.dyn_techimplconstant)
+        NewProjectDialog.setTabOrder(self.dyn_techimplconstant, self.dyn_perfinclude)
+        NewProjectDialog.setTabOrder(self.dyn_perfinclude, self.dyn_perfconstant)
+        NewProjectDialog.setTabOrder(self.dyn_perfconstant, self.dyn_masterplanconstant)
+        NewProjectDialog.setTabOrder(self.dyn_masterplanconstant, self.dyn_climateconstant)
 
     def retranslateUi(self, NewProjectDialog):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("NewProjectDialog", "Project Info", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("NewProjectDialog", "Customize Simulation", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("NewProjectDialog", "Project Configuration", None, QtGui.QApplication.UnicodeUTF8))
 
 import guitoolbaricons_rc
 import guitoolbaricons_rc

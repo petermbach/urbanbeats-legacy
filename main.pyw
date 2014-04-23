@@ -90,7 +90,7 @@ class MainWindow(QtGui.QMainWindow):
         
         #View Menu
         self.connect(self.ui.actionProject_Description, QtCore.SIGNAL("triggered()"), self.viewProjectInfo)
-        self.connect(self.ui.actionSimulation_Results, QtCore.SIGNAL("triggered()"), self.showResultsBrowseDialog)
+        #self.connect(self.ui.actionSimulation_Results, QtCore.SIGNAL("triggered()"), self.showResultsBrowseDialog)
         #----------------------------------------------------------------------------------------------<<<
         
         #Data Menu
@@ -120,7 +120,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.out_textrep_select, QtCore.SIGNAL("clicked()"), self.showReportingOptionsDialog)        
         self.connect(self.ui.out_gis_maps, QtCore.SIGNAL("clicked()"), self.showGISOptionsDialog)
         self.connect(self.ui.out_gis_customize, QtCore.SIGNAL("clicked()"), self.showGISAdvancedDialog)
-        self.connect(self.ui.out_resultsbrowse, QtCore.SIGNAL("clicked()"), self.showResultsBrowseDialog)
+        #self.connect(self.ui.out_resultsbrowse, QtCore.SIGNAL("clicked()"), self.showResultsBrowseDialog)
         self.connect(self.ui.out_projectfolder, QtCore.SIGNAL("clicked()"), self.openActiveProjectFolder)        
         
         #Simulation Menu
@@ -887,6 +887,8 @@ class StartScreenLaunch(QtGui.QDialog):
 if __name__ == "__main__":
 
     UBEATSROOT = os.path.dirname(sys.argv[0])
+    UBEATSROOT = UBEATSROOT.encode('string-escape')     #To avoid weird bugs e.g. if someone's folder path
+                                                        #contains escape characters e.g. \testing or \newSoftware
 
     random.seed()
     #Someone is launching this directly

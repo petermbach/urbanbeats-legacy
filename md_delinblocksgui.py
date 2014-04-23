@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'delinblocksgui.ui'
+# Form implementation generated from reading ui file 'md_delinblocksgui.ui'
 #
-# Created: Mon Jan 14 13:13:40 2013
+# Created: Wed Apr 23 17:18:18 2014
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -709,9 +709,59 @@ class Ui_DelinBlocksDialog(object):
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), DelinBlocksDialog.accept)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), DelinBlocksDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(DelinBlocksDialog)
+        DelinBlocksDialog.setTabOrder(self.scrollArea, self.buttonBox)
+        DelinBlocksDialog.setTabOrder(self.buttonBox, self.helpButton)
+        DelinBlocksDialog.setTabOrder(self.helpButton, self.descr_blocks)
+        DelinBlocksDialog.setTabOrder(self.descr_blocks, self.blocksize_in)
+        DelinBlocksDialog.setTabOrder(self.blocksize_in, self.blocksize_auto)
+        DelinBlocksDialog.setTabOrder(self.blocksize_auto, self.popdata_totradio)
+        DelinBlocksDialog.setTabOrder(self.popdata_totradio, self.popdata_densradio)
+        DelinBlocksDialog.setTabOrder(self.popdata_densradio, self.soildata_classify)
+        DelinBlocksDialog.setTabOrder(self.soildata_classify, self.soildata_infil)
+        DelinBlocksDialog.setTabOrder(self.soildata_infil, self.soildata_unitscombo)
+        DelinBlocksDialog.setTabOrder(self.soildata_unitscombo, self.elev_sealevel)
+        DelinBlocksDialog.setTabOrder(self.elev_sealevel, self.elev_custom)
+        DelinBlocksDialog.setTabOrder(self.elev_custom, self.elev_referencebox)
+        DelinBlocksDialog.setTabOrder(self.elev_referencebox, self.planmap_check)
+        DelinBlocksDialog.setTabOrder(self.planmap_check, self.localmap_check)
+        DelinBlocksDialog.setTabOrder(self.localmap_check, self.employment_check)
+        DelinBlocksDialog.setTabOrder(self.employment_check, self.jobdata_totradio)
+        DelinBlocksDialog.setTabOrder(self.jobdata_totradio, self.jobdata_densradio)
+        DelinBlocksDialog.setTabOrder(self.jobdata_densradio, self.rivers_check)
+        DelinBlocksDialog.setTabOrder(self.rivers_check, self.lakes_check)
+        DelinBlocksDialog.setTabOrder(self.lakes_check, self.groundwater_check)
+        DelinBlocksDialog.setTabOrder(self.groundwater_check, self.groundwater_datumcombo)
+        DelinBlocksDialog.setTabOrder(self.groundwater_datumcombo, self.roadnet_check)
+        DelinBlocksDialog.setTabOrder(self.roadnet_check, self.sewermains_check)
+        DelinBlocksDialog.setTabOrder(self.sewermains_check, self.supplymains_check)
+        DelinBlocksDialog.setTabOrder(self.supplymains_check, self.soc_par1_check)
+        DelinBlocksDialog.setTabOrder(self.soc_par1_check, self.soc_par1_box)
+        DelinBlocksDialog.setTabOrder(self.soc_par1_box, self.socpar1binary_radio)
+        DelinBlocksDialog.setTabOrder(self.socpar1binary_radio, self.socpar1prop_radio)
+        DelinBlocksDialog.setTabOrder(self.socpar1prop_radio, self.soc_par2_check)
+        DelinBlocksDialog.setTabOrder(self.soc_par2_check, self.soc_par2_box)
+        DelinBlocksDialog.setTabOrder(self.soc_par2_box, self.socpar2binary_radio)
+        DelinBlocksDialog.setTabOrder(self.socpar2binary_radio, self.socpar2prop_radio)
+        DelinBlocksDialog.setTabOrder(self.socpar2prop_radio, self.spatialpatches_check)
+        DelinBlocksDialog.setTabOrder(self.spatialpatches_check, self.spatialstats_check)
+        DelinBlocksDialog.setTabOrder(self.spatialstats_check, self.radioMoore)
+        DelinBlocksDialog.setTabOrder(self.radioMoore, self.radioVNeum)
+        DelinBlocksDialog.setTabOrder(self.radioVNeum, self.neighb_vnfp_check)
+        DelinBlocksDialog.setTabOrder(self.neighb_vnfp_check, self.neighb_vnpd_check)
+        DelinBlocksDialog.setTabOrder(self.neighb_vnpd_check, self.flowpath_combo)
+        DelinBlocksDialog.setTabOrder(self.flowpath_combo, self.demsmooth_check)
+        DelinBlocksDialog.setTabOrder(self.demsmooth_check, self.demsmooth_spin)
+        DelinBlocksDialog.setTabOrder(self.demsmooth_spin, self.considergeo_check)
+        DelinBlocksDialog.setTabOrder(self.considergeo_check, self.cbdknown_radio)
+        DelinBlocksDialog.setTabOrder(self.cbdknown_radio, self.cbd_combo)
+        DelinBlocksDialog.setTabOrder(self.cbd_combo, self.cbdmanual_radio)
+        DelinBlocksDialog.setTabOrder(self.cbdmanual_radio, self.cbdlong_box)
+        DelinBlocksDialog.setTabOrder(self.cbdlong_box, self.cbdlat_box)
+        DelinBlocksDialog.setTabOrder(self.cbdlat_box, self.cbdmark_check)
 
     def retranslateUi(self, DelinBlocksDialog):
         pass
 
+import dialogimg_rc
 import dialogimg_rc
 import dialogimg_rc

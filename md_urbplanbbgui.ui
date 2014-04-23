@@ -95,7 +95,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/GeneralImage.png</pixmap>
+                <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/GeneralImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -180,7 +180,7 @@ p, li { white-space: pre-wrap; }
                   <x>0</x>
                   <y>0</y>
                   <width>398</width>
-                  <height>287</height>
+                  <height>286</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -616,8 +616,8 @@ p, li { white-space: pre-wrap; }
                 <property name="geometry">
                  <rect>
                   <x>0</x>
-                  <y>0</y>
-                  <width>387</width>
+                  <y>-259</y>
+                  <width>398</width>
                   <height>545</height>
                  </rect>
                 </property>
@@ -1620,7 +1620,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/ResidentialImage.png</pixmap>
+                <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/ResidentialImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -1690,7 +1690,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/NonResImage.png</pixmap>
+                <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/NonResImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -1791,7 +1791,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>387</width>
+                  <width>398</width>
                   <height>1142</height>
                  </rect>
                 </property>
@@ -3387,7 +3387,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/TransportImage.png</pixmap>
+                <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/TransportImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -3494,7 +3494,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>387</width>
+                  <width>398</width>
                   <height>617</height>
                  </rect>
                 </property>
@@ -4485,7 +4485,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/ParkImage.png</pixmap>
+                <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/ParkImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -4592,7 +4592,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>387</width>
+                  <width>398</width>
                   <height>532</height>
                  </rect>
                 </property>
@@ -4656,7 +4656,7 @@ p, li { white-space: pre-wrap; }
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Ratio of grey to green spaces</string>
+                     <string>Ratio of green to grey spaces</string>
                     </property>
                    </widget>
                    <widget class="QSlider" name="pg_ggratio_slide">
@@ -5731,7 +5731,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/UndevImage.png</pixmap>
+                <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/UndevImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -5850,7 +5850,7 @@ p, li { white-space: pre-wrap; }
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
+       <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="bbdescr1">
@@ -5903,10 +5903,181 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>buildingblocktabs</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>genrules_explain</tabstop>
+  <tabstop>gr_parameters</tabstop>
+  <tabstop>citymono_radio</tabstop>
+  <tabstop>citypoly_radio</tabstop>
+  <tabstop>citysprawl_spin</tabstop>
+  <tabstop>mun_localmap_check</tabstop>
+  <tabstop>lucredevelop_check</tabstop>
+  <tabstop>lucredevelop_spin</tabstop>
+  <tabstop>popredevelop_check</tabstop>
+  <tabstop>popredevelop_spin</tabstop>
+  <tabstop>noredevelop_check</tabstop>
+  <tabstop>res_parameters</tabstop>
+  <tabstop>occup_avg_box</tabstop>
+  <tabstop>occup_max_box</tabstop>
+  <tabstop>person_space_box</tabstop>
+  <tabstop>extra_comm_area_box</tabstop>
+  <tabstop>setback_f_min_box</tabstop>
+  <tabstop>setback_f_max_box</tabstop>
+  <tabstop>fsetbackmed_check</tabstop>
+  <tabstop>setback_s_min_box</tabstop>
+  <tabstop>setback_s_max_box</tabstop>
+  <tabstop>ssetbackmed_check</tabstop>
+  <tabstop>lineEdit_7</tabstop>
+  <tabstop>carports_max_box</tabstop>
+  <tabstop>garage_incl_box</tabstop>
+  <tabstop>w_driveway_min_box</tabstop>
+  <tabstop>patio_area_max_box</tabstop>
+  <tabstop>patio_covered_box</tabstop>
+  <tabstop>house_floors</tabstop>
+  <tabstop>occup_flat_avg_box</tabstop>
+  <tabstop>indoor_com_spin</tabstop>
+  <tabstop>flat_area_max_box</tabstop>
+  <tabstop>outdoor_com_spin</tabstop>
+  <tabstop>setback_HDR_avg_box</tabstop>
+  <tabstop>aptbldg_floors</tabstop>
+  <tabstop>parking_on</tabstop>
+  <tabstop>parking_off</tabstop>
+  <tabstop>parking_vary</tabstop>
+  <tabstop>parking_none</tabstop>
+  <tabstop>OSR_parks_include</tabstop>
+  <tabstop>roof_connected_radiodirect</tabstop>
+  <tabstop>roof_connected_radiodisc</tabstop>
+  <tabstop>roof_connected_radiovary</tabstop>
+  <tabstop>avg_imp_dced_spin</tabstop>
+  <tabstop>residential_explain</tabstop>
+  <tabstop>nonres_explain</tabstop>
+  <tabstop>nr_parameters</tabstop>
+  <tabstop>jobs_direct_radio</tabstop>
+  <tabstop>jobs_dist_radio</tabstop>
+  <tabstop>jobs_total_radio</tabstop>
+  <tabstop>dist_ind_spin</tabstop>
+  <tabstop>dist_com_spin</tabstop>
+  <tabstop>dist_orc_spin</tabstop>
+  <tabstop>totjobs_box</tabstop>
+  <tabstop>ind_subd_min</tabstop>
+  <tabstop>ind_subd_max</tabstop>
+  <tabstop>com_subd_min</tabstop>
+  <tabstop>com_subd_max</tabstop>
+  <tabstop>nres_setback_box</tabstop>
+  <tabstop>nres_setback_auto</tabstop>
+  <tabstop>nres_maxfloors_spin</tabstop>
+  <tabstop>nres_maxfloors_nolimit</tabstop>
+  <tabstop>plotratio_ind_slider</tabstop>
+  <tabstop>plotratio_ind_box</tabstop>
+  <tabstop>plotratio_com_slider</tabstop>
+  <tabstop>plotratio_com_box</tabstop>
+  <tabstop>carpark_dimW_box</tabstop>
+  <tabstop>carpark_dimD_box</tabstop>
+  <tabstop>carpark_imp_spin</tabstop>
+  <tabstop>carpark_ind_box</tabstop>
+  <tabstop>carpark_com_box</tabstop>
+  <tabstop>loadingbay_box</tabstop>
+  <tabstop>lscape_hsbalance_slide</tabstop>
+  <tabstop>lscape_impdced_spin</tabstop>
+  <tabstop>civ_consider_check</tabstop>
+  <tabstop>edu_customise</tabstop>
+  <tabstop>edu_school_box</tabstop>
+  <tabstop>edu_uni_box</tabstop>
+  <tabstop>edu_lib_box</tabstop>
+  <tabstop>mun_customise</tabstop>
+  <tabstop>civ_hospital_box</tabstop>
+  <tabstop>civ_clinic_box</tabstop>
+  <tabstop>civ_police_box</tabstop>
+  <tabstop>civ_fire_box</tabstop>
+  <tabstop>civ_jail_box</tabstop>
+  <tabstop>civ_religion_box</tabstop>
+  <tabstop>civ_leisure_box</tabstop>
+  <tabstop>civ_museum_box</tabstop>
+  <tabstop>civ_zoo_box</tabstop>
+  <tabstop>civ_sports_box</tabstop>
+  <tabstop>civ_race_box</tabstop>
+  <tabstop>civ_dead_box</tabstop>
+  <tabstop>transprot_explain</tabstop>
+  <tabstop>tra_parameters</tabstop>
+  <tabstop>w_resfootpath_min_box</tabstop>
+  <tabstop>w_resfootpath_max_box</tabstop>
+  <tabstop>w_resfootpath_med_check</tabstop>
+  <tabstop>w_resnaturestrip_min_box</tabstop>
+  <tabstop>w_resnaturestrip_max_box</tabstop>
+  <tabstop>w_resnaturestrip_med_check</tabstop>
+  <tabstop>w_comfootpath_min_box</tabstop>
+  <tabstop>w_comfootpath_max_box</tabstop>
+  <tabstop>w_comfootpath_med_check</tabstop>
+  <tabstop>w_comnaturestrip_min_box</tabstop>
+  <tabstop>w_comnaturestrip_max_box</tabstop>
+  <tabstop>w_comnaturestrip_med_check</tabstop>
+  <tabstop>w_collectlane_min_box</tabstop>
+  <tabstop>w_collectlane_max_box</tabstop>
+  <tabstop>w_collectlane_med_check</tabstop>
+  <tabstop>collect_crossfall_box</tabstop>
+  <tabstop>w_arterial_min_box</tabstop>
+  <tabstop>w_arterial_max_box</tabstop>
+  <tabstop>w_arterial_med_check</tabstop>
+  <tabstop>w_arterialmed_minbox</tabstop>
+  <tabstop>w_arterialmed_maxbox</tabstop>
+  <tabstop>w_arterialmed_med_check</tabstop>
+  <tabstop>w_arterialsh_minbox</tabstop>
+  <tabstop>w_arterialsh_maxbox</tabstop>
+  <tabstop>w_arterialsh_med_check</tabstop>
+  <tabstop>arterial_crossfall_box</tabstop>
+  <tabstop>w_arterialmed_nodev_check</tabstop>
+  <tabstop>highway_buffer_check</tabstop>
+  <tabstop>trans_on_off_check</tabstop>
+  <tabstop>trans_customise</tabstop>
+  <tabstop>trans_airport_box</tabstop>
+  <tabstop>trans_seaport_box</tabstop>
+  <tabstop>trans_busdepot_box</tabstop>
+  <tabstop>trans_rail_box</tabstop>
+  <tabstop>openspace_explain</tabstop>
+  <tabstop>opsp_parameters</tabstop>
+  <tabstop>pg_ggratio_slide</tabstop>
+  <tabstop>pg_ggratio_box</tabstop>
+  <tabstop>pg_dist_mix_radio</tabstop>
+  <tabstop>pg_dist_sep_radio</tabstop>
+  <tabstop>pg_usable_spin</tabstop>
+  <tabstop>pg_usable_prohibit</tabstop>
+  <tabstop>ref_usable_check</tabstop>
+  <tabstop>ref_usable_spin</tabstop>
+  <tabstop>ref_limit_check</tabstop>
+  <tabstop>svu_nonwat_box</tabstop>
+  <tabstop>svu_slider</tabstop>
+  <tabstop>svu_wat_box</tabstop>
+  <tabstop>svu_supply_check</tabstop>
+  <tabstop>svu_supply_spin</tabstop>
+  <tabstop>svu_waste_check</tabstop>
+  <tabstop>svu_waste_spin</tabstop>
+  <tabstop>svu_storm_check</tabstop>
+  <tabstop>svu_storm_spin</tabstop>
+  <tabstop>oth_parameters</tabstop>
+  <tabstop>unc_merge_check</tabstop>
+  <tabstop>unc_merge2pg_check</tabstop>
+  <tabstop>unc_merge2pg_spin</tabstop>
+  <tabstop>unc_merge2ref_check</tabstop>
+  <tabstop>unc_merge2ref_spin</tabstop>
+  <tabstop>unc_merge2trans_check</tabstop>
+  <tabstop>unc_merge2trans_spin</tabstop>
+  <tabstop>unc_custom_check</tabstop>
+  <tabstop>unc_areathresh_spin</tabstop>
+  <tabstop>unc_customimp_spin</tabstop>
+  <tabstop>unc_customirrigate_check</tabstop>
+  <tabstop>und_statemanual_radio</tabstop>
+  <tabstop>und_statemanual_combo</tabstop>
+  <tabstop>und_stateauto_radio</tabstop>
+  <tabstop>und_allowdev_check</tabstop>
+  <tabstop>other_explain</tabstop>
+ </tabstops>
  <resources>
-  <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
-  <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
-  <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
+  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
+  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
+  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
+  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
   <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
  </resources>
  <connections>
