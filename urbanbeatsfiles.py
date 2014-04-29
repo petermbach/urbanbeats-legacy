@@ -375,5 +375,5 @@ def resetGlobalOptions(root_directory):
     return True
 
 default_global_options = {"defaultmodeller": "<none>", "defaultaffil":"<none>", "iterations":1000, "city": "Melbourne",
-                      "decisiontype":"H", "numstrats":5,  "MUSICauto":0, "MUSICpath":"", "MUSICver":"Version5", "MUSICtte":0,
+                      "decisiontype":"H", "numstrats":5,  "MUSICwrite":1, "MUSICauto":0, "MUSICpath":"", "MUSICver":"Version5", "MUSICtte":0,
                       "MUSICflux":0, "mapstyle":"Style1", "tileserverURL":"", "gearth_path": "", "gearth_auto": 0}

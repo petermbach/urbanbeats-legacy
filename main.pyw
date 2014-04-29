@@ -834,6 +834,18 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.progressBar.setValue(value)
         return True
 
+    def closeEvent(self, event):
+        quit_msg = "Would you like to save your work before quitting?"
+        reply = QtGui.QMessageBox.question(self, 'Close Program?',
+                         quit_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No, QtGui.QMessageBox.Cancel)
+        if reply == QtGui.QMessageBox.Yes:
+            self.saveProject()
+            event.accept()
+        elif reply == QtGui.QMessageBox.No:
+            event.accept()
+        else:
+            event.ignore()
+
     #RUN SIMULATION
     def run_simulation(self):
         try:
@@ -874,15 +886,7 @@ class StartScreenLaunch(QtGui.QDialog):
     def startupQuit(self):
         self.accept()
         sys.exit()
-    
-#    def closeEvent(self, event):
-#        quit_msg = "Are you sure you want to exit UrbanBEATS?"
-#        reply = QtGui.QMessageBox.question(self, 'Message', 
-#                         quit_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
-#        if reply == QtGui.QMessageBox.Yes:
-#            event.accept()
-#        else:
-#            event.ignore()
+
 
 if __name__ == "__main__":
 

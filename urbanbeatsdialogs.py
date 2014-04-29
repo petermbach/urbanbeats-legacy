@@ -306,6 +306,7 @@ class PreferencesDialogLaunch(QtGui.QDialog):
         else:
             self.ui.tech_highest_radio.setChecked(1)
 
+        self.ui.perf_writeMUSICcheck.setChecked(self.module.getConfigOptions("MUSICwrite"))
         self.ui.techplan_strats_spin.setValue(self.module.getConfigOptions("numstrats"))
 
         self.ui.perf_musicauto_check.setChecked(bool(int(self.module.getConfigOptions("MUSICauto"))))
@@ -398,6 +399,7 @@ class PreferencesDialogLaunch(QtGui.QDialog):
 
         self.module.setConfigOptions("numstrats", int(self.ui.techplan_strats_spin.value()))
 
+        self.module.setConfigOptions("MUSICwrite", int(self.ui.perf_writeMUSICcheck.isChecked()))
         self.module.setConfigOptions("MUSICauto", int(self.ui.perf_musicauto_check.isChecked()))
         self.module.setConfigOptions("MUSICpath", str(self.ui.perf_musicpath_box.text()))
 

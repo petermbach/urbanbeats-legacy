@@ -363,10 +363,10 @@ class WriteResults2MUSIC(UBModule):
         """Function to setup the parameter list vector for biofilters """
         #parameter_list = [EDD, surface area, filter area, unlined perimeter, satk, filterdepth, exfiltration]
         sysqty = self.getSystemQuantity(curSys)        
-        sysedd = curSys.getAttribute("WDepth")
+        sysedd = float(curSys.getAttribute("WDepth"))
         sysarea = self.getEffectiveSystemArea(curSys)*sysqty
-        sysfd = curSys.getAttribute("FDepth")
-        sysKexfil = curSys.getAttribute("Exfil")
+        sysfd = float(curSys.getAttribute("FDepth"))
+        sysKexfil = float(curSys.getAttribute("Exfil"))
         parameter_list = [sysedd,sysarea,sysarea, (2*numpy.sqrt(sysarea/0.4)+2*sysarea/(numpy.sqrt(sysarea/0.4))), 180, sysfd, current_soilK]
         return parameter_list
 
@@ -374,20 +374,31 @@ class WriteResults2MUSIC(UBModule):
         """Function to setup the parameter list vector for infiltration systems"""
         #parameter_list = [surface area, EDD, filter area, unlined perimeter, filterdepth, exfiltration]
         sysqty = self.getSystemQuantity(curSys)        
-        sysedd = curSys.getAttribute("WDepth")
+        sysedd = float(curSys.getAttribute("WDepth"))
         sysarea = self.getEffectiveSystemArea(curSys)*sysqty
-        sysfd = curSys.getAttribute("FDepth")
+        sysfd = float(curSys.getAttribute("FDepth"))
         parameter_list = [sysarea,sysedd,sysarea, (2*numpy.sqrt(sysarea/0.4)+2*sysarea/(numpy.sqrt(sysarea/0.4))), sysfd, current_soilK]
         return parameter_list
     
     def prepareParametersWSUR(self, curSys, current_soilK):
-        """Function to setup the parameter list vector for Surface Wetlands """
+        """Function to setup the parameter list vector for Surface Wetlands"""
         #parameter_list = [surface area, EDD, permanent pool, exfil, eq pipe diam, det time]
         sysqty = self.getSystemQuantity(curSys)        
         sysarea = self.getEffectiveSystemArea(curSys)*sysqty
-        sysedd = curSys.getAttribute("WDepth")
-        print sysarea, sysedd, sysqty
-        parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000.0*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd)))), 72.0]
+        sysedd = float(curSys.getAttribute("WDepth"))
+        try:
+            parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000.0*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd)))), 72.0]
+        except TypeError as e:
+            print e
+            print "SysArea", type(sysarea)
+            print "SysEdd", type(sysedd)
+            print "SysQty", sysqty
+            print "Soil", current_soilK
+            print "Part 1", sysarea*sysedd*0.895
+            print "Part 2", 72*3600*0.6*0.25*numpy.pi
+            print "Part 3", numpy.sqrt(2*9.81*sysedd)
+            print "Big Thing", 1000.0*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd))))
+
         return parameter_list
     
     def prepareParametersPB(self, curSys, current_soilK):
@@ -395,7 +406,7 @@ class WriteResults2MUSIC(UBModule):
         #parameter_list = [surface area, mean depth, permanent pool, exfil, eq pipe diam, det time]
         sysqty = self.getSystemQuantity(curSys)        
         sysarea = self.getEffectiveSystemArea(curSys)*sysqty
-        sysedd = curSys.getAttribute("WDepth")      #The mean depth
+        sysedd = float(curSys.getAttribute("WDepth"))      #The mean depth
         parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd)))), 72.0]
         return parameter_list
         
@@ -417,7 +428,7 @@ class WriteResults2MUSIC(UBModule):
         """Returns the effective system area of a given curSys input WSUD system
         equal to the total area divided by the effective area factor, both saved as attributes
         in the Attribue Object"""
-        sysarea = curSys.getAttribute("SysArea")/curSys.getAttribute("EAFact")
+        sysarea = float(curSys.getAttribute("SysArea"))/float(curSys.getAttribute("EAFact"))
         return sysarea
     
     def getSystemQuantity(self, curSys):
@@ -425,9 +436,9 @@ class WriteResults2MUSIC(UBModule):
         systems as these occur in multiple quantities. Systems are summed up in the MUSIC file
         as a single equivalent node for that scale."""
         if self.masterplanmodel:
-            return curSys.getAttribute("GoalQty")
+            return float(int(curSys.getAttribute("GoalQty")))
         else:
-            return curSys.getAttribute("Qty")
+            return float(int(curSys.getAttribute("Qty")))
 
     ########################################################
     #DYNAMIND FUNCTIONS                                    #
