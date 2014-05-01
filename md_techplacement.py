@@ -1056,7 +1056,10 @@ class Techplacement(UBModule):
             street_tech = [0]            
             neigh_tech = [0]
             subbas_tech = [0]
-            
+
+
+            #Assess Opportunities and Calculate SWH Benefits
+
             #Assess Lot Opportunities
             if len(techListLot) != 0:
                 lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM = self.assessLotOpportunities(techListLot, currentAttList)
