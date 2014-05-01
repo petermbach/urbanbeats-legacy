@@ -890,7 +890,7 @@ class StartScreenLaunch(QtGui.QDialog):
 
 if __name__ == "__main__":
 
-    UBEATSROOT = os.path.dirname(sys.argv[0])
+    UBEATSROOT = os.path.dirname(sys.argv[0])           #Obtains the program's root directory
     UBEATSROOT = UBEATSROOT.encode('string-escape')     #To avoid weird bugs e.g. if someone's folder path
                                                         #contains escape characters e.g. \testing or \newSoftware
 
