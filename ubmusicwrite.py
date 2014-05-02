@@ -206,7 +206,7 @@ def writeMUSICnodePB(f, ID, nodepart, ncount, x, y, parameter_list):
     f.write("Storage and Infiltration Properties - Permanent Pool Volume (cubic metres),"+str(parameter_list[2])+",{cubic metres}\n")
     f.write("Storage and Infiltration Properties - Exfiltration Rate (mm/hr),"+str(parameter_list[3])+",{mm/hr}\n")
     f.write("Storage and Infiltration Properties - Evaporative Loss as % of PET,100,\n")
-    f.write("Outlet Properties - Equivalent Pipe Diameter (mm),"+str(parameter_list[3])+",{mm}\n")
+    f.write("Outlet Properties - Equivalent Pipe Diameter (mm),"+str(parameter_list[4])+",{mm}\n")
     f.write("Outlet Properties - Overflow Weir Width (metres),2,{metres}\n")
     f.write("Outlet Properties - Notional Detention Time (hrs),0.0936664522315673,{hrs}\n")
     f.write("Advanced Properties - Orifice Discharge Coefficient,0.6,\n")
