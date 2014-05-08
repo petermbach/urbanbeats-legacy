@@ -148,9 +148,17 @@ def saveSimFile(activesim, filename):
         if os.path.exists(directory+"/"+file): os.remove(directory+"/"+file)
     return True
 
-def loadSimFile(activesim, filename):
+def getSimFileProjectPath(filename):
     archive = tarfile.open(str(filename), 'r')
+    f = archive.extractfile("projinfo.txt")
+    for lines in f:
+        data = lines.split("*||*")
+        if str(data[0]) == "projectpath":
+            return str(data[1])
+    return ""   #If that attribute is not in the savefile, then simply create a new one
 
+def loadSimFile(activesim, filename, projectpath):
+    archive = tarfile.open(str(filename), 'r')
     #Retrieve Project Details
     projectinfo = {}
     f = archive.extractfile("projinfo.txt")
@@ -160,8 +168,9 @@ def loadSimFile(activesim, filename):
     for key in projectinfo.keys():
         activesim.setParameter(key, type(activesim.getParameter(key))(projectinfo[key]))
     f.close()
+    activesim.setParameter("projectpath", str(projectpath))
     activesim.initializeSimulationCore()
-    activesim.setActiveProjectPath(projectinfo["projectpath"])
+    activesim.setActiveProjectPath(projectpath)
     activesim.setFullFileName(filename)
     #Restore Data Archive
     f = archive.extractfile("dataarch.txt")     #Category, then read lines until '---eol---'
