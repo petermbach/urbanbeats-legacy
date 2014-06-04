@@ -686,22 +686,22 @@ class Urbplanbb(UBModule):
             blk_avspace += (Asvu_WS + Asvu_WW + Asvu_SW + Asvu_OTH)
             
             #-----------ROADS---------------------------------------------------
-            A_rd =+ rdextra                              #This part only plans out the Major Arterials & Hwys
+            A_rd += rdextra                              #This part only plans out the Major Arterials & Hwys
             #self.notify( "Total Road Area: ", A_rd
             
             #Draw stochastic values:
-            laneW = random.randint(hwy_wlane[0], hwy_wlane[1])
-            medW = random.randint(hwy_med[0], hwy_med[1])
-            buffW = random.randint(hwy_buf[0], hwy_buf[1])
+            laneW = float(random.randint(hwy_wlane[0], hwy_wlane[1]))
+            medW =float(random.randint(hwy_med[0], hwy_med[1]))
+            buffW = float(random.randint(hwy_buf[0], hwy_buf[1]))
             
             if (A_park+A_ref) >= 0.5*A_rd:               #if total open space is greater than half the road area, use it as buffer
                 rd_imp = float((2*laneW)/(2*laneW + medW))
                 park_buffer = 1
                 av_spRD = float(medW/(2*laneW+medW)) * A_rd
             else:                                       #consider road's own buffer
-                rd_imp = float((2*laneW)/(2*laneW + medW + 2*buffW))
+                rd_imp = (2.0*laneW)/(2.0*laneW + medW + 2*buffW)
                 park_buffer = 0
-                av_spRD = float(medW/(2*laneW+medW+buffW*2)) * A_rd
+                av_spRD = medW /(2.0*laneW+medW+buffW*2.0) * A_rd
             
             Aimp_rd = A_rd*rd_imp
             
