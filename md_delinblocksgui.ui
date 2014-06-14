@@ -14,7 +14,7 @@
    <string>Spatial Delineation Module</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">
+   <iconset>
     <normaloff>:/general/ublogo33.png</normaloff>:/general/ublogo33.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -96,7 +96,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
+       <pixmap resource="toolbaricons/guitoolbaricons.qrc">:/images/images/D4W-logoBPM.png</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="dbsubtitle_2">
@@ -130,7 +130,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>429</width>
+           <width>427</width>
            <height>1086</height>
           </rect>
          </property>
@@ -194,6 +194,13 @@ p, li { white-space: pre-wrap; }
                <height>16</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Width of the square cell in the city grid in metres&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="minimum">
               <number>200</number>
              </property>
@@ -215,6 +222,9 @@ p, li { white-space: pre-wrap; }
                <width>171</width>
                <height>17</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>An automatic algorithm that determines a suitable block size based on the map for computational efficiency.</string>
              </property>
              <property name="text">
               <string>Auto-determine Block Size</string>
@@ -264,6 +274,9 @@ p, li { white-space: pre-wrap; }
                <height>17</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>Include a social parameter in the modelling? Define it here and set its purpose in the Technologies Planning Dialog Window.</string>
+             </property>
              <property name="whatsThis">
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -283,6 +296,9 @@ p, li { white-space: pre-wrap; }
                <width>221</width>
                <height>17</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>Include a second social parameter in the modelling? Define it here and set its purpose in the Technologies Planning Dialog Window.</string>
              </property>
              <property name="whatsThis">
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -337,6 +353,13 @@ p, li { white-space: pre-wrap; }
                <height>17</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;An additional sub-classification to support the land use map. See user guide for more details...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="whatsThis">
               <string>A raster layer that is aligned the basic inputs zoning and population map. The planner's map contains typology-ratios for all land zones, specified according to the user's urban planning snapshot for the region in question. Refer to user guide for more information on how to create this map.</string>
              </property>
@@ -352,6 +375,9 @@ p, li { white-space: pre-wrap; }
                <width>101</width>
                <height>17</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>A map of locations of key urban facilities, which may have significant influence on the urban water cycle and water management options. See user guide for more details...</string>
              </property>
              <property name="whatsThis">
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -421,6 +447,11 @@ p, li { white-space: pre-wrap; }
                <height>16</height>
               </rect>
              </property>
+             <property name="whatsThis">
+              <string>Societal and demographic information can be used in the model to influence the planning of urban water infrastructure based on societal preferences. Up to two maps can be added to the model and data can take one of two forms:
+- Binary: Yes/No format, which is treated as an absolute criteria
+- Proportions: A value from 0 to 1, which is treated as a likelihood</string>
+             </property>
              <property name="text">
               <string>Include Societal/Demographic Information</string>
              </property>
@@ -433,6 +464,13 @@ p, li { white-space: pre-wrap; }
                <width>121</width>
                <height>16</height>
               </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Format of the population data input map.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Population Data Format:</string>
@@ -447,6 +485,17 @@ p, li { white-space: pre-wrap; }
                <height>16</height>
               </rect>
              </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Additional analysis of the input data, which can be used for various other purposes. Two options are available:&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Patch delineation:&lt;/span&gt; looks into the clustering of land uses within the urban environment&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Spatial Indices:&lt;/span&gt; calculates a set of common spatial indices (e.g. richness, diversity, dominance) for further interpretation of land use distribution.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="text">
               <string>Spatial Analysis of Inputs</string>
              </property>
@@ -459,6 +508,9 @@ p, li { white-space: pre-wrap; }
                <width>191</width>
                <height>17</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>Conduct a patch delineation? This will produce a patch map, which can be exported.</string>
              </property>
              <property name="whatsThis">
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -483,6 +535,9 @@ p, li { white-space: pre-wrap; }
                <width>191</width>
                <height>17</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>Calculate a set of spatial indices for additional interpretation? Information is written into the blocks map.</string>
              </property>
              <property name="whatsThis">
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -516,6 +571,9 @@ p, li { white-space: pre-wrap; }
                 <height>17</height>
                </rect>
               </property>
+              <property name="toolTip">
+               <string>Data is in the format of 0 or 1 where 0 denotes NO and 1 denotes YES. The model will treat this data as an absolute criteria.</string>
+              </property>
               <property name="text">
                <string>Binary Yes/No</string>
               </property>
@@ -528,6 +586,9 @@ p, li { white-space: pre-wrap; }
                 <width>91</width>
                 <height>17</height>
                </rect>
+              </property>
+              <property name="toolTip">
+               <string>Data values range between 0 and 1 representing the likelihood of societal preference for or against water infrastructure. The model will use this values as a probability of implementation.</string>
               </property>
               <property name="text">
                <string>Proportions</string>
@@ -565,6 +626,13 @@ p, li { white-space: pre-wrap; }
                 <height>17</height>
                </rect>
               </property>
+              <property name="toolTip">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Data is in the format of 0 or 1 where 0 denotes NO and 1 denotes YES. The model will treat this data as an absolute criteria.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="text">
                <string>Binary Yes/No</string>
               </property>
@@ -577,6 +645,9 @@ p, li { white-space: pre-wrap; }
                 <width>91</width>
                 <height>17</height>
                </rect>
+              </property>
+              <property name="toolTip">
+               <string>Data values range between 0 and 1 representing the likelihood of societal preference for or against water infrastructure. The model will use this values as a probability of implementation.</string>
               </property>
               <property name="text">
                <string>Proportions</string>
@@ -605,6 +676,13 @@ p, li { white-space: pre-wrap; }
                <height>17</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;A shapefile input of relevant river alignment (centreline). Recommended only for larger case studies (&amp;gt;60sqkm) or where necessary.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="whatsThis">
               <string>A raster layer that is aligned the basic inputs zoning and population map. The planner's map contains typology-ratios for all land zones, specified according to the user's urban planning snapshot for the region in question. Refer to user guide for more information on how to create this map.</string>
              </property>
@@ -621,6 +699,9 @@ p, li { white-space: pre-wrap; }
                <height>17</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>A polygonal map of large water bodies in the region, which may have significance to the case study.</string>
+             </property>
              <property name="whatsThis">
               <string>A raster layer that is aligned the basic inputs zoning and population map. The planner's map contains typology-ratios for all land zones, specified according to the user's urban planning snapshot for the region in question. Refer to user guide for more information on how to create this map.</string>
              </property>
@@ -636,6 +717,9 @@ p, li { white-space: pre-wrap; }
                <width>101</width>
                <height>17</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>A map of employment in the region, which can be expressed as either total number of jobs or job density.</string>
              </property>
              <property name="whatsThis">
               <string>A raster layer that is aligned the basic inputs zoning and population map. The planner's map contains typology-ratios for all land zones, specified according to the user's urban planning snapshot for the region in question. Refer to user guide for more information on how to create this map.</string>
@@ -712,6 +796,9 @@ p, li { white-space: pre-wrap; }
                <height>17</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>A map of groundwater levels within the case study region. Levels need to be referenced relative to a datum.</string>
+             </property>
              <property name="whatsThis">
               <string>A raster layer that is aligned the basic inputs zoning and population map. The planner's map contains typology-ratios for all land zones, specified according to the user's urban planning snapshot for the region in question. Refer to user guide for more information on how to create this map.</string>
              </property>
@@ -727,6 +814,17 @@ p, li { white-space: pre-wrap; }
                <width>121</width>
                <height>16</height>
               </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Format of the input soil map, can be one of two options:&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Classification&lt;/span&gt; = categorical data where each raster cell represents a particular soil type. The different classes include 1 = x, 2 = x, 3 = x, 4 = x, 5 = x&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Infiltration Rate&lt;/span&gt; = directly specified infiltration rates. If this option is checked, select the appropriate units from the dropdown menu below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Soil Data Format:</string>
@@ -750,8 +848,15 @@ p, li { white-space: pre-wrap; }
                 <height>17</height>
                </rect>
               </property>
+              <property name="toolTip">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Input data given as a population density [people/ ha]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="whatsThis">
-               <string>Input data given as a population density [people/ ha]</string>
+               <string/>
               </property>
               <property name="text">
                <string>Population Density</string>
@@ -766,12 +871,19 @@ p, li { white-space: pre-wrap; }
                 <height>17</height>
                </rect>
               </property>
-              <property name="whatsThis">
+              <property name="toolTip">
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Input data given as a total population [no. of people]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Total Population</string>
@@ -796,8 +908,19 @@ p, li { white-space: pre-wrap; }
                 <height>17</height>
                </rect>
               </property>
+              <property name="toolTip">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Infiltration rate of soil, select appropriate units as either [mm/hr] or [m/sec]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="whatsThis">
-               <string>Input data given as a population density [people/ ha]</string>
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Infiltration Rates</string>
@@ -812,12 +935,23 @@ p, li { white-space: pre-wrap; }
                 <height>17</height>
                </rect>
               </property>
+              <property name="toolTip">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Classification of soil as one of five categories:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;1 - sand&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;2 - sandy clay&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;3 - medium clay&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;4 - heavy clay&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="whatsThis">
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Input data given as a total population [no. of people]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Classification</string>
@@ -866,6 +1000,10 @@ p, li { white-space: pre-wrap; }
                <height>20</height>
               </rect>
              </property>
+             <property name="whatsThis">
+              <string>Sea Level - all groundwater depths are relative to sea level datum
+Natural surface - measured from the natural surface of the elevation data in that region.</string>
+             </property>
              <property name="text">
               <string>Choose Datum:</string>
              </property>
@@ -879,6 +1017,9 @@ p, li { white-space: pre-wrap; }
                <height>16</height>
               </rect>
              </property>
+             <property name="whatsThis">
+              <string>Coming Soon...</string>
+             </property>
              <property name="text">
               <string>Network Structures:</string>
              </property>
@@ -891,6 +1032,9 @@ p, li { white-space: pre-wrap; }
                <width>141</width>
                <height>16</height>
               </rect>
+             </property>
+             <property name="whatsThis">
+              <string>Datum of the elevation data, i.e. the point from which the measurements are based. This can either be sea level or a custom datum set as metres above sea level.</string>
              </property>
              <property name="text">
               <string>Elevation Reference Point:</string>
@@ -915,7 +1059,7 @@ p, li { white-space: pre-wrap; }
                </rect>
               </property>
               <property name="whatsThis">
-               <string>Input data given as a population density [people/ ha]</string>
+               <string/>
               </property>
               <property name="text">
                <string>Custom</string>
@@ -935,7 +1079,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Input data given as a total population [no. of people]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Sea Level</string>
@@ -1003,6 +1147,9 @@ p, li { white-space: pre-wrap; }
                 <height>17</height>
                </rect>
               </property>
+              <property name="toolTip">
+               <string>Density of employment [jobs/ha]</string>
+              </property>
               <property name="whatsThis">
                <string>Input data given as a population density [people/ ha]</string>
               </property>
@@ -1018,6 +1165,9 @@ p, li { white-space: pre-wrap; }
                 <width>101</width>
                 <height>17</height>
                </rect>
+              </property>
+              <property name="toolTip">
+               <string>Total number of employed people in the raster cell.</string>
               </property>
               <property name="whatsThis">
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1050,8 +1200,15 @@ p, li { white-space: pre-wrap; }
                <height>16</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Von Neumann, four cardinal directions on either side of the central block.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="whatsThis">
-              <string>Von Neumann, four cardinal directions on either side of the central block.</string>
+              <string/>
              </property>
              <property name="text">
               <string>Von Neumann</string>
@@ -1073,7 +1230,7 @@ p, li { white-space: pre-wrap; }
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/delinblocks/MooreNH.png</pixmap>
+              <pixmap resource="toolbaricons/guitoolbaricons.qrc">:/images/images/D4W-MooreNH.png</pixmap>
              </property>
             </widget>
             <widget class="QLabel" name="neighb_lbl">
@@ -1109,7 +1266,7 @@ p, li { white-space: pre-wrap; }
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/delinblocks/vNeumann.png</pixmap>
+              <pixmap resource="toolbaricons/guitoolbaricons.qrc">:/images/images/D4W-vNeumann.png</pixmap>
              </property>
             </widget>
             <widget class="QRadioButton" name="radioMoore">
@@ -1124,8 +1281,15 @@ p, li { white-space: pre-wrap; }
                <height>16</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Moore, all eight neighbours around the central block.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="whatsThis">
-              <string>Moore, all eight neighbours around the central block.</string>
+              <string/>
              </property>
              <property name="text">
               <string>Moore</string>
@@ -1174,11 +1338,10 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Method of finding flow direction in the digital elevation model or in this case the grid of blocks. Refer to publications for further information.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;D-infinity - Tarboton, 1997. A new method for the determination of flow directions and upslope areas in grid digital elevation models. Water Resources Research v33.2, 309-319&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;D-infinity&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; - Tarboton, 1997. A new method for the determination of flow directions and upslope areas in grid digital elevation models. Water Resources Research v33.2, 309-319&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;(This method is adapted here as more probabilistic. Whilst D-infinity usually finds two flow paths, UrbanBEATS will randomly choose one of the two dominant flow directions).&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;D8 - O'Callaghan &amp;amp; Mark, 1984. The Extraction of Drainage Networks from Digital Elevation Data. Computer Vision, Graphics and Image Processing v28, 323-344&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Divergent Flows - Freeman, 1991&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;D8&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; - O'Callaghan &amp;amp; Mark, 1984. The Extraction of Drainage Networks from Digital Elevation Data. Computer Vision, Graphics and Image Processing v28, 323-344&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Flow Path Method:</string>
@@ -1213,6 +1376,17 @@ p, li { white-space: pre-wrap; }
                <height>17</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Check if you want to avoid localised ponds forming in the region. If this is of particular interest because the DEM's accuracy has been assured and the purpose of the simulation is to assess these problem spots, then leave this box unchecked.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Correction proceeds as follows:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;- If cell cannot transfer water downhill, but there is an adjacent cell with identical elevation within tolerance limit, it will transfer the water into this.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;- If tolerance limit is not met, cell's water is routed directly to catchment outlet.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="whatsThis">
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1233,6 +1407,9 @@ p, li { white-space: pre-wrap; }
                <height>20</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>Select the number of times the smoothing algorithm should be applied. A higher number will lead to a much smoother map, but can result in possible issues with finding flow paths.</string>
+             </property>
              <property name="minimum">
               <number>1</number>
              </property>
@@ -1248,6 +1425,9 @@ p, li { white-space: pre-wrap; }
                <width>191</width>
                <height>17</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>Delineation of flow directions across the map of blocks.</string>
              </property>
              <property name="whatsThis">
               <string>Check if you want to avoid localised ponds forming in the region. If this is of particular interest because the DEM's accuracy has been assured and the purpose of the simulation is to assess these problem spots, then leave this box unchecked.
@@ -1268,6 +1448,9 @@ Correction proceeds as follows:
                <width>191</width>
                <height>17</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>Averaging of certain attributes for a single block based on its neighbours.</string>
              </property>
              <property name="whatsThis">
               <string>Check if you want to avoid localised ponds forming in the region. If this is of particular interest because the DEM's accuracy has been assured and the purpose of the simulation is to assess these problem spots, then leave this box unchecked.
@@ -1294,13 +1477,7 @@ Correction proceeds as follows:
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Method of finding flow direction in the digital elevation model or in this case the grid of blocks. Refer to publications for further information.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;D-infinity - Tarboton, 1997. A new method for the determination of flow directions and upslope areas in grid digital elevation models. Water Resources Research v33.2, 309-319&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;D8 - O'Callaghan &amp;amp; Mark, 1984. The Extraction of Drainage Networks from Digital Elevation Data. Computer Vision, Graphics and Image Processing v28, 323-344&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Divergent Flows - Freeman, 1991&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If the Von Neumann neighbourhood is selected, choose which processes this neighbourhood should apply to. All processes not assigned the Von Neumann neighbourhood will default to using the Moore Neighbourhood.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Apply Von Neumann Neighbourhood to: </string>
@@ -1330,7 +1507,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;How many blocks to consider when determining drainage fluxes (the greater the number, the greater the computational burden).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Select an option for determining CBD Location:</string>
@@ -1449,12 +1626,11 @@ p, li { white-space: pre-wrap; }
                <height>17</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>Checking this box will have the model to calculate distance from CBD (based on a selected city using its central point of reference).</string>
+             </property>
              <property name="whatsThis">
-              <string>Check if you want to avoid localised ponds forming in the region. If this is of particular interest because the DEM's accuracy has been assured and the purpose of the simulation is to assess these problem spots, then leave this box unchecked.
-
-Correction proceeds as follows:
-- If cell cannot transfer water downhill, but there is an adjacent cell with identical elevation within tolerance limit, it will transfer the water into this.
-- If tolerance limit is not met, cell's water is routed directly to catchment outlet.</string>
+              <string/>
              </property>
              <property name="text">
               <string>Consider location of nearest Central Business District in Simulation</string>
@@ -1469,6 +1645,9 @@ Correction proceeds as follows:
                <height>17</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>Choose the nearest city if your case study is within its metropolitan region.</string>
+             </property>
              <property name="text">
               <string>Select from a list of known locations</string>
              </property>
@@ -1481,6 +1660,9 @@ Correction proceeds as follows:
                <width>211</width>
                <height>17</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>Enter the coordinates of your city's CBD manually. Use decimal degrees.</string>
              </property>
              <property name="text">
               <string>Manually enter coordinates of CBD</string>
@@ -1495,6 +1677,9 @@ Correction proceeds as follows:
                <height>20</height>
               </rect>
              </property>
+             <property name="toolTip">
+              <string>Units of decimal degrees</string>
+             </property>
             </widget>
             <widget class="QLineEdit" name="cbdlat_box">
              <property name="geometry">
@@ -1504,6 +1689,9 @@ Correction proceeds as follows:
                <width>113</width>
                <height>20</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>Units of decimal degrees.</string>
              </property>
             </widget>
             <widget class="QLabel" name="cbdlong_lbl">
@@ -1554,6 +1742,9 @@ p, li { white-space: pre-wrap; }
                <width>181</width>
                <height>20</height>
               </rect>
+             </property>
+             <property name="toolTip">
+              <string>Checking this box will produce a CBD point on the &quot;block centres&quot; output map.</string>
              </property>
              <property name="whatsThis">
               <string>Check if you want to avoid localised ponds forming in the region. If this is of particular interest because the DEM's accuracy has been assured and the purpose of the simulation is to assess these problem spots, then leave this box unchecked.
@@ -1617,7 +1808,7 @@ Correction proceeds as follows:
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/delinblocks/BBcells.png</pixmap>
+            <pixmap resource="toolbaricons/guitoolbaricons.qrc">:/images/images/D4W-BBcells.png</pixmap>
            </property>
           </widget>
          </item>
@@ -1671,7 +1862,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;- (C) 2012 Peter M. Bach&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;- (C) 2014 Peter M. Bach&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -1756,9 +1947,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>cbdmark_check</tabstop>
  </tabstops>
  <resources>
-  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
-  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
-  <include location="../ub_modules/resources/dialogimg.qrc"/>
+  <include location="toolbaricons/guitoolbaricons.qrc"/>
  </resources>
  <connections>
   <connection>

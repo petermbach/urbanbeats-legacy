@@ -75,6 +75,7 @@ class UrbanBeatsSim(threading.Thread):
                 "dyn_startyear" : int(1960),
                 "dyn_breaks" : int(5),
                 "dyn_irregulardt" : int(0),
+                "dyn_irregularyears" : [],
                 "df_ubpconstant":int(0),
                 "df_techplaceconstant":int(0),
                 "df_techimplconstant":int(0),
@@ -294,7 +295,8 @@ class UrbanBeatsSim(threading.Thread):
         self.__narratives = []
         for i in range(int(paramlength)):
             if self.getParameter("dyn_irregulardt") == 1:
-                self.__narratives.append(["Header"+str(i), "insert current narrative here...", 1900])
+                curyear = self.getParameter("dyn_irregularyears")[i]
+                self.__narratives.append(["Header"+str(i), "insert current narrative here...", curyear])
             else:
                 startyear = self.getParameter("dyn_startyear")
                 timestep = float(self.getParameter("dyn_totyears"))/float(self.getParameter("dyn_breaks"))

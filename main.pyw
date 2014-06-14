@@ -326,8 +326,9 @@ class MainWindow(QtGui.QMainWindow):
             if i == 0:
                 continue
             sumbox = self.ui.simconfig_tabs.findChild(QtWebKit.QWebView, "summaryBox"+str(i))
-            sumbox.setParent(None)
-            sumbox.deleteLater()
+            if sumbox != None:
+                sumbox.setParent(None)
+                sumbox.deleteLater()
             self.ui.simconfig_tabs.removeTab(1)
         return True
         
@@ -440,7 +441,11 @@ class MainWindow(QtGui.QMainWindow):
             self.setActiveProjectPath(activesim.getActiveProjectPath())
             self.updateNewProject()
             self.setupTreeWidgetFromDict()
-        self.printc("Simulation Core Initialised")
+            self.initializeNewProject()
+            self.printc("Simulation Core Initialised")
+        else:
+            self.enabledisable_sim_guis(0)
+
         #Call a function to update entire gui on everything
         return True
     

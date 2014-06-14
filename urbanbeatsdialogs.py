@@ -66,6 +66,7 @@ class NewProjectSetup(QtGui.QDialog):
             self.ui.dynamicstart_spin.setEnabled(0)
             self.ui.dynamicbreaks_spin.setEnabled(0)
             self.ui.dynamicinterval_check.setEnabled(0)
+            self.ui.dynamicinterval_box.setEnabled(0)
             if readwrite == 'view':
                 #pass (update in future)
                 pass
@@ -123,6 +124,10 @@ class NewProjectSetup(QtGui.QDialog):
             self.ui.dynamicinterval_check.setChecked(1)
         else:
             self.ui.dynamicinterval_check.setChecked(0)
+        self.irregularYearBoxCheck()
+
+        yearstring = self.convertYearList(self.module.getParameter("dyn_irregularyears"), "GUI")
+        self.ui.dynamicinterval_box.setText(yearstring)
 
         self.ui.dyn_ubpconstant.setChecked(bool(self.module.getParameter("df_ubpconstant")))
         self.ui.dyn_techplanconstant.setChecked(bool(self.module.getParameter("df_techplaceconstant")))
@@ -135,7 +140,8 @@ class NewProjectSetup(QtGui.QDialog):
         self.ui.dyn_masterplanconstant.setChecked(bool(self.module.getParameter("dd_samemaster")))
         self.ui.dyn_climateconstant.setChecked(bool(self.module.getParameter("dd_sameclimate")))
                         
-        #Connect GUI Elements        
+        #Connect GUI Elements
+        self.connect(self.ui.dynamicinterval_check, QtCore.SIGNAL("clicked()"), self.irregularYearBoxCheck)
         self.connect(self.ui.projectpath_button, QtCore.SIGNAL("clicked()"), self.setProjectPath)
         self.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
         
@@ -144,6 +150,24 @@ class NewProjectSetup(QtGui.QDialog):
         if pathname:
             self.ui.projectpath_box.setText(pathname)
             self.emit(QtCore.SIGNAL("newProjectDirectory"), pathname)
+
+    def irregularYearBoxCheck(self):
+        if self.ui.dynamicinterval_check.isEnabled() and self.ui.dynamicinterval_check.isChecked():
+            self.ui.dynamicinterval_box.setEnabled(1)
+
+    def convertYearList(self, datavalues, dataformat):
+        if dataformat == "GUI":
+            yearstring = ""
+            for i in datavalues:
+                yearstring += str(i)+", "
+            return yearstring.rstrip(',')
+        elif dataformat == "MOD":
+            yeararray = datavalues.split(',')
+            for i in range(len(yeararray)):
+                yeararray[i] = int(yeararray[i])
+            return yeararray
+        else:
+            return None
 
     def adjTechplaceBoxes(self):
         """If "include techplacement" is not checked, then disabled a bunch of buttons thereafter"""
@@ -221,7 +245,8 @@ class NewProjectSetup(QtGui.QDialog):
         self.module.setParameter("dyn_startyear", self.ui.dynamicstart_spin.value())
         self.module.setParameter("dyn_breaks", self.ui.dynamicbreaks_spin.value())
         self.module.setParameter("dyn_irregulardt", int(self.ui.dynamicinterval_check.isChecked()))
-        
+        self.module.setParameter("dyn_irregularyears", self.convertYearList(str(self.ui.dynamicinterval_box.text()), "MOD"))
+
         self.module.setParameter("df_ubpconstant", int(self.ui.dyn_ubpconstant.isChecked()))
         self.module.setParameter("df_techplaceconstant", int(self.ui.dyn_techplanconstant.isChecked()))
         self.module.setParameter("df_techimplconstant", int(self.ui.dyn_techimplconstant.isChecked()))

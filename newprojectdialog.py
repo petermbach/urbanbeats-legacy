@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'newprojectdialog.ui'
 #
-# Created: Wed Apr 23 15:56:14 2014
+# Created: Fri Jun 13 14:05:29 2014
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -252,7 +252,7 @@ class Ui_NewProjectDialog(object):
         self.projectpath_box.setObjectName(_fromUtf8("projectpath_box"))
         self.projectpath_check = QtGui.QCheckBox(self.filemgmnt_widget)
         self.projectpath_check.setGeometry(QtCore.QRect(40, 40, 231, 17))
-        self.projectpath_check.setText(QtGui.QApplication.translate("NewProjectDialog", "Save copy of data into project folder", None, QtGui.QApplication.UnicodeUTF8))
+        self.projectpath_check.setText(QtGui.QApplication.translate("NewProjectDialog", "Save copy of data into project file", None, QtGui.QApplication.UnicodeUTF8))
         self.projectpath_check.setObjectName(_fromUtf8("projectpath_check"))
         self.verticalLayout_2.addWidget(self.filemgmnt_widget)
         self.filemgmnt_lbl_2 = QtGui.QLabel(self.scrollAreaWidgetContents)
@@ -349,7 +349,7 @@ class Ui_NewProjectDialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Customise Data Options:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.staticdataoptions.setObjectName(_fromUtf8("staticdataoptions"))
         self.static_climateconstant = QtGui.QCheckBox(self.static_group)
-        self.static_climateconstant.setGeometry(QtCore.QRect(30, 350, 221, 17))
+        self.static_climateconstant.setGeometry(QtCore.QRect(30, 345, 221, 17))
         self.static_climateconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Same Climate Data for each Snapshot", None, QtGui.QApplication.UnicodeUTF8))
         self.static_climateconstant.setObjectName(_fromUtf8("static_climateconstant"))
         self.radioMasterplan = QtGui.QRadioButton(self.static_group)
@@ -366,7 +366,7 @@ class Ui_NewProjectDialog(object):
         self.staticdataoptions2.setText(QtGui.QApplication.translate("NewProjectDialog", "Choose one option for spatial data:", None, QtGui.QApplication.UnicodeUTF8))
         self.staticdataoptions2.setObjectName(_fromUtf8("staticdataoptions2"))
         self.staticdataoptions3 = QtGui.QLabel(self.static_group)
-        self.staticdataoptions3.setGeometry(QtCore.QRect(20, 330, 201, 16))
+        self.staticdataoptions3.setGeometry(QtCore.QRect(20, 325, 201, 16))
         self.staticdataoptions3.setWhatsThis(QtGui.QApplication.translate("NewProjectDialog", "Rainfall time series, obtain data from weather station or climate authority of your city. Time series should be in rainfall depth and have units millimetres.", None, QtGui.QApplication.UnicodeUTF8))
         self.staticdataoptions3.setText(QtGui.QApplication.translate("NewProjectDialog", "Time-series Data:", None, QtGui.QApplication.UnicodeUTF8))
         self.staticdataoptions3.setObjectName(_fromUtf8("staticdataoptions3"))
@@ -401,8 +401,8 @@ class Ui_NewProjectDialog(object):
         self.dynamicbreaks_spin.setMaximum(10)
         self.dynamicbreaks_spin.setObjectName(_fromUtf8("dynamicbreaks_spin"))
         self.dynamicinterval_check = QtGui.QCheckBox(self.dynamic_group)
-        self.dynamicinterval_check.setGeometry(QtCore.QRect(30, 100, 151, 17))
-        self.dynamicinterval_check.setText(QtGui.QApplication.translate("NewProjectDialog", "Irregular Time Intervals", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynamicinterval_check.setGeometry(QtCore.QRect(30, 100, 331, 17))
+        self.dynamicinterval_check.setText(QtGui.QApplication.translate("NewProjectDialog", "Irregular Time Intervals (enter years, separate by comma)", None, QtGui.QApplication.UnicodeUTF8))
         self.dynamicinterval_check.setObjectName(_fromUtf8("dynamicinterval_check"))
         self.dynamicstart_lbl = QtGui.QLabel(self.dynamic_group)
         self.dynamicstart_lbl.setGeometry(QtCore.QRect(30, 50, 131, 16))
@@ -421,7 +421,7 @@ class Ui_NewProjectDialog(object):
         self.dynamic_img.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/images/simtype_dynamic.png")))
         self.dynamic_img.setObjectName(_fromUtf8("dynamic_img"))
         self.dyndataoptions = QtGui.QLabel(self.dynamic_group)
-        self.dyndataoptions.setGeometry(QtCore.QRect(10, 275, 131, 16))
+        self.dyndataoptions.setGeometry(QtCore.QRect(10, 305, 131, 16))
         self.dyndataoptions.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -429,7 +429,7 @@ class Ui_NewProjectDialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Customise Data Options:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dyndataoptions.setObjectName(_fromUtf8("dyndataoptions"))
         self.dynsimfeatures = QtGui.QLabel(self.dynamic_group)
-        self.dynsimfeatures.setGeometry(QtCore.QRect(10, 130, 231, 16))
+        self.dynsimfeatures.setGeometry(QtCore.QRect(10, 160, 231, 16))
         self.dynsimfeatures.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -437,33 +437,44 @@ class Ui_NewProjectDialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Customise Simulation Features:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dynsimfeatures.setObjectName(_fromUtf8("dynsimfeatures"))
         self.dyn_climateconstant = QtGui.QCheckBox(self.dynamic_group)
-        self.dyn_climateconstant.setGeometry(QtCore.QRect(30, 320, 321, 17))
+        self.dyn_climateconstant.setGeometry(QtCore.QRect(30, 350, 321, 17))
         self.dyn_climateconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Use same climate data across simulation (can still be scaled)", None, QtGui.QApplication.UnicodeUTF8))
         self.dyn_climateconstant.setObjectName(_fromUtf8("dyn_climateconstant"))
         self.dyn_ubpconstant = QtGui.QCheckBox(self.dynamic_group)
-        self.dyn_ubpconstant.setGeometry(QtCore.QRect(30, 150, 221, 17))
+        self.dyn_ubpconstant.setGeometry(QtCore.QRect(30, 180, 221, 17))
         self.dyn_ubpconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Keep Urban Planning Rules constant", None, QtGui.QApplication.UnicodeUTF8))
         self.dyn_ubpconstant.setObjectName(_fromUtf8("dyn_ubpconstant"))
         self.dyn_masterplanconstant = QtGui.QCheckBox(self.dynamic_group)
-        self.dyn_masterplanconstant.setGeometry(QtCore.QRect(30, 295, 221, 17))
+        self.dyn_masterplanconstant.setGeometry(QtCore.QRect(30, 325, 221, 17))
         self.dyn_masterplanconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "No change in Masterplan", None, QtGui.QApplication.UnicodeUTF8))
         self.dyn_masterplanconstant.setObjectName(_fromUtf8("dyn_masterplanconstant"))
         self.dyn_techplanconstant = QtGui.QCheckBox(self.dynamic_group)
-        self.dyn_techplanconstant.setGeometry(QtCore.QRect(30, 175, 261, 17))
+        self.dyn_techplanconstant.setGeometry(QtCore.QRect(30, 205, 261, 17))
         self.dyn_techplanconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Keep Technology Planning Rules constant", None, QtGui.QApplication.UnicodeUTF8))
         self.dyn_techplanconstant.setObjectName(_fromUtf8("dyn_techplanconstant"))
         self.dyn_techimplconstant = QtGui.QCheckBox(self.dynamic_group)
-        self.dyn_techimplconstant.setGeometry(QtCore.QRect(30, 200, 261, 17))
+        self.dyn_techimplconstant.setGeometry(QtCore.QRect(30, 230, 261, 17))
         self.dyn_techimplconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Keep Technology Implementation Rules constant", None, QtGui.QApplication.UnicodeUTF8))
         self.dyn_techimplconstant.setObjectName(_fromUtf8("dyn_techimplconstant"))
         self.dyn_perfconstant = QtGui.QCheckBox(self.dynamic_group)
-        self.dyn_perfconstant.setGeometry(QtCore.QRect(60, 245, 261, 17))
+        self.dyn_perfconstant.setGeometry(QtCore.QRect(60, 275, 261, 17))
         self.dyn_perfconstant.setText(QtGui.QApplication.translate("NewProjectDialog", "Constant parameter set across time?", None, QtGui.QApplication.UnicodeUTF8))
         self.dyn_perfconstant.setObjectName(_fromUtf8("dyn_perfconstant"))
         self.dyn_perfinclude = QtGui.QCheckBox(self.dynamic_group)
-        self.dyn_perfinclude.setGeometry(QtCore.QRect(30, 225, 261, 17))
+        self.dyn_perfinclude.setGeometry(QtCore.QRect(30, 255, 261, 17))
         self.dyn_perfinclude.setText(QtGui.QApplication.translate("NewProjectDialog", "Include Performance Assessment?", None, QtGui.QApplication.UnicodeUTF8))
         self.dyn_perfinclude.setObjectName(_fromUtf8("dyn_perfinclude"))
+        self.dynamicinterval_box = QtGui.QLineEdit(self.dynamic_group)
+        self.dynamicinterval_box.setGeometry(QtCore.QRect(130, 130, 211, 20))
+        self.dynamicinterval_box.setObjectName(_fromUtf8("dynamicinterval_box"))
+        self.dynamicinterval_lbl = QtGui.QLabel(self.dynamic_group)
+        self.dynamicinterval_lbl.setGeometry(QtCore.QRect(30, 130, 91, 16))
+        self.dynamicinterval_lbl.setText(QtGui.QApplication.translate("NewProjectDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Simulation Years:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynamicinterval_lbl.setObjectName(_fromUtf8("dynamicinterval_lbl"))
         self.horizontalLayout_4.addWidget(self.dynamic_group)
         self.simtype_stack.addWidget(self.page_2)
         self.page_3 = QtGui.QWidget()
