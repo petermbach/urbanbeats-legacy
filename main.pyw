@@ -437,18 +437,55 @@ class MainWindow(QtGui.QMainWindow):
         fname = QtGui.QFileDialog.getOpenFileName(self, "Load Existing UrbanBEATS Project...", os.curdir, "UrbanBEATS (*.ubs)")
         if fname:
             activesim = self.getActiveSimulationObject()
-            ubfiles.loadSimFile(activesim, fname)
+            projectpath = ubfiles.getSimFileProjectPath(fname)
+
+            #Check for the correct project path and prompt if doesn't exist
+            if os.path.exists(projectpath):
+                pass #All ok
+            else:
+                prompt_msg = "The directory "+str(projectpath)+" does not exist! Set a new directory?"
+                reply = QtGui.QMessageBox.question(self, 'Project Path Location',
+                                 prompt_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.Cancel)
+                if reply == QtGui.QMessageBox.Yes:
+                    #Commands to select new directory
+                    projectpath = QtGui.QFileDialog.getExistingDirectory(self, "Select Project Location")
+                    if projectpath:
+                        pass #All ok
+                    else:
+                        prompt_msg = "Invalid Path, Project not loaded!"
+                        QtGui.QMessageBox.information(self, 'Load Project', prompt_msg, QtGui.QMessageBox.Ok)
+                        self.ui.simconfig_tabs.setCurrentIndex(0)
+                        self.ui.databrowseTree.clear()
+                        self.enabledisable_sim_guis(0)
+                        self.resetConfigInterface()
+                        return False
+                elif reply == QtGui.QMessageBox.Cancel:
+                    prompt_msg = "Project not loaded!"
+                    QtGui.QMessageBox.information(self, 'Load Project', prompt_msg, QtGui.QMessageBox.Ok)
+                    #Commands to quit load operation
+                    self.ui.simconfig_tabs.setCurrentIndex(0)
+                    self.ui.databrowseTree.clear()
+                    self.enabledisable_sim_guis(0)
+                    self.resetConfigInterface()
+                    return False
+
+            ubfiles.loadSimFile(activesim, fname, projectpath)
             self.setActiveProjectPath(activesim.getActiveProjectPath())
             self.updateNewProject()
             self.setupTreeWidgetFromDict()
+<<<<<<< HEAD
             self.initializeNewProject()
             self.printc("Simulation Core Initialised")
         else:
             self.enabledisable_sim_guis(0)
 
+=======
+
+        self.printc("Simulation Core Initialised")
+>>>>>>> df420e8682c594f3eb99cc18b04d3adebcd8f3a4
         #Call a function to update entire gui on everything
         return True
-    
+
     def saveProject(self):
         activesim = self.getActiveSimulationObject()
         fname = str(activesim.getFullFileName())
