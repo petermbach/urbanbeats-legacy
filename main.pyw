@@ -473,16 +473,13 @@ class MainWindow(QtGui.QMainWindow):
             self.setActiveProjectPath(activesim.getActiveProjectPath())
             self.updateNewProject()
             self.setupTreeWidgetFromDict()
-<<<<<<< HEAD
+
             self.initializeNewProject()
             self.printc("Simulation Core Initialised")
         else:
             self.enabledisable_sim_guis(0)
 
-=======
-
         self.printc("Simulation Core Initialised")
->>>>>>> 67b011e6a643f3b718f684c718261b4fc2f01946
         #Call a function to update entire gui on everything
         return True
 
