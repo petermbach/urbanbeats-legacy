@@ -112,7 +112,7 @@ def line_basic(options_root, charttitle, categories, xlabel, ylabel, valueunits,
     </script>
     </head>
     <body>
-        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; min-height: 400px; margin: 0 auto"></div>
     </body>
     </html>
@@ -252,8 +252,8 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
-<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts-more.js"></script>
+<script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts-more.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 	</body>
@@ -335,7 +335,7 @@ def bar_basic(options_root, charttitle, categories, axislabel, valueunits, datad
         </script>
     </head>
     <body>
-        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
     </body>
     </html>"""    
@@ -408,7 +408,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
 
 <div id="container" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
 
@@ -476,7 +476,7 @@ def column_basic(options_root, charttitle, categories, axislabel, labelformat, v
         </script>
     </head>
     <body>
-        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
     </body>
     </html>
@@ -551,7 +551,7 @@ def column_stacked(options_root, charttitle, categories, ylabel, datadict):
 		</script>
 	</head>
 	<body>
-        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
     </html>"""
@@ -707,7 +707,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
 </html>"""    
@@ -767,7 +767,7 @@ def pie_basic(options_root, charttitle, seriesname, datadict):
         </script>
     </head>
     <body>
-        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
     </body>
     </html>"""
@@ -915,7 +915,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 	</body>
@@ -1000,7 +1000,7 @@ def scatter_plot(options_root, charttitle, xlabel, ylabel, markersize, valueunit
 		</script>
 	</head>
 	<body>
-        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
         <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
     </html>"""
@@ -1097,7 +1097,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
 </html>"""
@@ -1197,7 +1197,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 	</body>
@@ -1264,8 +1264,8 @@ def box_plot(options_root, charttitle, categories, xlabel, ylabel, valueunits, d
         </script>
     </head>
     <body>
-        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
-        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts-more.js"></script>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts-more.js"></script>
         <div id="container" style="height: 400px; margin: auto; min-width: 400px; max-width: 600px"></div>
     </body>
     </html>"""
@@ -1320,8 +1320,8 @@ def spiderweb(options_root, charttitle, categories, valueunits, datadict):
 	</script>
 	</head>
 	<body>
-        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
-        <script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts-more.js"></script>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts-more.js"></script>
         <div id="container" style="width: 700px; height: 400px; margin: 0 auto"></div>
 	</body>
     </html>"""
@@ -1694,7 +1694,7 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src=\""""+options_root+"""/ancillary/highcharts/js/highcharts.js"></script>
+<script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 	</body>
 </html>"""
