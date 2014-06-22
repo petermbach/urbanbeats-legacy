@@ -924,298 +924,298 @@ class Techplacement(UBModule):
             currentAttList.addAttribute("Blk_WD", wdDict["TotalBlockWD"])       #[kL/yr]
             currentAttList.addAttribute("Blk_WD_OUT", wdDict["TotalOutdoorWD"]) #[kL/yr]
         
-        ###-------------------------------------------------------------------###
-        #---  INTERMEDIATE LOOP - RECALCULATE IMP AREA TO SERVE
-        ###-------------------------------------------------------------------###
-        #DETERMINE IMPERVIOUS AREAS TO MANAGE BASED ON LAND USES
-        for i in range(int(blocks_num)):
-            currentID = i+1
-            currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-            #currentAttList = self.getBlockUUID(currentID, city)
-            if currentAttList.getAttribute("Status") == 0:
-                continue            
-            block_EIA = currentAttList.getAttribute("Blk_EIA")
-            if self.service_res == False:
-                AimpRes = currentAttList.getAttribute("ResLotEIA") * currentAttList.getAttribute("ResAllots")
-                AimpstRes = currentAttList.getAttribute("ResFrontT") - currentAttList.getAttribute("avSt_RES")                
-                block_EIA -= AimpRes - AimpstRes
-            if self.service_hdr == False:
-                block_EIA -= currentAttList.getAttribute("HDR_EIA")
-            if self.service_com == False:
-                block_EIA -= currentAttList.getAttribute("COMAeEIA") 
-            if self.service_li == False:
-                block_EIA -= currentAttList.getAttribute("LIAeEIA")
-            if self.service_hi == False:
-                block_EIA -= currentAttList.getAttribute("HIAeEIA")
-            
-            currentAttList.addAttribute("Manage_EIA", block_EIA)
-        
-        ###-------------------------------------------------------------------###
-        #---  SECOND LOOP - RETROFIT ALGORITHM
-        ###-------------------------------------------------------------------###
-        #strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
-        #totsystems = city.getComponent(strvec[0]).getAttribute("TotalSystems")
-        #ubeatsfile = city.getComponent(strvec[0]).getAttribute("UBFile")
-        totsystems = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("TotalSystems")
-        ubeatsfile = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("UBFile")
-
-        self.notify("Total Systems in Map: "+str(totsystems))
-
-        #sysuuids = city.getUUIDsOfComponentsInView(self.sysAttr)
-        #self.notify(sysuuids)
-        sysIDs = self.activesim.getAssetsWithIdentifier("SysPrevID")
-        #Grab the list of systems and sort them based on location into a dictionary
-        system_list = {}        #Dictionary
-        for i in range(int(blocks_num)):
-            system_list[i+1] = []
-        for i in range(len(sysIDs)):
-            #curSys = city.getComponent(sysuuids[i])
-            curSys = sysIDs[i]
-            locate = int(curSys.getAttribute("Location"))
-            system_list[locate].append(curSys)  #Block ID [5], [curSys, curSys, curSys]
-
-        #Do the retrofitting
-        for i in range(int(blocks_num)):
-            currentID = i+1
-            #currentAttList = self.getBlockUUID(currentID, city) #QUIT CONDITION #1 - status=0
-            currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-            if currentAttList.getAttribute("Status") == 0:
-                continue
-
-            sys_implement = system_list[currentID]
-            if len(sys_implement) == 0:
-                continue
-
-            if self.retrofit_scenario == "N":
-                self.retrofit_DoNothing(currentID, sys_implement)
-            elif self.retrofit_scenario == "R":
-                self.retrofit_WithRenewal(currentID, sys_implement)
-            elif self.retrofit_scenario == "F":
-                self.retrofit_Forced(currentID, sys_implement)
-
-        ###-------------------------------------------------------------------###
-        #--- THIRD LOOP - OPPORTUNITIES MAPPING OF INDIVIDUAL TECHS 
-        #            ACROSS SCALES & IN-BLOCK TOP RANKED OPTIONS (ACROSS BLOCKS)                         #
-        ###-------------------------------------------------------------------###
-        
-        #INITIALIZE THE DATABASE
-        ubdbpath = self.ubeatsdir+"/temp/ubeatsdb1.db"
-        if os.path.isfile(ubdbpath):
-            try:
-                os.remove(ubdbpath)     #Attempts to remove the file, if it fails, it creates another with an incremented
-            except:                     #index.
-                ubdbpath = self.ubeatsdir+"/temp/ubeatsdb"+str(int(ubdbpath[len(ubdbpath)-4])+1)+".db"
-
-        self.sqlDB = sqlite3.connect(ubdbpath)
-        self.dbcurs = self.sqlDB.cursor()
-        
-        #Create Table for Individual Systems
-        self.dbcurs.execute('''CREATE TABLE watertechs(BlockID, Type, Size, Scale, Service, Areafactor, Landuse, Designdegree)''')
-        self.dbcurs.execute('''CREATE TABLE blockstrats(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
-                            LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty, 
-                            StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
-        self.dbcurs.execute('''CREATE TABLE blockstratstop(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
-                            LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty, 
-                            StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
-        
-        inblock_options = {}
-        subbas_options = {}
-        
-        #Initialize increment variables
-        self.notify(str(self.lot_rigour)+" "+str(self.street_rigour)+" "+str(self.neigh_rigour)+" "+str(self.subbas_rigour))
-        self.lot_incr = self.setupIncrementVector(self.lot_rigour)
-        self.street_incr = self.setupIncrementVector(self.street_rigour)
-        self.neigh_incr = self.setupIncrementVector(self.neigh_rigour)
-        self.subbas_incr = self.setupIncrementVector(self.subbas_rigour)
-        self.notify(str(self.lot_incr)+" "+str(self.street_incr)+" "+str(self.neigh_incr)+" "+str(self.subbas_incr))
-        
-        if bool(self.ration_harvest):   #if harvest is a management objective
-            #Initialize meteorological data vectors: Load rainfile and evaporation files, 
-            #create the scaling factors for evap data
-            self.notify("Loading Climate Data... ")
-            self.raindata = ubseries.loadClimateFile(self.rainfile, "csv", self.rain_dt, 1440, self.rain_length)
-            self.evapdata = ubseries.loadClimateFile(self.evapfile, "csv", self.evap_dt, 1440, self.rain_length)
-            self.evapscale = ubseries.convertVectorToScalingFactors(self.evapdata)
-            self.raindata = ubseries.removeDateStampFromSeries(self.raindata)             #Remove the date stamps
-            
-        for i in range(int(blocks_num)):
-            currentID = i+1
-            self.notify("Currently on Block "+str(currentID))
-            currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-            #currentAttList = self.getBlockUUID(currentID, city)
-            if currentAttList.getAttribute("Status") == 0:
-                self.notify("Block not active in simulation")
-                continue
-            
-            #INITIALIZE VECTORS
-            lot_techRES = [0]
-            lot_techHDR = [0]
-            lot_techLI = [0]
-            lot_techHI = [0]
-            lot_techCOM = [0]
-            street_tech = [0]            
-            neigh_tech = [0]
-            subbas_tech = [0]
-
-
-            #Assess Opportunities and Calculate SWH Benefits
-
-            #Assess Lot Opportunities
-            if len(techListLot) != 0:
-                lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM = self.assessLotOpportunities(techListLot, currentAttList)
-            #self.notify(lot_techRES)
-            #self.notify(lot_techHDR)
-            #self.notify(lot_techLI)
-            #self.notify(lot_techHI)
-            #self.notify(lot_techCOM)
-             
-            #Assess Street Opportunities
-            if len(techListStreet) != 0:
-                street_tech = self.assessStreetOpportunities(techListStreet, currentAttList)
-            #self.notify(street_tech)
-            
-            #Assess Neigh Opportunities
-            if len(techListNeigh) != 0:
-                neigh_tech = self.assessNeighbourhoodOpportunities(techListNeigh, currentAttList)
-            #self.notify(neigh_tech)
-            
-            #Assess Precinct Opportunities
-            if len(techListSubbas) != 0:
-                subbas_tech = self.assessSubbasinOpportunities(techListSubbas, currentAttList)
-            #self.notify(subbas_tech)
-            
-            subbas_options["BlockID"+str(currentID)] = subbas_tech
-            
-            #--- THIRD LOOP - CONSTRUCT IN-BLOCK OPTIONS            
-            inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
-            
-        self.sqlDB.commit()
+        # ###-------------------------------------------------------------------###
+        # #---  INTERMEDIATE LOOP - RECALCULATE IMP AREA TO SERVE
+        # ###-------------------------------------------------------------------###
+        # #DETERMINE IMPERVIOUS AREAS TO MANAGE BASED ON LAND USES
+        # for i in range(int(blocks_num)):
+        #     currentID = i+1
+        #     currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
+        #     #currentAttList = self.getBlockUUID(currentID, city)
+        #     if currentAttList.getAttribute("Status") == 0:
+        #         continue
+        #     block_EIA = currentAttList.getAttribute("Blk_EIA")
+        #     if self.service_res == False:
+        #         AimpRes = currentAttList.getAttribute("ResLotEIA") * currentAttList.getAttribute("ResAllots")
+        #         AimpstRes = currentAttList.getAttribute("ResFrontT") - currentAttList.getAttribute("avSt_RES")
+        #         block_EIA -= AimpRes - AimpstRes
+        #     if self.service_hdr == False:
+        #         block_EIA -= currentAttList.getAttribute("HDR_EIA")
+        #     if self.service_com == False:
+        #         block_EIA -= currentAttList.getAttribute("COMAeEIA")
+        #     if self.service_li == False:
+        #         block_EIA -= currentAttList.getAttribute("LIAeEIA")
+        #     if self.service_hi == False:
+        #         block_EIA -= currentAttList.getAttribute("HIAeEIA")
+        #
+        #     currentAttList.addAttribute("Manage_EIA", block_EIA)
+        #
+        # ###-------------------------------------------------------------------###
+        # #---  SECOND LOOP - RETROFIT ALGORITHM
+        # ###-------------------------------------------------------------------###
+        # #strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
+        # #totsystems = city.getComponent(strvec[0]).getAttribute("TotalSystems")
+        # #ubeatsfile = city.getComponent(strvec[0]).getAttribute("UBFile")
+        # totsystems = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("TotalSystems")
+        # ubeatsfile = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("UBFile")
+        #
+        # self.notify("Total Systems in Map: "+str(totsystems))
+        #
+        # #sysuuids = city.getUUIDsOfComponentsInView(self.sysAttr)
+        # #self.notify(sysuuids)
+        # sysIDs = self.activesim.getAssetsWithIdentifier("SysPrevID")
+        # #Grab the list of systems and sort them based on location into a dictionary
+        # system_list = {}        #Dictionary
+        # for i in range(int(blocks_num)):
+        #     system_list[i+1] = []
+        # for i in range(len(sysIDs)):
+        #     #curSys = city.getComponent(sysuuids[i])
+        #     curSys = sysIDs[i]
+        #     locate = int(curSys.getAttribute("Location"))
+        #     system_list[locate].append(curSys)  #Block ID [5], [curSys, curSys, curSys]
+        #
+        # #Do the retrofitting
+        # for i in range(int(blocks_num)):
+        #     currentID = i+1
+        #     #currentAttList = self.getBlockUUID(currentID, city) #QUIT CONDITION #1 - status=0
+        #     currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
+        #     if currentAttList.getAttribute("Status") == 0:
+        #         continue
+        #
+        #     sys_implement = system_list[currentID]
+        #     if len(sys_implement) == 0:
+        #         continue
+        #
+        #     if self.retrofit_scenario == "N":
+        #         self.retrofit_DoNothing(currentID, sys_implement)
+        #     elif self.retrofit_scenario == "R":
+        #         self.retrofit_WithRenewal(currentID, sys_implement)
+        #     elif self.retrofit_scenario == "F":
+        #         self.retrofit_Forced(currentID, sys_implement)
+        #
+        # ###-------------------------------------------------------------------###
+        # #--- THIRD LOOP - OPPORTUNITIES MAPPING OF INDIVIDUAL TECHS
+        # #            ACROSS SCALES & IN-BLOCK TOP RANKED OPTIONS (ACROSS BLOCKS)                         #
+        # ###-------------------------------------------------------------------###
+        #
+        # #INITIALIZE THE DATABASE
+        # ubdbpath = self.ubeatsdir+"/temp/ubeatsdb1.db"
+        # if os.path.isfile(ubdbpath):
+        #     try:
+        #         os.remove(ubdbpath)     #Attempts to remove the file, if it fails, it creates another with an incremented
+        #     except:                     #index.
+        #         ubdbpath = self.ubeatsdir+"/temp/ubeatsdb"+str(int(ubdbpath[len(ubdbpath)-4])+1)+".db"
+        #
+        # self.sqlDB = sqlite3.connect(ubdbpath)
+        # self.dbcurs = self.sqlDB.cursor()
+        #
+        # #Create Table for Individual Systems
+        # self.dbcurs.execute('''CREATE TABLE watertechs(BlockID, Type, Size, Scale, Service, Areafactor, Landuse, Designdegree)''')
+        # self.dbcurs.execute('''CREATE TABLE blockstrats(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
+        #                     LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
+        #                     StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
+        # self.dbcurs.execute('''CREATE TABLE blockstratstop(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
+        #                     LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
+        #                     StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
+        #
+        # inblock_options = {}
+        # subbas_options = {}
+        #
+        # #Initialize increment variables
+        # self.notify(str(self.lot_rigour)+" "+str(self.street_rigour)+" "+str(self.neigh_rigour)+" "+str(self.subbas_rigour))
+        # self.lot_incr = self.setupIncrementVector(self.lot_rigour)
+        # self.street_incr = self.setupIncrementVector(self.street_rigour)
+        # self.neigh_incr = self.setupIncrementVector(self.neigh_rigour)
+        # self.subbas_incr = self.setupIncrementVector(self.subbas_rigour)
+        # self.notify(str(self.lot_incr)+" "+str(self.street_incr)+" "+str(self.neigh_incr)+" "+str(self.subbas_incr))
+        #
+        # if bool(self.ration_harvest):   #if harvest is a management objective
+        #     #Initialize meteorological data vectors: Load rainfile and evaporation files,
+        #     #create the scaling factors for evap data
+        #     self.notify("Loading Climate Data... ")
+        #     self.raindata = ubseries.loadClimateFile(self.rainfile, "csv", self.rain_dt, 1440, self.rain_length)
+        #     self.evapdata = ubseries.loadClimateFile(self.evapfile, "csv", self.evap_dt, 1440, self.rain_length)
+        #     self.evapscale = ubseries.convertVectorToScalingFactors(self.evapdata)
+        #     self.raindata = ubseries.removeDateStampFromSeries(self.raindata)             #Remove the date stamps
+        #
+        # for i in range(int(blocks_num)):
+        #     currentID = i+1
+        #     self.notify("Currently on Block "+str(currentID))
+        #     currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
+        #     #currentAttList = self.getBlockUUID(currentID, city)
+        #     if currentAttList.getAttribute("Status") == 0:
+        #         self.notify("Block not active in simulation")
+        #         continue
+        #
+        #     #INITIALIZE VECTORS
+        #     lot_techRES = [0]
+        #     lot_techHDR = [0]
+        #     lot_techLI = [0]
+        #     lot_techHI = [0]
+        #     lot_techCOM = [0]
+        #     street_tech = [0]
+        #     neigh_tech = [0]
+        #     subbas_tech = [0]
+        #
+        #
+        #     #Assess Opportunities and Calculate SWH Benefits
+        #
+        #     #Assess Lot Opportunities
+        #     if len(techListLot) != 0:
+        #         lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM = self.assessLotOpportunities(techListLot, currentAttList)
+        #     #self.notify(lot_techRES)
+        #     #self.notify(lot_techHDR)
+        #     #self.notify(lot_techLI)
+        #     #self.notify(lot_techHI)
+        #     #self.notify(lot_techCOM)
+        #
+        #     #Assess Street Opportunities
+        #     if len(techListStreet) != 0:
+        #         street_tech = self.assessStreetOpportunities(techListStreet, currentAttList)
+        #     #self.notify(street_tech)
+        #
+        #     #Assess Neigh Opportunities
+        #     if len(techListNeigh) != 0:
+        #         neigh_tech = self.assessNeighbourhoodOpportunities(techListNeigh, currentAttList)
+        #     #self.notify(neigh_tech)
+        #
+        #     #Assess Precinct Opportunities
+        #     if len(techListSubbas) != 0:
+        #         subbas_tech = self.assessSubbasinOpportunities(techListSubbas, currentAttList)
+        #     #self.notify(subbas_tech)
+        #
+        #     subbas_options["BlockID"+str(currentID)] = subbas_tech
+        #
+        #     #--- THIRD LOOP - CONSTRUCT IN-BLOCK OPTIONS
+        #     inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
+        #
+        # self.sqlDB.commit()
         
         ###-------------------------------------------------------------------###
         #  FOURTH LOOP - MONTE CARLO (ACROSS BASINS)                            #
         ###-------------------------------------------------------------------###
-        gc.collect()
-#        self.dbcurs.execute('''CREATE TABLE basinbrainstorm(BasinID, )''')
-
-        for i in range(int(basins)):
-            currentBasinID = i+1
-            self.notify("Currently on Basin ID"+str(currentBasinID))
-            
-            basinBlockIDs, outletID = self.getBasinBlockIDs(currentBasinID, blocks_num)
-            self.notify("basinBlockIDs "+str(basinBlockIDs)+" "+str(outletID))
-            
-            dP_QTY, basinRemainQTY, basinTreatedQTY, basinEIA = self.calculateRemainingService("QTY", basinBlockIDs)
-            dP_WQ, basinRemainWQ, basinTreatedWQ, basinEIA = self.calculateRemainingService("WQ", basinBlockIDs)
-            dP_REC, basinRemainREC, basinTreatedREC, basinDem = self.calculateRemainingService("REC", basinBlockIDs)
-            
-            self.notify("Basin Totals: "+str([basinRemainQTY, basinRemainWQ, basinRemainREC]))
-            self.notify("Previous Treated Efficiency for: "+str([basinTreatedQTY/basinEIA, basinTreatedWQ/basinEIA, basinTreatedREC/basinDem]))
-            self.notify("Must choose a strategy now that treats: "+str([dP_QTY*100.0, dP_WQ*100.0, dP_REC*100.0])+"% of basin")
-            
-            subbasPartakeIDs = self.findSubbasinPartakeIDs(basinBlockIDs, subbas_options) #Find locations of possible WSUD
-            
-            updatedService = [dP_QTY, dP_WQ, dP_REC]
-            
-            #SKIP CONDITIONS
-            if basinRemainQTY == 0.0 and basinRemainWQ == 0.0 and basinRemainREC == 0.0:
-                #self.notify("Basin ID: ", currentBasinID, " has no remaining service requirements, skipping!"
-                continue
-            if sum(updatedService) == 0:
-                continue
-            
-            iterations = self.maxMCiterations   #MONTE CARLO ITERATIONS - CAN SET TO SENSITIVITY VALUE IN FUTURE RELATIVE TO BASIN SIZE
-            
-            if len(basinBlockIDs) == 1: #if we are dealing with a single-block basin, reduce the number of iterations
-                iterations = self.maxMCiterations/10        #If only one block in basin, do different/smaller number of iterations
-            #Begin Monte Carlo
-            basin_strategies = []
-            for iteration in range(iterations):   #1000 monte carlo simulations
-                self.notify("Current Iteration No. "+str(iteration+1))
-                #Draw Samples
-                subbas_chosenIDs, inblocks_chosenIDs = self.selectTechLocationsByRandom(subbasPartakeIDs, basinBlockIDs)
-                #self.notify("Selected Locations: Subbasins ", subbas_chosenIDs, " In Blocks ", inblocks_chosenIDs
-                
-                #Create the Basin Management Strategy Object
-                current_bstrategy = tt.BasinManagementStrategy(iteration+1, currentBasinID, 
-                                                               basinBlockIDs, subbasPartakeIDs, 
-                                                               [basinRemainQTY, basinRemainWQ, basinRemainREC])
-                
-                #Populate Basin Management Strategy Object based on the current sampled values
-                self.populateBasinWithTech(current_bstrategy, subbas_chosenIDs, inblocks_chosenIDs, 
-                                           inblock_options, subbas_options, basinBlockIDs)
-                
-                tt.updateBasinService(current_bstrategy)
-                #self.notify(current_bstrategy.getSubbasinArray())
-                #self.notify(current_bstrategy.getInBlocksArray())
-
-                tt.calculateBasinStrategyMCAScores(current_bstrategy,self.priorities, self.mca_techlist, self.mca_tech, \
-                                                  self.mca_env, self.mca_ecn, self.mca_soc, \
-                                                      [self.bottomlines_tech_w, self.bottomlines_env_w, \
-                                                               self.bottomlines_ecn_w, self.bottomlines_soc_w])
-                
-                #Add basin strategy to list of possibilities
-                service_objfunc = self.evaluateServiceObjectiveFunction(current_bstrategy, updatedService)        #Calculates how well it meets the total service
-
-                basin_strategies.append([service_objfunc,current_bstrategy.getServicePvalues(), current_bstrategy.getTotalMCAscore(), current_bstrategy])
-            
-            #Pick the final option by narrowing down the list and choosing (based on how many
-            #need to be chosen), sort and grab the top ranking options
-            basin_strategies.sort()
-            self.notify(basin_strategies)
-            self.debugPlanning(basin_strategies, currentBasinID)
-            acceptable_options = []
-            for j in range(len(basin_strategies)):
-                if basin_strategies[j][0] < 0:  #if the OF is <0 i.e. -1, skip
-                    continue
-                else:
-                    acceptable_options.append(basin_strategies[j])
-            #self.notify(acceptable_options)
-            if self.ranktype == "RK":
-                acceptable_options = acceptable_options[0:int(self.topranklimit)]
-            elif self.ranktype == "CI":
-                acceptableN = int(len(acceptable_options)*(1.0-float(self.conf_int)/100.0))
-                acceptable_options = acceptable_options[0:acceptableN]
-            
-            topcount = len(acceptable_options)
-            acceptable_options.sort(key=lambda score: score[2])
-            self.notify(acceptable_options)
-            
-            #Choose final option
-            numselect = min(topcount, self.num_output_strats)   #Determines how many options out of the matrix it should select
-            final_selection = []
-            for j in range(int(numselect)):            
-                score_matrix = []       #Create the score matrix
-                for opt in acceptable_options:
-                    score_matrix.append(opt[2])
-                selection_cdf = self.createCDF(score_matrix)    #Creat the CDF
-                choice = self.samplefromCDF(selection_cdf)
-                final_selection.append(acceptable_options[choice][3])   #Add ONLY the strategy_object
-                acceptable_options.pop(choice)  #Pop the option at the selected index from the matrix
-                #Repeat for as many options as requested
-            
-            #Write WSUD strategy attributes to output vector for that block
-            self.notify(final_selection)
-            if len(final_selection) == 0:
-                self.transferExistingSystemsToOutput(1)
-                #If there are no additional plans, just tranfer systems across, only one output as StrategyID1
-                
-            for j in range(len(final_selection)):       #Otherwise it'll loop
-                cur_strat = final_selection[j]
-                stratID = j+1
-                self.writeStrategyView(stratID, currentBasinID, basinBlockIDs, cur_strat)
-                self.transferExistingSystemsToOutput(stratID)
-                
-            #Clear the array and garbage collect
-            basin_strategies = []
-            acceptable_options = []
-            final_selection = []
-            gc.collect()
-            #END OF BASIN LOOP, continues to next basin
-        
-#        output_log_file.write("End of Basin Strategies Log \n\n")
-#        output_log_file.close()
-        
-        self.sqlDB.close()      #Close the database
+#         gc.collect()
+# #        self.dbcurs.execute('''CREATE TABLE basinbrainstorm(BasinID, )''')
+#
+#         for i in range(int(basins)):
+#             currentBasinID = i+1
+#             self.notify("Currently on Basin ID"+str(currentBasinID))
+#
+#             basinBlockIDs, outletID = self.getBasinBlockIDs(currentBasinID, blocks_num)
+#             self.notify("basinBlockIDs "+str(basinBlockIDs)+" "+str(outletID))
+#
+#             dP_QTY, basinRemainQTY, basinTreatedQTY, basinEIA = self.calculateRemainingService("QTY", basinBlockIDs)
+#             dP_WQ, basinRemainWQ, basinTreatedWQ, basinEIA = self.calculateRemainingService("WQ", basinBlockIDs)
+#             dP_REC, basinRemainREC, basinTreatedREC, basinDem = self.calculateRemainingService("REC", basinBlockIDs)
+#
+#             self.notify("Basin Totals: "+str([basinRemainQTY, basinRemainWQ, basinRemainREC]))
+#             self.notify("Previous Treated Efficiency for: "+str([basinTreatedQTY/basinEIA, basinTreatedWQ/basinEIA, basinTreatedREC/basinDem]))
+#             self.notify("Must choose a strategy now that treats: "+str([dP_QTY*100.0, dP_WQ*100.0, dP_REC*100.0])+"% of basin")
+#
+#             subbasPartakeIDs = self.findSubbasinPartakeIDs(basinBlockIDs, subbas_options) #Find locations of possible WSUD
+#
+#             updatedService = [dP_QTY, dP_WQ, dP_REC]
+#
+#             #SKIP CONDITIONS
+#             if basinRemainQTY == 0.0 and basinRemainWQ == 0.0 and basinRemainREC == 0.0:
+#                 #self.notify("Basin ID: ", currentBasinID, " has no remaining service requirements, skipping!"
+#                 continue
+#             if sum(updatedService) == 0:
+#                 continue
+#
+#             iterations = self.maxMCiterations   #MONTE CARLO ITERATIONS - CAN SET TO SENSITIVITY VALUE IN FUTURE RELATIVE TO BASIN SIZE
+#
+#             if len(basinBlockIDs) == 1: #if we are dealing with a single-block basin, reduce the number of iterations
+#                 iterations = self.maxMCiterations/10        #If only one block in basin, do different/smaller number of iterations
+#             #Begin Monte Carlo
+#             basin_strategies = []
+#             for iteration in range(iterations):   #1000 monte carlo simulations
+#                 self.notify("Current Iteration No. "+str(iteration+1))
+#                 #Draw Samples
+#                 subbas_chosenIDs, inblocks_chosenIDs = self.selectTechLocationsByRandom(subbasPartakeIDs, basinBlockIDs)
+#                 #self.notify("Selected Locations: Subbasins ", subbas_chosenIDs, " In Blocks ", inblocks_chosenIDs
+#
+#                 #Create the Basin Management Strategy Object
+#                 current_bstrategy = tt.BasinManagementStrategy(iteration+1, currentBasinID,
+#                                                                basinBlockIDs, subbasPartakeIDs,
+#                                                                [basinRemainQTY, basinRemainWQ, basinRemainREC])
+#
+#                 #Populate Basin Management Strategy Object based on the current sampled values
+#                 self.populateBasinWithTech(current_bstrategy, subbas_chosenIDs, inblocks_chosenIDs,
+#                                            inblock_options, subbas_options, basinBlockIDs)
+#
+#                 tt.updateBasinService(current_bstrategy)
+#                 #self.notify(current_bstrategy.getSubbasinArray())
+#                 #self.notify(current_bstrategy.getInBlocksArray())
+#
+#                 tt.calculateBasinStrategyMCAScores(current_bstrategy,self.priorities, self.mca_techlist, self.mca_tech, \
+#                                                   self.mca_env, self.mca_ecn, self.mca_soc, \
+#                                                       [self.bottomlines_tech_w, self.bottomlines_env_w, \
+#                                                                self.bottomlines_ecn_w, self.bottomlines_soc_w])
+#
+#                 #Add basin strategy to list of possibilities
+#                 service_objfunc = self.evaluateServiceObjectiveFunction(current_bstrategy, updatedService)        #Calculates how well it meets the total service
+#
+#                 basin_strategies.append([service_objfunc,current_bstrategy.getServicePvalues(), current_bstrategy.getTotalMCAscore(), current_bstrategy])
+#
+#             #Pick the final option by narrowing down the list and choosing (based on how many
+#             #need to be chosen), sort and grab the top ranking options
+#             basin_strategies.sort()
+#             self.notify(basin_strategies)
+#             self.debugPlanning(basin_strategies, currentBasinID)
+#             acceptable_options = []
+#             for j in range(len(basin_strategies)):
+#                 if basin_strategies[j][0] < 0:  #if the OF is <0 i.e. -1, skip
+#                     continue
+#                 else:
+#                     acceptable_options.append(basin_strategies[j])
+#             #self.notify(acceptable_options)
+#             if self.ranktype == "RK":
+#                 acceptable_options = acceptable_options[0:int(self.topranklimit)]
+#             elif self.ranktype == "CI":
+#                 acceptableN = int(len(acceptable_options)*(1.0-float(self.conf_int)/100.0))
+#                 acceptable_options = acceptable_options[0:acceptableN]
+#
+#             topcount = len(acceptable_options)
+#             acceptable_options.sort(key=lambda score: score[2])
+#             self.notify(acceptable_options)
+#
+#             #Choose final option
+#             numselect = min(topcount, self.num_output_strats)   #Determines how many options out of the matrix it should select
+#             final_selection = []
+#             for j in range(int(numselect)):
+#                 score_matrix = []       #Create the score matrix
+#                 for opt in acceptable_options:
+#                     score_matrix.append(opt[2])
+#                 selection_cdf = self.createCDF(score_matrix)    #Creat the CDF
+#                 choice = self.samplefromCDF(selection_cdf)
+#                 final_selection.append(acceptable_options[choice][3])   #Add ONLY the strategy_object
+#                 acceptable_options.pop(choice)  #Pop the option at the selected index from the matrix
+#                 #Repeat for as many options as requested
+#
+#             #Write WSUD strategy attributes to output vector for that block
+#             self.notify(final_selection)
+#             if len(final_selection) == 0:
+#                 self.transferExistingSystemsToOutput(1)
+#                 #If there are no additional plans, just tranfer systems across, only one output as StrategyID1
+#
+#             for j in range(len(final_selection)):       #Otherwise it'll loop
+#                 cur_strat = final_selection[j]
+#                 stratID = j+1
+#                 self.writeStrategyView(stratID, currentBasinID, basinBlockIDs, cur_strat)
+#                 self.transferExistingSystemsToOutput(stratID)
+#
+#             #Clear the array and garbage collect
+#             basin_strategies = []
+#             acceptable_options = []
+#             final_selection = []
+#             gc.collect()
+#             #END OF BASIN LOOP, continues to next basin
+#
+# #        output_log_file.write("End of Basin Strategies Log \n\n")
+# #        output_log_file.close()
+#
+        # self.sqlDB.close()      #Close the database
         
         #END OF MODULE
         
