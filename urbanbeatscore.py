@@ -262,14 +262,17 @@ class UrbanBeatsSim(threading.Thread):
         self.updateObservers(str(self.printAllModules()))
 
     def initializeParameterSetsDynamic(self):
-        paramlength = self.__projectinfo["dyn_breaks"] +1       #n breaks + baseline
+        if self.__projectinfo["dyn_irregulardt"] == 1:
+            paramlength = len(self.__projectinfo["dyn_irregularyears"])
+        else:
+            paramlength = self.__projectinfo["dyn_breaks"] +1       #n breaks + baseline
 
         self.__delinblocks.append(md_delinblocks.Delinblocks(self, 0))         #ONLY ONE DELINBLOCKS NEEDED
         self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, 0))         #Add the first one, then check if more needed
         self.__getprevBlocks.append(md_getpreviousblocks.GetPreviousBlocks(self, 0))  #planning cycle modules
         self.__musicexport.append(md_writeMUSICsim.WriteResults2MUSIC(self, 0))
 
-        if self.__projectinfo["df_ubpconstant"] == 0: #if NOT same urbanplanning rules
+        if self.__projectinfo["df_ubpconstant"] == 0: #if NOT same urban planning rules
             for i in range(int(paramlength-1)):
                 self.__urbplanbb.append(md_urbplanbb.Urbplanbb(self, i+1))
 

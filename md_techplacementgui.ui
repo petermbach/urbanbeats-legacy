@@ -2448,7 +2448,7 @@ p, li { white-space: pre-wrap; }
                <x>0</x>
                <y>0</y>
                <width>465</width>
-               <height>1181</height>
+               <height>1206</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -4261,7 +4261,7 @@ p, li { white-space: pre-wrap; }
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>70</height>
+                  <height>95</height>
                  </size>
                 </property>
                 <widget class="QLabel" name="rec_assessment_lbl">
@@ -4330,6 +4330,19 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="value">
                   <number>10</number>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="swh_benefits_check">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>70</y>
+                   <width>421</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Account for stormwater management benefits from stormwater harvesting</string>
                  </property>
                 </widget>
                </widget>
@@ -8790,7 +8803,7 @@ p, li { white-space: pre-wrap; }
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-72</y>
+               <y>0</y>
                <width>465</width>
                <height>487</height>
               </rect>

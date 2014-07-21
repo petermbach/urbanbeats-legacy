@@ -426,6 +426,9 @@ class TechplacementGUILaunch(QtGui.QDialog):
 
         self.ui.rec_rainfall_spin.setValue(int(self.module.getParameter("rain_length")))
 
+        self.ui.swh_benefits_check.setChecked(bool(self.module.getParameter("swh_benefits")))
+
+
         if self.module.getParameter("WEFstatus") == 1:
             self.ui.WEF_consider.setChecked(1)
             self.ui.WEF_rating_system_combo.setEnabled(1)
@@ -1293,6 +1296,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
 
         self.module.setParameter("sb_method", str(self.sbmethod[self.ui.rec_assessment_combo.currentIndex()]))
         self.module.setParameter("rain_length", float(self.ui.rec_rainfall_spin.value()))
+        self.module.setParameter("swh_benefits", int(self.ui.swh_benefits_check.isChecked()))
 
         #######################################
         #Choose & Customize Technologies Tab

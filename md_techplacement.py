@@ -281,8 +281,10 @@ class Techplacement(UBModule):
         #ADDITIONAL INPUTS
         self.createParameter("sb_method", STRING, "")
         self.createParameter("rain_length", DOUBLE, "")
+        self.createParameter("swh_benefits", BOOL, "")
         self.sb_method = "Sim"  #Sim = simulation, Eqn = equation
         self.rain_length = 2.0   #number of years.
+        self.swh_benefits = 1   #execute function to calculate SWH benefits? (1 by default, but perhaps treat as mutually exclusive)
         
         ##########################################################################
         #---RETROFIT CONDITIONS INPUTS                                           
