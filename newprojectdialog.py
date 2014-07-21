@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'newprojectdialog.ui'
 #
-# Created: Fri Jun 13 14:05:29 2014
+# Created: Mon Jul 21 11:09:15 2014
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -402,7 +402,7 @@ class Ui_NewProjectDialog(object):
         self.dynamicbreaks_spin.setObjectName(_fromUtf8("dynamicbreaks_spin"))
         self.dynamicinterval_check = QtGui.QCheckBox(self.dynamic_group)
         self.dynamicinterval_check.setGeometry(QtCore.QRect(30, 100, 331, 17))
-        self.dynamicinterval_check.setText(QtGui.QApplication.translate("NewProjectDialog", "Irregular Time Intervals (enter years, separate by comma)", None, QtGui.QApplication.UnicodeUTF8))
+        self.dynamicinterval_check.setText(QtGui.QApplication.translate("NewProjectDialog", "Irregular Time Intervals (enter all years, separated by commas)", None, QtGui.QApplication.UnicodeUTF8))
         self.dynamicinterval_check.setObjectName(_fromUtf8("dynamicinterval_check"))
         self.dynamicstart_lbl = QtGui.QLabel(self.dynamic_group)
         self.dynamicstart_lbl.setGeometry(QtCore.QRect(30, 50, 131, 16))

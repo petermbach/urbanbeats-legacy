@@ -154,14 +154,26 @@ class NewProjectSetup(QtGui.QDialog):
     def irregularYearBoxCheck(self):
         if self.ui.dynamicinterval_check.isEnabled() and self.ui.dynamicinterval_check.isChecked():
             self.ui.dynamicinterval_box.setEnabled(1)
+            self.ui.dynamicperiod_spin.setEnabled(0)
+            self.ui.dynamicstart_spin.setEnabled(0)
+            self.ui.dynamicbreaks_spin.setEnabled(0)
+        else:
+            self.ui.dynamicinterval_box.setEnabled(0)
+            self.ui.dynamicperiod_spin.setEnabled(1)
+            self.ui.dynamicstart_spin.setEnabled(1)
+            self.ui.dynamicbreaks_spin.setEnabled(1)
+
 
     def convertYearList(self, datavalues, dataformat):
-        if dataformat == "GUI":
+        if dataformat == "GUI":     #If transferring data back into the GUI
             yearstring = ""
             for i in datavalues:
                 yearstring += str(i)+", "
-            return yearstring.rstrip(',')
-        elif dataformat == "MOD":
+            yearstring = yearstring.rstrip(',')
+            return yearstring
+        elif dataformat == "MOD":   #If creating the parameter list.
+            if len(datavalues) == 0:
+                return []
             yeararray = datavalues.split(',')
             for i in range(len(yeararray)):
                 yeararray[i] = int(yeararray[i])
@@ -222,40 +234,41 @@ class NewProjectSetup(QtGui.QDialog):
         simtype_matrix = ["S", "D", "B"]
         simtype = simtype_matrix[self.ui.simtype_combo.currentIndex()]
         self.module.setParameter("simtype", simtype)
-        
-        self.module.setParameter("static_snapshots", self.ui.snapshots_spin.value())                        
 
-        self.module.setParameter("sf_ubpconstant", int(self.ui.static_ubpconstant.isChecked()))
-        self.module.setParameter("sf_techplaninclude", int(self.ui.static_techplaninclude.isChecked()))
-        self.module.setParameter("sf_techplanconstant", int(self.ui.static_techplanconstant.isChecked()))
-        self.module.setParameter("sf_techimplinclude", int(self.ui.static_techimplinclude.isChecked()))
-        self.module.setParameter("sf_techimplconstant", int(self.ui.static_techimplconstant.isChecked()))
-        self.module.setParameter("sf_perfinclude", int(self.ui.static_perfinclude.isChecked()))
+        if simtype == "S":
+            self.module.setParameter("static_snapshots", self.ui.snapshots_spin.value())
+            self.module.setParameter("sf_ubpconstant", int(self.ui.static_ubpconstant.isChecked()))
+            self.module.setParameter("sf_techplaninclude", int(self.ui.static_techplaninclude.isChecked()))
+            self.module.setParameter("sf_techplanconstant", int(self.ui.static_techplanconstant.isChecked()))
+            self.module.setParameter("sf_techimplinclude", int(self.ui.static_techimplinclude.isChecked()))
+            self.module.setParameter("sf_techimplconstant", int(self.ui.static_techimplconstant.isChecked()))
+            self.module.setParameter("sf_perfinclude", int(self.ui.static_perfinclude.isChecked()))
 
-        if self.ui.static_techimplinclude.isChecked() and self.ui.radioMasterplan.isChecked():
-            self.module.setParameter("sd_samedata", 'M')
-        elif self.ui.static_techimplinclude.isChecked() and self.ui.radioEnvironment.isChecked():
-            self.module.setParameter("sd_samedata", 'E')
-        else:
-            self.module.setParameter("sd_samedata", 'E')
+            if self.ui.static_techimplinclude.isChecked() and self.ui.radioMasterplan.isChecked():
+                self.module.setParameter("sd_samedata", 'M')
+            elif self.ui.static_techimplinclude.isChecked() and self.ui.radioEnvironment.isChecked():
+                self.module.setParameter("sd_samedata", 'E')
+            else:
+                self.module.setParameter("sd_samedata", 'E')
 
-        self.module.setParameter("sd_sameclimate", int(self.ui.static_climateconstant.isChecked()))
+            self.module.setParameter("sd_sameclimate", int(self.ui.static_climateconstant.isChecked()))
 
-        self.module.setParameter("dyn_totyears", self.ui.dynamicperiod_spin.value())
-        self.module.setParameter("dyn_startyear", self.ui.dynamicstart_spin.value())
-        self.module.setParameter("dyn_breaks", self.ui.dynamicbreaks_spin.value())
-        self.module.setParameter("dyn_irregulardt", int(self.ui.dynamicinterval_check.isChecked()))
-        self.module.setParameter("dyn_irregularyears", self.convertYearList(str(self.ui.dynamicinterval_box.text()), "MOD"))
+        if simtype == "D":
+            self.module.setParameter("dyn_totyears", self.ui.dynamicperiod_spin.value())
+            self.module.setParameter("dyn_startyear", self.ui.dynamicstart_spin.value())
+            self.module.setParameter("dyn_breaks", self.ui.dynamicbreaks_spin.value())
+            self.module.setParameter("dyn_irregulardt", int(self.ui.dynamicinterval_check.isChecked()))
+            self.module.setParameter("dyn_irregularyears", self.convertYearList(str(self.ui.dynamicinterval_box.text()), "MOD"))
 
-        self.module.setParameter("df_ubpconstant", int(self.ui.dyn_ubpconstant.isChecked()))
-        self.module.setParameter("df_techplaceconstant", int(self.ui.dyn_techplanconstant.isChecked()))
-        self.module.setParameter("df_techimplconstant", int(self.ui.dyn_techimplconstant.isChecked()))
-        self.module.setParameter("df_perfinclude", int(self.ui.dyn_perfinclude.isChecked()))
-        self.module.setParameter("df_perfconstant", int(self.ui.dyn_perfconstant.isChecked()))
+            self.module.setParameter("df_ubpconstant", int(self.ui.dyn_ubpconstant.isChecked()))
+            self.module.setParameter("df_techplaceconstant", int(self.ui.dyn_techplanconstant.isChecked()))
+            self.module.setParameter("df_techimplconstant", int(self.ui.dyn_techimplconstant.isChecked()))
+            self.module.setParameter("df_perfinclude", int(self.ui.dyn_perfinclude.isChecked()))
+            self.module.setParameter("df_perfconstant", int(self.ui.dyn_perfconstant.isChecked()))
 
-        self.module.setParameter("dd_samemaster", int(self.ui.dyn_masterplanconstant.isChecked()))
-        self.module.setParameter("dd_sameclimate", int(self.ui.dyn_climateconstant.isChecked()))
-        
+            self.module.setParameter("dd_samemaster", int(self.ui.dyn_masterplanconstant.isChecked()))
+            self.module.setParameter("dd_sameclimate", int(self.ui.dyn_climateconstant.isChecked()))
+
         self.emit(QtCore.SIGNAL("newProjectSetupComplete"))
 
 class NarrativesGuiLaunch(QtGui.QDialog):
@@ -276,14 +289,21 @@ class NarrativesGuiLaunch(QtGui.QDialog):
         #               - if "D" and time steps NOT irregular, set based on inputs
         #               - if "D" and time steps are regular, then user can modify
         if self.module.getParameter("simtype") == "D":
-            startyear = self.module.getParameter("dyn_startyear")
-            timestep = float(self.module.getParameter("dyn_totyears"))/float(self.module.getParameter("dyn_breaks"))
+            if self.module.getParameter("dyn_irregulardt") == 0:
+                startyear = self.module.getParameter("dyn_startyear")
+                timestep = float(self.module.getParameter("dyn_totyears"))/float(self.module.getParameter("dyn_breaks"))
+            else:
+                modelyears = self.module.getParameter("dyn_irregularyears")
+                startyear = modelyears[0]
             if self.tabindex == 0:
                 self.ui.year_spin.setEnabled(0)
                 self.ui.year_spin.setValue(int(startyear))
-            elif self.tabindex == self.module.getParameter("dyn_breaks"):
+            elif self.module.getParameter("dyn_irregulardt") == 0 and self.tabindex == self.module.getParameter("dyn_breaks"):
                 self.ui.year_spin.setEnabled(0)
                 self.ui.year_spin.setValue(int(startyear+self.module.getParameter("dyn_totyears")))
+            elif self.module.getParameter("dyn_irregulardt") == 1 and self.tabindex == len(self.module.getParameter("dyn_irregularyears"))-1:
+                self.ui.year_spin.setEnabled(0)
+                self.ui.year_spin.setValue(int(self.module.getNarrative(self.tabindex)[2]))
             elif self.module.getParameter("dyn_irregulardt") == 1:
                 self.ui.year_spin.setEnabled(1)
                 self.ui.year_spin.setValue(int(self.module.getNarrative(self.tabindex)[2]))

@@ -981,7 +981,7 @@ p, li { white-space: pre-wrap; }
                       </rect>
                      </property>
                      <property name="text">
-                      <string>Irregular Time Intervals (enter years, separate by comma)</string>
+                      <string>Irregular Time Intervals (enter all years, separated by commas)</string>
                      </property>
                     </widget>
                     <widget class="QLabel" name="dynamicstart_lbl">

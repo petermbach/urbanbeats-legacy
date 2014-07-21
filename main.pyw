@@ -357,10 +357,18 @@ class MainWindow(QtGui.QMainWindow):
             for i in range(snapshots-1):
                 tabnames.append("Snap"+str(int(i+1)))
         elif activesimulation.getParameter("simtype") == "D":
-            breaks = activesimulation.getParameter("dyn_breaks")
-            for i in range(breaks-1):
-                tabnames.append("Milestone"+str(int(i+1)))
-            tabnames.append("End Year"+str(activesimulation.getParameter("dyn_totyears") + activesimulation.getParameter("dyn_startyear")))
+            if activesimulation.getParameter("dyn_irregulardt") == 0:
+                breaks = activesimulation.getParameter("dyn_breaks")
+                for i in range(breaks-1):
+                    tabnames.append("Milestone"+str(int(i+1)))
+                tabnames.append("End Year"+str(activesimulation.getParameter("dyn_totyears") + activesimulation.getParameter("dyn_startyear")))
+            else:
+                yearlabels = activesimulation.getParameter("dyn_irregularyears")
+                for i in range(len(yearlabels)-1):
+                    if i == 0:
+                        continue
+                    tabnames.append("Milestone "+str(i))
+                tabnames.append("End Year"+str(yearlabels[len(yearlabels)-1]))
         else:
             pass    #no benchmark for now
             
