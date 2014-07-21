@@ -695,11 +695,11 @@ class Urbplanbb(UBModule):
             buffW = float(random.randint(hwy_buf[0], hwy_buf[1]))
             
             if (A_park+A_ref) >= 0.5*A_rd:               #if total open space is greater than half the road area, use it as buffer
-                rd_imp = float((2*laneW)/(2*laneW + medW))
+                rd_imp = float((2.0*laneW)/(2.0*laneW + medW))
                 park_buffer = 1
-                av_spRD = float(medW/(2*laneW+medW)) * A_rd
+                av_spRD = float(medW/(2.0*laneW+medW)) * A_rd
             else:                                       #consider road's own buffer
-                rd_imp = (2.0*laneW)/(2.0*laneW + medW + 2*buffW)
+                rd_imp = (2.0*laneW)/(2.0*laneW + medW + 2.0*buffW)
                 park_buffer = 0
                 av_spRD = medW /(2.0*laneW+medW+buffW*2.0) * A_rd
             
@@ -826,7 +826,7 @@ class Urbplanbb(UBModule):
                     blk_avspace += 0
             
             #-----------NON-RESIDENTIAL (PLANNING RULES) -----------------------
-            A_li = currentAttList.getAttribute("pLU_LI") * Aactive + extraInd + A_svu
+            A_li = currentAttList.getAttribute("pLU_LI") * Aactive + extraInd + Asvu_others
             A_hi = currentAttList.getAttribute("pLU_HI") * Aactive
             A_com = currentAttList.getAttribute("pLU_COM") * Aactive + extraCom
             A_orc = currentAttList.getAttribute("pLU_ORC") * Aactive 
