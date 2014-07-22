@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 ### IMPORT FUNCTIONS
 from osgeo import ogr, osr
-import os, time
+import os, time, numpy
 import ogr2ogr
 
 proj4wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
@@ -629,13 +629,19 @@ def exportPatchData(filename, assets, miscoptions, map_attr):
     
     driver = ogr.GetDriverByName('ESRI Shapefile')
     if os.path.exists(str(filename)+"_Patches.shp"): os.remove(str(filename)+"_Patches.shp")
+    if os.path.exists(str(filename)+"_PatchSize.shp"): os.remove(str(filename)+"_PatchSize.shp")
     shapefile = driver.CreateDataSource(str(filename)+"_Patches.shp")
-    
-    layer = shapefile.CreateLayer('layer1', spatialRef, ogr.wkbPolygon)
+    shapefile2 = driver.CreateDataSource(str(filename)+"_PatchSize.shp")
+
+    layer = shapefile.CreateLayer('layer1', spatialRef, ogr.wkbPoint)
+    layer2 = shapefile2.CreateLayer('layer1', spatialRef, ogr.wkbPolygon)
+
     layerDefinition = layer.GetLayerDefn()
-    
+    layerDefinition2 = layer2.GetLayerDefn()
+
     #DEFINE ATTRIBUTES
     fielddefmatrix = []
+    fielddefmatrix.append(ogr.FieldDefn("PatchID", ogr.OFTInteger))
     fielddefmatrix.append(ogr.FieldDefn("LandUse", ogr.OFTInteger))
     fielddefmatrix.append(ogr.FieldDefn("Area", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("AvgElev", ogr.OFTReal))
@@ -645,34 +651,59 @@ def exportPatchData(filename, assets, miscoptions, map_attr):
     #Create the fields
     for field in fielddefmatrix:
         layer.CreateField(field)
+        layer2.CreateField(field)
         layer.GetLayerDefn()
+        layer2.GetLayerDefn()
     
     #Get Blocks View
     for i in range(len(assets)):
         currentAttList = assets[i]
-    
+
+        ccoor = currentAttList.getCoordinates()[0]
+
         #Draw Geometry
-        line = ogr.Geometry(ogr.wkbPolygon)
-        ring = ogr.Geometry(ogr.wkbLinearRing)
-        nl = currentAttList.getCoordinates()
-        for point in nl:
-            ring.AddPoint(point[0]+miscoptions[1], point[1]+miscoptions[2])
-        line.AddGeometry(ring)
-        
+        centroid = ogr.Geometry(ogr.wkbPoint)
+        centroid.AddPoint(ccoor[0]+miscoptions[1], ccoor[1]+miscoptions[2])
+
+        square = ogr.Geometry(ogr.wkbPolygon)
+        squarering = ogr.Geometry(ogr.wkbLinearRing)
+
+        bdist = numpy.sqrt(currentAttList.getAttribute("Area"))/2.0
+        squarering.AddPoint((ccoor[0] - bdist)+miscoptions[1], (ccoor[1] - bdist) + miscoptions[2])
+        squarering.AddPoint((ccoor[0] + bdist)+miscoptions[1], (ccoor[1] - bdist) + miscoptions[2])
+        squarering.AddPoint((ccoor[0] + bdist)+miscoptions[1], (ccoor[1] + bdist) + miscoptions[2])
+        squarering.AddPoint((ccoor[0] - bdist)+miscoptions[1], (ccoor[1] + bdist) + miscoptions[2])
+        squarering.AddPoint((ccoor[0] - bdist)+miscoptions[1], (ccoor[1] - bdist) + miscoptions[2])
+        square.AddGeometry(squarering)
+
         feature = ogr.Feature(layerDefinition)
-        feature.SetGeometry(line)
+        feature.SetGeometry(centroid)
         feature.SetFID(0)
+
+        feature2 = ogr.Feature(layerDefinition2)
+        feature2.SetGeometry(square)
+        feature2.SetFID(0)
         
         #Add Attributes
+        feature.SetField("PatchID", int(currentAttList.getAttribute("PatchID")))
         feature.SetField("LandUse", int(currentAttList.getAttribute("LandUse")))
         feature.SetField("Area", currentAttList.getAttribute("Area"))
         feature.SetField("AvgElev", currentAttList.getAttribute("AvgElev"))
         feature.SetField("SoilK", currentAttList.getAttribute("SoilK"))
         feature.SetField("BlockID", int(currentAttList.getAttribute("BlockID")))
-    
+
+        feature2.SetField("PatchID", int(currentAttList.getAttribute("PatchID")))
+        feature2.SetField("LandUse", int(currentAttList.getAttribute("LandUse")))
+        feature2.SetField("Area", currentAttList.getAttribute("Area"))
+        feature2.SetField("AvgElev", currentAttList.getAttribute("AvgElev"))
+        feature2.SetField("SoilK", currentAttList.getAttribute("SoilK"))
+        feature2.SetField("BlockID", int(currentAttList.getAttribute("BlockID")))
+
         layer.CreateFeature(feature)
+        layer2.CreateFeature(feature2)
     
     shapefile.Destroy()
+    shapefile2.Destroy()
     return True
 
 def exportFlowPaths(filename, assets, miscoptions, map_attr, kmlbool):

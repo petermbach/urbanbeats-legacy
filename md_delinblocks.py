@@ -714,8 +714,8 @@ class Delinblocks(UBModule):      #UBCORE
                     
                     #Calculate distance and angle
                     dist = math.sqrt(math.pow((cityeasting-currenteasting),2)+math.pow((citynorthing-currentnorthing),2))
-                    theta = math.degrees(math.atan((currentnorthing - citynorthing)/(currenteasting - cityeasting)))
-                    
+                    theta = math.degrees(math.atan2((currentnorthing - citynorthing),(currenteasting - cityeasting)))
+
                     block_attr.addAttribute("CBDdist", dist)
                     block_attr.addAttribute("CBDdir", theta)
                 
@@ -960,12 +960,18 @@ class Delinblocks(UBModule):      #UBCORE
                     patchdict = ubpat.landscapePatchDelineation(lucdatamatrix, elevdatamatrix, soildatamatrix)
                     #Draw the patches and save info to view
                     for i in range(len(patchdict)):
-                        panodes = patchdict["PatchID"+str(i+1)][4]
+                        pacentroid = patchdict["PatchID"+str(i+1)][4]
                         paarea = patchdict["PatchID"+str(i+1)][0]
                         paluc = patchdict["PatchID"+str(i+1)][1]
                         paelev = patchdict["PatchID"+str(i+1)][2]
                         pasoil = patchdict["PatchID"+str(i+1)][3]
-                        self.drawPatchFace(panodes, inputres, offset, i+1, blockIDcount, paarea, paluc, paelev, pasoil)         #UBCORE
+
+                        luccheck = 1    #CHANGE THIS VARIABLE TO ZERO IF YOU DO NOT WANT THE MODEL TO CONSIDER NO-DATA PATCHES
+                        if luccheck:
+                            if paluc == -9999:  #if the current patch is a no-data patch, skip...
+                                continue
+
+                        self.drawPatchCentroid(pacentroid, inputres, offset, i+1, blockIDcount, paarea, paluc, paelev, pasoil)         #UBCORE
 #                        self.drawPatchFace(city, panodes, inputres, offset, i+1, blockIDcount, paarea, paluc, paelev, pasoil)   #DYNAMIND
                         
                     block_attr.addAttribute("Patches", len(patchdict))
@@ -1341,17 +1347,11 @@ class Delinblocks(UBModule):      #UBCORE
         return total_count
 
 
-    def drawPatchFace(self, nodes, scalar, offset, PaID, ID, area, LUC, elev, soil):        #UBCORE VERSION ----------------->
+    def drawPatchCentroid(self, nodes, scalar, offset, PaID, ID, area, LUC, elev, soil):        #UBCORE VERSION ----------------->
         rs = scalar #rs = raster size
-        plist = []
-        
-        for i in range(len(nodes)): #loop across the nodes
-            n = (nodes[i][0]*rs+offset[0], nodes[i][1]*rs+offset[1], 0)
-            plist.append(n)
-        
-        plist.append(plist[0])
-        
-        patch_attr = ubdata.UBVector(plist)
+        plist = (nodes[0]*rs+offset[0], nodes[1]*rs+offset[1], 0)       #Nodes = [x, y], Offset = [x, y], RS = scaling factor
+
+        patch_attr = ubdata.UBVector([plist])
         patch_attr.addAttribute("PatchID", PaID)              #ID of Patch in Block ID
         patch_attr.addAttribute("LandUse", LUC)              #Land use of the patch
         patch_attr.addAttribute("Area", area*rs*rs)                 #Area of the patch
