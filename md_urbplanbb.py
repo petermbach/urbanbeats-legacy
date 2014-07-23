@@ -130,6 +130,7 @@ class Urbplanbb(UBModule):
         self.createParameter("parking_HDR", STRING, "")
         self.createParameter("park_OSR", BOOL, "")
         self.createParameter("roof_connected", STRING, "")
+        self.createParameter("roof_dced_p", DOUBLE, "")
         self.createParameter("imperv_prop_dced", DOUBLE, "")
         self.occup_avg = float(2.67)                   #average occupancy (house)
         self.occup_max = float(5.0)                      #maximum occupancy (house)
@@ -156,6 +157,7 @@ class Urbplanbb(UBModule):
         self.parking_HDR = "On"                 #On = On-site, Off = Off-site, Var = Vary, NA = None
         self.park_OSR = 0                       #Leverage parks to fulfill outdoor open space requirements?
         self.roof_connected = "Direct"          #how is the roof connected to drainage? Direct/Disconnected/Varied?
+        self.roof_dced_p = 50                   #% of roof disconnection level
         self.imperv_prop_dced = 10              #proportion of impervious area disconnected
         
         #--> Advanced Parameters
@@ -745,6 +747,8 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("ResLotEIA", resdict["ResLotEIA"])
                     currentAttList.addAttribute("ResGarden", resdict["ResGarden"])
                     currentAttList.addAttribute("ResRoofCon", resdict["ResRoofCon"])
+                    currentAttList.addAttribute("ResLotALS", resdict["ResLotALS"])
+                    currentAttList.addAttribute("ResLotARS", resdict["ResLotARS"])
                     
                     if resdict["TotalFrontage"] == 0:
                         frontageTIF = 0
@@ -1150,21 +1154,23 @@ class Urbplanbb(UBModule):
         Wfrontage = Wfp + Wns + Wrd
         
         #Step 2: Subdivide Area
-        Ndwunits = float(int((((pop/occup)/2)+1)))*2        #make it an even number, divide by 1, add 1, truncate, multiply by 2
-        district_L = A_res/100                              #default typology depth = 100m
-        parcels = max(float(int(district_L / 200)), 1.0)   #default typology width = 200m
+        Ndwunits = float(int((((pop/occup)/2.0)+1)))*2.0        #make it an even number, divide by 1, add 1, truncate, multiply by 2
+        district_L = A_res/100.0                              #default typology depth = 100m
+        parcels = max(float(int(district_L / 200.0)), 1.0)   #default typology width = 200m
         Wparcel = district_L / parcels
         Aparcel = Wparcel * 100                             #Area of one parcel
         Afrontage = (district_L * Wfrontage * 2) + ((parcels*2)*Wfrontage*(100 - 2*Wfrontage))
         Dlot = (100 - 2*Wfrontage)/2                        #Depth of one allotment
         Aca = A_res - Afrontage
         
-        if Aca < 0:
+        if Aca < self.min_allot_width*Dlot:  #Construction area should be large enough such that a single allotment
+                                             # containing all buildings satisfies all width requirements.
             self.notify( "Too much area taken up for frontage, removing frontage to clear up construction area!" )
             Aca = A_res
             Afrontage = 0       #Set the frontage equal to zero for this block, this will occur because areas are too small
-            Dlot = 40   #Constrain to 40m deep
-            
+            # Dlot = Aca/float(self.min_allot_width)  #Constrain the depth such that the minimum width requirements are satisfied
+            Dlot = 40.0       #Constrain to 40m deep
+        # self.notify("DLot "+str(Dlot))
         #self.notify( "Ndwunits"+str(Ndwunits))
         #self.notify( "district"+str(district_L))
         #self.notify( "parcels"+str(parcels))
@@ -1178,18 +1184,18 @@ class Urbplanbb(UBModule):
         resdict["TotalFrontage"] = Afrontage
         resdict["avSt_RES"] = AfrontagePerv
         resdict["WResNstrip"] = Wns
-        
-        
+
         #Step 2b: Determine how many houses on one allotment based on advanced parameter "min Allotment Width"
-        Wlot = 0
-        DWperLot = 0
-        Nallotments = 0
+        Wlot = 0.0
+        DWperLot = 0.0
+        Nallotments = 0.0
         while Wlot < self.min_allot_width:
-            DWperLot += 1
+            DWperLot += 1.0
             Nallotments = Ndwunits/DWperLot
             Alot = Aca / Nallotments
             Wlot = Alot / Dlot
-            #self.notify(str(DWperLot)+str(Nallotments)+str(Alot)+str(Wlot))
+            # print Wlot, self.min_allot_width, "dwellings per lot:", DWperLot, Ndwunits, Nallotments, Alot
+            # self.notify(str(DWperLot)+str(Nallotments)+str(Alot)+str(Wlot))
         
         self.notify( "For this block, we need "+str(DWperLot)+" dwellings on each allotment")
         
@@ -1223,7 +1229,7 @@ class Urbplanbb(UBModule):
             Acover = 0
             Apatio = self.patio_area_max
 
-        Alotfloor = DWperLot*(occup*self.person_space*(1+self.extra_comm_area/100) + Agarage + Acover)
+        Alotfloor = DWperLot*(occup*self.person_space*(1.0+self.extra_comm_area/100.0) + Agarage + Acover)
         farlot = Alotfloor / Alot
         lotratios = self.retrieveRatios(farlot)
         Als = lotratios[3]*Alot
@@ -1241,45 +1247,56 @@ class Urbplanbb(UBModule):
         #Retry #1 - Als set to Ars
         if floors > self.floor_num_max:
             Als = Ars       #set the remaining garden space to recreational space
-            floors = 1
-            Aba = Alotfloor
-            while (Aba + Apave + Als) > Alot:
+            floors = 1      #Reset floors to 1
+            Aba = Alotfloor #Reset building area to equal Gross Floor Area
+            while (Aba + Apave + Als) > Alot:       #Try again
                 self.notify( "Even with less garden, need more than "+str(floors)+str("floor(s)!"))
                 floors += 1
                 Aba = Alotfloor/floors
 
-        #Retry #2 - Remove Carpark Paving
+        #Retry #2 - fsetback becomes ssetback (i.e. reduces paved driveway area further)
+        if floors > self.floor_num_max:
+            Apave -= (fsetback - ssetback)*self.w_driveway_min      #REDUCED DRIVEWAY + PATIO + either half of PARKING or NONE
+            floors = 1
+            Aba = Alotfloor
+            while (Aba + Apave + Als) > Alot:
+                self.notify( "Even with less garden, less driveway, need more than "+str(floors)+str("floor(s)!"))
+                floors += 1
+                Aba = Alotfloor/floors
+
+        #Retry #3 - Remove setback completely (i.e. can be compensated with external paving later)
+        if floors > self.floor_num_max:
+            Apave -= ssetback*self.w_driveway_min
+            floors = 1
+            Aba = Alotfloor
+            while (Aba + Apave + Als) > Alot:
+                self.notify( "Even with less garden, no driveway, need more than "+str(floors)+str("floor(s)!"))
+                floors += 1
+                Aba = Alotfloor/floors
+
+        #Retry #4 - Remove Carpark Paving
         if floors > self.floor_num_max:
             if Agarage == 0:
-                Apave =- Aparking/2                         #DRIVEWAY + PATIO + half of PARKING since no garage!
+                Apave -= Aparking/2.0                       #DRIVEWAY + PATIO + half of PARKING since no garage!
             else: 
-                Apave =- Aparking                           #DRIVEWAY + PATIO
+                Apave -= Aparking                           #DRIVEWAY + PATIO
             floors = 1
             Aba = Alotfloor
             while(Aba + Apave + Als) > Alot:
-                self.notify( "Even with less garden and less carpark paving, need more than "+str(floors)+"floor(s)!")
+                self.notify( "Even with less garden and less carpark pavinga and no driveway, need more than "+str(floors)+"floor(s)!")
                 floors += 1
                 Aba = Alotfloor/floors
-        
-        #Retry #3 - fsetback becomes ssetback (i.e. reduces paved driveway area even further)
-        if floors > self.floor_num_max:
-            Apave =- (fsetback - ssetback)*self.w_driveway_min      #REDUCED DRIVEWAY + PATIO + either half of PARKING or NONE
-            floors = 1
-            Aba = Alotfloor
-            while(Aba + Apave + Als) > Alot:
-                self.notify( "Even with less garden, carpark paving and driveway, need more than "+str(floors)+str("floor(s)!"))
-                floors += 1
-                Aba = Alotfloor/floors
-        
+
         #Last Resort - exceed floor limit
         if floors > self.floor_num_max:
             pass
             self.notify( "Floor Limit Exceeded! Cannot plan within bounds, continuing!")
-        
+
         Aba = Alotfloor/floors
         Dbuilding = Aba / (Wlot - 2*ssetback)
         Apa = ssetback * Dbuilding * 2
-        av_LOT = Alot - Ars - Aba - Apave - Apa   #WSUD SPACE = Lot area - Building - Recreation - Paving - Planning Req.
+        Apave = max(Apave, 0)   #Make sure paved area is non-negative!
+        av_LOT = max(Alot - Ars - Aba - Apave - Apa, 0)   #WSUD SPACE = Lot area - Building - Recreation - Paving - Planning Req.
         
         #Calculate Imperviousness, etc. write to residential dictionary
         resdict["ResLotArea"] = Alot
@@ -1291,8 +1308,7 @@ class Urbplanbb(UBModule):
         roofconnect = self.roof_connected
         connectivity = ["Direct", "Disconnect"]
         if roofconnect == "Vary":
-            choice = random.randint(0, 1)
-            roofconnect = connectivity[choice]
+            roofconnect = connectivity[int(random.randint(0, 100) <= self.roof_dced_p)]
         if roofconnect == "Direct":
             AroofEff = Aba
         elif roofconnect == "Disconnect":
@@ -1302,12 +1318,13 @@ class Urbplanbb(UBModule):
         
         AimpLot = Aba + Apave
         AConnectedImp = (AroofEff + Apave) * (1.0 - float(self.imperv_prop_dced/100))
-        Agarden = av_LOT + Ars + Apa
-        
+        Agarden = max(Alot - AimpLot, 0)
+
         resdict["ResLotTIA"] = AimpLot
         resdict["ResLotEIA"] = AConnectedImp
         resdict["ResGarden"] = Agarden
-        
+        resdict["ResLotALS"] = Als
+        resdict["ResLotARS"] = Ars
         return resdict
 
     def designResidentialApartments(self, currentAttList, map_attr, A_res, pop, ratios, Afloor):

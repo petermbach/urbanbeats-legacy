@@ -235,9 +235,9 @@ def loadSimFile(activesim, filename, projectpath):
     datacycles = ["pc", "ic", "pa"]
     for i in range(len(datafname)):
         fname = datafname[i]
-        #print fname
+        # print fname
         cycle = datacycles[i]
-        #print archive.getnames()
+        # print archive.getnames()
         if fname not in archive.getnames():   #if the datafname file is not in the archive, skip
             continue
         f = archive.extractfile(fname)
@@ -251,13 +251,11 @@ def loadSimFile(activesim, filename, projectpath):
         while j <= len(dataarray):
             if 'eol' in dataarray[j]:        #If an 'end of line' is encountered, set data set
                 activesim.setCycleDataSet(cycle, tabindex, dataset, "F")
-                #print dataset
                 dataset = {}
                 tabindex += 1
                 j += 2  #Skips two lines ahead (the next header onto the first line
                 continue
             line = dataarray[j].split("*||*")
-            #print line
             dataset[line[0]] = line[1]
             j += 1
         f.close()

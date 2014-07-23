@@ -75,7 +75,7 @@ def landscapePatchDelineation(landuse, elevation, soil):
             patchsoil = -9999
         else:
             patchsoil = soil_sum/soil_n
-        patchdict["PatchID1"] = [landusecount, landusetypes[0],patchelev, patchsoil, [[0,0],[1,0],[1,1],[0,1]]]
+        patchdict["PatchID1"] = [landusecount, landusetypes[0],patchelev, patchsoil, [x/2.0,y/2.0], 1.0]
         return patchdict
     
     #else, do patch delineation, continue
@@ -121,10 +121,12 @@ def landscapePatchDelineation(landuse, elevation, soil):
         soil_patch_counter = 0          #counts the number of valid soil cells
         
         #---- CODE NOT USED DUE TO LARGE COMPUTATIONAL REQUIREMENTS IN URBANBEATS ---
-        #patchedges = []
+        # patchedges = []     #An array to hold all the edges in the patch
         #---- CODE NOT USED DUE TO LARGE COMPUTATIONAL REQUIREMENTS IN URBANBEATS ---
-        
-        for iCA in range(len(camatrix[0])):
+
+        patchpoints = {"x":[], "y":[]}    #An arra to hold all points in the patch
+
+        for iCA in range(len(camatrix[0])):     #Retrieve data from other data sets (e.g. elevation and soil)
             for jCA in range(len(camatrix[0])):
                 if camatrix[iCA][jCA] == 0:
                     continue
@@ -134,12 +136,15 @@ def landscapePatchDelineation(landuse, elevation, soil):
                 if soil[iCA][jCA] != -9999:
                     soil_tally += soil[iCA][jCA]
                     soil_patch_counter += 1
-                
+
+                patchpoints["x"].append(iCA)
+                patchpoints["y"].append(jCA)
+
                 #---- CODE NOT USED DUE TO LARGE COMPUTATIONAL REQUIREMENTS IN URBANBEATS ---
-                #patchedges.append([[iCA, jCA],[iCA+1, jCA]])
-                #patchedges.append([[iCA, jCA],[iCA, jCA+1]])
-                #patchedges.append([[iCA+1, jCA], [iCA+1, jCA+1]])
-                #patchedges.append([[iCA, jCA+1], [iCA+1, jCA+1]])
+                # patchedges.append([[iCA, jCA],[iCA+1, jCA]])
+                # patchedges.append([[iCA, jCA],[iCA, jCA+1]])
+                # patchedges.append([[iCA+1, jCA], [iCA+1, jCA+1]])
+                # patchedges.append([[iCA, jCA+1], [iCA+1, jCA+1]])
                 #---- CODE NOT USED DUE TO LARGE COMPUTATIONAL REQUIREMENTS IN URBANBEATS ---
                 
         #---- CODE NOT USED DUE TO LARGE COMPUTATIONAL REQUIREMENTS IN URBANBEATS ---
@@ -192,8 +197,15 @@ def landscapePatchDelineation(landuse, elevation, soil):
             patchsoil = -9999
         else:
             patchsoil = soil_tally/soil_patch_counter
-        
-        patchdict["PatchID"+str(patchIDcounter)] = [patcharea, currentCALU, patchelev, patchsoil, patchface]
+        patchcentroid = [sum(patchpoints["x"])/float(len(patchpoints["x"])), sum(patchpoints["y"])/float(len(patchpoints["y"]))]
+
+        pxdist = max(patchpoints["x"]) - min(patchpoints["x"]) + 1
+        pydist = max(patchpoints["y"]) - min(patchpoints["y"]) + 1      #add one = 1 unit distance, if the min/max is the same position, its distance is 1 unit
+        paspectratio = float(pxdist) / float(pydist)
+
+        # print patchcentroid
+
+        patchdict["PatchID"+str(patchIDcounter)] = [patcharea, currentCALU, patchelev, patchsoil, patchcentroid, paspectratio]
         #Next iteration
     
     #END OF WHILE LOOP

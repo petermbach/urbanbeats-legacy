@@ -333,6 +333,8 @@ class MainWindow(QtGui.QMainWindow):
         return True
         
     def setupNewProject(self):
+        """Resets several GUIs, and the active simulation object,
+        Creates the instance of the active simulation object and sets it as active."""
         self.setActiveSimulationObject(None)        
         self.enabledisable_sim_guis(1)
         self.resetDatabank(1)
@@ -395,20 +397,29 @@ class MainWindow(QtGui.QMainWindow):
     ################################
     #File Menu                
     def beginNewProjectDialog(self):
+        self.ui.simconfig_tabs.setCurrentIndex(0)
         self.ui.databrowseTree.clear()
         self.enabledisable_sim_guis(0)
         self.resetConfigInterface()
         self.setupNewProject()          
+
         newprojectdialog = ubdialogs.NewProjectSetup(self.getActiveSimulationObject(), 'create')
         self.connect(newprojectdialog, QtCore.SIGNAL("rejected()"), lambda setstate=0: self.enabledisable_sim_guis(setstate) )
+        self.connect(newprojectdialog, QtCore.SIGNAL("newProjectSetupComplete"), self.initializeNewProjectCore)
         self.connect(newprojectdialog, QtCore.SIGNAL("newProjectSetupComplete"), self.initializeNewProject)
         self.connect(newprojectdialog, QtCore.SIGNAL("newProjectDirectory"), self.setNewProjectDirectory)
         newprojectdialog.exec_()
         return True
 
-    def initializeNewProject(self):
+    def initializeNewProjectCore(self):
         activesim = self.getActiveSimulationObject()
         activesim.initializeSimulationCore()
+        return True
+
+    def initializeNewProject(self):
+        """Called once activesim has been completely informed with all project info parameters.
+        This is done using initializeNewProjectCore() for new projects and in ubfiles.LoadProject for existing."""
+        activesim = self.getActiveSimulationObject()
         self.updateNewProject()
         if activesim.getParameter("simtype") == "S":
             if activesim.getParameter("sf_perfinclude") == 1:
@@ -442,6 +453,7 @@ class MainWindow(QtGui.QMainWindow):
         self.enabledisable_sim_guis(0)
         self.resetConfigInterface()
         self.setupNewProject()                          
+
         fname = QtGui.QFileDialog.getOpenFileName(self, "Load Existing UrbanBEATS Project...", os.curdir, "UrbanBEATS (*.ubs)")
         if fname:
             activesim = self.getActiveSimulationObject()
@@ -479,15 +491,11 @@ class MainWindow(QtGui.QMainWindow):
 
             ubfiles.loadSimFile(activesim, fname, projectpath)
             self.setActiveProjectPath(activesim.getActiveProjectPath())
-            self.updateNewProject()
             self.setupTreeWidgetFromDict()
-
             self.initializeNewProject()
             self.printc("Simulation Core Initialised")
         else:
             self.enabledisable_sim_guis(0)
-
-        self.printc("Simulation Core Initialised")
 
         #Call a function to update entire gui on everything
         return True

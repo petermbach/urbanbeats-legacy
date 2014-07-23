@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_urbplanbbgui.ui'
 #
-# Created: Wed Apr 23 17:24:37 2014
+# Created: Wed Jul 23 20:01:00 2014
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -303,7 +303,7 @@ class Ui_BuildingBlockDialog(object):
         self.res_parameters.setWidgetResizable(True)
         self.res_parameters.setObjectName(_fromUtf8("res_parameters"))
         self.res_scrollAreaWidgetContents = QtGui.QWidget()
-        self.res_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -259, 398, 545))
+        self.res_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 605))
         self.res_scrollAreaWidgetContents.setObjectName(_fromUtf8("res_scrollAreaWidgetContents"))
         self.gridLayout_15 = QtGui.QGridLayout(self.res_scrollAreaWidgetContents)
         self.gridLayout_15.setObjectName(_fromUtf8("gridLayout_15"))
@@ -313,34 +313,39 @@ class Ui_BuildingBlockDialog(object):
         sizePolicy.setVerticalStretch(50)
         sizePolicy.setHeightForWidth(self.res_paramfield6.sizePolicy().hasHeightForWidth())
         self.res_paramfield6.setSizePolicy(sizePolicy)
-        self.res_paramfield6.setMinimumSize(QtCore.QSize(369, 60))
-        self.res_paramfield6.setMaximumSize(QtCore.QSize(16777215, 60))
+        self.res_paramfield6.setMinimumSize(QtCore.QSize(369, 120))
+        self.res_paramfield6.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.res_paramfield6.setObjectName(_fromUtf8("res_paramfield6"))
         self.roof_connected_radiovary = QtGui.QRadioButton(self.res_paramfield6)
-        self.roof_connected_radiovary.setGeometry(QtCore.QRect(325, 7, 51, 17))
-        self.roof_connected_radiovary.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Vary", None, QtGui.QApplication.UnicodeUTF8))
+        self.roof_connected_radiovary.setGeometry(QtCore.QRect(20, 70, 301, 17))
+        self.roof_connected_radiovary.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Variable (adjust likelihood of roof disconnection)", None, QtGui.QApplication.UnicodeUTF8))
         self.roof_connected_radiovary.setObjectName(_fromUtf8("roof_connected_radiovary"))
         self.roof_connected_lbl = QtGui.QLabel(self.res_paramfield6)
-        self.roof_connected_lbl.setGeometry(QtCore.QRect(0, 7, 197, 17))
-        self.roof_connected_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Roof directly connected to drainage?", None, QtGui.QApplication.UnicodeUTF8))
+        self.roof_connected_lbl.setGeometry(QtCore.QRect(10, 7, 351, 17))
+        self.roof_connected_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Configure roof drainage connection (affects effective imperviousness)?", None, QtGui.QApplication.UnicodeUTF8))
         self.roof_connected_lbl.setObjectName(_fromUtf8("roof_connected_lbl"))
         self.roof_connected_radiodisc = QtGui.QRadioButton(self.res_paramfield6)
-        self.roof_connected_radiodisc.setGeometry(QtCore.QRect(245, 7, 84, 17))
-        self.roof_connected_radiodisc.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Disconnect", None, QtGui.QApplication.UnicodeUTF8))
+        self.roof_connected_radiodisc.setGeometry(QtCore.QRect(20, 50, 351, 17))
+        self.roof_connected_radiodisc.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Disconnect all downpipes in all houses (unless a raintank is present)", None, QtGui.QApplication.UnicodeUTF8))
         self.roof_connected_radiodisc.setObjectName(_fromUtf8("roof_connected_radiodisc"))
         self.roof_connected_radiodirect = QtGui.QRadioButton(self.res_paramfield6)
-        self.roof_connected_radiodirect.setGeometry(QtCore.QRect(190, 7, 51, 17))
-        self.roof_connected_radiodirect.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Direct", None, QtGui.QApplication.UnicodeUTF8))
+        self.roof_connected_radiodirect.setGeometry(QtCore.QRect(20, 30, 301, 17))
+        self.roof_connected_radiodirect.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Directly connected downpipe in all houses", None, QtGui.QApplication.UnicodeUTF8))
         self.roof_connected_radiodirect.setObjectName(_fromUtf8("roof_connected_radiodirect"))
         self.imperv_prop_dced_lbl = QtGui.QLabel(self.res_paramfield6)
-        self.imperv_prop_dced_lbl.setGeometry(QtCore.QRect(0, 30, 241, 17))
-        self.imperv_prop_dced_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Average % of Imperviousness Disconnected:", None, QtGui.QApplication.UnicodeUTF8))
+        self.imperv_prop_dced_lbl.setGeometry(QtCore.QRect(10, 95, 271, 17))
+        self.imperv_prop_dced_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Average % of Ground Imperviousness Disconnected:", None, QtGui.QApplication.UnicodeUTF8))
         self.imperv_prop_dced_lbl.setObjectName(_fromUtf8("imperv_prop_dced_lbl"))
         self.avg_imp_dced_spin = QtGui.QSpinBox(self.res_paramfield6)
-        self.avg_imp_dced_spin.setGeometry(QtCore.QRect(230, 30, 51, 16))
+        self.avg_imp_dced_spin.setGeometry(QtCore.QRect(280, 95, 51, 16))
         self.avg_imp_dced_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.avg_imp_dced_spin.setMaximum(100)
         self.avg_imp_dced_spin.setObjectName(_fromUtf8("avg_imp_dced_spin"))
+        self.roofdced_vary_spin = QtGui.QSpinBox(self.res_paramfield6)
+        self.roofdced_vary_spin.setGeometry(QtCore.QRect(280, 70, 51, 16))
+        self.roofdced_vary_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
+        self.roofdced_vary_spin.setMaximum(100)
+        self.roofdced_vary_spin.setObjectName(_fromUtf8("roofdced_vary_spin"))
         self.gridLayout_15.addWidget(self.res_paramfield6, 8, 0, 1, 1)
         self.res_paramfield2 = QtGui.QWidget(self.res_scrollAreaWidgetContents)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
@@ -2584,7 +2589,6 @@ class Ui_BuildingBlockDialog(object):
         self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.OpenSpaces), QtGui.QApplication.translate("BuildingBlockDialog", "Open Spaces", None, QtGui.QApplication.UnicodeUTF8))
         self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.Others), QtGui.QApplication.translate("BuildingBlockDialog", "Others", None, QtGui.QApplication.UnicodeUTF8))
 
-import dialogimg_rc
 import dialogimg_rc
 import dialogimg_rc
 import dialogimg_rc
