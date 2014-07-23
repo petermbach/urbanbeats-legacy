@@ -75,7 +75,7 @@ def landscapePatchDelineation(landuse, elevation, soil):
             patchsoil = -9999
         else:
             patchsoil = soil_sum/soil_n
-        patchdict["PatchID1"] = [landusecount, landusetypes[0],patchelev, patchsoil, [x/2.0,y/2.0]]
+        patchdict["PatchID1"] = [landusecount, landusetypes[0],patchelev, patchsoil, [x/2.0,y/2.0], 1.0]
         return patchdict
     
     #else, do patch delineation, continue
@@ -198,9 +198,14 @@ def landscapePatchDelineation(landuse, elevation, soil):
         else:
             patchsoil = soil_tally/soil_patch_counter
         patchcentroid = [sum(patchpoints["x"])/float(len(patchpoints["x"])), sum(patchpoints["y"])/float(len(patchpoints["y"]))]
+
+        pxdist = max(patchpoints["x"]) - min(patchpoints["x"]) + 1
+        pydist = max(patchpoints["y"]) - min(patchpoints["y"]) + 1      #add one = 1 unit distance, if the min/max is the same position, its distance is 1 unit
+        paspectratio = float(pxdist) / float(pydist)
+
         print patchcentroid
 
-        patchdict["PatchID"+str(patchIDcounter)] = [patcharea, currentCALU, patchelev, patchsoil, patchcentroid]
+        patchdict["PatchID"+str(patchIDcounter)] = [patcharea, currentCALU, patchelev, patchsoil, patchcentroid, paspectratio]
         #Next iteration
     
     #END OF WHILE LOOP

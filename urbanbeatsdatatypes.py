@@ -668,12 +668,14 @@ def exportPatchData(filename, assets, miscoptions, map_attr):
         square = ogr.Geometry(ogr.wkbPolygon)
         squarering = ogr.Geometry(ogr.wkbLinearRing)
 
-        bdist = numpy.sqrt(currentAttList.getAttribute("Area"))/2.0
-        squarering.AddPoint((ccoor[0] - bdist)+miscoptions[1], (ccoor[1] - bdist) + miscoptions[2])
-        squarering.AddPoint((ccoor[0] + bdist)+miscoptions[1], (ccoor[1] - bdist) + miscoptions[2])
-        squarering.AddPoint((ccoor[0] + bdist)+miscoptions[1], (ccoor[1] + bdist) + miscoptions[2])
-        squarering.AddPoint((ccoor[0] - bdist)+miscoptions[1], (ccoor[1] + bdist) + miscoptions[2])
-        squarering.AddPoint((ccoor[0] - bdist)+miscoptions[1], (ccoor[1] - bdist) + miscoptions[2])
+        xdist = numpy.sqrt(currentAttList.getAttribute("Area")*currentAttList.getAttribute("AspRatio")) #xdist and ydist consider aspect ratio
+        ydist = currentAttList.getAttribute("Area")/xdist                                               #when drawing patches. bdist simply draws
+        # bdist = numpy.sqrt(currentAttList.getAttribute("Area"))/2.0                                   #equivalent squares.
+        squarering.AddPoint((ccoor[0] - xdist/2.0)+miscoptions[1], (ccoor[1] - ydist/2.0) + miscoptions[2])
+        squarering.AddPoint((ccoor[0] + xdist/2.0)+miscoptions[1], (ccoor[1] - ydist/2.0) + miscoptions[2])
+        squarering.AddPoint((ccoor[0] + xdist/2.0)+miscoptions[1], (ccoor[1] + ydist/2.0) + miscoptions[2])
+        squarering.AddPoint((ccoor[0] - xdist/2.0)+miscoptions[1], (ccoor[1] + ydist/2.0) + miscoptions[2])
+        squarering.AddPoint((ccoor[0] - xdist/2.0)+miscoptions[1], (ccoor[1] - ydist/2.0) + miscoptions[2])
         square.AddGeometry(squarering)
 
         feature = ogr.Feature(layerDefinition)
@@ -691,6 +693,7 @@ def exportPatchData(filename, assets, miscoptions, map_attr):
         feature.SetField("AvgElev", currentAttList.getAttribute("AvgElev"))
         feature.SetField("SoilK", currentAttList.getAttribute("SoilK"))
         feature.SetField("BlockID", int(currentAttList.getAttribute("BlockID")))
+        feature.SetField("AspRatio", currentAttList.getAttribute("AspRatio"))
 
         feature2.SetField("PatchID", int(currentAttList.getAttribute("PatchID")))
         feature2.SetField("LandUse", int(currentAttList.getAttribute("LandUse")))
@@ -698,6 +701,7 @@ def exportPatchData(filename, assets, miscoptions, map_attr):
         feature2.SetField("AvgElev", currentAttList.getAttribute("AvgElev"))
         feature2.SetField("SoilK", currentAttList.getAttribute("SoilK"))
         feature2.SetField("BlockID", int(currentAttList.getAttribute("BlockID")))
+        feature2.SetField("AspRatio", currentAttList.getAttribute("AspRatio"))
 
         layer.CreateFeature(feature)
         layer2.CreateFeature(feature2)

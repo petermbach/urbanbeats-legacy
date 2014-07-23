@@ -960,6 +960,7 @@ class Delinblocks(UBModule):      #UBCORE
                     patchdict = ubpat.landscapePatchDelineation(lucdatamatrix, elevdatamatrix, soildatamatrix)
                     #Draw the patches and save info to view
                     for i in range(len(patchdict)):
+                        paspect = patchdict["PatchID"+str(i+1)][5]
                         pacentroid = patchdict["PatchID"+str(i+1)][4]
                         paarea = patchdict["PatchID"+str(i+1)][0]
                         paluc = patchdict["PatchID"+str(i+1)][1]
@@ -971,7 +972,7 @@ class Delinblocks(UBModule):      #UBCORE
                             if paluc == -9999:  #if the current patch is a no-data patch, skip...
                                 continue
 
-                        self.drawPatchCentroid(pacentroid, inputres, offset, i+1, blockIDcount, paarea, paluc, paelev, pasoil)         #UBCORE
+                        self.drawPatchCentroid(pacentroid, paspect, inputres, offset, i+1, blockIDcount, paarea, paluc, paelev, pasoil)         #UBCORE
 #                        self.drawPatchFace(city, panodes, inputres, offset, i+1, blockIDcount, paarea, paluc, paelev, pasoil)   #DYNAMIND
                         
                     block_attr.addAttribute("Patches", len(patchdict))
@@ -1347,7 +1348,7 @@ class Delinblocks(UBModule):      #UBCORE
         return total_count
 
 
-    def drawPatchCentroid(self, nodes, scalar, offset, PaID, ID, area, LUC, elev, soil):        #UBCORE VERSION ----------------->
+    def drawPatchCentroid(self, nodes, aspect, scalar, offset, PaID, ID, area, LUC, elev, soil):        #UBCORE VERSION ----------------->
         rs = scalar #rs = raster size
         plist = (nodes[0]*rs+offset[0], nodes[1]*rs+offset[1], 0)       #Nodes = [x, y], Offset = [x, y], RS = scaling factor
 
@@ -1358,6 +1359,7 @@ class Delinblocks(UBModule):      #UBCORE
         patch_attr.addAttribute("AvgElev", elev)              #Average elevation of the patch
         patch_attr.addAttribute("SoilK", soil)
         patch_attr.addAttribute("BlockID", ID)              #Block ID that patch belongs to
+        patch_attr.addAttribute("AspRatio", aspect)     #Aspect ratio of the patch
         
         self.activesim.addAsset("B"+str(ID)+"PatchID"+str(PaID), patch_attr)
         return True     # END OF UBCORE VERSION ------------------------------------------------------------------------------
