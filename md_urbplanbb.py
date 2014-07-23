@@ -130,6 +130,7 @@ class Urbplanbb(UBModule):
         self.createParameter("parking_HDR", STRING, "")
         self.createParameter("park_OSR", BOOL, "")
         self.createParameter("roof_connected", STRING, "")
+        self.createParameter("roof_dced_p", DOUBLE, "")
         self.createParameter("imperv_prop_dced", DOUBLE, "")
         self.occup_avg = float(2.67)                   #average occupancy (house)
         self.occup_max = float(5.0)                      #maximum occupancy (house)
@@ -156,6 +157,7 @@ class Urbplanbb(UBModule):
         self.parking_HDR = "On"                 #On = On-site, Off = Off-site, Var = Vary, NA = None
         self.park_OSR = 0                       #Leverage parks to fulfill outdoor open space requirements?
         self.roof_connected = "Direct"          #how is the roof connected to drainage? Direct/Disconnected/Varied?
+        self.roof_dced_p = 50                   #% of roof disconnection level
         self.imperv_prop_dced = 10              #proportion of impervious area disconnected
         
         #--> Advanced Parameters
@@ -1291,8 +1293,7 @@ class Urbplanbb(UBModule):
         roofconnect = self.roof_connected
         connectivity = ["Direct", "Disconnect"]
         if roofconnect == "Vary":
-            choice = random.randint(0, 1)
-            roofconnect = connectivity[choice]
+            roofconnect = connectivity[int(random.randint(0, 100) <= self.roof_dced_p)]
         if roofconnect == "Direct":
             AroofEff = Aba
         elif roofconnect == "Disconnect":

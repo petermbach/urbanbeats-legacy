@@ -616,9 +616,9 @@ p, li { white-space: pre-wrap; }
                 <property name="geometry">
                  <rect>
                   <x>0</x>
-                  <y>-259</y>
+                  <y>0</y>
                   <width>398</width>
-                  <height>545</height>
+                  <height>605</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_15">
@@ -633,85 +633,101 @@ p, li { white-space: pre-wrap; }
                    <property name="minimumSize">
                     <size>
                      <width>369</width>
-                     <height>60</height>
+                     <height>120</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
                      <width>16777215</width>
-                     <height>60</height>
+                     <height>16777215</height>
                     </size>
                    </property>
                    <widget class="QRadioButton" name="roof_connected_radiovary">
                     <property name="geometry">
                      <rect>
-                      <x>325</x>
-                      <y>7</y>
-                      <width>51</width>
+                      <x>20</x>
+                      <y>70</y>
+                      <width>301</width>
                       <height>17</height>
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Vary</string>
+                     <string>Variable (adjust likelihood of roof disconnection)</string>
                     </property>
                    </widget>
                    <widget class="QLabel" name="roof_connected_lbl">
                     <property name="geometry">
                      <rect>
-                      <x>0</x>
+                      <x>10</x>
                       <y>7</y>
-                      <width>197</width>
+                      <width>351</width>
                       <height>17</height>
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Roof directly connected to drainage?</string>
+                     <string>Configure roof drainage connection (affects effective imperviousness)?</string>
                     </property>
                    </widget>
                    <widget class="QRadioButton" name="roof_connected_radiodisc">
                     <property name="geometry">
                      <rect>
-                      <x>245</x>
-                      <y>7</y>
-                      <width>84</width>
+                      <x>20</x>
+                      <y>50</y>
+                      <width>351</width>
                       <height>17</height>
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Disconnect</string>
+                     <string>Disconnect all downpipes in all houses (unless a raintank is present)</string>
                     </property>
                    </widget>
                    <widget class="QRadioButton" name="roof_connected_radiodirect">
                     <property name="geometry">
                      <rect>
-                      <x>190</x>
-                      <y>7</y>
-                      <width>51</width>
+                      <x>20</x>
+                      <y>30</y>
+                      <width>301</width>
                       <height>17</height>
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Direct</string>
+                     <string>Directly connected downpipe in all houses</string>
                     </property>
                    </widget>
                    <widget class="QLabel" name="imperv_prop_dced_lbl">
                     <property name="geometry">
                      <rect>
-                      <x>0</x>
-                      <y>30</y>
-                      <width>241</width>
+                      <x>10</x>
+                      <y>95</y>
+                      <width>271</width>
                       <height>17</height>
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Average % of Imperviousness Disconnected:</string>
+                     <string>Average % of Ground Imperviousness Disconnected:</string>
                     </property>
                    </widget>
                    <widget class="QSpinBox" name="avg_imp_dced_spin">
                     <property name="geometry">
                      <rect>
-                      <x>230</x>
-                      <y>30</y>
+                      <x>280</x>
+                      <y>95</y>
+                      <width>51</width>
+                      <height>16</height>
+                     </rect>
+                    </property>
+                    <property name="suffix">
+                     <string>%</string>
+                    </property>
+                    <property name="maximum">
+                     <number>100</number>
+                    </property>
+                   </widget>
+                   <widget class="QSpinBox" name="roofdced_vary_spin">
+                    <property name="geometry">
+                     <rect>
+                      <x>280</x>
+                      <y>70</y>
                       <width>51</width>
                       <height>16</height>
                      </rect>
@@ -6078,7 +6094,6 @@ p, li { white-space: pre-wrap; }
   <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
   <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
   <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
-  <include location="../../UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
  </resources>
  <connections>
   <connection>

@@ -132,6 +132,12 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
         elif self.module.getParameter("roof_connected") == "Vary":
             self.ui.roof_connected_radiovary.setChecked(1)
 
+        self.checkRoofDced()
+        QtCore.QObject.connect(self.ui.roof_connected_radiodirect, QtCore.SIGNAL("clicked()"), self.checkRoofDced)
+        QtCore.QObject.connect(self.ui.roof_connected_radiodisc, QtCore.SIGNAL("clicked()"), self.checkRoofDced)
+        QtCore.QObject.connect(self.ui.roof_connected_radiovary, QtCore.SIGNAL("clicked()"), self.checkRoofDced)
+
+        self.ui.roofdced_vary_spin.setValue(int(self.module.getParameter("roof_dced_p")))
         self.ui.avg_imp_dced_spin.setValue(int(self.module.getParameter("imperv_prop_dced")))
 
         ##########################
@@ -506,6 +512,13 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
             else:
                 self.ui.popredevelop_spin.setEnabled(0)
 
+    #--> RESIDENTIAL TAB
+    def checkRoofDced(self):
+        if self.ui.roof_connected_radiodirect.isChecked() or self.ui.roof_connected_radiodisc.isChecked():
+            self.ui.roofdced_vary_spin.setEnabled(0)
+        else:
+            self.ui.roofdced_vary_spin.setEnabled(1)
+
     #--> NON-RESIDENTIAL TAB
     def employment_pagechange(self):
         if self.ui.jobs_direct_radio.isChecked() == 1:
@@ -731,6 +744,7 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
         if self.ui.roof_connected_radiovary.isChecked() == True:
             self.module.setParameter("roof_connected", "Vary")
 
+        self.module.setParameter("roof_dced_p", int(self.ui.roofdced_vary_spin.value()))
         self.module.setParameter("imperv_prop_dced", int(self.ui.avg_imp_dced_spin.value()))
 
         ##########################
