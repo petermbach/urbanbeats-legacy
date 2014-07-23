@@ -203,7 +203,7 @@ def landscapePatchDelineation(landuse, elevation, soil):
         pydist = max(patchpoints["y"]) - min(patchpoints["y"]) + 1      #add one = 1 unit distance, if the min/max is the same position, its distance is 1 unit
         paspectratio = float(pxdist) / float(pydist)
 
-        print patchcentroid
+        # print patchcentroid
 
         patchdict["PatchID"+str(patchIDcounter)] = [patcharea, currentCALU, patchelev, patchsoil, patchcentroid, paspectratio]
         #Next iteration
