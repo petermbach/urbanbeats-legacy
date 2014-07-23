@@ -828,22 +828,23 @@ class Techplacement(UBModule):
         ###-------------------------------------------------------------------###        
         
         #CALCULATE SOME GLOBAL VARIABLES RELATING TO TARGETS
-        self.system_tarQ = self.ration_runoff * self.targets_runoff
-        self.system_tarTSS = self.ration_pollute * self.targets_TSS
-        self.system_tarTP = self.ration_pollute * self.targets_TP
-        self.system_tarTN = self.ration_pollute * self.targets_TN
-        self.system_tarREL = self.ration_harvest * self.targets_reliability
+        self.system_tarQ = self.ration_runoff * self.targets_runoff     #Runoff reduction target
+        self.system_tarTSS = self.ration_pollute * self.targets_TSS     #TSS reduction target
+        self.system_tarTP = self.ration_pollute * self.targets_TP       #TP reduction target
+        self.system_tarTN = self.ration_pollute * self.targets_TN       #TN reduction target
+        self.system_tarREL = self.ration_harvest * self.targets_reliability     #Reliability  of recycling
         self.targetsvector = [self.system_tarQ, self.system_tarTSS, self.system_tarTP, self.system_tarTN, self.system_tarREL]
         self.notify(str(self.targetsvector))
         self.servicevector = [self.service_swmQty, self.service_swmWQ, self.service_rec]
         self.notify(str(self.servicevector))
-        
+        #-> targetsvector TO BE USED TO ASSESS OPPORTUNITIES
+
         #CALCULATE SYSTEM DEPTHS
         self.sysdepths = {"RT": self.RT_maxdepth - self.RT_mindead, "GW": 1, "WSUR": self.WSURspec_EDD, "PB": self.PBspec_MD}
-        #-> targetsvector TO BE USED TO ASSESS OPPORTUNITIES
         
         #SET DESIGN CURVES DIRECTORY        
-        
+        #To be done later.
+
         #GET NECESSARY GLOBAL DATA TO DO ANALYSIS
         blocks_num = map_attr.getAttribute("NumBlocks")     #number of blocks to loop through
         self.block_size = map_attr.getAttribute("BlockSize")    #size of block
@@ -852,7 +853,7 @@ class Techplacement(UBModule):
         input_res = map_attr.getAttribute("InputReso")      #resolution of input data
         basins = map_attr.getAttribute("TotalBasins")
         map_attr.addAttribute("OutputStrats", self.num_output_strats)
-        
+
         #CREATE TECHNOLOGIES SHORTLIST - THIS IS THE USER'S CUSTOMISED SHORTLIST
         userTechList = self.compileUserTechList()               #holds the active technologies selected by user for simulation
         self.notify(str(userTechList))
@@ -926,32 +927,32 @@ class Techplacement(UBModule):
             currentAttList.addAttribute("Blk_WD", wdDict["TotalBlockWD"])       #[kL/yr]
             currentAttList.addAttribute("Blk_WD_OUT", wdDict["TotalOutdoorWD"]) #[kL/yr]
         
-        # ###-------------------------------------------------------------------###
-        # #---  INTERMEDIATE LOOP - RECALCULATE IMP AREA TO SERVE
-        # ###-------------------------------------------------------------------###
-        # #DETERMINE IMPERVIOUS AREAS TO MANAGE BASED ON LAND USES
-        # for i in range(int(blocks_num)):
-        #     currentID = i+1
-        #     currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-        #     #currentAttList = self.getBlockUUID(currentID, city)
-        #     if currentAttList.getAttribute("Status") == 0:
-        #         continue
-        #     block_EIA = currentAttList.getAttribute("Blk_EIA")
-        #     if self.service_res == False:
-        #         AimpRes = currentAttList.getAttribute("ResLotEIA") * currentAttList.getAttribute("ResAllots")
-        #         AimpstRes = currentAttList.getAttribute("ResFrontT") - currentAttList.getAttribute("avSt_RES")
-        #         block_EIA -= AimpRes - AimpstRes
-        #     if self.service_hdr == False:
-        #         block_EIA -= currentAttList.getAttribute("HDR_EIA")
-        #     if self.service_com == False:
-        #         block_EIA -= currentAttList.getAttribute("COMAeEIA")
-        #     if self.service_li == False:
-        #         block_EIA -= currentAttList.getAttribute("LIAeEIA")
-        #     if self.service_hi == False:
-        #         block_EIA -= currentAttList.getAttribute("HIAeEIA")
-        #
-        #     currentAttList.addAttribute("Manage_EIA", block_EIA)
-        #
+        ###-------------------------------------------------------------------###
+        #---  INTERMEDIATE LOOP - RECALCULATE IMP AREA TO SERVE
+        ###-------------------------------------------------------------------###
+        #DETERMINE IMPERVIOUS AREAS TO MANAGE BASED ON LAND USES
+        for i in range(int(blocks_num)):
+            currentID = i+1
+            currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
+            #currentAttList = self.getBlockUUID(currentID, city)
+            if currentAttList.getAttribute("Status") == 0:
+                continue
+            block_EIA = currentAttList.getAttribute("Blk_EIA")
+            if self.service_res == False:
+                AimpRes = currentAttList.getAttribute("ResLotEIA") * currentAttList.getAttribute("ResAllots")
+                AimpstRes = currentAttList.getAttribute("ResFrontT") - currentAttList.getAttribute("avSt_RES")
+                block_EIA -= AimpRes - AimpstRes
+            if self.service_hdr == False:
+                block_EIA -= currentAttList.getAttribute("HDR_EIA")
+            if self.service_com == False:
+                block_EIA -= currentAttList.getAttribute("COMAeEIA")
+            if self.service_li == False:
+                block_EIA -= currentAttList.getAttribute("LIAeEIA")
+            if self.service_hi == False:
+                block_EIA -= currentAttList.getAttribute("HIAeEIA")
+
+            currentAttList.addAttribute("Manage_EIA", block_EIA)
+
         # ###-------------------------------------------------------------------###
         # #---  SECOND LOOP - RETROFIT ALGORITHM
         # ###-------------------------------------------------------------------###
