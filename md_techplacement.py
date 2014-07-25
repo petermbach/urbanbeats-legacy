@@ -282,9 +282,13 @@ class Techplacement(UBModule):
         self.createParameter("sb_method", STRING, "")
         self.createParameter("rain_length", DOUBLE, "")
         self.createParameter("swh_benefits", BOOL, "")
+        self.createParameter("swh_unitrunoff", DOUBLE, "")
+        self.createParameter("swh_unitrunoff_auto", BOOL, "")
         self.sb_method = "Sim"  #Sim = simulation, Eqn = equation
         self.rain_length = 2.0   #number of years.
         self.swh_benefits = 1   #execute function to calculate SWH benefits? (1 by default, but perhaps treat as mutually exclusive)
+        self.swh_unitrunoff = 0.545  #Unit runoff rate [kL/sqm impervious]
+        self.swh_unitrunoff_auto = 0
         
         ##########################################################################
         #---RETROFIT CONDITIONS INPUTS                                           
@@ -953,146 +957,146 @@ class Techplacement(UBModule):
 
             currentAttList.addAttribute("Manage_EIA", block_EIA)
 
-        # ###-------------------------------------------------------------------###
-        # #---  SECOND LOOP - RETROFIT ALGORITHM
-        # ###-------------------------------------------------------------------###
-        # #strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
-        # #totsystems = city.getComponent(strvec[0]).getAttribute("TotalSystems")
-        # #ubeatsfile = city.getComponent(strvec[0]).getAttribute("UBFile")
-        # totsystems = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("TotalSystems")
-        # ubeatsfile = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("UBFile")
-        #
-        # self.notify("Total Systems in Map: "+str(totsystems))
-        #
-        # #sysuuids = city.getUUIDsOfComponentsInView(self.sysAttr)
-        # #self.notify(sysuuids)
-        # sysIDs = self.activesim.getAssetsWithIdentifier("SysPrevID")
-        # #Grab the list of systems and sort them based on location into a dictionary
-        # system_list = {}        #Dictionary
-        # for i in range(int(blocks_num)):
-        #     system_list[i+1] = []
-        # for i in range(len(sysIDs)):
-        #     #curSys = city.getComponent(sysuuids[i])
-        #     curSys = sysIDs[i]
-        #     locate = int(curSys.getAttribute("Location"))
-        #     system_list[locate].append(curSys)  #Block ID [5], [curSys, curSys, curSys]
-        #
-        # #Do the retrofitting
-        # for i in range(int(blocks_num)):
-        #     currentID = i+1
-        #     #currentAttList = self.getBlockUUID(currentID, city) #QUIT CONDITION #1 - status=0
-        #     currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-        #     if currentAttList.getAttribute("Status") == 0:
-        #         continue
-        #
-        #     sys_implement = system_list[currentID]
-        #     if len(sys_implement) == 0:
-        #         continue
-        #
-        #     if self.retrofit_scenario == "N":
-        #         self.retrofit_DoNothing(currentID, sys_implement)
-        #     elif self.retrofit_scenario == "R":
-        #         self.retrofit_WithRenewal(currentID, sys_implement)
-        #     elif self.retrofit_scenario == "F":
-        #         self.retrofit_Forced(currentID, sys_implement)
-        #
-        # ###-------------------------------------------------------------------###
-        # #--- THIRD LOOP - OPPORTUNITIES MAPPING OF INDIVIDUAL TECHS
-        # #            ACROSS SCALES & IN-BLOCK TOP RANKED OPTIONS (ACROSS BLOCKS)                         #
-        # ###-------------------------------------------------------------------###
-        #
-        # #INITIALIZE THE DATABASE
-        # ubdbpath = self.ubeatsdir+"/temp/ubeatsdb1.db"
-        # if os.path.isfile(ubdbpath):
-        #     try:
-        #         os.remove(ubdbpath)     #Attempts to remove the file, if it fails, it creates another with an incremented
-        #     except:                     #index.
-        #         ubdbpath = self.ubeatsdir+"/temp/ubeatsdb"+str(int(ubdbpath[len(ubdbpath)-4])+1)+".db"
-        #
-        # self.sqlDB = sqlite3.connect(ubdbpath)
-        # self.dbcurs = self.sqlDB.cursor()
-        #
-        # #Create Table for Individual Systems
-        # self.dbcurs.execute('''CREATE TABLE watertechs(BlockID, Type, Size, Scale, Service, Areafactor, Landuse, Designdegree)''')
-        # self.dbcurs.execute('''CREATE TABLE blockstrats(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
-        #                     LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
-        #                     StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
-        # self.dbcurs.execute('''CREATE TABLE blockstratstop(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
-        #                     LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
-        #                     StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
-        #
-        # inblock_options = {}
-        # subbas_options = {}
-        #
-        # #Initialize increment variables
-        # self.notify(str(self.lot_rigour)+" "+str(self.street_rigour)+" "+str(self.neigh_rigour)+" "+str(self.subbas_rigour))
-        # self.lot_incr = self.setupIncrementVector(self.lot_rigour)
-        # self.street_incr = self.setupIncrementVector(self.street_rigour)
-        # self.neigh_incr = self.setupIncrementVector(self.neigh_rigour)
-        # self.subbas_incr = self.setupIncrementVector(self.subbas_rigour)
-        # self.notify(str(self.lot_incr)+" "+str(self.street_incr)+" "+str(self.neigh_incr)+" "+str(self.subbas_incr))
-        #
-        # if bool(self.ration_harvest):   #if harvest is a management objective
-        #     #Initialize meteorological data vectors: Load rainfile and evaporation files,
-        #     #create the scaling factors for evap data
-        #     self.notify("Loading Climate Data... ")
-        #     self.raindata = ubseries.loadClimateFile(self.rainfile, "csv", self.rain_dt, 1440, self.rain_length)
-        #     self.evapdata = ubseries.loadClimateFile(self.evapfile, "csv", self.evap_dt, 1440, self.rain_length)
-        #     self.evapscale = ubseries.convertVectorToScalingFactors(self.evapdata)
-        #     self.raindata = ubseries.removeDateStampFromSeries(self.raindata)             #Remove the date stamps
-        #
-        # for i in range(int(blocks_num)):
-        #     currentID = i+1
-        #     self.notify("Currently on Block "+str(currentID))
-        #     currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-        #     #currentAttList = self.getBlockUUID(currentID, city)
-        #     if currentAttList.getAttribute("Status") == 0:
-        #         self.notify("Block not active in simulation")
-        #         continue
-        #
-        #     #INITIALIZE VECTORS
-        #     lot_techRES = [0]
-        #     lot_techHDR = [0]
-        #     lot_techLI = [0]
-        #     lot_techHI = [0]
-        #     lot_techCOM = [0]
-        #     street_tech = [0]
-        #     neigh_tech = [0]
-        #     subbas_tech = [0]
-        #
-        #
-        #     #Assess Opportunities and Calculate SWH Benefits
-        #
-        #     #Assess Lot Opportunities
-        #     if len(techListLot) != 0:
-        #         lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM = self.assessLotOpportunities(techListLot, currentAttList)
-        #     #self.notify(lot_techRES)
-        #     #self.notify(lot_techHDR)
-        #     #self.notify(lot_techLI)
-        #     #self.notify(lot_techHI)
-        #     #self.notify(lot_techCOM)
-        #
-        #     #Assess Street Opportunities
-        #     if len(techListStreet) != 0:
-        #         street_tech = self.assessStreetOpportunities(techListStreet, currentAttList)
-        #     #self.notify(street_tech)
-        #
-        #     #Assess Neigh Opportunities
-        #     if len(techListNeigh) != 0:
-        #         neigh_tech = self.assessNeighbourhoodOpportunities(techListNeigh, currentAttList)
-        #     #self.notify(neigh_tech)
-        #
-        #     #Assess Precinct Opportunities
-        #     if len(techListSubbas) != 0:
-        #         subbas_tech = self.assessSubbasinOpportunities(techListSubbas, currentAttList)
-        #     #self.notify(subbas_tech)
-        #
-        #     subbas_options["BlockID"+str(currentID)] = subbas_tech
-        #
-        #     #--- THIRD LOOP - CONSTRUCT IN-BLOCK OPTIONS
-        #     inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
-        #
-        # self.sqlDB.commit()
+        ###-------------------------------------------------------------------###
+        #---  SECOND LOOP - RETROFIT ALGORITHM
+        ###-------------------------------------------------------------------###
+        #strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
+        #totsystems = city.getComponent(strvec[0]).getAttribute("TotalSystems")
+        #ubeatsfile = city.getComponent(strvec[0]).getAttribute("UBFile")
+        totsystems = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("TotalSystems")
+        ubeatsfile = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("UBFile")
+
+        self.notify("Total Systems in Map: "+str(totsystems))
+
+        #sysuuids = city.getUUIDsOfComponentsInView(self.sysAttr)
+        #self.notify(sysuuids)
+        sysIDs = self.activesim.getAssetsWithIdentifier("SysPrevID")
+        #Grab the list of systems and sort them based on location into a dictionary
+        system_list = {}        #Dictionary
+        for i in range(int(blocks_num)):
+            system_list[i+1] = []
+        for i in range(len(sysIDs)):
+            #curSys = city.getComponent(sysuuids[i])
+            curSys = sysIDs[i]
+            locate = int(curSys.getAttribute("Location"))
+            system_list[locate].append(curSys)  #Block ID [5], [curSys, curSys, curSys]
+
+        #Do the retrofitting
+        for i in range(int(blocks_num)):
+            currentID = i+1
+            #currentAttList = self.getBlockUUID(currentID, city) #QUIT CONDITION #1 - status=0
+            currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
+            if currentAttList.getAttribute("Status") == 0:
+                continue
+
+            sys_implement = system_list[currentID]
+            if len(sys_implement) == 0:
+                continue
+
+            if self.retrofit_scenario == "N":
+                self.retrofit_DoNothing(currentID, sys_implement)
+            elif self.retrofit_scenario == "R":
+                self.retrofit_WithRenewal(currentID, sys_implement)
+            elif self.retrofit_scenario == "F":
+                self.retrofit_Forced(currentID, sys_implement)
+
+        ###-------------------------------------------------------------------###
+        #--- THIRD LOOP - OPPORTUNITIES MAPPING OF INDIVIDUAL TECHS
+        #            ACROSS SCALES & IN-BLOCK TOP RANKED OPTIONS (ACROSS BLOCKS)                         #
+        ###-------------------------------------------------------------------###
+
+        #INITIALIZE THE DATABASE ---- COMMENT FROM HERE TO REMOVE DATABASE WRITING
+        ubdbpath = self.ubeatsdir+"/temp/ubeatsdb1.db"
+        if os.path.isfile(ubdbpath):
+            try:
+                os.remove(ubdbpath)     #Attempts to remove the file, if it fails, it creates another with an incremented
+            except:                     #index.
+                ubdbpath = self.ubeatsdir+"/temp/ubeatsdb"+str(int(ubdbpath[len(ubdbpath)-4])+1)+".db"
+
+        self.sqlDB = sqlite3.connect(ubdbpath)
+        self.dbcurs = self.sqlDB.cursor()
+
+        #Create Table for Individual Systems
+        self.dbcurs.execute('''CREATE TABLE watertechs(BlockID, Type, Size, Scale, Service, Areafactor, Landuse, Designdegree)''')
+        self.dbcurs.execute('''CREATE TABLE blockstrats(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
+                            LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
+                            StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
+        self.dbcurs.execute('''CREATE TABLE blockstratstop(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
+                            LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
+                            StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
+        #END OF DATABASE STUFF ------ COMMENT OUT UNTIL HERE TO REMOVE DATABASE WRITING
+
+        inblock_options = {}
+        subbas_options = {}
+
+        #Initialize increment variables
+        self.notify(str(self.lot_rigour)+" "+str(self.street_rigour)+" "+str(self.neigh_rigour)+" "+str(self.subbas_rigour))
+        self.lot_incr = self.setupIncrementVector(self.lot_rigour)
+        self.street_incr = self.setupIncrementVector(self.street_rigour)
+        self.neigh_incr = self.setupIncrementVector(self.neigh_rigour)
+        self.subbas_incr = self.setupIncrementVector(self.subbas_rigour)
+        self.notify(str(self.lot_incr)+" "+str(self.street_incr)+" "+str(self.neigh_incr)+" "+str(self.subbas_incr))
+
+        if bool(self.ration_harvest):   #if harvest is a management objective
+            #Initialize meteorological data vectors: Load rainfile and evaporation files,
+            #create the scaling factors for evap data
+            self.notify("Loading Climate Data... ")
+            self.raindata = ubseries.loadClimateFile(self.rainfile, "csv", self.rain_dt, 1440, self.rain_length)
+            self.evapdata = ubseries.loadClimateFile(self.evapfile, "csv", self.evap_dt, 1440, self.rain_length)
+            self.evapscale = ubseries.convertVectorToScalingFactors(self.evapdata)
+            self.raindata = ubseries.removeDateStampFromSeries(self.raindata)             #Remove the date stamps
+
+        for i in range(int(blocks_num)):
+            currentID = i+1
+            self.notify("Currently on Block "+str(currentID))
+            currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
+            #currentAttList = self.getBlockUUID(currentID, city)
+            if currentAttList.getAttribute("Status") == 0:
+                self.notify("Block not active in simulation")
+                continue
+
+            #INITIALIZE VECTORS
+            lot_techRES = [0]
+            lot_techHDR = [0]
+            lot_techLI = [0]
+            lot_techHI = [0]
+            lot_techCOM = [0]
+            street_tech = [0]
+            neigh_tech = [0]
+            subbas_tech = [0]
+
+            #Assess Opportunities and Calculate SWH Benefits
+
+            #Assess Lot Opportunities
+            if len(techListLot) != 0:
+                lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM = self.assessLotOpportunities(techListLot, currentAttList)
+            # self.notify(lot_techRES)
+            # self.notify(lot_techHDR)
+            # self.notify(lot_techLI)
+            # self.notify(lot_techHI)
+            # self.notify(lot_techCOM)
+
+            #Assess Street Opportunities
+            if len(techListStreet) != 0:
+                street_tech = self.assessStreetOpportunities(techListStreet, currentAttList)
+            # self.notify(street_tech)
+
+            #Assess Neigh Opportunities
+            if len(techListNeigh) != 0:
+                neigh_tech = self.assessNeighbourhoodOpportunities(techListNeigh, currentAttList)
+            # self.notify(neigh_tech)
+
+            #Assess Precinct Opportunities
+            if len(techListSubbas) != 0:
+                subbas_tech = self.assessSubbasinOpportunities(techListSubbas, currentAttList)
+            #self.notify(subbas_tech)
+
+            subbas_options["BlockID"+str(currentID)] = subbas_tech
+
+            #--- THIRD LOOP - CONSTRUCT IN-BLOCK OPTIONS
+            # inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
+
+        self.sqlDB.commit()     #DATABASE WRITING ----- COMMENT OUT TO REMOVE DATABASE WRITING FUNCTIONALITY
         
         ###-------------------------------------------------------------------###
         #  FOURTH LOOP - MONTE CARLO (ACROSS BASINS)                            #
@@ -2793,7 +2797,7 @@ class Techplacement(UBModule):
         except KeyError:
             curscale = 'NA'
             
-        Adesign_imp = Aimp * incr
+        Adesign_imp = Aimp * incr       #Target impervious area depends on the increment/i.e. level of treatment service
         
         if storeObj != np.inf:
             design_Dem = storeObj.getSupply()
@@ -2827,7 +2831,7 @@ class Techplacement(UBModule):
         if AsystemWQ[0] > Asystem[0]:
             Asystem = AsystemWQ #if area for water quality is greater, choose the governing one as the final system size
         
-        #OBJECTIVE 3 - If system type permits storage, design for Recycling
+        #OBJECTIVE 3 - If system type permits storage, design for Recycling - this includes WQ control first, then adding storage!
         if tech_applications[2] == 1 and storeObj != np.inf:
             #First design for WQ control (assume raintanks don't treat for now)
             purpose = [0, 1, 0]
@@ -2835,13 +2839,16 @@ class Techplacement(UBModule):
                 AsystemRecWQ = [0, 1]
             else:
                 AsystemRecWQ = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')    
-            
-            if techabbr in ["RT", "GW", "WSUR", "PB"]:        #Then design storage
+                #Required surface are of a system that only does water quality management...
+
+            #First intrinsic systems
+            if techabbr in ["RT", "GW", "PB", "WSUR"]:        #Turn the WQ system into a SWH system based on hybrid combos
                 sysdepth = self.sysdepths[techabbr]
                 vol = storeObj.getSize()
                 #self.notify(vol)
                 if vol == np.inf:       #Strange error where volume return is inf, yet the name 'inf' is not defined
                     vol = np.inf
+
                 AsystemRecQty = eval('td.sizeStoreArea_'+str(techabbr)+'('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
                 if AsystemRecQty[0] > AsystemRecWQ[0]:
                     AsystemRec = AsystemRecQty

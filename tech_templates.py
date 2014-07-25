@@ -270,6 +270,8 @@ class WaterTech(object):
         self.__rec_store_type = ""
         self.__rec_Integrated = 0
         self.__rec_store_surfaceArea = 0
+        self.__quantityIAO = 0.0    #Impervious Area offset for stormwater quantity water management
+        self.__qualityIAO = 0.0     #Impervious Area offset for stormwater quality water management
         
         #Assign some descriptive variables to the object
         if self.__type in ['BF', 'IS']:
