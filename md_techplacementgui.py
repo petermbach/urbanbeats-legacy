@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_techplacementgui.ui'
 #
-# Created: Mon Jul 21 10:54:38 2014
+# Created: Fri Jul 25 10:35:37 2014
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -940,7 +940,7 @@ class Ui_TechPlace_Dialog(object):
         self.design_crit_inputs_3.setWidgetResizable(True)
         self.design_crit_inputs_3.setObjectName(_fromUtf8("design_crit_inputs_3"))
         self.design_crit_inputs_widget_3 = QtGui.QWidget()
-        self.design_crit_inputs_widget_3.setGeometry(QtCore.QRect(0, 0, 465, 1206))
+        self.design_crit_inputs_widget_3.setGeometry(QtCore.QRect(0, 0, 465, 1236))
         self.design_crit_inputs_widget_3.setObjectName(_fromUtf8("design_crit_inputs_widget_3"))
         self.verticalLayout_9 = QtGui.QVBoxLayout(self.design_crit_inputs_widget_3)
         self.verticalLayout_9.setObjectName(_fromUtf8("verticalLayout_9"))
@@ -1594,7 +1594,7 @@ class Ui_TechPlace_Dialog(object):
         self.recycle_lbl2.setObjectName(_fromUtf8("recycle_lbl2"))
         self.verticalLayout_9.addWidget(self.recycle_lbl2)
         self.recycle_widget2 = QtGui.QWidget(self.design_crit_inputs_widget_3)
-        self.recycle_widget2.setMinimumSize(QtCore.QSize(0, 95))
+        self.recycle_widget2.setMinimumSize(QtCore.QSize(0, 125))
         self.recycle_widget2.setObjectName(_fromUtf8("recycle_widget2"))
         self.rec_assessment_lbl = QtGui.QLabel(self.recycle_widget2)
         self.rec_assessment_lbl.setGeometry(QtCore.QRect(10, 10, 131, 16))
@@ -1622,6 +1622,19 @@ class Ui_TechPlace_Dialog(object):
         self.swh_benefits_check.setGeometry(QtCore.QRect(10, 70, 421, 17))
         self.swh_benefits_check.setText(QtGui.QApplication.translate("TechPlace_Dialog", "Account for stormwater management benefits from stormwater harvesting", None, QtGui.QApplication.UnicodeUTF8))
         self.swh_benefits_check.setObjectName(_fromUtf8("swh_benefits_check"))
+        self.rec_unitrunoff_lbl = QtGui.QLabel(self.recycle_widget2)
+        self.rec_unitrunoff_lbl.setGeometry(QtCore.QRect(30, 95, 211, 16))
+        self.rec_unitrunoff_lbl.setWhatsThis(QtGui.QApplication.translate("TechPlace_Dialog", "The average annual runoff volume in the catchment expressed in terms of impervious catchment. This can be obtained by simulating rainfall runoff processes in the catchment and dividing total runoff volume by catchment impervious area.", None, QtGui.QApplication.UnicodeUTF8))
+        self.rec_unitrunoff_lbl.setText(QtGui.QApplication.translate("TechPlace_Dialog", "Unit Runoff Rate [kL/sqm impervious area]:", None, QtGui.QApplication.UnicodeUTF8))
+        self.rec_unitrunoff_lbl.setObjectName(_fromUtf8("rec_unitrunoff_lbl"))
+        self.rec_unitrunoff_box = QtGui.QLineEdit(self.recycle_widget2)
+        self.rec_unitrunoff_box.setGeometry(QtCore.QRect(250, 95, 51, 20))
+        self.rec_unitrunoff_box.setText(_fromUtf8(""))
+        self.rec_unitrunoff_box.setObjectName(_fromUtf8("rec_unitrunoff_box"))
+        self.rec_unitrunoff_auto = QtGui.QCheckBox(self.recycle_widget2)
+        self.rec_unitrunoff_auto.setGeometry(QtCore.QRect(320, 95, 101, 17))
+        self.rec_unitrunoff_auto.setText(QtGui.QApplication.translate("TechPlace_Dialog", "Auto determine", None, QtGui.QApplication.UnicodeUTF8))
+        self.rec_unitrunoff_auto.setObjectName(_fromUtf8("rec_unitrunoff_auto"))
         self.verticalLayout_9.addWidget(self.recycle_widget2)
         self.design_crit_inputs_3.setWidget(self.design_crit_inputs_widget_3)
         self.gridLayout_25.addWidget(self.design_crit_inputs_3, 0, 0, 1, 1)

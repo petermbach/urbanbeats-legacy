@@ -427,7 +427,11 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.ui.rec_rainfall_spin.setValue(int(self.module.getParameter("rain_length")))
 
         self.ui.swh_benefits_check.setChecked(bool(self.module.getParameter("swh_benefits")))
-
+        self.ui.rec_unitrunoff_box.setText(str(self.module.getParameter("swh_unitrunoff")))
+        self.ui.rec_unitrunoff_auto.setChecked(bool(self.module.getParameter("swh_unitrunoff_auto")))
+        self.swh_benefits_update()
+        QtCore.QObject.connect(self.ui.swh_benefits_check, QtCore.SIGNAL("clicked()"), self.swh_benefits_update)
+        QtCore.QObject.connect(self.ui.rec_unitrunoff_auto, QtCore.SIGNAL("clicked()"), self.swh_benefits_update)
 
         if self.module.getParameter("WEFstatus") == 1:
             self.ui.WEF_consider.setChecked(1)
@@ -1047,6 +1051,14 @@ class TechplacementGUILaunch(QtGui.QDialog):
             self.ui.WEF_distribution_select.setEnabled(1)
             self.ui.WEF_distribution_check.setEnabled(1)
 
+    def swh_benefits_update(self):
+        if self.ui.swh_benefits_check.isChecked():
+            self.ui.rec_unitrunoff_auto.setEnabled(1)
+            self.ui.rec_unitrunoff_box.setEnabled(int(not(self.ui.rec_unitrunoff_auto.isChecked())))
+        else:
+            self.ui.rec_unitrunoff_auto.setEnabled(0)
+            self.ui.rec_unitrunoff_box.setEnabled(0)
+
     ### TECHNOLOGIES TABS ###
 
     #BIOFILTRATION SYSTEMS SIGNAL-SLOT FUNCTIONS
@@ -1297,6 +1309,8 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("sb_method", str(self.sbmethod[self.ui.rec_assessment_combo.currentIndex()]))
         self.module.setParameter("rain_length", float(self.ui.rec_rainfall_spin.value()))
         self.module.setParameter("swh_benefits", int(self.ui.swh_benefits_check.isChecked()))
+        self.module.setParameter("swh_unitrunoff", float(self.ui.rec_unitrunoff_box.text()))
+        self.module.setParameter("swh_unitrunoff_auto", int(self.ui.rec_unitrunoff_auto.isChecked()))
 
         #######################################
         #Choose & Customize Technologies Tab

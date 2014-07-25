@@ -2448,7 +2448,7 @@ p, li { white-space: pre-wrap; }
                <x>0</x>
                <y>0</y>
                <width>465</width>
-               <height>1206</height>
+               <height>1236</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -4261,7 +4261,7 @@ p, li { white-space: pre-wrap; }
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>95</height>
+                  <height>125</height>
                  </size>
                 </property>
                 <widget class="QLabel" name="rec_assessment_lbl">
@@ -4343,6 +4343,48 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="text">
                   <string>Account for stormwater management benefits from stormwater harvesting</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="rec_unitrunoff_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>30</x>
+                   <y>95</y>
+                   <width>211</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="whatsThis">
+                  <string>The average annual runoff volume in the catchment expressed in terms of impervious catchment. This can be obtained by simulating rainfall runoff processes in the catchment and dividing total runoff volume by catchment impervious area.</string>
+                 </property>
+                 <property name="text">
+                  <string>Unit Runoff Rate [kL/sqm impervious area]:</string>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="rec_unitrunoff_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>250</x>
+                   <y>95</y>
+                   <width>51</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="rec_unitrunoff_auto">
+                 <property name="geometry">
+                  <rect>
+                   <x>320</x>
+                   <y>95</y>
+                   <width>101</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Auto determine</string>
                  </property>
                 </widget>
                </widget>
