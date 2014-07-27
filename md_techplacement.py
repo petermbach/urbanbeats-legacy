@@ -2604,9 +2604,9 @@ class Techplacement(UBModule):
                         if supplyincr == 0: 
                             continue
                         storeObj = curStoreObjs[supplyincr]
-                        sys_object = self.designTechnology(neigh_deg, Aimptotreat, j, dcvpath, tech_applications,
+                        sys_objects = self.designTechnology(neigh_deg, Aimptotreat, j, dcvpath, tech_applications,
                                          soilK, minsize, maxsize, totalavailable, "Neigh", currentID, storeObj)
-                        if sys_object != 0:
+                        for sys_object in sys_objects:
                             sys_object.setDesignIncrement(neigh_deg)
                             technologydesigns.append(sys_object)
                 else:
@@ -2626,12 +2626,10 @@ class Techplacement(UBModule):
 #                    Aimptotreat=  neigh_deg * Aimpremain
 #                    #self.notify("Aimp to treat: "+str(Aimptotreat))
 #                    if Aimptotreat > 0.0001:
-#                        sys_object = self.designTechnology(neigh_deg, Aimptotreat, 0, j,
+#                        sys_objects = self.designTechnology(neigh_deg, Aimptotreat, 0, j,
 #                                                           dcvpath, tech_applications, soilK, minsize,
 #                                                           maxsize, totalavailable, "Neigh", currentID, storeObj)
-#                        if sys_object == 0:
-#                            pass
-#                        else:
+#                        for sys_object in sys_objects:
 #                            sys_object.setDesignIncrement([lot_deg, neigh_deg])
 #                            technologydesigns.append(sys_object)
         return technologydesigns
@@ -2846,6 +2844,7 @@ class Techplacement(UBModule):
             if vol == np.inf:       #Strange error where volume return is inf, yet the name 'inf' is not defined
                 vol = np.inf
 
+            design_harvest = True
             if AsystemRecWQ in [np.inf, None] or vol == np.inf:
                 #Skip harvesting design! Cannot fulfill treatment + storage
                 design_harvest = False
@@ -2856,30 +2855,29 @@ class Techplacement(UBModule):
             #   RT = standard storage volume
             #   GW = standard storage volume
             if techabbr in ["RT", "GW", "PB", "WSUR"] and design_harvest:        #Turn the WQ system into a SWH system based on hybrid combos
-                sysdepth = self.sysdepths[techabbr]     #obtain the system depth
+                sysdepth = float(self.sysdepths[techabbr])     #obtain the system depth
                 AsystemRecQty = eval('td.sizeStoreArea_'+str(techabbr)+'('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
-                AsystemRec = AsystemRecQty[0] + AsystemRecWQ[0]   #Total recycling system area is the combination of both
-                addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, techabbr, 1])     #Input arguments to addstore function
+                if AsystemRecQty[0] != None:
+                    addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, techabbr, 1])     #Input arguments to addstore function
 
             #Harvesting System Design: Part 2 - HYBRID A Design extra storage space as closed auxillary storage
             #   WSUR = into tank
             #   BF = into tank
             #   SW = into tank
             if techabbr in ["WSUR", "BF", "SW"] and design_harvest:
-                sysdepth = self.sysdepths["RT"]
+                sysdepth = float(self.sysdepths["RT"])
                 AsystemRecQty = td.sizeStoreArea_RT(vol, sysdepth, 0, 9999)
-                #Above or Below ground tank?
-                AsystemRec = AsystemRecWQ + AsystemRecQty
-                addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "RT", 0])
+                if AsystemRecQty[0] != None:
+                    addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "RT", 0])
 
             #Harvesting System Design: Part 3 - HYBRID B Design extra storage space as open auxillary storage
             #   BF = into pond
             #   SW = into pond
             if techabbr in ["BF", "SW"] and curscale in ["N", "B"] and design_harvest:
-                sysdepth = self.sysdepths["PB"]
-                AsystemRecQty = td.sizeStoreArea_PB(vol, sysdepth, 0, 9999)
-                AsystemRec = AsystemRecWQ + AsystemRecQty
-                addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "PB", 0])
+                sysdepth = float(self.sysdepths["PB"])
+                AsystemRecQty = td.sizeStoreArea_PB(vol, sysdepth, 0.0, 9999.0)
+                if AsystemRecQty[0] != None:
+                    addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "PB", 0])
 
         sys_objects_array = []
 
@@ -2901,7 +2899,9 @@ class Techplacement(UBModule):
 
         for i in range(len(addstore)):
             curstore = addstore[i]
-
+            if len(curstore) == 0:
+                print "No Addstore Data, continuing"
+                continue
             #CHECK WHAT THE TOTAL SYSTEM SIZE IS FIRST BY COMPARING LARGEST SYSTEM TO DATE VS. HARVESTING SYSTEM
             recsize = curstore[1][0] + curstore[2][0]   #AsystemRecWQ + AsystemRecQTY
             eafact = recsize/(curstore[1][0]/curstore[1][1] + curstore[2][0]/curstore[2][1])    #area factor, does not indicate relative factors for different systems!
@@ -2910,7 +2910,7 @@ class Techplacement(UBModule):
             Asystem["Rec"] = [recsize, eafact]  #This is the total recycling storage size
             if recsize > Asystem["Size"][0]:    #Differentiate between integrated and non-integrated systems!
                 Asystem_test = recsize      #Compare total harvesting system size or the largest other size
-                if addstore[4] == 1:    #is the system integrated?
+                if curstore[4] == 1:    #is the system integrated?
                     Asystem["Size"] = Asystem["Rec"]    #Because the integrated system has same planning rules so EAFACT is the same
                 else:
                     Asystem["Size"] = curstore[1]   #if non-integrated, then base system is defined ONLY as WQ area/treatment...
@@ -2928,10 +2928,9 @@ class Techplacement(UBModule):
                 if Asystem["Rec"][0] != None:
                     servicematrix[2] = design_Dem
                 servicematrixstring = tt.convertArrayToDBString(servicematrix)
-                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem[0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem[1])+",'"+str(landuse)+"',"+str(incr)+")")
+                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem["Size"][0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+")")
                 sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
-                if len(addstore) != 0:
-                    sys_object.addRecycledStoreToTech(addstore[0], addstore[2], addstore[3], addstore[4])     #If analysis showed that system can accommodate store, add the store object
+                sys_object.addRecycledStoreToTech(curstore[0], curstore[2], curstore[3], curstore[4])     #If analysis showed that system can accommodate store, add the store object
                 sys_object.setDesignIncrement(incr)
                 sys_objects_array.append(sys_object)
 
