@@ -1022,7 +1022,7 @@ class Techplacement(UBModule):
         self.dbcurs = self.sqlDB.cursor()
 
         #Create Table for Individual Systems
-        self.dbcurs.execute('''CREATE TABLE watertechs(BlockID, Type, Size, Scale, Service, Areafactor, Landuse, Designdegree)''')
+        self.dbcurs.execute('''CREATE TABLE watertechs(BlockID, Type, Size, Scale, Service, Areafactor, Landuse, Designdegree, Recycled, Integrated, Storetype, Storesize)''')
         self.dbcurs.execute('''CREATE TABLE blockstrats(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
                             LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
                             StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
@@ -2891,7 +2891,7 @@ class Techplacement(UBModule):
             if Asystem["Rec"][0] != None:
                 servicematrix[2] = design_Dem
             servicematrixstring = tt.convertArrayToDBString(servicematrix)
-            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem[0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem[1])+",'"+str(landuse)+"',"+str(incr)+")")
+            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem["Size"][0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'N',"+str(0)+",'"+str('None')+"',"+str(0)+")")
             sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
             sys_object.setDesignIncrement(incr)
             sys_objects_array.append(sys_object)
@@ -2928,7 +2928,7 @@ class Techplacement(UBModule):
                 if Asystem["Rec"][0] != None:
                     servicematrix[2] = design_Dem
                 servicematrixstring = tt.convertArrayToDBString(servicematrix)
-                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem["Size"][0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+")")
+                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem["Size"][0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'Y',"+str(curstore[4])+",'"+str(curstore[3])+"',"+str(curstore[0].getSize())+")")
                 sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
                 sys_object.addRecycledStoreToTech(curstore[0], curstore[2], curstore[3], curstore[4])     #If analysis showed that system can accommodate store, add the store object
                 sys_object.setDesignIncrement(incr)
