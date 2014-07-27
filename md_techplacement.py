@@ -423,6 +423,7 @@ class Techplacement(UBModule):
         self.createParameter("ISpollute", BOOL,"")
         self.ISflow = 1
         self.ISpollute = 1
+        self.ISrecycle = 0      #Permanently zero
         
         #Design Curves
         self.createParameter("ISdesignUB", BOOL,"")
@@ -507,6 +508,7 @@ class Techplacement(UBModule):
         self.RTlot = 1
         self.RTneigh = 0
         self.RTflow = 0
+        self.RTpollute = 0      #permanently zero
         self.RTrecycle = 1
         
         self.createParameter("RT_maxdepth", DOUBLE,"")
@@ -584,8 +586,10 @@ class Techplacement(UBModule):
         #Available Applications
         self.createParameter("SWflow", BOOL,"")
         self.createParameter("SWpollute", BOOL,"")
+        self.createParameter("SWrecycle", BOOL, "")
         self.SWflow = 1
         self.SWpollute = 1
+        self.SWrecycle = 0
         
         #Design Curves
         self.createParameter("SWdesignUB", BOOL,"")
@@ -682,6 +686,7 @@ class Techplacement(UBModule):
                           "GPT", "IS", "PPL", "PB", "PP", "RT", 
                           "SF", "IRR", "WSUB", "WSUR", "SW", 
                           "TPS", "UT", "WWRR", "WT"]
+
         self.scaleabbr = ["lot", "street", "neigh", "prec"]
         self.ffplevels = {"PO":1, "NP":2, "RW":3, "SW":4, "GW":5}  #Used to determine when a system is cleaner than the other
         self.sqlDB = 0  #Global variable to hold the sqlite database
@@ -2439,10 +2444,8 @@ class Techplacement(UBModule):
             #RES Systems
             hasRESsystems = int(currentAttList.getAttribute("HasL_RESSys"))
             if hasRESsystems == 0 and hasHouses != 0 and Aimplot > 0.0001 and j not in ["banned","list","of","tech"]:    #Do lot-scale house system
-                sys_object = self.designTechnology(1.0, Aimplot, j, dcvpath, tech_applications, soilK, minsize, maxsize, lot_avail_sp, "RES", currentID, storeVols[0])
-                if sys_object == 0:
-                    pass
-                else:
+                sys_objects = self.designTechnology(1.0, Aimplot, j, dcvpath, tech_applications, soilK, minsize, maxsize, lot_avail_sp, "RES", currentID, storeVols[0])
+                for sys_object in sys_objects:
                     tdRES.append(sys_object)
             
             #HDR Systems
@@ -2451,10 +2454,8 @@ class Techplacement(UBModule):
                 for i in self.lot_incr:
                     if i == 0:
                         continue
-                    sys_object = self.designTechnology(i, Aimphdr, j, dcvpath, tech_applications, soilK, minsize, maxsize, hdr_avail_sp, "HDR", currentID, np.inf)
-                    if sys_object == 0:
-                        pass
-                    else:
+                    sys_objects = self.designTechnology(i, Aimphdr, j, dcvpath, tech_applications, soilK, minsize, maxsize, hdr_avail_sp, "HDR", currentID, np.inf)
+                    for sys_object in sys_objects:
                         tdHDR.append(sys_object)
             
             #LI Systems
@@ -2463,10 +2464,8 @@ class Techplacement(UBModule):
                 for i in self.lot_incr:
                     if i == 0:
                         continue
-                    sys_object = self.designTechnology(i, AimpLI, j, dcvpath, tech_applications, soilK, minsize, maxsize, LI_avail_sp, "LI", currentID, np.inf)
-                    if sys_object == 0:
-                        pass
-                    else:
+                    sys_objects = self.designTechnology(i, AimpLI, j, dcvpath, tech_applications, soilK, minsize, maxsize, LI_avail_sp, "LI", currentID, np.inf)
+                    for sys_object in sys_objects:
                         tdLI.append(sys_object)
             
             #HI Systems                        
@@ -2475,10 +2474,8 @@ class Techplacement(UBModule):
                 for i in self.lot_incr:
                     if i == 0:
                         continue
-                    sys_object = self.designTechnology(i, AimpHI, j, dcvpath, tech_applications, soilK, minsize, maxsize, HI_avail_sp, "HI", currentID, np.inf)
-                    if sys_object == 0:
-                        pass
-                    else:
+                    sys_objects = self.designTechnology(i, AimpHI, j, dcvpath, tech_applications, soilK, minsize, maxsize, HI_avail_sp, "HI", currentID, np.inf)
+                    for sys_object in sys_objects:
                         tdHI.append(sys_object)
             
             #COM Systems
@@ -2487,10 +2484,8 @@ class Techplacement(UBModule):
                 for i in self.lot_incr:
                     if i == 0:
                         continue
-                    sys_object = self.designTechnology(i, AimpCOM, j, dcvpath, tech_applications, soilK, minsize, maxsize, com_avail_sp, "COM", currentID, np.inf)
-                    if sys_object == 0:
-                        pass
-                    else:
+                    sys_objects = self.designTechnology(i, AimpCOM, j, dcvpath, tech_applications, soilK, minsize, maxsize, com_avail_sp, "COM", currentID, np.inf)
+                    for sys_object in sys_objects:
                         tdCOM.append(sys_object)
             
             #Can insert more land uses here in future e.g. municipal
@@ -2550,12 +2545,10 @@ class Techplacement(UBModule):
                     #self.notify("Aimp to treat: "+str(AimptotreatRes))
                     
                     if hasHouses != 0 and AimptotreatRes > 0.0001:
-                        sys_object = self.designTechnology(street_deg, AimptotreatRes, j, dcvpath, 
+                        sys_objects = self.designTechnology(street_deg, AimptotreatRes, j, dcvpath,
                                                            tech_applications, soilK, minsize, maxsize, 
                                                            street_avail_Res, "Street", currentID, storeObj)
-                        if sys_object == 0:
-                            pass
-                        else:
+                        for sys_object in sys_objects:
                             sys_object.setDesignIncrement([lot_deg, street_deg])
                             technologydesigns.append(sys_object)
         return technologydesigns
@@ -2618,9 +2611,9 @@ class Techplacement(UBModule):
                             technologydesigns.append(sys_object)
                 else:
                     storeObj = np.inf
-                    sys_object = self.designTechnology(neigh_deg, Aimptotreat, j, dcvpath, tech_applications,
-                                                       soilK, minsize, maxsize, totalavailable, "Neigh", currentID, storeObj) 
-                    if sys_object != 0:
+                    sys_objects = self.designTechnology(neigh_deg, Aimptotreat, j, dcvpath, tech_applications,
+                                                       soilK, minsize, maxsize, totalavailable, "Neigh", currentID, storeObj)
+                    for sys_object in sys_objects:
                         sys_object.setDesignIncrement(neigh_deg)
                         technologydesigns.append(sys_object)
                     
@@ -2710,16 +2703,16 @@ class Techplacement(UBModule):
                         if supplyincr == 0 or Aimptotreat < 0.0001: 
                             continue
                         storeObj = curStoreObjs[supplyincr]
-                        sys_object = self.designTechnology(bas_deg, Aimptotreat, j, dcvpath, tech_applications, 
+                        sys_objects = self.designTechnology(bas_deg, Aimptotreat, j, dcvpath, tech_applications,
                                         soilK, minsize, maxsize, totalavailable, "Subbas", currentID, storeObj)
-                        if sys_object != 0:
+                        for sys_object in sys_objects:
                             sys_object.setDesignIncrement(bas_deg)
                             technologydesigns[bas_deg].append(sys_object)
                 else:
                     storeObj = np.inf
-                    sys_object = self.designTechnology(bas_deg, Aimptotreat, j, dcvpath, tech_applications, 
+                    sys_objects = self.designTechnology(bas_deg, Aimptotreat, j, dcvpath, tech_applications,
                                         soilK, minsize, maxsize, totalavailable, "Subbas", currentID, storeObj)
-                    if sys_object != 0:
+                    for sys_object in sys_objects:
                         sys_object.setDesignIncrement(bas_deg)
                         technologydesigns[bas_deg].append(sys_object)
         return technologydesigns
@@ -2811,98 +2804,138 @@ class Techplacement(UBModule):
             systemK = eval("self."+str(techabbr)+"exfil")
         else:
             systemK = 0
-        
+
+        Asystem = {"Qty":[None, 1], "WQ":[None,1], "Rec":[None,1], "Size":[None, 1]}  #Template for system design, holds designs
+
         #OBJECTIVE 1 - Design for Runoff Control
         if tech_applications[0] == 1:
             purpose = [tech_applications[0], 0, 0]
-            AsystemQty = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')
-            #self.notify(AsystemQty)
+            Asystem["Qty"] = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')
+            #self.notify(Asystem["Qty"])
         else:
-            AsystemQty = [None, 1]
-        Asystem = AsystemQty    #First target, set as default system size, even if zero
+            Asystem["Qty"] = [None, 1]
+        Asystem["Size"] = Asystem["Qty"]    #First target, set as default system size, even if zero
         
         #OBJECTIVE 2 - Design for WQ Control
         if tech_applications[1] == 1:
             purpose = [0, tech_applications[1], 0]
-            AsystemWQ = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')    
-            #self.notify(AsystemWQ)
+            Asystem["WQ"] = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')
+            #self.notify(Asystem["WQ"])
         else:
-            AsystemWQ = [None, 1]
-        if AsystemWQ[0] > Asystem[0]:
-            Asystem = AsystemWQ #if area for water quality is greater, choose the governing one as the final system size
+            Asystem["WQ"] = [None, 1]
+        if Asystem["WQ"][0] > Asystem["Size"][0]:
+            Asystem["Size"] = Asystem["WQ"] #if area for water quality is greater, choose the governing one as the final system size
         
         #OBJECTIVE 3 - If system type permits storage, design for Recycling - this includes WQ control first, then adding storage!
+        #   Only works if:
+        #       #1 - the harvesting application is checked
+        #       #2 - there is a store object that is not infinity
+        #       #3 - the system is one of those that supports harvesting
+        addstore = []   #Has several arguments [store object, WQsize, QTYsize, type of store, integrated?]
         if tech_applications[2] == 1 and storeObj != np.inf:
-            #First design for WQ control (assume raintanks don't treat for now)
+            #First design for WQ control (assume raintanks don't use natural treatment)
             purpose = [0, 1, 0]
-            if techabbr in ["RT", "GW"]:
-                AsystemRecWQ = [0, 1]
+            if techabbr in ["RT", "GW"]:        #If a raintank or greywater system, then no area required. Assume treatment is through some
+                AsystemRecWQ = [0, 1]           #   non-green-infrastructure means
             else:
                 AsystemRecWQ = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')    
                 #Required surface are of a system that only does water quality management...
 
-            #First intrinsic systems
-            if techabbr in ["RT", "GW", "PB", "WSUR"]:        #Turn the WQ system into a SWH system based on hybrid combos
-                sysdepth = self.sysdepths[techabbr]
-                vol = storeObj.getSize()
-                #self.notify(vol)
-                if vol == np.inf:       #Strange error where volume return is inf, yet the name 'inf' is not defined
-                    vol = np.inf
+            vol = storeObj.getSize()
+            #self.notify(vol)
+            if vol == np.inf:       #Strange error where volume return is inf, yet the name 'inf' is not defined
+                vol = np.inf
 
+            if AsystemRecWQ in [np.inf, None] or vol == np.inf:
+                #Skip harvesting design! Cannot fulfill treatment + storage
+                design_harvest = False
+
+            #Harvesting System Design: Part 1 - INTEGRATED Design extra storage space as integrated storage
+            #   WSUR = open water body as extra area
+            #   PB = part of the storage area
+            #   RT = standard storage volume
+            #   GW = standard storage volume
+            if techabbr in ["RT", "GW", "PB", "WSUR"] and design_harvest:        #Turn the WQ system into a SWH system based on hybrid combos
+                sysdepth = self.sysdepths[techabbr]     #obtain the system depth
                 AsystemRecQty = eval('td.sizeStoreArea_'+str(techabbr)+'('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
-                if AsystemRecQty[0] > AsystemRecWQ[0]:
-                    AsystemRec = AsystemRecQty
-                else:
-                    AsystemRec = AsystemRecWQ
-                addstore = [storeObj, AsystemRec[0], techabbr, 1]    #Input arguments to addstore function
-            elif techabbr in ["BF"]:    #Special Case BF where you have multi-tech combination
-                vol = storeObj.getSize()
-                if curscale in ["L"]:
-                    sysdepth = self.sysdepths["RT"]
-                    AsystemRecQty = eval('td.sizeStoreArea_RT('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
-                    addstore = [storeObj, AsystemRecQty, "RT", 0]
-                elif curscale in ["N", "B"]:
-                    sysdepth = self.sysdepths["PB"]
-                    AsystemRecQty = eval('td.sizeStoreArea_PB('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
-                    addstore = [storeObj, AsystemRecQty, "PB", 0]
-                #Calculate new area by adding BF area to Pond/Tank Area
-                if AsystemRecWQ[0] in [np.inf, None] or AsystemRecQty[0] in [np.inf, None]:
-                    AsystemRec = [None, 1]
-                else:
-                    AsystemRec = [AsystemRecWQ[0] + AsystemRecQty[0], AsystemRecWQ]       #Planning Area to check for
-            else:
-                addstore = []
-                AsystemRec = [None, 1]
-        else:
-            addstore = []
-            AsystemRec = [None, 1]        #[surface area, area factor, storage volume], the only exception
-        
-        if AsystemRec[0] > Asystem[0]:
-            if techabbr in ["RT", "GW", "WSUR", "PB"]:  #Integrated storage systems
-                Asystem = AsystemRec     #If area for recycling is bigger, choose that instead
-            elif techabbr in ["BF"]:            #Non-integrated storage systems
-                Asystem = AsystemRec[1]  #If system is a biofilter, add surf area to the system's main attr, add the store area as additional
-        #self.notify("Final design outcome for :"+str(techabbr)+" "+str(Asystem))
-        if Asystem[0] < avail_sp and Asystem[0] != None:        #if it fits and is NOT a NoneType
-            #self.notify("Fits")
+                AsystemRec = AsystemRecQty[0] + AsystemRecWQ[0]   #Total recycling system area is the combination of both
+                addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, techabbr, 1])     #Input arguments to addstore function
+
+            #Harvesting System Design: Part 2 - HYBRID A Design extra storage space as closed auxillary storage
+            #   WSUR = into tank
+            #   BF = into tank
+            #   SW = into tank
+            if techabbr in ["WSUR", "BF", "SW"] and design_harvest:
+                sysdepth = self.sysdepths["RT"]
+                AsystemRecQty = td.sizeStoreArea_RT(vol, sysdepth, 0, 9999)
+                #Above or Below ground tank?
+                AsystemRec = AsystemRecWQ + AsystemRecQty
+                addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "RT", 0])
+
+            #Harvesting System Design: Part 3 - HYBRID B Design extra storage space as open auxillary storage
+            #   BF = into pond
+            #   SW = into pond
+            if techabbr in ["BF", "SW"] and curscale in ["N", "B"] and design_harvest:
+                sysdepth = self.sysdepths["PB"]
+                AsystemRecQty = td.sizeStoreArea_PB(vol, sysdepth, 0, 9999)
+                AsystemRec = AsystemRecWQ + AsystemRecQty
+                addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "PB", 0])
+
+        sys_objects_array = []
+
+        if len(addstore) == 0 and Asystem["Size"] < avail_sp and Asystem["Size"] != None:        #if it fits and is NOT a NoneType:
+            #IF THERE IS NO STORAGE, JUST CREATE THE TECH OBJECT WITHOUT THE STORE
             servicematrix = [0,0,0]
-            if AsystemQty[0] != None:
+            if Asystem["Qty"][0] != None:
                 servicematrix[0] = Adesign_imp
-            if AsystemWQ[0] != None:
+            if Asystem["WQ"][0] != None:
                 servicematrix[1] = Adesign_imp
-            if AsystemRec[0] != None:
+            if Asystem["Rec"][0] != None:
                 servicematrix[2] = design_Dem
             servicematrixstring = tt.convertArrayToDBString(servicematrix)
             self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem[0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem[1])+",'"+str(landuse)+"',"+str(incr)+")")
-            sys_object = tt.WaterTech(techabbr, Asystem[0], curscale, servicematrix, Asystem[1], landuse, currentID)
-            if len(addstore) != 0:
-                sys_object.addRecycledStoreToTech(addstore[0], addstore[1], addstore[2], addstore[3])     #If analysis showed that system can accommodate store, add the store object
+            sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
             sys_object.setDesignIncrement(incr)
-            return sys_object
-        else:
-            #self.notify("Does not fit or not feasible")
-            return 0
-    
+            sys_objects_array.append(sys_object)
+            return sys_objects_array
+
+        for i in range(len(addstore)):
+            curstore = addstore[i]
+
+            #CHECK WHAT THE TOTAL SYSTEM SIZE IS FIRST BY COMPARING LARGEST SYSTEM TO DATE VS. HARVESTING SYSTEM
+            recsize = curstore[1][0] + curstore[2][0]   #AsystemRecWQ + AsystemRecQTY
+            eafact = recsize/(curstore[1][0]/curstore[1][1] + curstore[2][0]/curstore[2][1])    #area factor, does not indicate relative factors for different systems!
+            #eafact is the same as WQfact and QtyFact if the system is integrated (e.g. Wetland buffer is ALWAYS 1.3)
+
+            Asystem["Rec"] = [recsize, eafact]  #This is the total recycling storage size
+            if recsize > Asystem["Size"][0]:    #Differentiate between integrated and non-integrated systems!
+                Asystem_test = recsize      #Compare total harvesting system size or the largest other size
+                if addstore[4] == 1:    #is the system integrated?
+                    Asystem["Size"] = Asystem["Rec"]    #Because the integrated system has same planning rules so EAFACT is the same
+                else:
+                    Asystem["Size"] = curstore[1]   #if non-integrated, then base system is defined ONLY as WQ area/treatment...
+            else:
+                Asystem_test = Asystem["Size"][0]
+
+            #NOW CHECK AVAILABLE SPACE - CREATE OBJECT AND PASS TO FUNCTION RETURN
+            if Asystem_test < avail_sp and Asystem_test != None:        #if it fits and is NOT a NoneType
+                #self.notify("Fits")
+                servicematrix = [0,0,0]
+                if Asystem["Qty"][0] != None:
+                    servicematrix[0] = Adesign_imp
+                if Asystem["WQ"][0] != None:
+                    servicematrix[1] = Adesign_imp
+                if Asystem["Rec"][0] != None:
+                    servicematrix[2] = design_Dem
+                servicematrixstring = tt.convertArrayToDBString(servicematrix)
+                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem[0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem[1])+",'"+str(landuse)+"',"+str(incr)+")")
+                sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
+                if len(addstore) != 0:
+                    sys_object.addRecycledStoreToTech(addstore[0], addstore[2], addstore[3], addstore[4])     #If analysis showed that system can accommodate store, add the store object
+                sys_object.setDesignIncrement(incr)
+                sys_objects_array.append(sys_object)
+
+        return sys_objects_array    #if no systems are design, returns an empty array
     
     def retrieveStreamBlockIDs(self, currentAttList, direction):
         """Returns a vector containing all upstream block IDs, allows quick collation of 

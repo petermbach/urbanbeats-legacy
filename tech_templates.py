@@ -268,8 +268,9 @@ class WaterTech(object):
         self.__blockID = blockID
         self.__rec_store = None
         self.__rec_store_type = ""
-        self.__rec_Integrated = 0
-        self.__rec_store_surfaceArea = 0
+        self.__rec_integrated = 0
+        self.__rec_store_surfaceArea = 0.0
+        self.__rec_store_areafactor = 0.0
         self.__quantityIAO = 0.0    #Impervious Area offset for stormwater quantity water management
         self.__qualityIAO = 0.0     #Impervious Area offset for stormwater quality water management
         
@@ -289,12 +290,13 @@ class WaterTech(object):
             self.isGreyTech = False
             self.isGreenTech = True
     
-    def addRecycledStoreToTech(self, storeObj, surfarea, type, integrated):
+    def addRecycledStoreToTech(self, storeObj, recsurfarea, type, integrated):
         self.__rec_store = storeObj
         self.__service["Rec"] = storeObj.getSupply()
-        self.__rec_Integrated = integrated
+        self.__rec_integrated = integrated
         self.__rec_store_type = type
-        self.__rec_store_surfaceArea = surfarea
+        self.__rec_store_surfaceArea = recsurfarea[0]
+        self.__rec_store_areafactor = recsurfarea[1]
         return True
     
     def getStoreSurfArea(self):
