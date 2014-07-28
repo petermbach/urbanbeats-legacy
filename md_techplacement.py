@@ -720,7 +720,9 @@ class Techplacement(UBModule):
         self.evapdata = []
         self.evapscale = []
         self.sysdepths = {}     #Holds all calculated system depths
-        
+
+        self.swhbenefitstable = []
+
         self.createParameter("relTolerance", DOUBLE, "")
         self.createParameter("maxSBiterations", DOUBLE, "")
         self.relTolerance = 1
@@ -876,7 +878,11 @@ class Techplacement(UBModule):
         self.notify("Street"+str(techListStreet))
         self.notify("Neighbourhood"+str(techListNeigh))
         self.notify("Sub-basin"+str(techListSubbas))
-        
+
+        #INITIALIZE SWH BENEFITS DATA
+        if self.swh_benefits:
+            self.swhbenefitstable = dcv.initializeSWHbenefitsTable(self.ubeatsdir+"/ancillary")
+
         #PROCESS MCA PARAMETERS AND SCORING DETAILS
         self.mca_techlist, self.mca_tech, self.mca_env, self.mca_ecn, self.mca_soc = self.retrieveMCAscoringmatrix()
         self.notify(self.mca_techlist)
@@ -1022,7 +1028,7 @@ class Techplacement(UBModule):
         self.dbcurs = self.sqlDB.cursor()
 
         #Create Table for Individual Systems
-        self.dbcurs.execute('''CREATE TABLE watertechs(BlockID, Type, Size, Scale, Service, Areafactor, Landuse, Designdegree, Recycled, Integrated, Storetype, Storesize)''')
+        self.dbcurs.execute('''CREATE TABLE watertechs(BlockID, Type, Size, Scale, Aimpdesign, Service, Areafactor, Landuse, Designdegree, Recycled, Integrated, Storetype, Storesize, qtyIAO, wqIAO)''')
         self.dbcurs.execute('''CREATE TABLE blockstrats(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
                             LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
                             StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
@@ -1099,7 +1105,7 @@ class Techplacement(UBModule):
             subbas_options["BlockID"+str(currentID)] = subbas_tech
 
             #--- THIRD LOOP - CONSTRUCT IN-BLOCK OPTIONS
-            inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
+            # inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
 
         self.sqlDB.commit()     #DATABASE WRITING ----- COMMENT OUT TO REMOVE DATABASE WRITING FUNCTIONALITY
         
@@ -2891,7 +2897,7 @@ class Techplacement(UBModule):
             if Asystem["Rec"][0] != None:
                 servicematrix[2] = design_Dem
             servicematrixstring = tt.convertArrayToDBString(servicematrix)
-            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem["Size"][0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'N',"+str(0)+",'"+str('None')+"',"+str(0)+")")
+            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'N',"+str(0)+",'"+str('None')+"',"+str(0)+","+str(0)+","+str(0)+")")
             sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
             sys_object.setDesignIncrement(incr)
             sys_objects_array.append(sys_object)
@@ -2928,7 +2934,6 @@ class Techplacement(UBModule):
                 if Asystem["Rec"][0] != None:
                     servicematrix[2] = design_Dem
                 servicematrixstring = tt.convertArrayToDBString(servicematrix)
-                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem["Size"][0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'Y',"+str(curstore[4])+",'"+str(curstore[3])+"',"+str(curstore[0].getSize())+")")
                 sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
                 sys_object.addRecycledStoreToTech(curstore[0], curstore[2], curstore[3], curstore[4])     #If analysis showed that system can accommodate store, add the store object
                 sys_object.setDesignIncrement(incr)
@@ -2936,13 +2941,17 @@ class Techplacement(UBModule):
                 #Work out SWH Benefits for Quantity and Quality
                 if self.swh_benefits:
                     if self.ration_runoff:      #NOW HAVE TO DETERMINE WHETHER TO DO THIS BASED ON UNIT RUNOFF RATE OR SOMETHING ELSE
-                        dcv.treatQTYbenefits(sys_object, self.swh_unitrunoff)
+                        dcv.treatQTYbenefits(sys_object, self.swh_unitrunoff, Adesign_imp)
                     if self.ration_pollute:
-                        dcv.treatWQbenefits(sys_object, self.swh_unitrunoff, self.targetsvector[1:4])   #only the three pollution targets
+                        dcv.treatWQbenefits(sys_object, self.swh_unitrunoff, self.targetsvector[1:4], Adesign_imp, self.swhbenefitstable)   #only the three pollution targets
                     print sys_object.getIAO("all")
+
+                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'Y',"+str(curstore[4])+",'"+str(curstore[3])+"',"+str(curstore[0].getSize())+","+str(sys_object.getIAO("Qty"))+","+str(sys_object.getIAO("WQ"))+")")
+
                 sys_objects_array.append(sys_object)
         return sys_objects_array    #if no systems are design, returns an empty array
-    
+
+
     def retrieveStreamBlockIDs(self, currentAttList, direction):
         """Returns a vector containing all upstream block IDs, allows quick collation of 
         details.

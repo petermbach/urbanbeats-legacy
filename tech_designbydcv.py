@@ -191,20 +191,22 @@ def linearInterpolate(x0, x1, y0, y1, x):
 ###     SUBFUNCTIONS FOR STORMWATER HARVESTING BENEFITS                      ###
 ### ------------------------------------------------------------------------ ###
 
-def treatQTYbenefits(wsudobj, runoffrate):
+def treatQTYbenefits(wsudobj, runoffrate, designAimp):
     """Determines the SWH benefits for runoff volume reduction, expressed as an impervious area offset (IAO). The IAO
     data is written to the object's attribute self.__quantityIAO. It is calculated based on the runoff rate and the
     size of the treatment store, which in turn determines how much runoff is removed from the system.
     - WSUDobj - the tech object representing the WSUD system in place (with harvesting capabilities)
     - runoffrate - the runoff rate in the catchment, based on user input or based on rainfall runoff modelling
             (consider only the impervious portion)
+    - designAimp - the impervious area that the harvesting system's treatment was designed for
     """
     storagedata = wsudobj.getRecycledStorage()
     if storagedata == None:
         return True
 
     reliability = float(storagedata.getReliability()) / 100.0   #Needed to work our actual extraction
-    Aimp = float(wsudobj.getService("Qty")) #[sqm]
+    systype = wsudobj.getType()
+    Aimp = designAimp                       #[sqm]
     supply = storagedata.getSupply()        #[kL]
     vextracted = supply * reliability       # supply x [kL] at 80% reliability = amount extracted
 
@@ -219,20 +221,19 @@ def initializeSWHbenefitsTable(filepath):
     empirical m-values and bthresh values for calculating impervious area offset (IAO) for water quality control.
     """
     f = open(filepath+"/swhbenefits.cfg", 'r')
-    SWHBENEFITSTABLE = []
-    SWHBENEFITSHEADINGS = f.readline().split(",")
-    SWHBENEFITSHEADINGS = SWHBENEFITSHEADINGS.rstrip('\n')
-
+    swhbenefitstable = []
+    f.readline()
     for lines in f:
         data = lines.split(',')
         data[2] = float(data[2])    #Convert target to float
         data[3] = float(data[3])    #Convert m-value to float
         data[4] = float(data[4])    #Convert bthresh to float
-        SWHBENEFITSTABLE.append(data)
-    return True
+        swhbenefitstable.append(data)
+
+    return swhbenefitstable
 
 
-def treatWQbenefits(wsudobj, runoffrate, targets):
+def treatWQbenefits(wsudobj, runoffrate, targets, designAimp, swhbenefitstable):
     """Determines the SWH benefits for pollution reduction, expressed as an impervious area offset (IAO). The IAO
     data is written to the object's attribute self.__quantityIAO. It is calculated based on the empirical relationships
     developed from numerous MUSIC simulations and the size of the treatment store, which in turn determines how much
@@ -241,13 +242,22 @@ def treatWQbenefits(wsudobj, runoffrate, targets):
     - runoffrate - the runoff rate in the catchment, based on user input or based on rainfall runoff modelling
             (consider only the impervious portion)
     - targets - an array of TSS, TP, TN targets that the treatment system has been designed for
+    - designAimp - the impervious area that the harvesting system's treatment was designed for
+    - swhbenefitstable - the lookup table for stormwater harvesting benefits, which is initialised in techplacement and passed
+            to this function.
     """
     storagedata = wsudobj.getRecycledStorage()
+
     if storagedata == None:
         return True
+
     systype = wsudobj.getType()
     reliability = float(storagedata.getReliability()) / 100.0
-    Aimp = float(wsudobj.getService("WQ"))
+
+    Aimp = designAimp
+    if Aimp == 0:
+        return True
+
     supply = storagedata.getSupply()
     vextracted = supply * reliability   # supply x [kL] at 80% reliability = amount extracted
     totalrunoff = runoffrate * Aimp     #Total runoff volume that treatment system is targeting
@@ -255,13 +265,13 @@ def treatWQbenefits(wsudobj, runoffrate, targets):
 
     print "Reliability", reliability, "Aimp", Aimp, "supply", supply, "extracted", pext
 
-    m, bthresh = lookupSWHbenefit(systype, targets)
+    m, bthresh = lookupSWHbenefit(systype, targets, swhbenefitstable)
 
     #Apply the SWH Benefits equation for water quality
     qualityIAOs = []    #will have IAOs based on TSS, TP, TN, the final is the minimum of all three or zero
 
     for i in range(len(m)):
-        qualityIAOs,append(m[i] * max((pext - bthresh[0]),0) * Aimp)  #Additional impervious area that can be left untreated for water quality
+        qualityIAOs.append(m[i] * max((pext - bthresh[0]),0) * Aimp)  #Additional impervious area that can be left untreated for water quality
                                                                       #based on the stormwater harvesting benefits perceived [sqm].
     if len(m) == 0:
         qualityIAO = 0.0                    #just to avoid the ValueError if an empty array is tested for its minimum.
@@ -273,7 +283,7 @@ def treatWQbenefits(wsudobj, runoffrate, targets):
     return True
 
 
-def lookupSWHbenefit(systype, targets):
+def lookupSWHbenefit(systype, targets, swhbenefitstable):
     """Lookup function for the empirical SWH benefits equation for pollution management. The lookup is driven by
     system type and the treatment targets.
     """
@@ -284,11 +294,12 @@ def lookupSWHbenefit(systype, targets):
     sysTSS = []
     sysTP = []
     sysTN = []
-
-    for i in range(len(SWHBENEFITSTABLE)):
-        if SWHBENEFITSTABLE[i][0] != systype:
+    print swhbenefitstable
+    for i in range(len(swhbenefitstable)):
+        if swhbenefitstable[i][0] != systype:
             continue
-        exec("sys"+str(SWHBENEFITSTABLE[i][1])+".append("+(str(SWHBENEFITSTABLE[i]))+")")
+        print "sys"+str(swhbenefitstable[i][1])+".append("+(str(swhbenefitstable[i]))+")"
+        eval("sys"+str(swhbenefitstable[i][1])+".append("+(str(swhbenefitstable[i]))+")")
 
     pollmatrix = [sysTSS, sysTP, sysTN]
 
@@ -302,22 +313,23 @@ def lookupSWHbenefit(systype, targets):
         curtarget = targets[i]
 
         #Work out the m and b values by interpolation
+        print "CURTARGET", curtarget
         if curtarget in curpollT[2]:        #If the target is identical to the target for which m and b values exist then simply select
             m.append(curpoll[3][curpollT.index(curtarget)])
             bthresh.append(curpoll[4][curpollT.index(curtarget)])
         elif curtarget < min(curpollT[2]):  #if the target is less than the minimum in the table, use the minimum benefits
             m.append(curpoll[3][curpollT.index(min(curpollT[2]))])
             bthresh.append(curpoll[4][curpollT.index(min(curpollT[2]))])
-        elif curtarget > max(curpoll[2]):   #If the target is greater than the maximum in the table, assume no benefit
+        elif curtarget > max(curpollT[2]):   #If the target is greater than the maximum in the table, assume no benefit
             m.append(0)
             bthresh.append(0)
         else:       #finally, if none of the above apply, then the target is between the bounds
             j_index, found = 0, 0
             while found == 0:
-                if curtarget < curpoll[2][j_index] and curtarget > curpoll[2][j_index + 1]: #if less than
-                    tupper, tlower = curpoll[2][j_index], curpoll[2][j_index + 1]   #X
-                    mupper, mlower = curpoll[3][j_index], curpoll[3][j_index + 1]   #Y1
-                    bupper, blower = curpoll[4][j_index], curpoll[4][j_index + 1]   #Y2
+                if curtarget < curpollT[2][j_index] and curtarget > curpollT[2][j_index + 1]: #if less than
+                    tupper, tlower = curpollT[2][j_index], curpollT[2][j_index + 1]   #X
+                    mupper, mlower = curpollT[3][j_index], curpollT[3][j_index + 1]   #Y1
+                    bupper, blower = curpollT[4][j_index], curpollT[4][j_index + 1]   #Y2
                     found = 1
                 else: j_index += 1
             m.append(linearInterpolate(tlower,tupper,mlower,mupper,curtarget))  #Interpolate for m
@@ -328,5 +340,3 @@ def lookupSWHbenefit(systype, targets):
     print "Debug", m, bthresh
     return m, bthresh
 
-SWHBENEFITSHEADINGS = []
-SWHBENEFITSTABLE = []
