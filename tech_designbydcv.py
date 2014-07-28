@@ -263,7 +263,7 @@ def treatWQbenefits(wsudobj, runoffrate, targets, designAimp, swhbenefitstable):
     totalrunoff = runoffrate * Aimp     #Total runoff volume that treatment system is targeting
     pext = min(vextracted / totalrunoff, 1.0)
 
-    print "Reliability", reliability, "Aimp", Aimp, "supply", supply, "extracted", pext
+    # print "Reliability", reliability, "Aimp", Aimp, "supply", supply, "extracted", pext
 
     m, bthresh = lookupSWHbenefit(systype, targets, swhbenefitstable)
 
@@ -303,13 +303,13 @@ def lookupSWHbenefit(systype, targets, swhbenefitstable):
 
     pollmatrix = [sysTSS, sysTP, sysTN]
 
-    print sysTSS, sysTP, sysTN
+    # print sysTSS, sysTP, sysTN
 
     #Interpolate for given targets to get m and bthresh values
     for i in range(len(targets)):
         curpoll = pollmatrix[i]
         curpollT = [[row[j] for row in curpoll] for j in range(len(curpoll[0]))]    #List comprehension to transport the matrix
-        print "DEBUG", curpollT
+        # print "DEBUG", curpollT
         curtarget = targets[i]
 
         #Work out the m and b values by interpolation
@@ -337,6 +337,6 @@ def lookupSWHbenefit(systype, targets, swhbenefitstable):
                 bthresh.append(0)
             else:
                 bthresh.append(linearInterpolate(tlower,tupper,blower,bupper,curtarget))  #Interpolate for bthresh
-    print "Debug", m, bthresh
+    # print "Debug", m, bthresh
     return m, bthresh
 

@@ -1101,7 +1101,7 @@ class Techplacement(UBModule):
             subbas_options["BlockID"+str(currentID)] = subbas_tech
 
             #--- THIRD LOOP - CONSTRUCT IN-BLOCK OPTIONS
-            # inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
+            inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
 
         self.sqlDB.commit()     #DATABASE WRITING ----- COMMENT OUT TO REMOVE DATABASE WRITING FUNCTIONALITY
         
@@ -1229,7 +1229,7 @@ class Techplacement(UBModule):
 # #        output_log_file.write("End of Basin Strategies Log \n\n")
 # #        output_log_file.close()
 #
-        # self.sqlDB.close()      #Close the database
+        self.sqlDB.close()      #Close the database
         
         #END OF MODULE
         
@@ -2944,7 +2944,7 @@ class Techplacement(UBModule):
                         dcv.treatQTYbenefits(sys_object, self.swh_unitrunoff, Adesign_imp)
                     if self.ration_pollute:
                         dcv.treatWQbenefits(sys_object, self.swh_unitrunoff, self.targetsvector[1:4], Adesign_imp, self.swhbenefitstable)   #only the three pollution targets
-                    print sys_object.getIAO("all")
+                    # print sys_object.getIAO("all")
 
                 self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
                                     str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+str(servicematrixstring)+
@@ -3410,7 +3410,7 @@ class Techplacement(UBModule):
         currentID = int(currentAttList.getAttribute("BlockID"))
         blockarea = pow(self.block_size,2)*currentAttList.getAttribute("Active")
         
-        for i in range(len(self.subbas_incr)):                #[0, 0.25, 0.5, 0.75, 1.0]
+        for i in range(len(self.subbas_incr)):                #e.g. for [0, 0.25, 0.5, 0.75, 1.0]
             allInBlockOptions[self.subbas_incr[i]] = []       #Bins are: 0 to 25%, >25% to 50%, >50% to 75%, >75% to 100% of block treatment
         
         #Obtain all variables needed to do area balance for Impervious Area Service
@@ -3440,7 +3440,7 @@ class Techplacement(UBModule):
         #   combinations are either 0 or the technologies that fit at that increment
         lot_tech = []
         for a in range(len(self.lot_incr)):     #lot_incr = [0, ....., 1.0]
-            lot_deg = self.lot_incr[a]   #currently working on all lot-scale systems of increment lot_deg
+            lot_deg = self.lot_incr[a]          #currently working on all lot-scale systems of increment lot_deg
             if lot_deg == 0:
                 lot_tech.append([lot_deg,0,0,0,0,0])      #([deg, res, hdr, li, hi, com])
                 continue
@@ -3489,6 +3489,7 @@ class Techplacement(UBModule):
                         continue    #all options in the combo are zero, then we have no technologies, skip this as well
                     
                     servicematrix = self.getTotalComboService(combo, lotcounts)
+                    offsetmatrix = self.getTotalIAOofCombo(combo, lotcounts)
                     #self.notify(servicematrix)
                     
                     if servicematrix[0] > AblockEIA or servicematrix[1] > AblockEIA:
@@ -3502,7 +3503,9 @@ class Techplacement(UBModule):
                         #Create Block Strategy and put it into one of the subbas bins of allInBlockOptions
                         servicebin = self.identifyBin(servicematrix, AblockEIA, blockDem)
                         blockstrat = tt.BlockStrategy(combo, servicematrix, lotcounts, currentID, servicebin)
-                        
+                        blockstrat.setIAO("Qty", offsetmatrix[0])
+                        blockstrat.setIAO("WQ", offsetmatrix[1])
+
                         tt.CalculateMCATechScores(blockstrat,[AblockEIA, AblockEIA, blockDem],self.priorities, \
                                                     self.mca_techlist, self.mca_tech, self.mca_env, self.mca_ecn, \
                                                     self.mca_soc)
@@ -3545,7 +3548,29 @@ class Techplacement(UBModule):
         lowscore = min(scorelist)
         lowscoreindex = scorelist.index(lowscore)
         return lowscore, lowscoreindex
-    
+
+    def getTotalIAOofCombo(self, techarray, lotcounts):
+        """Tallies up the total impervious area offset for quantity and quality based on the WSUD objects' individual
+        offsets.
+        """
+        service_abbr = ["Qty", "WQ"]
+        offsetmatrix = [0, 0]
+        for j in range(len(service_abbr)):
+            abbr = service_abbr[j]
+            for tech in techarray:
+                if tech == 0:
+                    continue
+                if tech.getScale() == "L" and tech.getLandUse() == "RES":
+                    offsetmatrix[j] += tech.getIAO(abbr) * lotcounts[0]
+                elif tech.getScale() == "L" and tech.getLandUse() == "LI":
+                    offsetmatrix[j] += tech.getIAO(abbr) * lotcounts[2]
+                elif tech.getScale() == "L" and tech.getLandUse() == "HI":
+                    offsetmatrix[j] += tech.getIAO(abbr) * lotcounts[3]
+                elif tech.getScale() == "L" and tech.getLandUse() == "COM":
+                    offsetmatrix[j] += tech.getIAO(abbr) * lotcounts[4]
+                else:
+                    offsetmatrix[j] += tech.getIAO(abbr)
+        return offsetmatrix
     
     def getTotalComboService(self, techarray, lotcounts):
         """Retrieves all the impervious area served by an array of systems and returns

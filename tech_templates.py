@@ -432,6 +432,21 @@ class BlockStrategy(object):
         e.g. water quantity managment across the total impervious area or recycling
         across the whole population."""
         return self.__service[category]/totalvalue
+
+    def setIAO(self, purpose, value):
+        if purpose == "Qty":
+            self.__quantityIAO = value
+        elif purpose == "WQ":
+            self.__qualityIAO = value
+        return True
+
+    def getIAO(self, purpose):
+        if purpose == "Qty":
+            return self.__quantityIAO
+        elif purpose == "WQ":
+            return self.__qualityIAO
+        else:
+            return [self.__quantityIAO, self.__qualityIAO]
     
 class BasinManagementStrategy(object):
     """Class for the complete water management strategy within a basin of the case study.
