@@ -298,7 +298,10 @@ class WaterTech(object):
         self.__rec_store_surfaceArea = recsurfarea[0]
         self.__rec_store_areafactor = recsurfarea[1]
         return True
-    
+
+    def getRecycledStorage(self):
+        return self.__rec_store
+
     def getStoreSurfArea(self):
         if bool(self.__rec_Integrated):
             return 0
@@ -368,6 +371,8 @@ class BlockStrategy(object):
         self.__MCA_scores = [0.0,0.0,0.0,0.0]
         self.__MCA_totscore = 0.0
         self.criteriamatrix = ["tec", "env", "ecn", "soc"]
+        self.__quantityIAO = 0.0
+        self.__qualityIAO = 0.0
     
     def getBlockBin(self):
         return self.__blockbin
@@ -451,6 +456,9 @@ class BasinManagementStrategy(object):
         for i in basinblockIDs:
             self.__inblockarray[i] = 0.0
             self.__degreesarray[i] = [0.0,0.0]
+
+        self.__quantityIAO = 0.0
+        self.__qualityIAO = 0.0
     
     def getBasinEIA(self):
         return self.__basinAimp
