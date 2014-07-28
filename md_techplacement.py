@@ -1028,13 +1028,9 @@ class Techplacement(UBModule):
         self.dbcurs = self.sqlDB.cursor()
 
         #Create Table for Individual Systems
-        self.dbcurs.execute('''CREATE TABLE watertechs(BlockID, Type, Size, Scale, Aimpdesign, Service, Areafactor, Landuse, Designdegree, Recycled, Integrated, Storetype, Storesize, qtyIAO, wqIAO)''')
-        self.dbcurs.execute('''CREATE TABLE blockstrats(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
-                            LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
-                            StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
-        self.dbcurs.execute('''CREATE TABLE blockstratstop(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
-                            LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
-                            StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
+        self.dbcurs.execute("CREATE TABLE watertechs(BlockID,Type,Size,Scale,Aimpdesign,Service,Areafactor,Landuse,Designdegree,Recycled,Integrated,Storetype,Storesize,qtyIAO,wqIAO)")
+        self.dbcurs.execute("CREATE TABLE blockstrats(BlockID,Bin,RESType,RESQty,RESservice,HDRType,HDRQty,HDRService,LIType,LIQty,LIService,HIType,HIQty,HIService,COMType,COMQty,COMService,StreetType,StreetQty,StreetService,NeighType,NeighQty,NeighService,TotService,MCATech,MCAEnv,MCAEcn,MCASoc,MCATotal,ImpTotal)")
+        self.dbcurs.execute("CREATE TABLE blockstratstop(BlockID,Bin,RESType,RESQty,RESservice,HDRType,HDRQty,HDRService,LIType,LIQty,LIService,HIType,HIQty,HIService,COMType,COMQty,COMService,StreetType,StreetQty,StreetService,NeighType,NeighQty,NeighService,TotService,MCATech,MCAEnv,MCAEcn,MCASoc,MCATotal,ImpTotal)")
         #END OF DATABASE STUFF ------ COMMENT OUT UNTIL HERE TO REMOVE DATABASE WRITING
 
         inblock_options = {}
@@ -2897,7 +2893,11 @@ class Techplacement(UBModule):
             if Asystem["Rec"][0] != None:
                 servicematrix[2] = design_Dem
             servicematrixstring = tt.convertArrayToDBString(servicematrix)
-            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'N',"+str(0)+",'"+str('None')+"',"+str(0)+","+str(0)+","+str(0)+")")
+            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
+                                str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+
+                                str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+
+                                str(incr)+",'N',"+str(0)+",'"+str('None')+"',"+str(0)+","+str(0)+","+str(0)+")")
+
             sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
             sys_object.setDesignIncrement(incr)
             sys_objects_array.append(sys_object)
@@ -2946,7 +2946,11 @@ class Techplacement(UBModule):
                         dcv.treatWQbenefits(sys_object, self.swh_unitrunoff, self.targetsvector[1:4], Adesign_imp, self.swhbenefitstable)   #only the three pollution targets
                     print sys_object.getIAO("all")
 
-                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'Y',"+str(curstore[4])+",'"+str(curstore[3])+"',"+str(curstore[0].getSize())+","+str(sys_object.getIAO("Qty"))+","+str(sys_object.getIAO("WQ"))+")")
+                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
+                                    str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+str(servicematrixstring)+
+                                    "',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'Y',"+str(curstore[4])+",'"+
+                                    str(curstore[3])+"',"+str(curstore[0].getSize())+","+str(sys_object.getIAO("Qty"))+
+                                    ","+str(sys_object.getIAO("WQ"))+")")
 
                 sys_objects_array.append(sys_object)
         return sys_objects_array    #if no systems are design, returns an empty array
