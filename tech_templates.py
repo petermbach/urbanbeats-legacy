@@ -289,7 +289,7 @@ class WaterTech(object):
         else:
             self.isGreyTech = False
             self.isGreenTech = True
-    
+
     def addRecycledStoreToTech(self, storeObj, recsurfarea, type, integrated):
         self.__rec_store = storeObj
         self.__service["Rec"] = storeObj.getSupply()
@@ -338,6 +338,24 @@ class WaterTech(object):
     
     def getLocation(self):
         return self.__blockID
+
+    def setIAO(self, purpose, value):
+        if purpose == "Qty":
+            self.__quantityIAO = value
+        elif purpose == "WQ":
+            self.__qualityIAO = value
+        else:
+            pass
+        return True
+
+    def getIAO(self, purpose):
+        if purpose == "Qty":
+            return self.__quantityIAO
+        elif purpose == "WQ":
+            return self.__qualityIAO
+        else:
+            return [self.__quantityIAO, self.__qualityIAO]
+
     
 class BlockStrategy(object):
     """Object, which contains all the WSUD technologies at the lot, street and neighbourhood

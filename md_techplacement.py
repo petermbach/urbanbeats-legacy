@@ -2932,8 +2932,15 @@ class Techplacement(UBModule):
                 sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
                 sys_object.addRecycledStoreToTech(curstore[0], curstore[2], curstore[3], curstore[4])     #If analysis showed that system can accommodate store, add the store object
                 sys_object.setDesignIncrement(incr)
-                sys_objects_array.append(sys_object)
 
+                #Work out SWH Benefits for Quantity and Quality
+                if self.swh_benefits:
+                    if self.ration_runoff:      #NOW HAVE TO DETERMINE WHETHER TO DO THIS BASED ON UNIT RUNOFF RATE OR SOMETHING ELSE
+                        dcv.treatQTYbenefits(sys_object, self.swh_unitrunoff)
+                    if self.ration_pollute:
+                        dcv.treatWQbenefits(sys_object, self.swh_unitrunoff, self.targetsvector[1:4])   #only the three pollution targets
+                    print sys_object.getIAO("all")
+                sys_objects_array.append(sys_object)
         return sys_objects_array    #if no systems are design, returns an empty array
     
     def retrieveStreamBlockIDs(self, currentAttList, direction):
