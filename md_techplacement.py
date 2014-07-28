@@ -1099,7 +1099,7 @@ class Techplacement(UBModule):
             subbas_options["BlockID"+str(currentID)] = subbas_tech
 
             #--- THIRD LOOP - CONSTRUCT IN-BLOCK OPTIONS
-            # inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
+            inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
 
         self.sqlDB.commit()     #DATABASE WRITING ----- COMMENT OUT TO REMOVE DATABASE WRITING FUNCTIONALITY
         
@@ -2787,7 +2787,7 @@ class Techplacement(UBModule):
             curscale = scalematrix[landuse]
         except KeyError:
             curscale = 'NA'
-            
+
         Adesign_imp = Aimp * incr       #Target impervious area depends on the increment/i.e. level of treatment service
         
         if storeObj != np.inf:
@@ -2881,7 +2881,7 @@ class Techplacement(UBModule):
 
         sys_objects_array = []
 
-        if len(addstore) == 0 and Asystem["Size"] < avail_sp and Asystem["Size"] != None:        #if it fits and is NOT a NoneType:
+        if len(addstore) == 0 and Asystem["Size"][0] < avail_sp and Asystem["Size"][0] != None:        #if it fits and is NOT a NoneType:
             #IF THERE IS NO STORAGE, JUST CREATE THE TECH OBJECT WITHOUT THE STORE
             servicematrix = [0,0,0]
             if Asystem["Qty"][0] != None:
