@@ -52,13 +52,35 @@ def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, t
             if i == 0:  #no score
                 continue
             lotcount = float(strategyobject.getQuantity(i.getLandUse()))        #get lot-count based on land use
-            
-            #Sub-Score = (individual Tech score) x (imp served by tech / imp served by strategy) X number of techs implemented
-            if len(tech) != 0: mca_techsub += sum(tech[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-            if len(env) != 0: mca_envsub += sum(env[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-            if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-            if len(soc) != 0: mca_socsub += sum(soc[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-        
+
+            systype = i.getType()
+            if i.getRecycledStorage() != None:
+                recycletype = i.getRecycledStorageType()
+                hybrid = not(systype == recycletype)
+                print systype, recycletype
+            else:
+                hybrid = False
+
+            if hybrid:
+                #Sub-Score = (individual Tech score) x (imp served by tech / imp served by strategy) X number of techs implemented
+                if len(tech) != 0: mca_techsub += (sum(tech[techarray.index(systype)]) +
+                                                   sum(tech[techarray.index(recycletype)])) / 2.0 * \
+                                                  i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+                if len(env) != 0: mca_envsub += (sum(env[techarray.index(systype)]) +
+                                                 sum(env[techarray.index(recycletype)])) / 2.0 * \
+                                                i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+                if len(ecn) != 0: mca_ecnsub += (sum(ecn[techarray.index(systype)]) +
+                                                 sum(ecn[techarray.index(recycletype)])) / 2.0 * \
+                                                i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+                if len(soc) != 0: mca_socsub += (sum(soc[techarray.index(systype)]) +
+                                                 sum(soc[techarray.index(recycletype)])) / 2.0 * \
+                                                i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+            else:
+                if len(tech) != 0: mca_techsub += sum(tech[techarray.index(systype)]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+                if len(env) != 0: mca_envsub += sum(env[techarray.index(systype)]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+                if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(systype)]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+                if len(soc) != 0: mca_socsub += sum(soc[techarray.index(systype)]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+
         mca_tech += mca_techsub * priorities[j]   #Before next loop, add the sub-scores, scaled by their priorities
         mca_env += mca_envsub * priorities[j]     #to the total criteria scores
         mca_ecn += mca_ecnsub * priorities[j]     #Score = (sub-score) x (priority weighting for current objective)
@@ -301,6 +323,9 @@ class WaterTech(object):
 
     def getRecycledStorage(self):
         return self.__rec_store
+
+    def getRecycledStorageType(self):
+        return self.__rec_store_type
 
     def getStoreSurfArea(self):
         if bool(self.__rec_Integrated):
