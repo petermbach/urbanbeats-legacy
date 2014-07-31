@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_techplacementgui.ui'
 #
-# Created: Fri Jul 25 10:35:37 2014
+# Created: Fri Aug 01 09:37:09 2014
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -3261,7 +3261,7 @@ class Ui_TechPlace_Dialog(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents_2 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 465, 487))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 465, 547))
         self.scrollAreaWidgetContents_2.setObjectName(_fromUtf8("scrollAreaWidgetContents_2"))
         self.verticalLayout_11 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_11.setObjectName(_fromUtf8("verticalLayout_11"))
@@ -3389,22 +3389,22 @@ class Ui_TechPlace_Dialog(object):
         self.strat_scoring_lbl.setObjectName(_fromUtf8("strat_scoring_lbl"))
         self.verticalLayout_11.addWidget(self.strat_scoring_lbl)
         self.scoring_widget = QtGui.QWidget(self.scrollAreaWidgetContents_2)
-        self.scoring_widget.setMinimumSize(QtCore.QSize(0, 120))
+        self.scoring_widget.setMinimumSize(QtCore.QSize(0, 180))
         self.scoring_widget.setObjectName(_fromUtf8("scoring_widget"))
         self.scope_stoch_check = QtGui.QCheckBox(self.scoring_widget)
-        self.scope_stoch_check.setGeometry(QtCore.QRect(110, 40, 161, 17))
+        self.scope_stoch_check.setGeometry(QtCore.QRect(110, 70, 161, 17))
         self.scope_stoch_check.setWhatsThis(QtGui.QApplication.translate("TechPlace_Dialog", "Check if you wish to add a stochastic disturbance to the scoring process. Modifies the scoring with an added randomness.", None, QtGui.QApplication.UnicodeUTF8))
         self.scope_stoch_check.setText(QtGui.QApplication.translate("TechPlace_Dialog", "Include Stochastic Noise", None, QtGui.QApplication.UnicodeUTF8))
         self.scope_stoch_check.setObjectName(_fromUtf8("scope_stoch_check"))
         self.eval_method_combo = QtGui.QComboBox(self.scoring_widget)
-        self.eval_method_combo.setGeometry(QtCore.QRect(110, 10, 261, 22))
+        self.eval_method_combo.setGeometry(QtCore.QRect(110, 40, 311, 22))
         self.eval_method_combo.setObjectName(_fromUtf8("eval_method_combo"))
         self.eval_method_combo.addItem(_fromUtf8(""))
         self.eval_method_combo.setItemText(0, QtGui.QApplication.translate("TechPlace_Dialog", "Weighted Product Model (WPM)", None, QtGui.QApplication.UnicodeUTF8))
         self.eval_method_combo.addItem(_fromUtf8(""))
         self.eval_method_combo.setItemText(1, QtGui.QApplication.translate("TechPlace_Dialog", "Weighted Sum Model (WSM)", None, QtGui.QApplication.UnicodeUTF8))
         self.eval_method_lbl = QtGui.QLabel(self.scoring_widget)
-        self.eval_method_lbl.setGeometry(QtCore.QRect(10, 10, 91, 16))
+        self.eval_method_lbl.setGeometry(QtCore.QRect(10, 40, 91, 16))
         self.eval_method_lbl.setWhatsThis(QtGui.QApplication.translate("TechPlace_Dialog", "Scoring method choice influences how the points are added up and weighted against each other and how each option\'s final score is evaluated. Default method will be the AHP.", None, QtGui.QApplication.UnicodeUTF8))
         self.eval_method_lbl.setText(QtGui.QApplication.translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -3413,23 +3413,23 @@ class Ui_TechPlace_Dialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Scoring Method</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.eval_method_lbl.setObjectName(_fromUtf8("eval_method_lbl"))
         self.radioScoreMax = QtGui.QRadioButton(self.scoring_widget)
-        self.radioScoreMax.setGeometry(QtCore.QRect(330, 90, 82, 17))
+        self.radioScoreMax.setGeometry(QtCore.QRect(330, 150, 82, 17))
         self.radioScoreMax.setText(QtGui.QApplication.translate("TechPlace_Dialog", "Max", None, QtGui.QApplication.UnicodeUTF8))
         self.radioScoreMax.setObjectName(_fromUtf8("radioScoreMax"))
         self.radioScoreAvg = QtGui.QRadioButton(self.scoring_widget)
-        self.radioScoreAvg.setGeometry(QtCore.QRect(240, 70, 82, 17))
+        self.radioScoreAvg.setGeometry(QtCore.QRect(240, 130, 82, 17))
         self.radioScoreAvg.setText(QtGui.QApplication.translate("TechPlace_Dialog", "Average", None, QtGui.QApplication.UnicodeUTF8))
         self.radioScoreAvg.setObjectName(_fromUtf8("radioScoreAvg"))
         self.radioScoreMin = QtGui.QRadioButton(self.scoring_widget)
-        self.radioScoreMin.setGeometry(QtCore.QRect(330, 70, 82, 17))
+        self.radioScoreMin.setGeometry(QtCore.QRect(330, 130, 82, 17))
         self.radioScoreMin.setText(QtGui.QApplication.translate("TechPlace_Dialog", "Min", None, QtGui.QApplication.UnicodeUTF8))
         self.radioScoreMin.setObjectName(_fromUtf8("radioScoreMin"))
         self.radioScoreMed = QtGui.QRadioButton(self.scoring_widget)
-        self.radioScoreMed.setGeometry(QtCore.QRect(240, 90, 82, 17))
+        self.radioScoreMed.setGeometry(QtCore.QRect(240, 150, 82, 17))
         self.radioScoreMed.setText(QtGui.QApplication.translate("TechPlace_Dialog", "Median", None, QtGui.QApplication.UnicodeUTF8))
         self.radioScoreMed.setObjectName(_fromUtf8("radioScoreMed"))
         self.radioScore_lbl = QtGui.QLabel(self.scoring_widget)
-        self.radioScore_lbl.setGeometry(QtCore.QRect(10, 70, 231, 16))
+        self.radioScore_lbl.setGeometry(QtCore.QRect(10, 130, 231, 16))
         self.radioScore_lbl.setWhatsThis(QtGui.QApplication.translate("TechPlace_Dialog", "Scoring method choice influences how the points are added up and weighted against each other and how each option\'s final score is evaluated. Default method will be the AHP.", None, QtGui.QApplication.UnicodeUTF8))
         self.radioScore_lbl.setText(QtGui.QApplication.translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -3437,6 +3437,41 @@ class Ui_TechPlace_Dialog(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Take Score of Strategy Group within Block as:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.radioScore_lbl.setObjectName(_fromUtf8("radioScore_lbl"))
+        self.eval_method_lbl2 = QtGui.QLabel(self.scoring_widget)
+        self.eval_method_lbl2.setGeometry(QtCore.QRect(10, 10, 91, 16))
+        self.eval_method_lbl2.setWhatsThis(QtGui.QApplication.translate("TechPlace_Dialog", "Scoring method choice influences how the points are added up and weighted against each other and how each option\'s final score is evaluated. Default method will be the AHP.", None, QtGui.QApplication.UnicodeUTF8))
+        self.eval_method_lbl2.setText(QtGui.QApplication.translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Scoring Strategy</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.eval_method_lbl2.setObjectName(_fromUtf8("eval_method_lbl2"))
+        self.eval_methodscore_combo = QtGui.QComboBox(self.scoring_widget)
+        self.eval_methodscore_combo.setGeometry(QtCore.QRect(110, 10, 311, 22))
+        self.eval_methodscore_combo.setObjectName(_fromUtf8("eval_methodscore_combo"))
+        self.eval_methodscore_combo.addItem(_fromUtf8(""))
+        self.eval_methodscore_combo.setItemText(0, QtGui.QApplication.translate("TechPlace_Dialog", "Service-based weighting (no penalties)", None, QtGui.QApplication.UnicodeUTF8))
+        self.eval_methodscore_combo.addItem(_fromUtf8(""))
+        self.eval_methodscore_combo.setItemText(1, QtGui.QApplication.translate("TechPlace_Dialog", "Service-based weightings (linear penalty model)", None, QtGui.QApplication.UnicodeUTF8))
+        self.eval_methodscore_combo.addItem(_fromUtf8(""))
+        self.eval_methodscore_combo.setItemText(2, QtGui.QApplication.translate("TechPlace_Dialog", "Service-based weightings (non-linear penalty model)", None, QtGui.QApplication.UnicodeUTF8))
+        self.iao_influence_spin = QtGui.QSpinBox(self.scoring_widget)
+        self.iao_influence_spin.setGeometry(QtCore.QRect(320, 100, 61, 16))
+        self.iao_influence_spin.setSuffix(QtGui.QApplication.translate("TechPlace_Dialog", "%", None, QtGui.QApplication.UnicodeUTF8))
+        self.iao_influence_spin.setMinimum(0)
+        self.iao_influence_spin.setMaximum(100)
+        self.iao_influence_spin.setSingleStep(1)
+        self.iao_influence_spin.setProperty("value", 10)
+        self.iao_influence_spin.setObjectName(_fromUtf8("iao_influence_spin"))
+        self.iao_influence_lbl = QtGui.QLabel(self.scoring_widget)
+        self.iao_influence_lbl.setGeometry(QtCore.QRect(10, 100, 301, 16))
+        self.iao_influence_lbl.setWhatsThis(QtGui.QApplication.translate("TechPlace_Dialog", "Scoring method choice influences how the points are added up and weighted against each other and how each option\'s final score is evaluated. Default method will be the AHP.", None, QtGui.QApplication.UnicodeUTF8))
+        self.iao_influence_lbl.setText(QtGui.QApplication.translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Influence of Impervious Area Offsets in Technology Scoring:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.iao_influence_lbl.setObjectName(_fromUtf8("iao_influence_lbl"))
         self.verticalLayout_11.addWidget(self.scoring_widget)
         self.top_rank_title = QtGui.QLabel(self.scrollAreaWidgetContents_2)
         self.top_rank_title.setText(QtGui.QApplication.translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -3564,6 +3599,7 @@ class Ui_TechPlace_Dialog(object):
         self.techlist_stack.setCurrentIndex(21)
         self.regioncity_combo.setCurrentIndex(2)
         self.eval_method_combo.setCurrentIndex(1)
+        self.eval_methodscore_combo.setCurrentIndex(0)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), TechPlace_Dialog.accept)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), TechPlace_Dialog.reject)
         QtCore.QObject.connect(self.techlist_widget, QtCore.SIGNAL(_fromUtf8("currentRowChanged(int)")), self.techlist_stack.setCurrentIndex)

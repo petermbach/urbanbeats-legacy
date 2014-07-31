@@ -9193,7 +9193,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>110</x>
-                   <y>100</y>
+                   <y>70</y>
                    <width>161</width>
                    <height>17</height>
                   </rect>
@@ -9209,7 +9209,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>110</x>
-                   <y>70</y>
+                   <y>40</y>
                    <width>311</width>
                    <height>22</height>
                   </rect>
@@ -9232,7 +9232,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>10</x>
-                   <y>70</y>
+                   <y>40</y>
                    <width>91</width>
                    <height>16</height>
                   </rect>
@@ -9320,27 +9320,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Take Score of Strategy Group within Block as:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
-                <widget class="QLabel" name="radioScore_lbl_2">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>40</y>
-                   <width>231</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Scoring method choice influences how the points are added up and weighted against each other and how each option's final score is evaluated. Default method will be the AHP.</string>
-                 </property>
-                 <property name="text">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Influence of Impervious Area Offsets in Scoring:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="eval_method_lbl_2">
+                <widget class="QLabel" name="eval_method_lbl2">
                  <property name="geometry">
                   <rect>
                    <x>10</x>
@@ -9360,7 +9340,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Scoring Strategy&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
-                <widget class="QComboBox" name="eval_method_combo_2">
+                <widget class="QComboBox" name="eval_methodscore_combo">
                  <property name="geometry">
                   <rect>
                    <x>110</x>
@@ -9388,12 +9368,12 @@ p, li { white-space: pre-wrap; }
                   </property>
                  </item>
                 </widget>
-                <widget class="QSpinBox" name="top_CI_spin_2">
+                <widget class="QSpinBox" name="iao_influence_spin">
                  <property name="geometry">
                   <rect>
-                   <x>260</x>
-                   <y>40</y>
-                   <width>51</width>
+                   <x>320</x>
+                   <y>100</y>
+                   <width>61</width>
                    <height>16</height>
                   </rect>
                  </property>
@@ -9411,6 +9391,26 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="value">
                   <number>10</number>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="iao_influence_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>100</y>
+                   <width>301</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Scoring method choice influences how the points are added up and weighted against each other and how each option's final score is evaluated. Default method will be the AHP.</string>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Influence of Impervious Area Offsets in Technology Scoring:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
                </widget>

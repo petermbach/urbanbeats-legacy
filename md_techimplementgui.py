@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'techimplementgui.ui'
+# Form implementation generated from reading ui file 'md_techimplementgui.ui'
 #
-# Created: Wed Jun 26 13:04:13 2013
+# Created: Fri Aug 01 09:33:01 2014
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -467,4 +467,5 @@ class Ui_TechImplement_Dialog(object):
         self.techimplement_input.setTabText(self.techimplement_input.indexOf(self.DesignCriteria), QtGui.QApplication.translate("TechImplement_Dialog", "Implementation Rules", None, QtGui.QApplication.UnicodeUTF8))
         self.techimplement_input.setTabText(self.techimplement_input.indexOf(self.tab), QtGui.QApplication.translate("TechImplement_Dialog", "Drivers for Implementation", None, QtGui.QApplication.UnicodeUTF8))
 
+import dialogimg_rc
 import dialogimg_rc

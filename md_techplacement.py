@@ -664,12 +664,16 @@ class Techplacement(UBModule):
         self.mca_techlist, self.mca_tech, self.mca_env, self.mca_ecn, self.mca_soc = [], [], [], [], [] #initialize as globals
         
         #SCORING OF STRATEGIES
+        self.createParameter("score_strat", STRING, "")
         self.createParameter("scope_stoch", BOOL,"")
         self.createParameter("score_method", STRING,"")
         self.createParameter("ingroup_scoring", STRING,"")
+        self.createParameter("iao_influence", DOUBLE, "")
         self.scope_stoch = 0
+        self.score_strat = "SNP"        #SNP = service-no-penalty, SLP = service-linear-penalty, SPP = service-nonlinear-penalty
         self.score_method = "WSM"       #MCA scoring method
         self.ingroup_scoring = "Avg"
+        self.iao_influence = 10.0
         
         #RANKING OF STRATEGIES
         self.createParameter("ranktype", STRING,"")

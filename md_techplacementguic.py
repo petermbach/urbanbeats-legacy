@@ -881,6 +881,13 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.ui.bottomlines_socW_spin.setValue(int(self.module.getParameter("bottomlines_soc_w")))
 
         #-------- EVALUATION SCOPE & METHOD -----------------------------------#
+        if self.module.getParameter("score_strat") == "SNP":
+            self.ui.eval_methodscore_combo.setCurrentIndex(0)
+        elif self.module.getParameter("score_strat") == "SLP":
+            self.ui.eval_methodscore_combo.setCurrentIndex(1)
+        else:
+            self.ui.eval_methodscore_combo.setCurrentIndex(2)
+
         if self.module.getParameter("score_method") == "WPM":
             self.ui.eval_method_combo.setCurrentIndex(0)
         elif self.module.getParameter("score_method") == "WSM":
@@ -899,6 +906,8 @@ class TechplacementGUILaunch(QtGui.QDialog):
             self.ui.radioScoreMin.setChecked(True)
         if self.module.getParameter("ingroup_scoring") == "Max":
             self.ui.radioScoreMax.setChecked(True)
+
+        self.ui.iao_influence_spin.setValue(int(self.module.getParameter("iao_influence")))
 
         #-------- RANKING OF STRATEGIES ---------------------------------------#
         if self.module.getParameter("ranktype") == "RK":
@@ -1555,6 +1564,11 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("score_method", score_method_matrix[self.ui.eval_method_combo.currentIndex()])
 
         self.module.setParameter("scope_stoch", int(self.ui.scope_stoch_check.isChecked()))
+
+        score_strat_matrix = ["SNP", "SLP", "SPP"]
+        self.module.setParameter("score_strat", score_strat_matrix[self.ui.eval_methodscore_combo.currentIndex()])
+
+        self.module.setParameter("iao_influence", float(self.ui.iao_influence_spin.value()))
 
         if self.ui.radioScoreAvg.isChecked() == True:
             ingroup_scoring = "Avg"
