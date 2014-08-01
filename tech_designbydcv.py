@@ -210,7 +210,7 @@ def treatQTYbenefits(wsudobj, runoffrate, designAimp):
     supply = storagedata.getSupply()        #[kL]
     vextracted = supply * reliability       # supply x [kL] at 80% reliability = amount extracted
 
-    print "Reliability", reliability, "Aimp", Aimp, "supply", supply, "extracted", vextracted
+    # print "Reliability", reliability, "Aimp", Aimp, "supply", supply, "extracted", vextracted
 
     quantityIAO = (vextracted / runoffrate)    #[kL] / [kL/sqm/yr] = sqm impervious catchment offset
     wsudobj.setIAO("Qty", quantityIAO)
@@ -294,11 +294,11 @@ def lookupSWHbenefit(systype, targets, swhbenefitstable):
     sysTSS = []
     sysTP = []
     sysTN = []
-    print swhbenefitstable
+    # print swhbenefitstable
     for i in range(len(swhbenefitstable)):
         if swhbenefitstable[i][0] != systype:
             continue
-        print "sys"+str(swhbenefitstable[i][1])+".append("+(str(swhbenefitstable[i]))+")"
+        # print "sys"+str(swhbenefitstable[i][1])+".append("+(str(swhbenefitstable[i]))+")"
         eval("sys"+str(swhbenefitstable[i][1])+".append("+(str(swhbenefitstable[i]))+")")
 
     pollmatrix = [sysTSS, sysTP, sysTN]
@@ -313,7 +313,7 @@ def lookupSWHbenefit(systype, targets, swhbenefitstable):
         curtarget = targets[i]
 
         #Work out the m and b values by interpolation
-        print "CURTARGET", curtarget
+        # print "CURTARGET", curtarget
         if curtarget in curpollT[2]:        #If the target is identical to the target for which m and b values exist then simply select
             m.append(curpoll[3][curpollT.index(curtarget)])
             bthresh.append(curpoll[4][curpollT.index(curtarget)])
