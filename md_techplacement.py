@@ -3112,8 +3112,9 @@ class Techplacement(UBModule):
             maxinflow = 0
             tank_templates = [] #use the possible greywater tank sizes
         
-        if maxinflow < recdemand:       #If Vsupp < Vdem
-            return np.inf       #cannot size a store that is supplying more than it is getting
+        if (self.demrange_max/100.0)*maxinflow < recdemand or (self.demrange_min/100.0)*maxinflow > recdemand:
+            #If Vdem not within the bounds of total inflow
+            return np.inf       #cannot size a store that is supplying more than it is getting or not economical to size
         
         #Depending on Method, size the store
         if self.sb_method == "Sim":
@@ -3512,7 +3513,7 @@ class Techplacement(UBModule):
 
                         tt.CalculateMCATechScores(blockstrat,[AblockEIA, AblockEIA, blockDem],self.priorities, \
                                                     self.mca_techlist, self.mca_tech, self.mca_env, self.mca_ecn, \
-                                                    self.mca_soc)
+                                                    self.mca_soc, self.iao_influence/100.0)
                         
                         tt.CalculateMCAStratScore(blockstrat, [self.bottomlines_tech_w, self.bottomlines_env_w, \
                                                                self.bottomlines_ecn_w, self.bottomlines_soc_w])
