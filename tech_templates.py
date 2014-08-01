@@ -5,8 +5,8 @@
 @version 0.5
 @section LICENSE
 
-This file is part of VIBe2
-Copyright (C) 2011  Peter M Bach
+This file is part of UrbanBEATS
+Copyright (C) 2012,2013,2014  Peter M Bach
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

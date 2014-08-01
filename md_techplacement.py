@@ -706,7 +706,7 @@ class Techplacement(UBModule):
         self.street_incr = []
         self.neigh_incr = []
         self.subbas_incr = []
-        
+
         self.createParameter("num_output_strats", DOUBLE, "")
         self.num_output_strats = 5      #number of output strategies
         
@@ -743,6 +743,19 @@ class Techplacement(UBModule):
         self.createParameter("defaultdecision", STRING, "")
         self.maxMCiterations = 1000
         self.defaultdecision = "H"
+
+        #MCA Penalties
+        self.createParameter("penaltyQty", BOOL, "")
+        self.createParameter("penaltyWQ", BOOL, "")
+        self.createParameter("penaltyRec", BOOL, "")
+        self.createParameter("penaltyFa", DOUBLE, "")
+        self.createParameter("penaltyFb", DOUBLE, "")
+        self.penaltyQty = 1
+        self.penaltyWQ = 1
+        self.penaltyRec = 1
+        self.penaltyFa = 2.0
+        self.penaltyFb = 1.2
+
         #########################################################################
         #
         ##Views
@@ -1174,73 +1187,75 @@ class Techplacement(UBModule):
                 #self.notify(current_bstrategy.getSubbasinArray())
                 #self.notify(current_bstrategy.getInBlocksArray())
 
-                tt.calculateBasinStrategyMCAScores(current_bstrategy,self.priorities, self.mca_techlist, self.mca_tech, \
+                tt.calculateBasinStrategyMCAScores(current_bstrategy,self.curscalepref, self.priorities, self.mca_techlist, self.mca_tech, \
                                                   self.mca_env, self.mca_ecn, self.mca_soc, \
                                                       [self.bottomlines_tech_w, self.bottomlines_env_w, \
-                                                               self.bottomlines_ecn_w, self.bottomlines_soc_w])
+                                                               self.bottomlines_ecn_w, self.bottomlines_soc_w], self.iao_influence/100.0)
 
                 #Add basin strategy to list of possibilities
                 service_objfunc = self.evaluateServiceObjectiveFunction(current_bstrategy, updatedService)        #Calculates how well it meets the total service
 
+                self.penalizeMCAscore(current_bstrategy, self.score_strat, updatedService)
+
                 basin_strategies.append([service_objfunc,current_bstrategy.getServicePvalues(), current_bstrategy.getTotalMCAscore(), current_bstrategy])
-#
-#             #Pick the final option by narrowing down the list and choosing (based on how many
-#             #need to be chosen), sort and grab the top ranking options
-#             basin_strategies.sort()
-#             self.notify(basin_strategies)
-#             self.debugPlanning(basin_strategies, currentBasinID)
-#             acceptable_options = []
-#             for j in range(len(basin_strategies)):
-#                 if basin_strategies[j][0] < 0:  #if the OF is <0 i.e. -1, skip
-#                     continue
-#                 else:
-#                     acceptable_options.append(basin_strategies[j])
-#             #self.notify(acceptable_options)
-#             if self.ranktype == "RK":
-#                 acceptable_options = acceptable_options[0:int(self.topranklimit)]
-#             elif self.ranktype == "CI":
-#                 acceptableN = int(len(acceptable_options)*(1.0-float(self.conf_int)/100.0))
-#                 acceptable_options = acceptable_options[0:acceptableN]
-#
-#             topcount = len(acceptable_options)
-#             acceptable_options.sort(key=lambda score: score[2])
-#             self.notify(acceptable_options)
-#
-#             #Choose final option
-#             numselect = min(topcount, self.num_output_strats)   #Determines how many options out of the matrix it should select
-#             final_selection = []
-#             for j in range(int(numselect)):
-#                 score_matrix = []       #Create the score matrix
-#                 for opt in acceptable_options:
-#                     score_matrix.append(opt[2])
-#                 selection_cdf = self.createCDF(score_matrix)    #Creat the CDF
-#                 choice = self.samplefromCDF(selection_cdf)
-#                 final_selection.append(acceptable_options[choice][3])   #Add ONLY the strategy_object
-#                 acceptable_options.pop(choice)  #Pop the option at the selected index from the matrix
-#                 #Repeat for as many options as requested
-#
-#             #Write WSUD strategy attributes to output vector for that block
-#             self.notify(final_selection)
-#             if len(final_selection) == 0:
-#                 self.transferExistingSystemsToOutput(1)
-#                 #If there are no additional plans, just tranfer systems across, only one output as StrategyID1
-#
-#             for j in range(len(final_selection)):       #Otherwise it'll loop
-#                 cur_strat = final_selection[j]
-#                 stratID = j+1
-#                 self.writeStrategyView(stratID, currentBasinID, basinBlockIDs, cur_strat)
-#                 self.transferExistingSystemsToOutput(stratID)
-#
-#             #Clear the array and garbage collect
-#             basin_strategies = []
-#             acceptable_options = []
-#             final_selection = []
-#             gc.collect()
-#             #END OF BASIN LOOP, continues to next basin
-#
-# #        output_log_file.write("End of Basin Strategies Log \n\n")
-# #        output_log_file.close()
-#
+
+            #Pick the final option by narrowing down the list and choosing (based on how many
+            #need to be chosen), sort and grab the top ranking options
+            basin_strategies.sort()
+            self.notify(basin_strategies)
+            self.debugPlanning(basin_strategies, currentBasinID)
+            acceptable_options = []
+            for j in range(len(basin_strategies)):
+                if basin_strategies[j][0] < 0:  #if the OF is <0 i.e. -1, skip
+                    continue
+                else:
+                    acceptable_options.append(basin_strategies[j])
+            #self.notify(acceptable_options)
+            if self.ranktype == "RK":
+                acceptable_options = acceptable_options[0:int(self.topranklimit)]
+            elif self.ranktype == "CI":
+                acceptableN = int(len(acceptable_options)*(1.0-float(self.conf_int)/100.0))
+                acceptable_options = acceptable_options[0:acceptableN]
+
+            topcount = len(acceptable_options)
+            acceptable_options.sort(key=lambda score: score[2])
+            self.notify(acceptable_options)
+
+            #Choose final option
+            numselect = min(topcount, self.num_output_strats)   #Determines how many options out of the matrix it should select
+            final_selection = []
+            for j in range(int(numselect)):
+                score_matrix = []       #Create the score matrix
+                for opt in acceptable_options:
+                    score_matrix.append(opt[2])
+                selection_cdf = self.createCDF(score_matrix)    #Creat the CDF
+                choice = self.samplefromCDF(selection_cdf)
+                final_selection.append(acceptable_options[choice][3])   #Add ONLY the strategy_object
+                acceptable_options.pop(choice)  #Pop the option at the selected index from the matrix
+                #Repeat for as many options as requested
+
+            #Write WSUD strategy attributes to output vector for that block
+            self.notify(final_selection)
+            if len(final_selection) == 0:
+                self.transferExistingSystemsToOutput(1)
+                #If there are no additional plans, just tranfer systems across, only one output as StrategyID1
+
+            for j in range(len(final_selection)):       #Otherwise it'll loop
+                cur_strat = final_selection[j]
+                stratID = j+1
+                self.writeStrategyView(stratID, currentBasinID, basinBlockIDs, cur_strat)
+                self.transferExistingSystemsToOutput(stratID)
+
+            #Clear the array and garbage collect
+            basin_strategies = []
+            acceptable_options = []
+            final_selection = []
+            gc.collect()
+            #END OF BASIN LOOP, continues to next basin
+
+#        output_log_file.write("End of Basin Strategies Log \n\n")
+#        output_log_file.close()
+
         self.sqlDB.close()      #Close the database
         
         #END OF MODULE
@@ -1368,6 +1383,31 @@ class Techplacement(UBModule):
         mca_ecn = self.rescaleMCAscorelists(mca_ecn)
         mca_soc = self.rescaleMCAscorelists(mca_soc)
         return mca_techlist, mca_tech, mca_env, mca_ecn, mca_soc
+
+    def penalizeMCAscore(self, bstrategy, method, services):
+        """Penalty function that modifies the MCA score of the total basin strategy based on the required service
+        level. There are three possible methods:
+            (1) SNP - no penalty, nothing happens,
+            (2) SLP - linear penalty function: revised score = current_score - (a*diff._service)*current_score
+            (3) SPP - non-linear penalty as a power function: revised score = current_score - (a*diff._service^b)*current_score
+        The coefficients a and b are set in UrbanBEATS' advanced options.
+        """
+        if method == "SNP":
+            return True
+
+        bSvalues = bstrategy.getServicePvalues()
+        dSQty = max(0, (bSvalues[0] - services[0])*int(self.penaltyQty))   #only applies to overtreatment
+        dSWQ = max(0, (bSvalues[1] - services[1])*int(self.penaltyWQ))
+        dSRec = max(0, (bSvalues[2] - services[2])*int(self.penaltyRec))
+
+        if method == "SLP":
+            a = 1.0
+            bstrategy.setTotalMCAscore(max(0, bstrategy.getTotalMCAscore() - a* sum(dSQty, dSWQ, dSRec) * bstrategy.getTotalMCAscore()))
+        elif method == "SPP":
+            a = self.penaltyFa
+            b = self.penaltyFb
+            bstrategy.setTotalMCAscore(max(0, bstrategy.getTotalMCAscore() - a* pow(sum(dSQty, dSWQ, dSRec),b)))
+        return True
 
 
     def identifyMCAmetriccount(self, metriclist):
