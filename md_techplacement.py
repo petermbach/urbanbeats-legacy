@@ -2837,7 +2837,29 @@ class Techplacement(UBModule):
             Asystem["WQ"] = [None, 1]
         if Asystem["WQ"][0] > Asystem["Size"][0]:
             Asystem["Size"] = Asystem["WQ"] #if area for water quality is greater, choose the governing one as the final system size
-        
+
+        sys_objects_array = []  #Initialise the array that will hold the tech designs
+
+        #Add the WQ - Qty system combo first to the array. Assume no harvesting
+        if Asystem["Size"][0] < avail_sp and Asystem["Size"][0] != None:        #if it fits and is NOT a NoneType:
+            #IF THERE IS NO STORAGE, JUST CREATE THE TECH OBJECT WITHOUT THE STORE
+            servicematrix = [0,0,0]
+            if Asystem["Qty"][0] != None:
+                servicematrix[0] = Adesign_imp
+            if Asystem["WQ"][0] != None:
+                servicematrix[1] = Adesign_imp
+            if Asystem["Rec"][0] != None:
+                servicematrix[2] = design_Dem
+            servicematrixstring = tt.convertArrayToDBString(servicematrix)
+            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
+                                str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+
+                                str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+
+                                str(incr)+",'N',"+str(0)+",'"+str('None')+"',"+str(0)+","+str(0)+","+str(0)+")")
+
+            sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
+            sys_object.setDesignIncrement(incr)
+            sys_objects_array.append(sys_object)
+
         #OBJECTIVE 3 - If system type permits storage, design for Recycling - this includes WQ control first, then adding storage!
         #   Only works if:
         #       #1 - the harvesting application is checked
@@ -2849,8 +2871,8 @@ class Techplacement(UBModule):
             purpose = [0, 1, 0]
             if techabbr in ["RT", "GW"]:        #If a raintank or greywater system, then no area required. Assume treatment is through some
                 AsystemRecWQ = [0, 1]           #   non-green-infrastructure means
-            else:
-                AsystemRecWQ = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')    
+            else:   #Design for a fully lined system!
+                AsystemRecWQ = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(0)+','+str(minsize)+','+str(maxsize)+')')
                 #Required surface are of a system that only does water quality management...
 
             vol = storeObj.getSize()
@@ -2893,26 +2915,7 @@ class Techplacement(UBModule):
                 if AsystemRecQty[0] != None:
                     addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "PB", 0])
 
-        sys_objects_array = []
-
-        if len(addstore) == 0 and Asystem["Size"][0] < avail_sp and Asystem["Size"][0] != None:        #if it fits and is NOT a NoneType:
-            #IF THERE IS NO STORAGE, JUST CREATE THE TECH OBJECT WITHOUT THE STORE
-            servicematrix = [0,0,0]
-            if Asystem["Qty"][0] != None:
-                servicematrix[0] = Adesign_imp
-            if Asystem["WQ"][0] != None:
-                servicematrix[1] = Adesign_imp
-            if Asystem["Rec"][0] != None:
-                servicematrix[2] = design_Dem
-            servicematrixstring = tt.convertArrayToDBString(servicematrix)
-            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
-                                str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+
-                                str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+
-                                str(incr)+",'N',"+str(0)+",'"+str('None')+"',"+str(0)+","+str(0)+","+str(0)+")")
-
-            sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
-            sys_object.setDesignIncrement(incr)
-            sys_objects_array.append(sys_object)
+        if len(addstore) == 0:
             return sys_objects_array
 
         for i in range(len(addstore)):
@@ -2926,24 +2929,18 @@ class Techplacement(UBModule):
             #eafact is the same as WQfact and QtyFact if the system is integrated (e.g. Wetland buffer is ALWAYS 1.3)
 
             Asystem["Rec"] = [recsize, eafact]  #This is the total recycling storage size
-            if recsize > Asystem["Size"][0]:    #Differentiate between integrated and non-integrated systems!
-                Asystem_test = recsize      #Compare total harvesting system size or the largest other size
-                if curstore[4] == 1:    #is the system integrated?
-                    Asystem["Size"] = Asystem["Rec"]    #Because the integrated system has same planning rules so EAFACT is the same
-                else:
-                    Asystem["Size"] = curstore[1]   #if non-integrated, then base system is defined ONLY as WQ area/treatment...
+            if curstore[4] == 1:                #Check if the system integrated? Differentiate between integrated and non-integrated systems!
+                Asystem["Size"] = Asystem["Rec"]    #Because the integrated system has same planning rules so EAFACT is the same
             else:
-                Asystem_test = Asystem["Size"][0]
+                Asystem["Size"] = curstore[1]   #if non-integrated, then base system is defined ONLY as WQ area/treatment...
 
             #NOW CHECK AVAILABLE SPACE - CREATE OBJECT AND PASS TO FUNCTION RETURN
-            if Asystem_test < avail_sp and Asystem_test != None:        #if it fits and is NOT a NoneType
+            if recsize < avail_sp and recsize != None:        #if it fits and is NOT a NoneType
                 #self.notify("Fits")
-                servicematrix = [0,0,0]
-                if Asystem["Qty"][0] != None:
-                    servicematrix[0] = Adesign_imp
-                if Asystem["WQ"][0] != None:
+                servicematrix = [0,0,0]     #Skip water quantity, this is assumed negligible since the treatment system is lined and will not reduce flow
+                if AsystemRecWQ[0] != None:             #Harvesting system cannot do runoff reduction through normal means!
                     servicematrix[1] = Adesign_imp
-                if Asystem["Rec"][0] != None:
+                if AsystemRecQty[0] != None:
                     servicematrix[2] = design_Dem
                 servicematrixstring = tt.convertArrayToDBString(servicematrix)
                 sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
@@ -3120,7 +3117,7 @@ class Techplacement(UBModule):
             maxinflow = 0
             tank_templates = [] #use the possible greywater tank sizes
         
-        if (self.demrange_max/100.0)*maxinflow < recdemand or (self.demrange_min/100.0)*maxinflow > recdemand:
+        if (self.rec_demrange_max/100.0)*maxinflow < recdemand or (self.rec_demrange_min/100.0)*maxinflow > recdemand:
             #If Vdem not within the bounds of total inflow
             return np.inf       #cannot size a store that is supplying more than it is getting or not economical to size
         
