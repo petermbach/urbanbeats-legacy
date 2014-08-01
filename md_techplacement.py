@@ -1120,69 +1120,69 @@ class Techplacement(UBModule):
         ###-------------------------------------------------------------------###
         #  FOURTH LOOP - MONTE CARLO (ACROSS BASINS)                            #
         ###-------------------------------------------------------------------###
-#         gc.collect()
-# #        self.dbcurs.execute('''CREATE TABLE basinbrainstorm(BasinID, )''')
-#
-#         for i in range(int(basins)):
-#             currentBasinID = i+1
-#             self.notify("Currently on Basin ID"+str(currentBasinID))
-#
-#             basinBlockIDs, outletID = self.getBasinBlockIDs(currentBasinID, blocks_num)
-#             self.notify("basinBlockIDs "+str(basinBlockIDs)+" "+str(outletID))
-#
-#             dP_QTY, basinRemainQTY, basinTreatedQTY, basinEIA = self.calculateRemainingService("QTY", basinBlockIDs)
-#             dP_WQ, basinRemainWQ, basinTreatedWQ, basinEIA = self.calculateRemainingService("WQ", basinBlockIDs)
-#             dP_REC, basinRemainREC, basinTreatedREC, basinDem = self.calculateRemainingService("REC", basinBlockIDs)
-#
-#             self.notify("Basin Totals: "+str([basinRemainQTY, basinRemainWQ, basinRemainREC]))
-#             self.notify("Previous Treated Efficiency for: "+str([basinTreatedQTY/basinEIA, basinTreatedWQ/basinEIA, basinTreatedREC/basinDem]))
-#             self.notify("Must choose a strategy now that treats: "+str([dP_QTY*100.0, dP_WQ*100.0, dP_REC*100.0])+"% of basin")
-#
-#             subbasPartakeIDs = self.findSubbasinPartakeIDs(basinBlockIDs, subbas_options) #Find locations of possible WSUD
-#
-#             updatedService = [dP_QTY, dP_WQ, dP_REC]
-#
-#             #SKIP CONDITIONS
-#             if basinRemainQTY == 0.0 and basinRemainWQ == 0.0 and basinRemainREC == 0.0:
-#                 #self.notify("Basin ID: ", currentBasinID, " has no remaining service requirements, skipping!"
-#                 continue
-#             if sum(updatedService) == 0:
-#                 continue
-#
-#             iterations = self.maxMCiterations   #MONTE CARLO ITERATIONS - CAN SET TO SENSITIVITY VALUE IN FUTURE RELATIVE TO BASIN SIZE
-#
-#             if len(basinBlockIDs) == 1: #if we are dealing with a single-block basin, reduce the number of iterations
-#                 iterations = self.maxMCiterations/10        #If only one block in basin, do different/smaller number of iterations
-#             #Begin Monte Carlo
-#             basin_strategies = []
-#             for iteration in range(iterations):   #1000 monte carlo simulations
-#                 self.notify("Current Iteration No. "+str(iteration+1))
-#                 #Draw Samples
-#                 subbas_chosenIDs, inblocks_chosenIDs = self.selectTechLocationsByRandom(subbasPartakeIDs, basinBlockIDs)
-#                 #self.notify("Selected Locations: Subbasins ", subbas_chosenIDs, " In Blocks ", inblocks_chosenIDs
-#
-#                 #Create the Basin Management Strategy Object
-#                 current_bstrategy = tt.BasinManagementStrategy(iteration+1, currentBasinID,
-#                                                                basinBlockIDs, subbasPartakeIDs,
-#                                                                [basinRemainQTY, basinRemainWQ, basinRemainREC])
-#
-#                 #Populate Basin Management Strategy Object based on the current sampled values
-#                 self.populateBasinWithTech(current_bstrategy, subbas_chosenIDs, inblocks_chosenIDs,
-#                                            inblock_options, subbas_options, basinBlockIDs)
-#
-#                 tt.updateBasinService(current_bstrategy)
-#                 #self.notify(current_bstrategy.getSubbasinArray())
-#                 #self.notify(current_bstrategy.getInBlocksArray())
-#
-#                 tt.calculateBasinStrategyMCAScores(current_bstrategy,self.priorities, self.mca_techlist, self.mca_tech, \
-#                                                   self.mca_env, self.mca_ecn, self.mca_soc, \
-#                                                       [self.bottomlines_tech_w, self.bottomlines_env_w, \
-#                                                                self.bottomlines_ecn_w, self.bottomlines_soc_w])
-#
-#                 #Add basin strategy to list of possibilities
-#                 service_objfunc = self.evaluateServiceObjectiveFunction(current_bstrategy, updatedService)        #Calculates how well it meets the total service
-#
-#                 basin_strategies.append([service_objfunc,current_bstrategy.getServicePvalues(), current_bstrategy.getTotalMCAscore(), current_bstrategy])
+        gc.collect()
+#        self.dbcurs.execute('''CREATE TABLE basinbrainstorm(BasinID, )''')
+
+        for i in range(int(basins)):
+            currentBasinID = i+1
+            self.notify("Currently on Basin ID"+str(currentBasinID))
+
+            basinBlockIDs, outletID = self.getBasinBlockIDs(currentBasinID, blocks_num)
+            self.notify("basinBlockIDs "+str(basinBlockIDs)+" "+str(outletID))
+
+            dP_QTY, basinRemainQTY, basinTreatedQTY, basinEIA = self.calculateRemainingService("QTY", basinBlockIDs)
+            dP_WQ, basinRemainWQ, basinTreatedWQ, basinEIA = self.calculateRemainingService("WQ", basinBlockIDs)
+            dP_REC, basinRemainREC, basinTreatedREC, basinDem = self.calculateRemainingService("REC", basinBlockIDs)
+
+            self.notify("Basin Totals: "+str([basinRemainQTY, basinRemainWQ, basinRemainREC]))
+            self.notify("Previous Treated Efficiency for: "+str([basinTreatedQTY/basinEIA, basinTreatedWQ/basinEIA, basinTreatedREC/basinDem]))
+            self.notify("Must choose a strategy now that treats: "+str([dP_QTY*100.0, dP_WQ*100.0, dP_REC*100.0])+"% of basin")
+
+            subbasPartakeIDs = self.findSubbasinPartakeIDs(basinBlockIDs, subbas_options) #Find locations of possible WSUD
+
+            updatedService = [dP_QTY, dP_WQ, dP_REC]
+
+            #SKIP CONDITIONS
+            if basinRemainQTY == 0.0 and basinRemainWQ == 0.0 and basinRemainREC == 0.0:
+                #self.notify("Basin ID: ", currentBasinID, " has no remaining service requirements, skipping!"
+                continue
+            if sum(updatedService) == 0:
+                continue
+
+            iterations = self.maxMCiterations   #MONTE CARLO ITERATIONS - CAN SET TO SENSITIVITY VALUE IN FUTURE RELATIVE TO BASIN SIZE
+
+            if len(basinBlockIDs) == 1: #if we are dealing with a single-block basin, reduce the number of iterations
+                iterations = self.maxMCiterations/10        #If only one block in basin, do different/smaller number of iterations
+            #Begin Monte Carlo
+            basin_strategies = []
+            for iteration in range(iterations):   #1000 monte carlo simulations
+                self.notify("Current Iteration No. "+str(iteration+1))
+                #Draw Samples
+                subbas_chosenIDs, inblocks_chosenIDs = self.selectTechLocationsByRandom(subbasPartakeIDs, basinBlockIDs)
+                #self.notify("Selected Locations: Subbasins ", subbas_chosenIDs, " In Blocks ", inblocks_chosenIDs
+
+                #Create the Basin Management Strategy Object
+                current_bstrategy = tt.BasinManagementStrategy(iteration+1, currentBasinID,
+                                                               basinBlockIDs, subbasPartakeIDs,
+                                                               [basinRemainQTY, basinRemainWQ, basinRemainREC])
+
+                #Populate Basin Management Strategy Object based on the current sampled values
+                self.populateBasinWithTech(current_bstrategy, subbas_chosenIDs, inblocks_chosenIDs,
+                                           inblock_options, subbas_options, basinBlockIDs)
+
+                tt.updateBasinService(current_bstrategy)
+                #self.notify(current_bstrategy.getSubbasinArray())
+                #self.notify(current_bstrategy.getInBlocksArray())
+
+                tt.calculateBasinStrategyMCAScores(current_bstrategy,self.priorities, self.mca_techlist, self.mca_tech, \
+                                                  self.mca_env, self.mca_ecn, self.mca_soc, \
+                                                      [self.bottomlines_tech_w, self.bottomlines_env_w, \
+                                                               self.bottomlines_ecn_w, self.bottomlines_soc_w])
+
+                #Add basin strategy to list of possibilities
+                service_objfunc = self.evaluateServiceObjectiveFunction(current_bstrategy, updatedService)        #Calculates how well it meets the total service
+
+                basin_strategies.append([service_objfunc,current_bstrategy.getServicePvalues(), current_bstrategy.getTotalMCAscore(), current_bstrategy])
 #
 #             #Pick the final option by narrowing down the list and choosing (based on how many
 #             #need to be chosen), sort and grab the top ranking options
@@ -3774,7 +3774,7 @@ class Techplacement(UBModule):
         
         #Loop across partakeID blocks (i.e. all blocks, which have a precinct tech)
         for i in range(len(partakeIDs)):
-            currentBlockID = partakeIDs[i]
+            currentBlockID = partakeIDs[i]      #DENOTES CURRENT POSITION IN THE MAP
             #currentAttList = self.getBlockUUID(currentBlockID, city)
             currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentBlockID))
             #self.notify("Currently on BlockID: "+str(currentBlockID))
@@ -3783,12 +3783,12 @@ class Techplacement(UBModule):
             downstreamIDs = self.retrieveStreamBlockIDs(currentAttList, "downstream")
             #self.notify("Upstream Blocks: "+str(upstreamIDs)+" downstream Blocks: "+str(downstreamIDs))
             
-            remainIDs = []
+            remainIDs = []    #All blocks upstream of current location that are unique to that location in the sub-basin
             for id in upstreamIDs:
                 remainIDs.append(id)
                 
             #(1) See if there are existing sub-basins inside the current sub-basin
-            subbasinIDs = []
+            subbasinIDs = []            #All blocks that are sub-basins within the subbasin denoted by the current location
             for id in partakeIDsTracker:
                 if id in upstreamIDs:
                     subbasinIDs.append(id)
@@ -3947,9 +3947,9 @@ class Techplacement(UBModule):
             
             #(5) FINALIZE THE SERVICE VALUES FOR QTY, WQ, REC BEFORE NEXT LOOP
             #   Avoid overtreatment by saying either total area is treated or if treated area is smaller then using that
-            subbasID_treatedQTY[currentBlockID] = min(subbas_treatedAimpQTY, totalAimpQTY)
-            subbasID_treatedWQ[currentBlockID] = min(subbas_treatedAimpWQ, totalAimpWQ)
-            subbasID_treatedREC[currentBlockID] = min(subbas_treatedDemREC, totalDemREC)
+            subbasID_treatedQTY[currentBlockID] = subbas_treatedAimpQTY #min(subbas_treatedAimpQTY, totalAimpQTY)
+            subbasID_treatedWQ[currentBlockID] = subbas_treatedAimpWQ   #min(subbas_treatedAimpWQ, totalAimpWQ)
+            subbasID_treatedREC[currentBlockID] = subbas_treatedDemREC  #min(subbas_treatedDemREC, totalDemREC)
             #self.notify(subbasID_treatedQTY)
             #self.notify(subbasID_treatedWQ)
         return True
@@ -4040,8 +4040,8 @@ class Techplacement(UBModule):
 #            treatedAimpQTY = chosen_deg * AimpQTY
 #            treatedAimpWQ = chosen_deg * AimpWQ
 #            treatedDemREC = chosen_deg * DemREC            
-            treatedAimpQTY = chosen_obj.getService("Qty")
-            treatedAimpWQ = chosen_obj.getService("WQ")
+            treatedAimpQTY = chosen_obj.getService("Qty") + chosen_obj.getIAO("Qty")
+            treatedAimpWQ = chosen_obj.getService("WQ") + chosen_obj.getIAO("WQ")
             treatedDemREC = chosen_obj.getService("Rec")
             return chosen_obj.getBlockBin(), chosen_obj, treatedAimpQTY, treatedAimpWQ, treatedDemREC
         
@@ -4084,8 +4084,8 @@ class Techplacement(UBModule):
                 if chosen_obj == 0:
                     return 0, 0, 0, 0, 0
                 chosen_deg = chosen_obj.getDesignIncrement()
-                treatedAimpQTY = chosen_obj.getService("Qty")
-                treatedAimpWQ = chosen_obj.getService("WQ")
+                treatedAimpQTY = chosen_obj.getService("Qty") + chosen_obj.getIAO("Qty")
+                treatedAimpWQ = chosen_obj.getService("WQ") + chosen_obj.getIAO("WQ")
                 treatedDemREC = chosen_obj.getService("Rec")
 
                 return chosen_deg, chosen_obj, treatedAimpQTY, treatedAimpWQ, treatedDemREC

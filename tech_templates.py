@@ -179,18 +179,18 @@ def updateBasinService(basinstrategyobject):
         for i in subbasin:
             if subbasin[i] == 0:
                 continue
-            total_service += subbasin[i].getService(abbr)  #get the service for that particular tech and purpose
+            total_service += subbasin[i].getService(abbr) + subbasin[i].getIAO(abbr) #get the service for that particular tech and purpose
         for i in inblocks:
             if inblocks[i] == 0:
                 continue
-            total_service += inblocks[i].getService(abbr)
+            total_service += inblocks[i].getService(abbr) + subbasin[i].getIAO(abbr)
     
         basinstrategyobject.setService(abbr, total_service)
     
     basinstrategyobject.setServicePvalues()
     return True
 
-def calculateBasinStrategyMCAScores(basinstrategyobject, priorities, techarray, tech, env, ecn, soc, weightings):
+def calculateBasinStrategyMCAScores(basinstrategyobject, spref, priorities, techarray, tech, env, ecn, soc, weightings, iaoinf):
     """Scores the provided strategy object by accessing its information and ranking technologies
     using the provided MCA scoring matrix
     """
@@ -213,19 +213,49 @@ def calculateBasinStrategyMCAScores(basinstrategyobject, priorities, techarray, 
         soccumu += inblocks[i].getMCAscore("soc")
     
     service_abbr = ["Qty", "WQ", "Rec"]       #these are the four main services for the objectives
-    for j in range(len(totalvalues)):   #loop across four service objectives
+    for j in range(len(totalvalues)):   #loop across three service objectives
         abbr = service_abbr[j]          #Current abbreviation used to retrieve service values
         mca_techsub, mca_envsub, mca_ecnsub, mca_socsub = 0.0,0.0,0.0,0.0       #initialize sub-trackers
                        
         for i in subbasin:
             if subbasin[i] == 0.0:
                 continue
-            if len(tech) != 0: mca_techsub += sum(tech[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
-            if len(env) != 0: mca_envsub += sum(env[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
-            if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
-            if len(soc) != 0: mca_socsub += sum(soc[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
+            systype = subbasin[i].getType()
+            sysscale = "B"
+            if subbasin[i].getRecycledStorage() != None:
+                recycletype = subbasin[i].getRecycledStorageType()
+                hybrid = not(systype == recycletype)
+            else:
+                hybrid = False
 
-        techcumu += mca_techsub * float(priorities[j]) #add to the cumulative MCA scores, scaled by their relative priorities
+            iao = 0 #By default, this changes if there is a hybrid system
+            if hybrid:
+                if abbr in ["Qty", "WQ"]:
+                    iao = subbasin[i].getIAO(abbr)*iaoinf     #iaoinf = influence of IAO
+
+                if len(tech) != 0: mca_techsub += (sum(tech[techarray.index(systype)]) +
+                                                   sum(tech[techarray.index(recycletype)])) / 2.0 * \
+                                                  (i.getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(env) != 0: mca_envsub += (sum(env[techarray.index(systype)]) +
+                                                 sum(env[techarray.index(recycletype)])) / 2.0 * \
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(ecn) != 0: mca_ecnsub += (sum(ecn[techarray.index(systype)]) +
+                                                 sum(ecn[techarray.index(recycletype)])) / 2.0 * \
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(soc) != 0: mca_socsub += (sum(soc[techarray.index(systype)]) +
+                                                 sum(soc[techarray.index(recycletype)])) / 2.0 * \
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+            else:
+                if len(tech) != 0: mca_techsub += sum(tech[techarray.index(systype)]) * \
+                                                  i.getService(abbr)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(env) != 0: mca_envsub += sum(env[techarray.index(systype)]) * \
+                                                i.getService(abbr)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(systype)]) * \
+                                                i.getService(abbr)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(soc) != 0: mca_socsub += sum(soc[techarray.index(systype)]) * \
+                                                i.getService(abbr)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+
+        techcumu += mca_techsub * float(priorities[j])  #add to the cumulative MCA scores, scaled by their relative priorities
         envcumu += mca_envsub * float(priorities[j])
         ecncumu += mca_ecnsub * float(priorities[j])
         soccumu += mca_socsub * float(priorities[j])
@@ -502,7 +532,11 @@ class BasinManagementStrategy(object):
         self.__blocks = len(basinblockIDs)
         self.__basinblockIDs = (basinblockIDs)
         self.__subbas_partake_IDs = partakeIDs
-        
+
+        self.__redundancyQty = 0.0     #The amount of redundancy in the strategy
+        self.__redundancyWQ = 0.0
+        self.__redundancyRec = 0.0
+
         self.__basinAimpQty = basin_info[0]    #Impervious Area to be managed for QTY
         self.__basinAimpWQ = basin_info[1]     #Impervious area to be managed for WQ
         self.__basinDemRec = basin_info[2]         #Basin demand to be managed
