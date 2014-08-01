@@ -26,7 +26,7 @@ import random as rand
 import numpy as np
 
 ### EXTERNAL FUNCTIONS THAT CAN MANIPULATE THE CLASSES OF THIS MODULE ###
-def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, tech, env, ecn, soc, iaoinf):
+def CalculateMCATechScores(strategyobject, totalvalues, spref, priorities, techarray, tech, env, ecn, soc, iaoinf):
     """Calculates the individual multicriteria scores for the given strategy object
     and saves it into its attributes, takes the techarray and four other vectors
     containing MCA scores as input.
@@ -34,6 +34,7 @@ def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, t
         - totalvalues[0] = total impervious area to work with for Qty
         - totalvalues[1] = total impervious area to work with for WQ
         - totalvalues[2] = total demand to work with
+        - spref = scale preference (weightings based on scale)
     """
     techs = strategyobject.getTechnologies()    #grab the array of technologies in the block
     mca_tech = 0.0        #Initialize trackers
@@ -53,6 +54,7 @@ def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, t
             lotcount = float(strategyobject.getQuantity(i.getLandUse()))        #get lot-count based on land use
 
             systype = i.getType()
+            sysscale = i.getScale()
             if i.getRecycledStorage() != None:
                 recycletype = i.getRecycledStorageType()
                 hybrid = not(systype == recycletype)
@@ -67,21 +69,25 @@ def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, t
                 #Sub-Score = (individual Tech score) x (imp served by tech / imp served by strategy) X number of techs implemented
                 if len(tech) != 0: mca_techsub += (sum(tech[techarray.index(systype)]) +
                                                    sum(tech[techarray.index(recycletype)])) / 2.0 * \
-                                                  (i.getService(abbr)+iao)/float(totalvalues[j]) * float(lotcount)
+                                                  (i.getService(abbr)+iao)/float(totalvalues[j]) * float(lotcount) * float(spref[sysscale])
                 if len(env) != 0: mca_envsub += (sum(env[techarray.index(systype)]) +
                                                  sum(env[techarray.index(recycletype)])) / 2.0 * \
-                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * float(lotcount)
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * float(lotcount) * float(spref[sysscale])
                 if len(ecn) != 0: mca_ecnsub += (sum(ecn[techarray.index(systype)]) +
                                                  sum(ecn[techarray.index(recycletype)])) / 2.0 * \
-                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * float(lotcount)
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * float(lotcount) * float(spref[sysscale])
                 if len(soc) != 0: mca_socsub += (sum(soc[techarray.index(systype)]) +
                                                  sum(soc[techarray.index(recycletype)])) / 2.0 * \
-                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * float(lotcount)
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * float(lotcount) * float(spref[sysscale])
             else:
-                if len(tech) != 0: mca_techsub += sum(tech[techarray.index(systype)]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-                if len(env) != 0: mca_envsub += sum(env[techarray.index(systype)]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-                if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(systype)]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-                if len(soc) != 0: mca_socsub += sum(soc[techarray.index(systype)]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
+                if len(tech) != 0: mca_techsub += sum(tech[techarray.index(systype)]) * \
+                                                  i.getService(abbr)/float(totalvalues[j]) * float(lotcount) * float(spref[sysscale])
+                if len(env) != 0: mca_envsub += sum(env[techarray.index(systype)]) * \
+                                                i.getService(abbr)/float(totalvalues[j]) * float(lotcount) * float(spref[sysscale])
+                if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(systype)]) * \
+                                                i.getService(abbr)/float(totalvalues[j]) * float(lotcount) * float(spref[sysscale])
+                if len(soc) != 0: mca_socsub += sum(soc[techarray.index(systype)]) * \
+                                                i.getService(abbr)/float(totalvalues[j]) * float(lotcount) * float(spref[sysscale])
 
         mca_tech += mca_techsub * priorities[j]   #Before next loop, add the sub-scores, scaled by their priorities
         mca_env += mca_envsub * priorities[j]     #to the total criteria scores

@@ -165,8 +165,15 @@ class Techplacement(UBModule):
         
         #ADDITIONAL STRATEGIES
         self.createParameter("scalepref", DOUBLE,"")
-        self.scalepref = 3.0  #Ranges from 1 (high priority on at-source) to 5 (high priority on end-of-pipe)
-        
+        self.scalepref = 3  #Ranges from 1 (high priority on at-source) to 5 (high priority on end-of-pipe)
+
+        self.scalingprefmatrix = [{"L":0.40, "S":0.30, "N":0.20, "B":0.10},
+                                  {"L":0.25, "S":0.35, "N":0.25, "B":0.15},
+                                  {"L":0.25, "S":0.25, "N":0.25, "B":0.25},
+                                  {"L":0.15, "S":0.25, "N":0.35, "B":0.25},
+                                  {"L":0.10, "S":0.20, "N":0.30, "B":0.40},]
+        self.curscalepref = {"L":0.25, "S":0.25, "N":0.25, "B":0.25}
+
         ##########################################################################
         #---WATER USE EFFICIENCY AND RECYCLING STRATEGY DESIGN INPUTS            
         ##########################################################################
@@ -837,6 +844,7 @@ class Techplacement(UBModule):
         #strvec = city.getUUIDsOfComponentsInView(self.mapattributes)
         #map_attr = city.getComponent(strvec[0])
         map_attr = self.activesim.getAssetWithName("MapAttributes")
+        self.curscalepref = self.scalingprefmatrix[int(self.scalepref)-1]
 
         ###-------------------------------------------------------------------###
         #--- PRE-PROCESSING
@@ -3511,7 +3519,7 @@ class Techplacement(UBModule):
                         blockstrat.setIAO("Qty", offsetmatrix[0])
                         blockstrat.setIAO("WQ", offsetmatrix[1])
 
-                        tt.CalculateMCATechScores(blockstrat,[AblockEIA, AblockEIA, blockDem],self.priorities, \
+                        tt.CalculateMCATechScores(blockstrat,[AblockEIA, AblockEIA, blockDem],self.curscalepref, self.priorities, \
                                                     self.mca_techlist, self.mca_tech, self.mca_env, self.mca_ecn, \
                                                     self.mca_soc, self.iao_influence/100.0)
                         
