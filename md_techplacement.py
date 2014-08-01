@@ -3237,9 +3237,9 @@ class Techplacement(UBModule):
                     inflow = 0
                     maxinflow = 0
                 
-                if maxinflow < recdemand:
+                if (self.rec_demrange_max/100.0)*maxinflow < recdemand or (self.rec_demrange_min/100.0)*maxinflow > recdemand:
                     storageVol[harvestincr][supplyincr] = np.inf 
-                    #Cannot size a store to supply more than it is getting
+                    #Cannot size a store that is not within the demand range specified
                     continue
                 
                 #Size the store depending on method
@@ -3373,8 +3373,8 @@ class Techplacement(UBModule):
                     inflow = 0
                     maxinflow = 0
                 
-                if maxinflow < recdemand:
-                    #Cannot design a storage to supply more than it is getting
+                if (self.rec_demrange_max/100.0)*maxinflow < recdemand or (self.rec_demrange_min/100.0)*maxinflow > recdemand:
+                    #Cannot design a storage for a demand that is not within the user-defined range of total annual inflow
                     storageVol[harvestincr][supplyincr] = np.inf
                     continue
                 
