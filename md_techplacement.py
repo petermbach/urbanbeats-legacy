@@ -3946,7 +3946,7 @@ class Techplacement(UBModule):
             #else:
                 #max_deg_matrix.append(0)
 
-            print "Max_deg_matrix", max_deg_matrix
+            # print "Max_deg_matrix", max_deg_matrix
             #self.notify("Max Degre matrix: "+str(max_deg_matrix)
             max_degree = min(max_deg_matrix)+float(self.service_redundancy/100.0)  #choose the minimum, bring in allowance using redundancy parameter
             
@@ -3956,12 +3956,12 @@ class Techplacement(UBModule):
             
             #(3) PICK A SUB-BASIN TECHNOLOGY
             if currentBlockID in subbas_chosenIDs:
-                deg, obj, treatedQTY, treatedWQ, treatedREC = self.pickOption(currentBlockID, max_degree, subbas_options, [totalAimpQTY, totalAimpWQ, totalDemREC], "SB") 
+                deg, obj, treatedQTY, treatedWQ, treatedREC, iaoqty, iaowq = self.pickOption(currentBlockID, max_degree, subbas_options, [totalAimpQTY, totalAimpWQ, totalDemREC], "SB")
                 #self.notify("Option Treats: "+str([treatedQTY, treatedWQ, treatedREC]))
                 #self.notify(obj)
 
-                subbas_treatedAimpQTY += treatedQTY
-                subbas_treatedAimpWQ += treatedWQ
+                subbas_treatedAimpQTY += treatedQTY + iaoqty
+                subbas_treatedAimpWQ += treatedWQ + iaowq
                 subbas_treatedDemREC += treatedREC
                 remainAimp_subbasinQTY = max(remainAimp_subbasinQTY - treatedQTY, 0)
                 remainAimp_subbasinWQ = max(remainAimp_subbasinWQ - treatedWQ, 0)
@@ -3999,12 +3999,12 @@ class Techplacement(UBModule):
                 #self.notify(str([block_Aimp*int(self.ration_runoff))+" "+str(block_Aimp*int(self.ration_pollute))+" "+str(block_Dem*int(self.ration_harvest)]))
                 
                 #self.notify("In Block Maximum Degree: "+str(max_degree))
-                deg, obj, treatedQTY, treatedWQ, treatedREC = self.pickOption(rbID,max_degree,inblock_options, [block_Aimp*bool(int(self.ration_runoff)), block_Aimp*bool(int(self.ration_pollute)), block_Dem*bool(int(self.ration_harvest))], "BS") 
+                deg, obj, treatedQTY, treatedWQ, treatedREC, iaoqty, iaowq = self.pickOption(rbID,max_degree,inblock_options, [block_Aimp*bool(int(self.ration_runoff)), block_Aimp*bool(int(self.ration_pollute)), block_Dem*bool(int(self.ration_harvest))], "BS")
                 #self.notify("Option Treats: "+str([treatedQTY, treatedWQ, treatedREC]))
                 #self.notify(obj)
 
-                subbas_treatedAimpQTY += treatedQTY
-                subbas_treatedAimpWQ += treatedWQ
+                subbas_treatedAimpQTY += treatedQTY + iaoqty
+                subbas_treatedAimpWQ += treatedWQ + iaowq
                 subbas_treatedDemREC += treatedREC
                 remainAimp_subbasinQTY = max(remainAimp_subbasinQTY - treatedQTY, 0)
                 remainAimp_subbasinWQ = max(remainAimp_subbasinWQ - treatedWQ, 0)
@@ -4014,10 +4014,10 @@ class Techplacement(UBModule):
                     current_bstrategy.appendTechnology(rbID, deg, obj, "b")
             
             #(5) FINALIZE THE SERVICE VALUES FOR QTY, WQ, REC BEFORE NEXT LOOP
-            #   Avoid overtreatment by saying either total area is treated or if treated area is smaller then using that
+            #Impervious area offset will result in options going over treatment threshold.
             subbasID_treatedQTY[currentBlockID] = subbas_treatedAimpQTY #min(subbas_treatedAimpQTY, totalAimpQTY)
-            subbasID_treatedWQ[currentBlockID] = subbas_treatedAimpWQ   #min(subbas_treatedAimpWQ, totalAimpWQ)
-            subbasID_treatedREC[currentBlockID] = subbas_treatedDemREC  #min(subbas_treatedDemREC, totalDemREC)
+            subbasID_treatedWQ[currentBlockID] = subbas_treatedAimpWQ #min(subbas_treatedAimpWQ, totalAimpWQ)
+            subbasID_treatedREC[currentBlockID] = min(subbas_treatedDemREC, totalDemREC)
             #self.notify(subbasID_treatedQTY)
             #self.notify(subbasID_treatedWQ)
         return True
@@ -4088,7 +4088,7 @@ class Techplacement(UBModule):
 #                    options.append(j)
                     
             if len(options) == 0:
-                return 0, 0, 0, 0, 0
+                return 0, 0, 0, 0, 0, 0, 0
             scores = []
             for i in options:
                 scores.append(i.getTotalMCAscore())
@@ -4108,10 +4108,12 @@ class Techplacement(UBModule):
 #            treatedAimpQTY = chosen_deg * AimpQTY
 #            treatedAimpWQ = chosen_deg * AimpWQ
 #            treatedDemREC = chosen_deg * DemREC            
-            treatedAimpQTY = chosen_obj.getService("Qty") + chosen_obj.getIAO("Qty")
-            treatedAimpWQ = chosen_obj.getService("WQ") + chosen_obj.getIAO("WQ")
+            treatedAimpQTY = chosen_obj.getService("Qty")
+            iaoqty = chosen_obj.getIAO("Qty")
+            treatedAimpWQ = chosen_obj.getService("WQ")
+            iaowq = chosen_obj.getIAO("WQ")
             treatedDemREC = chosen_obj.getService("Rec")
-            return chosen_obj.getBlockBin(), chosen_obj, treatedAimpQTY, treatedAimpWQ, treatedDemREC
+            return chosen_obj.getBlockBin(), chosen_obj, treatedAimpQTY, treatedAimpWQ, treatedDemREC, iaoqty, iaowq
         
         elif strattype == "SB":  #sub-basin strategy
             #Continuous-based picking
@@ -4150,15 +4152,17 @@ class Techplacement(UBModule):
 #                chosen_obj = options_collection["BlockID"+str(blockID)][chosen_deg][choice]
 #                
                 if chosen_obj == 0:
-                    return 0, 0, 0, 0, 0
+                    return 0, 0, 0, 0, 0, 0, 0
                 chosen_deg = chosen_obj.getDesignIncrement()
-                treatedAimpQTY = chosen_obj.getService("Qty") + chosen_obj.getIAO("Qty")
-                treatedAimpWQ = chosen_obj.getService("WQ") + chosen_obj.getIAO("WQ")
+                treatedAimpQTY = chosen_obj.getService("Qty")
+                iaoqty = chosen_obj.getIAO("Qty")
+                treatedAimpWQ = chosen_obj.getService("WQ")
+                iaowq = chosen_obj.getIAO("WQ")
                 treatedDemREC = chosen_obj.getService("Rec")
 
-                return chosen_deg, chosen_obj, treatedAimpQTY, treatedAimpWQ, treatedDemREC
+                return chosen_deg, chosen_obj, treatedAimpQTY, treatedAimpWQ, treatedDemREC, iaoqty, iaowq
             else:
-                return 0, 0, 0, 0, 0
+                return 0, 0, 0, 0, 0, 0, 0
     
     def createCDF(self, score_matrix):
         """Creates a cumulative distribution for an input list of values by normalizing
