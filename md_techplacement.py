@@ -1901,7 +1901,13 @@ class Techplacement(UBModule):
                 if luc_code == "S":
                     avlSpace = currentAttList.getAttribute("avSt_RES")
                 elif luc_code == "N":
-                    avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av")
+                    if sys_descr.getAttribute("Type") in ["BF", "WSUR", "PB","RT", "SW", "IS"]: #CHECK WHAT SVU Land use area is available
+                        svu_space = currentAttList.getAttribute("SVU_avSW") + currentAttList.getAttribute("SVU_avWS")
+                    elif sys_descr.getAttribute("Type") in ["GT"]:
+                        svu_space = currentAttList.getAttribute("SVU_avWW")
+                    else:
+                        svu_space = 0
+                    avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av") + svu_space
                 
                 if newAsys > avlSpace and self.renewal_alternative == "K": #if system does not fit and alternative is 'Keep'
                     self.notify("Cannot fit new system design, keeping old design instead")
@@ -1962,7 +1968,13 @@ class Techplacement(UBModule):
             elif decision == 2: #RENEWAL
                 self.notify("Renewing the System - Redesigning and Assessing Space Requirements")
                 newAsys, newEAFact = self.redesignSystem(currentAttList, sys_descr, "B", oldImp) #get new system size & EA
-                avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av")
+                if sys_descr.getAttribute("Type") in ["BF", "WSUR", "PB","RT", "SW", "IS"]: #CHECK WHAT SVU Land use area is available
+                    svu_space = currentAttList.getAttribute("SVU_avSW") + currentAttList.getAttribute("SVU_avWS")
+                elif sys_descr.getAttribute("Type") in ["GT"]:
+                    svu_space = currentAttList.getAttribute("SVU_avWW")
+                else:
+                    svu_space = 0
+                avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av") + svu_space
                 if newAsys > avlSpace and self.renewal_alternative == "K": #if system does not fit and alternative is 'Keep'
                     self.notify("Cannot fit new system design, keeping old design instead")
                     currentAttList.addAttribute("HasBSys", 1)
@@ -2086,7 +2098,13 @@ class Techplacement(UBModule):
                     if luc_code == "S":
                         avlSpace = currentAttList.getAttribute("avSt_RES")
                     elif luc_code == "N":
-                        avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av")
+                        if sys_descr.getAttribute("Type") in ["BF", "WSUR", "PB","RT", "SW", "IS"]: #CHECK WHAT SVU Land use area is available
+                            svu_space = currentAttList.getAttribute("SVU_avSW") + currentAttList.getAttribute("SVU_avWS")
+                        elif sys_descr.getAttribute("Type") in ["GT"]:
+                            svu_space = currentAttList.getAttribute("SVU_avWW")
+                        else:
+                            svu_space = 0
+                        avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av") + svu_space
                     
                     if newAsys > avlSpace and self.renewal_alternative == "K": #if system does not fit and alternative is 'Keep'
                         self.notify("Cannot fit new system design, keeping old design instead")
@@ -2157,7 +2175,13 @@ class Techplacement(UBModule):
             elif decision == 2: #renewal
                 self.notify("Renewing the System - Redesigning and Assessing Space Requirements")
                 newAsys, newEAFact = self.redesignSystem(currentAttList, sys_descr, "B", oldImp) #get new system size & EA
-                avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av")
+                if sys_descr.getAttribute("Type") in ["BF", "WSUR", "PB","RT", "SW", "IS"]: #CHECK WHAT SVU Land use area is available
+                    svu_space = currentAttList.getAttribute("SVU_avSW") + currentAttList.getAttribute("SVU_avWS")
+                elif sys_descr.getAttribute("Type") in ["GT"]:
+                    svu_space = currentAttList.getAttribute("SVU_avWW")
+                else:
+                    svu_space = 0
+                avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av") + svu_space
                 if newAsys > avlSpace and self.renewal_alternative == "K": #if system does not fit and alternative is 'Keep'
                     self.notify("Cannot fit new system design, keeping old design instead")
                     currentAttList.addAttribute("HasBSys", 1)
@@ -2625,7 +2649,9 @@ class Techplacement(UBModule):
         
         av_PG = currentAttList.getAttribute("PG_av")
         av_REF = currentAttList.getAttribute("REF_av")
-        totalavailable = av_PG + av_REF
+        av_SVU_sw = currentAttList.getAttribute("SVU_avSW")
+        av_SVU_ws = currentAttList.getAttribute("SVU_avWS")
+        totalavailable = av_PG + av_REF + av_SVU_sw + av_SVU_ws
         if totalavailable < 0.0001:
             return technologydesigns    #SKIP CONDITION 2 - NO SPACE AVAILABLE
         
@@ -2713,7 +2739,9 @@ class Techplacement(UBModule):
         #SKIP CONDITION 2: Grab Total available space, if there is none, no point continuing
         av_PG = currentAttList.getAttribute("PG_av")
         av_REF = currentAttList.getAttribute("REF_av")
-        totalavailable = av_PG + av_REF
+        av_SVU_sw = currentAttList.getAttribute("SVU_avSW")
+        av_SVU_ws = currentAttList.getAttribute("SVU_avWS")
+        totalavailable = av_PG + av_REF + av_SVU_sw + av_SVU_ws
         if totalavailable < 0.0001:
             #self.notify("Total Available Space in Block to do STUFF: "+str(totalavailable)+" less than threshold")
             return technologydesigns
