@@ -990,7 +990,7 @@ class Techplacement(UBModule):
                 block_EIA -= currentAttList.getAttribute("LIAeEIA")
             if self.service_hi == False:
                 block_EIA -= currentAttList.getAttribute("HIAeEIA")
-
+            # print "Block", currentID, "imp: ", block_EIA
             currentAttList.addAttribute("Manage_EIA", block_EIA)
 
         ###-------------------------------------------------------------------###
@@ -2989,7 +2989,7 @@ class Techplacement(UBModule):
         for i in range(len(addstore)):
             curstore = addstore[i]
             if len(curstore) == 0:
-                print "No Addstore Data, continuing"
+                # print "No Addstore Data, continuing"
                 continue
             #CHECK WHAT THE TOTAL SYSTEM SIZE IS FIRST BY COMPARING LARGEST SYSTEM TO DATE VS. HARVESTING SYSTEM
             recsize = curstore[1][0] + curstore[2][0]   #AsystemRecWQ + AsystemRecQTY
@@ -3780,7 +3780,7 @@ class Techplacement(UBModule):
         return subbas_chosenIDs, inblocks_chosenIDs
     
     
-    def calculateRemainingService(self, type, basinBlockIDs):
+    def calculateRemainingService(self, servtype, basinBlockIDs):
         """Assesses the alread treated area/demand for the current basin and returns
         the remaining area/demand to be treated with a strategy.
             - Type: refers to the type of objective "QTY" = quantity, WQ = quality, 
@@ -3789,32 +3789,43 @@ class Techplacement(UBModule):
         """
         #self.notify(basinBlockIDs)
         #self.notify(type)
-        if type in ["WQ", "QTY"]:
+        # print "Basin Blocks", basinBlockIDs
+        # print servtype
+
+        if servtype in ["WQ", "QTY"]:
             total = self.retrieveAttributeFromIDs(basinBlockIDs, "Manage_EIA", "sum")
-        elif type in ["REC"]:
+        elif servtype in ["REC"]:
             total = self.retrieveAttributeFromIDs(basinBlockIDs, "Blk_WD", "sum") - \
                     self.retrieveAttributeFromIDs(basinBlockIDs, "wd_Nres_IN", "sum")
+
+        # print "total", total
         #self.notify("Total Imp Area: "+str(total))
-        basinTreated = self.retrieveAttributeFromIDs(basinBlockIDs, "Serv"+str(type), "sum")
-        basinTreated += self.retrieveAttributeFromIDs(basinBlockIDs, "ServUp"+str(type), "sum")
+        basinTreated = self.retrieveAttributeFromIDs(basinBlockIDs, "Serv"+str(servtype), "sum")
+        basinTreated += self.retrieveAttributeFromIDs(basinBlockIDs, "ServUp"+str(servtype), "sum")
         if int(basinTreated) == 0:
             basinTreated = 0.0
+
+        # print "Treated: ", basinTreated
         #self.notify("Treated ImpArea: "+str(basinTreated))
         rationales = {"QTY": bool(int(self.ration_runoff)), "WQ": bool(int(self.ration_pollute)),
                       "REC": bool(int(self.ration_harvest)) }
         services = {"QTY": float(self.servicevector[0]), "WQ": float(self.servicevector[1]), "REC": float(self.servicevector[2])}
         
-        if rationales[type]:
+        if rationales[servtype]:
             basinRemain = max(total - basinTreated, 0)
         else:
             basinRemain = 0
-        
-        prevService = float(basinTreated)/float(total)
-        #self.notify("Prev Service")
+        # print "Total remaining: ", basinRemain
+
+        if total == 0:
+            prevService = 1
+        else:
+            prevService = float(basinTreated)/float(total)
+
         if max(1- prevService, 0) == 0:
             delta_percent = 0.0
         else:
-            delta_percent = max(services[type]/100.0*rationales[type] - prevService,0.0) / (1.0 - prevService)
+            delta_percent = max(services[servtype]/100.0*rationales[servtype] - prevService,0.0) / (1.0 - prevService)
         return delta_percent, basinRemain, basinTreated, total
     
     
