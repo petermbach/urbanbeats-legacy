@@ -5,8 +5,8 @@
 @version 0.5
 @section LICENSE
 
-This file is part of VIBe2
-Copyright (C) 2011  Peter M Bach
+This file is part of UrbanBEATS
+Copyright (C) 2012,2013,2014  Peter M Bach
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@ import random as rand
 import numpy as np
 
 ### EXTERNAL FUNCTIONS THAT CAN MANIPULATE THE CLASSES OF THIS MODULE ###
-def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, tech, env, ecn, soc):
+def CalculateMCATechScores(strategyobject, totalvalues, spref, priorities, techarray, tech, env, ecn, soc, iaoinf):
     """Calculates the individual multicriteria scores for the given strategy object
     and saves it into its attributes, takes the techarray and four other vectors
     containing MCA scores as input.
@@ -34,7 +34,7 @@ def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, t
         - totalvalues[0] = total impervious area to work with for Qty
         - totalvalues[1] = total impervious area to work with for WQ
         - totalvalues[2] = total demand to work with
-        - bracketwidth = 
+        - spref = scale preference (weightings based on scale)
     """
     techs = strategyobject.getTechnologies()    #grab the array of technologies in the block
     mca_tech = 0.0        #Initialize trackers
@@ -52,13 +52,48 @@ def CalculateMCATechScores(strategyobject, totalvalues, priorities, techarray, t
             if i == 0:  #no score
                 continue
             lotcount = float(strategyobject.getQuantity(i.getLandUse()))        #get lot-count based on land use
-            
-            #Sub-Score = (individual Tech score) x (imp served by tech / imp served by strategy) X number of techs implemented
-            if len(tech) != 0: mca_techsub += sum(tech[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-            if len(env) != 0: mca_envsub += sum(env[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-            if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-            if len(soc) != 0: mca_socsub += sum(soc[techarray.index(i.getType())]) * i.getService(abbr)/float(totalvalues[j]) * float(lotcount)
-        
+
+            systype = i.getType()
+            sysscale = i.getScale()
+            hybrid = False
+            if i.getRecycledStorage() != None:
+                recycletype = i.getRecycledStorageType()
+                hybrid = not(systype == recycletype)
+                # print systype, recycletype
+
+            iao = i.getIAO(abbr)*iaoinf     #iaoinf = influence of IAO  - zero for "Rec"
+            if hybrid:
+                #Sub-Score = (individual Tech score) x (imp served by tech / imp served by strategy) X number of techs implemented
+                if len(tech) != 0: mca_techsub += (sum(tech[techarray.index(systype)]) +
+                                                   sum(tech[techarray.index(recycletype)])) / 2.0 * \
+                                                  (i.getService(abbr)+iao)/float(totalvalues[j]) * \
+                                                  float(lotcount) * float(spref[sysscale]) * 1000
+                if len(env) != 0: mca_envsub += (sum(env[techarray.index(systype)]) +
+                                                 sum(env[techarray.index(recycletype)])) / 2.0 * \
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * \
+                                                float(lotcount) * float(spref[sysscale]) * 1000
+                if len(ecn) != 0: mca_ecnsub += (sum(ecn[techarray.index(systype)]) +
+                                                 sum(ecn[techarray.index(recycletype)])) / 2.0 * \
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * \
+                                                float(lotcount) * float(spref[sysscale]) * 1000
+                if len(soc) != 0: mca_socsub += (sum(soc[techarray.index(systype)]) +
+                                                 sum(soc[techarray.index(recycletype)])) / 2.0 * \
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * \
+                                                float(lotcount) * float(spref[sysscale]) * 1000
+            else:
+                if len(tech) != 0: mca_techsub += sum(tech[techarray.index(systype)]) * \
+                                                  (i.getService(abbr)+iao)/float(totalvalues[j]) * \
+                                                  float(lotcount) * float(spref[sysscale]) * 1000
+                if len(env) != 0: mca_envsub += sum(env[techarray.index(systype)]) * \
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * \
+                                                float(lotcount) * float(spref[sysscale]) * 1000
+                if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(systype)]) * \
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * \
+                                                float(lotcount) * float(spref[sysscale]) * 1000
+                if len(soc) != 0: mca_socsub += sum(soc[techarray.index(systype)]) * \
+                                                (i.getService(abbr)+iao)/float(totalvalues[j]) * \
+                                                float(lotcount) * float(spref[sysscale]) * 1000
+
         mca_tech += mca_techsub * priorities[j]   #Before next loop, add the sub-scores, scaled by their priorities
         mca_env += mca_envsub * priorities[j]     #to the total criteria scores
         mca_ecn += mca_ecnsub * priorities[j]     #Score = (sub-score) x (priority weighting for current objective)
@@ -141,18 +176,18 @@ def updateBasinService(basinstrategyobject):
         for i in subbasin:
             if subbasin[i] == 0:
                 continue
-            total_service += subbasin[i].getService(abbr)  #get the service for that particular tech and purpose
+            total_service += subbasin[i].getService(abbr) + subbasin[i].getIAO(abbr) #get the service for that particular tech and purpose
         for i in inblocks:
             if inblocks[i] == 0:
                 continue
-            total_service += inblocks[i].getService(abbr)
+            total_service += inblocks[i].getService(abbr) + inblocks[i].getIAO(abbr)
     
         basinstrategyobject.setService(abbr, total_service)
     
     basinstrategyobject.setServicePvalues()
     return True
 
-def calculateBasinStrategyMCAScores(basinstrategyobject, priorities, techarray, tech, env, ecn, soc, weightings):
+def calculateBasinStrategyMCAScores(basinstrategyobject, spref, priorities, techarray, tech, env, ecn, soc, weightings, iaoinf):
     """Scores the provided strategy object by accessing its information and ranking technologies
     using the provided MCA scoring matrix
     """
@@ -175,19 +210,48 @@ def calculateBasinStrategyMCAScores(basinstrategyobject, priorities, techarray, 
         soccumu += inblocks[i].getMCAscore("soc")
     
     service_abbr = ["Qty", "WQ", "Rec"]       #these are the four main services for the objectives
-    for j in range(len(totalvalues)):   #loop across four service objectives
+    for j in range(len(totalvalues)):   #loop across three service objectives
         abbr = service_abbr[j]          #Current abbreviation used to retrieve service values
         mca_techsub, mca_envsub, mca_ecnsub, mca_socsub = 0.0,0.0,0.0,0.0       #initialize sub-trackers
                        
         for i in subbasin:
             if subbasin[i] == 0.0:
                 continue
-            if len(tech) != 0: mca_techsub += sum(tech[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
-            if len(env) != 0: mca_envsub += sum(env[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
-            if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
-            if len(soc) != 0: mca_socsub += sum(soc[techarray.index(subbasin[i].getType())]) * subbasin[i].getService(abbr)/float(totalvalues[j])
+            systype = subbasin[i].getType()
+            sysscale = "B"
+            if subbasin[i].getRecycledStorage() != None:
+                recycletype = subbasin[i].getRecycledStorageType()
+                hybrid = not(systype == recycletype)
+            else:
+                hybrid = False
 
-        techcumu += mca_techsub * float(priorities[j]) #add to the cumulative MCA scores, scaled by their relative priorities
+            iao = subbasin[i].getIAO(abbr)*iaoinf     #iaoinf = influence of IAO - zero for Rec or non-harvest
+            if hybrid:
+
+
+                if len(tech) != 0: mca_techsub += (sum(tech[techarray.index(systype)]) +
+                                                   sum(tech[techarray.index(recycletype)])) / 2.0 * \
+                                                  (subbasin[i].getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(env) != 0: mca_envsub += (sum(env[techarray.index(systype)]) +
+                                                 sum(env[techarray.index(recycletype)])) / 2.0 * \
+                                                (subbasin[i].getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(ecn) != 0: mca_ecnsub += (sum(ecn[techarray.index(systype)]) +
+                                                 sum(ecn[techarray.index(recycletype)])) / 2.0 * \
+                                                (subbasin[i].getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(soc) != 0: mca_socsub += (sum(soc[techarray.index(systype)]) +
+                                                 sum(soc[techarray.index(recycletype)])) / 2.0 * \
+                                                (subbasin[i].getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+            else:
+                if len(tech) != 0: mca_techsub += sum(tech[techarray.index(systype)]) * \
+                                                  (subbasin[i].getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(env) != 0: mca_envsub += sum(env[techarray.index(systype)]) * \
+                                                (subbasin[i].getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(ecn) != 0: mca_ecnsub += sum(ecn[techarray.index(systype)]) * \
+                                                (subbasin[i].getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+                if len(soc) != 0: mca_socsub += sum(soc[techarray.index(systype)]) * \
+                                                (subbasin[i].getService(abbr)+iao)/float(totalvalues[j]) * float(spref[sysscale]) * 1000
+
+        techcumu += mca_techsub * float(priorities[j])  #add to the cumulative MCA scores, scaled by their relative priorities
         envcumu += mca_envsub * float(priorities[j])
         ecncumu += mca_ecnsub * float(priorities[j])
         soccumu += mca_socsub * float(priorities[j])
@@ -268,8 +332,11 @@ class WaterTech(object):
         self.__blockID = blockID
         self.__rec_store = None
         self.__rec_store_type = ""
-        self.__rec_Integrated = 0
-        self.__rec_store_surfaceArea = 0
+        self.__rec_integrated = 0
+        self.__rec_store_surfaceArea = 0.0
+        self.__rec_store_areafactor = 0.0
+        self.__quantityIAO = 0.0    #Impervious Area offset for stormwater quantity water management
+        self.__qualityIAO = 0.0     #Impervious Area offset for stormwater quality water management
         
         #Assign some descriptive variables to the object
         if self.__type in ['BF', 'IS']:
@@ -286,15 +353,22 @@ class WaterTech(object):
         else:
             self.isGreyTech = False
             self.isGreenTech = True
-    
-    def addRecycledStoreToTech(self, storeObj, surfarea, type, integrated):
+
+    def addRecycledStoreToTech(self, storeObj, recsurfarea, type, integrated):
         self.__rec_store = storeObj
         self.__service["Rec"] = storeObj.getSupply()
-        self.__rec_Integrated = integrated
+        self.__rec_integrated = integrated
         self.__rec_store_type = type
-        self.__rec_store_surfaceArea = surfarea
+        self.__rec_store_surfaceArea = recsurfarea[0]
+        self.__rec_store_areafactor = recsurfarea[1]
         return True
-    
+
+    def getRecycledStorage(self):
+        return self.__rec_store
+
+    def getRecycledStorageType(self):
+        return self.__rec_store_type
+
     def getStoreSurfArea(self):
         if bool(self.__rec_Integrated):
             return 0
@@ -331,6 +405,26 @@ class WaterTech(object):
     
     def getLocation(self):
         return self.__blockID
+
+    def setIAO(self, purpose, value):
+        if purpose == "Qty":
+            self.__quantityIAO = value
+        elif purpose == "WQ":
+            self.__qualityIAO = value
+        else:
+            pass
+        return True
+
+    def getIAO(self, purpose):
+        if purpose == "Qty":
+            return self.__quantityIAO
+        elif purpose == "WQ":
+            return self.__qualityIAO
+        elif purpose == "Rec":
+            return 0
+        else:
+            return [self.__quantityIAO, self.__qualityIAO]
+
     
 class BlockStrategy(object):
     """Object, which contains all the WSUD technologies at the lot, street and neighbourhood
@@ -364,6 +458,8 @@ class BlockStrategy(object):
         self.__MCA_scores = [0.0,0.0,0.0,0.0]
         self.__MCA_totscore = 0.0
         self.criteriamatrix = ["tec", "env", "ecn", "soc"]
+        self.__quantityIAO = 0.0
+        self.__qualityIAO = 0.0
     
     def getBlockBin(self):
         return self.__blockbin
@@ -405,6 +501,23 @@ class BlockStrategy(object):
         e.g. water quantity managment across the total impervious area or recycling
         across the whole population."""
         return self.__service[category]/totalvalue
+
+    def setIAO(self, purpose, value):
+        if purpose == "Qty":
+            self.__quantityIAO = value
+        elif purpose == "WQ":
+            self.__qualityIAO = value
+        return True
+
+    def getIAO(self, purpose):
+        if purpose == "Qty":
+            return self.__quantityIAO
+        elif purpose == "WQ":
+            return self.__qualityIAO
+        elif purpose == "Rec":
+            return 0
+        else:
+            return [self.__quantityIAO, self.__qualityIAO]
     
 class BasinManagementStrategy(object):
     """Class for the complete water management strategy within a basin of the case study.
@@ -419,7 +532,11 @@ class BasinManagementStrategy(object):
         self.__blocks = len(basinblockIDs)
         self.__basinblockIDs = (basinblockIDs)
         self.__subbas_partake_IDs = partakeIDs
-        
+
+        self.__redundancyQty = 0.0     #The amount of redundancy in the strategy
+        self.__redundancyWQ = 0.0
+        self.__redundancyRec = 0.0
+
         self.__basinAimpQty = basin_info[0]    #Impervious Area to be managed for QTY
         self.__basinAimpWQ = basin_info[1]     #Impervious area to be managed for WQ
         self.__basinDemRec = basin_info[2]         #Basin demand to be managed
@@ -447,6 +564,9 @@ class BasinManagementStrategy(object):
         for i in basinblockIDs:
             self.__inblockarray[i] = 0.0
             self.__degreesarray[i] = [0.0,0.0]
+
+        self.__quantityIAO = 0.0
+        self.__qualityIAO = 0.0
     
     def getBasinEIA(self):
         return self.__basinAimp

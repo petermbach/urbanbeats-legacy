@@ -76,19 +76,3 @@ def loglogSWHEquation(city, targetrel, supplyvol, demandvol):
 
 ### ------------------------------------------------------------------------ ###    
 
-### ------------------------------------------------------------------------ ###
-###     SUBFUNCTIONS FOR STORMWATER HARVESTING BENEFITS                      ###
-### ------------------------------------------------------------------------ ###
-
-def treatQTYbenefits():
-    return True
-
-
-
-
-def treatWQbenefits():
-    return True
-
-
-
-    

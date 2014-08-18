@@ -165,8 +165,15 @@ class Techplacement(UBModule):
         
         #ADDITIONAL STRATEGIES
         self.createParameter("scalepref", DOUBLE,"")
-        self.scalepref = 3.0  #Ranges from 1 (high priority on at-source) to 5 (high priority on end-of-pipe)
-        
+        self.scalepref = 3  #Ranges from 1 (high priority on at-source) to 5 (high priority on end-of-pipe)
+
+        self.scalingprefmatrix = [{"L":0.40, "S":0.30, "N":0.20, "B":0.10},
+                                  {"L":0.25, "S":0.35, "N":0.25, "B":0.15},
+                                  {"L":0.25, "S":0.25, "N":0.25, "B":0.25},
+                                  {"L":0.15, "S":0.25, "N":0.35, "B":0.25},
+                                  {"L":0.10, "S":0.20, "N":0.30, "B":0.40},]
+        self.curscalepref = {"L":0.25, "S":0.25, "N":0.25, "B":0.25}
+
         ##########################################################################
         #---WATER USE EFFICIENCY AND RECYCLING STRATEGY DESIGN INPUTS            
         ##########################################################################
@@ -282,9 +289,13 @@ class Techplacement(UBModule):
         self.createParameter("sb_method", STRING, "")
         self.createParameter("rain_length", DOUBLE, "")
         self.createParameter("swh_benefits", BOOL, "")
+        self.createParameter("swh_unitrunoff", DOUBLE, "")
+        self.createParameter("swh_unitrunoff_auto", BOOL, "")
         self.sb_method = "Sim"  #Sim = simulation, Eqn = equation
         self.rain_length = 2.0   #number of years.
         self.swh_benefits = 1   #execute function to calculate SWH benefits? (1 by default, but perhaps treat as mutually exclusive)
+        self.swh_unitrunoff = 0.545  #Unit runoff rate [kL/sqm impervious]
+        self.swh_unitrunoff_auto = 0
         
         ##########################################################################
         #---RETROFIT CONDITIONS INPUTS                                           
@@ -419,6 +430,7 @@ class Techplacement(UBModule):
         self.createParameter("ISpollute", BOOL,"")
         self.ISflow = 1
         self.ISpollute = 1
+        self.ISrecycle = 0      #Permanently zero
         
         #Design Curves
         self.createParameter("ISdesignUB", BOOL,"")
@@ -503,6 +515,7 @@ class Techplacement(UBModule):
         self.RTlot = 1
         self.RTneigh = 0
         self.RTflow = 0
+        self.RTpollute = 0      #permanently zero
         self.RTrecycle = 1
         
         self.createParameter("RT_maxdepth", DOUBLE,"")
@@ -580,8 +593,10 @@ class Techplacement(UBModule):
         #Available Applications
         self.createParameter("SWflow", BOOL,"")
         self.createParameter("SWpollute", BOOL,"")
+        self.createParameter("SWrecycle", BOOL, "")
         self.SWflow = 1
         self.SWpollute = 1
+        self.SWrecycle = 0
         
         #Design Curves
         self.createParameter("SWdesignUB", BOOL,"")
@@ -656,12 +671,16 @@ class Techplacement(UBModule):
         self.mca_techlist, self.mca_tech, self.mca_env, self.mca_ecn, self.mca_soc = [], [], [], [], [] #initialize as globals
         
         #SCORING OF STRATEGIES
+        self.createParameter("score_strat", STRING, "")
         self.createParameter("scope_stoch", BOOL,"")
         self.createParameter("score_method", STRING,"")
         self.createParameter("ingroup_scoring", STRING,"")
+        self.createParameter("iao_influence", DOUBLE, "")
         self.scope_stoch = 0
+        self.score_strat = "SNP"        #SNP = service-no-penalty, SLP = service-linear-penalty, SPP = service-nonlinear-penalty
         self.score_method = "WSM"       #MCA scoring method
         self.ingroup_scoring = "Avg"
+        self.iao_influence = 10.0
         
         #RANKING OF STRATEGIES
         self.createParameter("ranktype", STRING,"")
@@ -678,6 +697,7 @@ class Techplacement(UBModule):
                           "GPT", "IS", "PPL", "PB", "PP", "RT", 
                           "SF", "IRR", "WSUB", "WSUR", "SW", 
                           "TPS", "UT", "WWRR", "WT"]
+
         self.scaleabbr = ["lot", "street", "neigh", "prec"]
         self.ffplevels = {"PO":1, "NP":2, "RW":3, "SW":4, "GW":5}  #Used to determine when a system is cleaner than the other
         self.sqlDB = 0  #Global variable to hold the sqlite database
@@ -686,7 +706,7 @@ class Techplacement(UBModule):
         self.street_incr = []
         self.neigh_incr = []
         self.subbas_incr = []
-        
+
         self.createParameter("num_output_strats", DOUBLE, "")
         self.num_output_strats = 5      #number of output strategies
         
@@ -711,7 +731,9 @@ class Techplacement(UBModule):
         self.evapdata = []
         self.evapscale = []
         self.sysdepths = {}     #Holds all calculated system depths
-        
+
+        self.swhbenefitstable = []
+
         self.createParameter("relTolerance", DOUBLE, "")
         self.createParameter("maxSBiterations", DOUBLE, "")
         self.relTolerance = 1
@@ -721,6 +743,19 @@ class Techplacement(UBModule):
         self.createParameter("defaultdecision", STRING, "")
         self.maxMCiterations = 1000
         self.defaultdecision = "H"
+
+        #MCA Penalties
+        self.createParameter("penaltyQty", BOOL, "")
+        self.createParameter("penaltyWQ", BOOL, "")
+        self.createParameter("penaltyRec", BOOL, "")
+        self.createParameter("penaltyFa", DOUBLE, "")
+        self.createParameter("penaltyFb", DOUBLE, "")
+        self.penaltyQty = 1
+        self.penaltyWQ = 1
+        self.penaltyRec = 1
+        self.penaltyFa = 2.0
+        self.penaltyFb = 1.2
+
         #########################################################################
         #
         ##Views
@@ -822,28 +857,30 @@ class Techplacement(UBModule):
         #strvec = city.getUUIDsOfComponentsInView(self.mapattributes)
         #map_attr = city.getComponent(strvec[0])
         map_attr = self.activesim.getAssetWithName("MapAttributes")
+        self.curscalepref = self.scalingprefmatrix[int(self.scalepref)-1]
 
         ###-------------------------------------------------------------------###
         #--- PRE-PROCESSING
         ###-------------------------------------------------------------------###        
         
         #CALCULATE SOME GLOBAL VARIABLES RELATING TO TARGETS
-        self.system_tarQ = self.ration_runoff * self.targets_runoff
-        self.system_tarTSS = self.ration_pollute * self.targets_TSS
-        self.system_tarTP = self.ration_pollute * self.targets_TP
-        self.system_tarTN = self.ration_pollute * self.targets_TN
-        self.system_tarREL = self.ration_harvest * self.targets_reliability
+        self.system_tarQ = self.ration_runoff * self.targets_runoff     #Runoff reduction target
+        self.system_tarTSS = self.ration_pollute * self.targets_TSS     #TSS reduction target
+        self.system_tarTP = self.ration_pollute * self.targets_TP       #TP reduction target
+        self.system_tarTN = self.ration_pollute * self.targets_TN       #TN reduction target
+        self.system_tarREL = self.ration_harvest * self.targets_reliability     #Reliability  of recycling
         self.targetsvector = [self.system_tarQ, self.system_tarTSS, self.system_tarTP, self.system_tarTN, self.system_tarREL]
         self.notify(str(self.targetsvector))
         self.servicevector = [self.service_swmQty, self.service_swmWQ, self.service_rec]
         self.notify(str(self.servicevector))
-        
+        #-> targetsvector TO BE USED TO ASSESS OPPORTUNITIES
+
         #CALCULATE SYSTEM DEPTHS
         self.sysdepths = {"RT": self.RT_maxdepth - self.RT_mindead, "GW": 1, "WSUR": self.WSURspec_EDD, "PB": self.PBspec_MD}
-        #-> targetsvector TO BE USED TO ASSESS OPPORTUNITIES
         
         #SET DESIGN CURVES DIRECTORY        
-        
+        #To be done later.
+
         #GET NECESSARY GLOBAL DATA TO DO ANALYSIS
         blocks_num = map_attr.getAttribute("NumBlocks")     #number of blocks to loop through
         self.block_size = map_attr.getAttribute("BlockSize")    #size of block
@@ -852,7 +889,7 @@ class Techplacement(UBModule):
         input_res = map_attr.getAttribute("InputReso")      #resolution of input data
         basins = map_attr.getAttribute("TotalBasins")
         map_attr.addAttribute("OutputStrats", self.num_output_strats)
-        
+
         #CREATE TECHNOLOGIES SHORTLIST - THIS IS THE USER'S CUSTOMISED SHORTLIST
         userTechList = self.compileUserTechList()               #holds the active technologies selected by user for simulation
         self.notify(str(userTechList))
@@ -866,7 +903,11 @@ class Techplacement(UBModule):
         self.notify("Street"+str(techListStreet))
         self.notify("Neighbourhood"+str(techListNeigh))
         self.notify("Sub-basin"+str(techListSubbas))
-        
+
+        #INITIALIZE SWH BENEFITS DATA
+        if self.swh_benefits:
+            self.swhbenefitstable = dcv.initializeSWHbenefitsTable(self.ubeatsdir+"/ancillary")
+
         #PROCESS MCA PARAMETERS AND SCORING DETAILS
         self.mca_techlist, self.mca_tech, self.mca_env, self.mca_ecn, self.mca_soc = self.retrieveMCAscoringmatrix()
         self.notify(self.mca_techlist)
@@ -951,6 +992,7 @@ class Techplacement(UBModule):
             if self.service_hi == False:
                 block_EIA -= currentAttList.getAttribute("HIAeEIA")
 
+            # print "Block", currentID, "imp: ", block_EIA
             currentAttList.addAttribute("Manage_EIA", block_EIA)
 
         ###-------------------------------------------------------------------###
@@ -1002,6 +1044,7 @@ class Techplacement(UBModule):
         ###-------------------------------------------------------------------###
 
         #INITIALIZE THE DATABASE
+        #INITIALIZE THE DATABASE ---- COMMENT FROM HERE TO REMOVE DATABASE WRITING
         ubdbpath = self.ubeatsdir+"/temp/ubeatsdb1.db"
         if os.path.isfile(ubdbpath):
             try:
@@ -1013,13 +1056,10 @@ class Techplacement(UBModule):
         self.dbcurs = self.sqlDB.cursor()
 
         #Create Table for Individual Systems
-        self.dbcurs.execute('''CREATE TABLE watertechs(BlockID, Type, Size, Scale, Service, Areafactor, Landuse, Designdegree)''')
-        self.dbcurs.execute('''CREATE TABLE blockstrats(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
-                            LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
-                            StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
-        self.dbcurs.execute('''CREATE TABLE blockstratstop(BlockID, Bin, RESType, RESQty, RESservice, HDRType, HDRQty, HDRService,
-                            LIType, LIQty, LIService, HIType, HIQty, HIService, COMType, COMQty, COMService, StreetType, StreetQty,
-                            StreetService, NeighType, NeighQty, NeighService, TotService, MCATech, MCAEnv, MCAEcn, MCASoc, MCATotal, ImpTotal)''')
+        self.dbcurs.execute("CREATE TABLE watertechs(BlockID,Type,Size,Scale,Aimpdesign,Service,Areafactor,Landuse,Designdegree,Recycled,Integrated,Storetype,Storesize,qtyIAO,wqIAO)")
+        self.dbcurs.execute("CREATE TABLE blockstrats(BlockID,Bin,RESType,RESQty,RESservice,HDRType,HDRQty,HDRService,LIType,LIQty,LIService,HIType,HIQty,HIService,COMType,COMQty,COMService,StreetType,StreetQty,StreetService,NeighType,NeighQty,NeighService,TotService,MCATech,MCAEnv,MCAEcn,MCASoc,MCATotal,ImpTotal)")
+        self.dbcurs.execute("CREATE TABLE blockstratstop(BlockID,Bin,RESType,RESQty,RESservice,HDRType,HDRQty,HDRService,LIType,LIQty,LIService,HIType,HIQty,HIService,COMType,COMQty,COMService,StreetType,StreetQty,StreetService,NeighType,NeighQty,NeighService,TotService,MCATech,MCAEnv,MCAEcn,MCASoc,MCATotal,ImpTotal)")
+        #END OF DATABASE STUFF ------ COMMENT OUT UNTIL HERE TO REMOVE DATABASE WRITING
 
         inblock_options = {}
         subbas_options = {}
@@ -1092,7 +1132,7 @@ class Techplacement(UBModule):
             #--- THIRD LOOP - CONSTRUCT IN-BLOCK OPTIONS
             inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
 
-        self.sqlDB.commit()
+        self.sqlDB.commit()     #DATABASE WRITING ----- COMMENT OUT TO REMOVE DATABASE WRITING FUNCTIONALITY
         
         ###-------------------------------------------------------------------###
         #  FOURTH LOOP - MONTE CARLO (ACROSS BASINS)                            #
@@ -1151,13 +1191,15 @@ class Techplacement(UBModule):
                 #self.notify(current_bstrategy.getSubbasinArray())
                 #self.notify(current_bstrategy.getInBlocksArray())
 
-                tt.calculateBasinStrategyMCAScores(current_bstrategy,self.priorities, self.mca_techlist, self.mca_tech, \
+                tt.calculateBasinStrategyMCAScores(current_bstrategy,self.curscalepref, self.priorities, self.mca_techlist, self.mca_tech, \
                                                   self.mca_env, self.mca_ecn, self.mca_soc, \
                                                       [self.bottomlines_tech_w, self.bottomlines_env_w, \
-                                                               self.bottomlines_ecn_w, self.bottomlines_soc_w])
+                                                               self.bottomlines_ecn_w, self.bottomlines_soc_w], self.iao_influence/100.0)
 
                 #Add basin strategy to list of possibilities
                 service_objfunc = self.evaluateServiceObjectiveFunction(current_bstrategy, updatedService)        #Calculates how well it meets the total service
+
+                self.penalizeMCAscore(current_bstrategy, self.score_strat, updatedService)
 
                 basin_strategies.append([service_objfunc,current_bstrategy.getServicePvalues(), current_bstrategy.getTotalMCAscore(), current_bstrategy])
 
@@ -1218,7 +1260,7 @@ class Techplacement(UBModule):
 #        output_log_file.write("End of Basin Strategies Log \n\n")
 #        output_log_file.close()
 
-        # self.sqlDB.close()      #Close the database
+        self.sqlDB.close()      #Close the database
         
         #END OF MODULE
         
@@ -1345,6 +1387,31 @@ class Techplacement(UBModule):
         mca_ecn = self.rescaleMCAscorelists(mca_ecn)
         mca_soc = self.rescaleMCAscorelists(mca_soc)
         return mca_techlist, mca_tech, mca_env, mca_ecn, mca_soc
+
+    def penalizeMCAscore(self, bstrategy, method, services):
+        """Penalty function that modifies the MCA score of the total basin strategy based on the required service
+        level. There are three possible methods:
+            (1) SNP - no penalty, nothing happens,
+            (2) SLP - linear penalty function: revised score = current_score - (a*diff._service)*current_score
+            (3) SPP - non-linear penalty as a power function: revised score = current_score - (a*diff._service^b)*current_score
+        The coefficients a and b are set in UrbanBEATS' advanced options.
+        """
+        if method == "SNP":
+            return True
+
+        bSvalues = bstrategy.getServicePvalues()
+        dSQty = max(0, (bSvalues[0] - services[0])*int(self.penaltyQty))   #only applies to overtreatment
+        dSWQ = max(0, (bSvalues[1] - services[1])*int(self.penaltyWQ))
+        dSRec = max(0, (bSvalues[2] - services[2])*int(self.penaltyRec))
+
+        if method == "SLP":
+            a = 1.0
+            bstrategy.setTotalMCAscore(max(0, bstrategy.getTotalMCAscore() - a* sum(dSQty, dSWQ, dSRec) * bstrategy.getTotalMCAscore()))
+        elif method == "SPP":
+            a = self.penaltyFa
+            b = self.penaltyFb
+            bstrategy.setTotalMCAscore(max(0, bstrategy.getTotalMCAscore() - a* pow(sum(dSQty, dSWQ, dSRec),b)))
+        return True
 
 
     def identifyMCAmetriccount(self, metriclist):
@@ -1838,7 +1905,13 @@ class Techplacement(UBModule):
                 if luc_code == "S":
                     avlSpace = currentAttList.getAttribute("avSt_RES")
                 elif luc_code == "N":
-                    avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av")
+                    if sys_descr.getAttribute("Type") in ["BF", "WSUR", "PB","RT", "SW", "IS"]: #CHECK WHAT SVU Land use area is available
+                        svu_space = currentAttList.getAttribute("SVU_avSW") + currentAttList.getAttribute("SVU_avWS")
+                    elif sys_descr.getAttribute("Type") in ["GT"]:
+                        svu_space = currentAttList.getAttribute("SVU_avWW")
+                    else:
+                        svu_space = 0
+                    avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av") + svu_space
                 
                 if newAsys > avlSpace and self.renewal_alternative == "K": #if system does not fit and alternative is 'Keep'
                     self.notify("Cannot fit new system design, keeping old design instead")
@@ -1899,7 +1972,13 @@ class Techplacement(UBModule):
             elif decision == 2: #RENEWAL
                 self.notify("Renewing the System - Redesigning and Assessing Space Requirements")
                 newAsys, newEAFact = self.redesignSystem(currentAttList, sys_descr, "B", oldImp) #get new system size & EA
-                avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av")
+                if sys_descr.getAttribute("Type") in ["BF", "WSUR", "PB","RT", "SW", "IS"]: #CHECK WHAT SVU Land use area is available
+                    svu_space = currentAttList.getAttribute("SVU_avSW") + currentAttList.getAttribute("SVU_avWS")
+                elif sys_descr.getAttribute("Type") in ["GT"]:
+                    svu_space = currentAttList.getAttribute("SVU_avWW")
+                else:
+                    svu_space = 0
+                avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av") + svu_space
                 if newAsys > avlSpace and self.renewal_alternative == "K": #if system does not fit and alternative is 'Keep'
                     self.notify("Cannot fit new system design, keeping old design instead")
                     currentAttList.addAttribute("HasBSys", 1)
@@ -2023,7 +2102,13 @@ class Techplacement(UBModule):
                     if luc_code == "S":
                         avlSpace = currentAttList.getAttribute("avSt_RES")
                     elif luc_code == "N":
-                        avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av")
+                        if sys_descr.getAttribute("Type") in ["BF", "WSUR", "PB","RT", "SW", "IS"]: #CHECK WHAT SVU Land use area is available
+                            svu_space = currentAttList.getAttribute("SVU_avSW") + currentAttList.getAttribute("SVU_avWS")
+                        elif sys_descr.getAttribute("Type") in ["GT"]:
+                            svu_space = currentAttList.getAttribute("SVU_avWW")
+                        else:
+                            svu_space = 0
+                        avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av") + svu_space
                     
                     if newAsys > avlSpace and self.renewal_alternative == "K": #if system does not fit and alternative is 'Keep'
                         self.notify("Cannot fit new system design, keeping old design instead")
@@ -2094,7 +2179,13 @@ class Techplacement(UBModule):
             elif decision == 2: #renewal
                 self.notify("Renewing the System - Redesigning and Assessing Space Requirements")
                 newAsys, newEAFact = self.redesignSystem(currentAttList, sys_descr, "B", oldImp) #get new system size & EA
-                avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av")
+                if sys_descr.getAttribute("Type") in ["BF", "WSUR", "PB","RT", "SW", "IS"]: #CHECK WHAT SVU Land use area is available
+                    svu_space = currentAttList.getAttribute("SVU_avSW") + currentAttList.getAttribute("SVU_avWS")
+                elif sys_descr.getAttribute("Type") in ["GT"]:
+                    svu_space = currentAttList.getAttribute("SVU_avWW")
+                else:
+                    svu_space = 0
+                avlSpace = currentAttList.getAttribute("PG_av") + currentAttList.getAttribute("REF_av") + svu_space
                 if newAsys > avlSpace and self.renewal_alternative == "K": #if system does not fit and alternative is 'Keep'
                     self.notify("Cannot fit new system design, keeping old design instead")
                     currentAttList.addAttribute("HasBSys", 1)
@@ -2435,10 +2526,8 @@ class Techplacement(UBModule):
             #RES Systems
             hasRESsystems = int(currentAttList.getAttribute("HasL_RESSys"))
             if hasRESsystems == 0 and hasHouses != 0 and Aimplot > 0.0001 and j not in ["banned","list","of","tech"]:    #Do lot-scale house system
-                sys_object = self.designTechnology(1.0, Aimplot, j, dcvpath, tech_applications, soilK, minsize, maxsize, lot_avail_sp, "RES", currentID, storeVols[0])
-                if sys_object == 0:
-                    pass
-                else:
+                sys_objects = self.designTechnology(1.0, Aimplot, j, dcvpath, tech_applications, soilK, minsize, maxsize, lot_avail_sp, "RES", currentID, storeVols[0])
+                for sys_object in sys_objects:
                     tdRES.append(sys_object)
             
             #HDR Systems
@@ -2447,10 +2536,8 @@ class Techplacement(UBModule):
                 for i in self.lot_incr:
                     if i == 0:
                         continue
-                    sys_object = self.designTechnology(i, Aimphdr, j, dcvpath, tech_applications, soilK, minsize, maxsize, hdr_avail_sp, "HDR", currentID, np.inf)
-                    if sys_object == 0:
-                        pass
-                    else:
+                    sys_objects = self.designTechnology(i, Aimphdr, j, dcvpath, tech_applications, soilK, minsize, maxsize, hdr_avail_sp, "HDR", currentID, np.inf)
+                    for sys_object in sys_objects:
                         tdHDR.append(sys_object)
             
             #LI Systems
@@ -2459,10 +2546,8 @@ class Techplacement(UBModule):
                 for i in self.lot_incr:
                     if i == 0:
                         continue
-                    sys_object = self.designTechnology(i, AimpLI, j, dcvpath, tech_applications, soilK, minsize, maxsize, LI_avail_sp, "LI", currentID, np.inf)
-                    if sys_object == 0:
-                        pass
-                    else:
+                    sys_objects = self.designTechnology(i, AimpLI, j, dcvpath, tech_applications, soilK, minsize, maxsize, LI_avail_sp, "LI", currentID, np.inf)
+                    for sys_object in sys_objects:
                         tdLI.append(sys_object)
             
             #HI Systems                        
@@ -2471,10 +2556,8 @@ class Techplacement(UBModule):
                 for i in self.lot_incr:
                     if i == 0:
                         continue
-                    sys_object = self.designTechnology(i, AimpHI, j, dcvpath, tech_applications, soilK, minsize, maxsize, HI_avail_sp, "HI", currentID, np.inf)
-                    if sys_object == 0:
-                        pass
-                    else:
+                    sys_objects = self.designTechnology(i, AimpHI, j, dcvpath, tech_applications, soilK, minsize, maxsize, HI_avail_sp, "HI", currentID, np.inf)
+                    for sys_object in sys_objects:
                         tdHI.append(sys_object)
             
             #COM Systems
@@ -2483,10 +2566,8 @@ class Techplacement(UBModule):
                 for i in self.lot_incr:
                     if i == 0:
                         continue
-                    sys_object = self.designTechnology(i, AimpCOM, j, dcvpath, tech_applications, soilK, minsize, maxsize, com_avail_sp, "COM", currentID, np.inf)
-                    if sys_object == 0:
-                        pass
-                    else:
+                    sys_objects = self.designTechnology(i, AimpCOM, j, dcvpath, tech_applications, soilK, minsize, maxsize, com_avail_sp, "COM", currentID, np.inf)
+                    for sys_object in sys_objects:
                         tdCOM.append(sys_object)
             
             #Can insert more land uses here in future e.g. municipal
@@ -2546,12 +2627,10 @@ class Techplacement(UBModule):
                     #self.notify("Aimp to treat: "+str(AimptotreatRes))
                     
                     if hasHouses != 0 and AimptotreatRes > 0.0001:
-                        sys_object = self.designTechnology(street_deg, AimptotreatRes, j, dcvpath, 
+                        sys_objects = self.designTechnology(street_deg, AimptotreatRes, j, dcvpath,
                                                            tech_applications, soilK, minsize, maxsize, 
                                                            street_avail_Res, "Street", currentID, storeObj)
-                        if sys_object == 0:
-                            pass
-                        else:
+                        for sys_object in sys_objects:
                             sys_object.setDesignIncrement([lot_deg, street_deg])
                             technologydesigns.append(sys_object)
         return technologydesigns
@@ -2574,7 +2653,9 @@ class Techplacement(UBModule):
         
         av_PG = currentAttList.getAttribute("PG_av")
         av_REF = currentAttList.getAttribute("REF_av")
-        totalavailable = av_PG + av_REF
+        av_SVU_sw = currentAttList.getAttribute("SVU_avSW")
+        av_SVU_ws = currentAttList.getAttribute("SVU_avWS")
+        totalavailable = av_PG + av_REF + av_SVU_sw + av_SVU_ws
         if totalavailable < 0.0001:
             return technologydesigns    #SKIP CONDITION 2 - NO SPACE AVAILABLE
         
@@ -2607,16 +2688,16 @@ class Techplacement(UBModule):
                         if supplyincr == 0: 
                             continue
                         storeObj = curStoreObjs[supplyincr]
-                        sys_object = self.designTechnology(neigh_deg, Aimptotreat, j, dcvpath, tech_applications,
+                        sys_objects = self.designTechnology(neigh_deg, Aimptotreat, j, dcvpath, tech_applications,
                                          soilK, minsize, maxsize, totalavailable, "Neigh", currentID, storeObj)
-                        if sys_object != 0:
+                        for sys_object in sys_objects:
                             sys_object.setDesignIncrement(neigh_deg)
                             technologydesigns.append(sys_object)
                 else:
                     storeObj = np.inf
-                    sys_object = self.designTechnology(neigh_deg, Aimptotreat, j, dcvpath, tech_applications,
-                                                       soilK, minsize, maxsize, totalavailable, "Neigh", currentID, storeObj) 
-                    if sys_object != 0:
+                    sys_objects = self.designTechnology(neigh_deg, Aimptotreat, j, dcvpath, tech_applications,
+                                                       soilK, minsize, maxsize, totalavailable, "Neigh", currentID, storeObj)
+                    for sys_object in sys_objects:
                         sys_object.setDesignIncrement(neigh_deg)
                         technologydesigns.append(sys_object)
                     
@@ -2629,12 +2710,10 @@ class Techplacement(UBModule):
 #                    Aimptotreat=  neigh_deg * Aimpremain
 #                    #self.notify("Aimp to treat: "+str(Aimptotreat))
 #                    if Aimptotreat > 0.0001:
-#                        sys_object = self.designTechnology(neigh_deg, Aimptotreat, 0, j,
+#                        sys_objects = self.designTechnology(neigh_deg, Aimptotreat, 0, j,
 #                                                           dcvpath, tech_applications, soilK, minsize,
 #                                                           maxsize, totalavailable, "Neigh", currentID, storeObj)
-#                        if sys_object == 0:
-#                            pass
-#                        else:
+#                        for sys_object in sys_objects:
 #                            sys_object.setDesignIncrement([lot_deg, neigh_deg])
 #                            technologydesigns.append(sys_object)
         return technologydesigns
@@ -2664,7 +2743,9 @@ class Techplacement(UBModule):
         #SKIP CONDITION 2: Grab Total available space, if there is none, no point continuing
         av_PG = currentAttList.getAttribute("PG_av")
         av_REF = currentAttList.getAttribute("REF_av")
-        totalavailable = av_PG + av_REF
+        av_SVU_sw = currentAttList.getAttribute("SVU_avSW")
+        av_SVU_ws = currentAttList.getAttribute("SVU_avWS")
+        totalavailable = av_PG + av_REF + av_SVU_sw + av_SVU_ws
         if totalavailable < 0.0001:
             #self.notify("Total Available Space in Block to do STUFF: "+str(totalavailable)+" less than threshold")
             return technologydesigns
@@ -2706,16 +2787,16 @@ class Techplacement(UBModule):
                         if supplyincr == 0 or Aimptotreat < 0.0001: 
                             continue
                         storeObj = curStoreObjs[supplyincr]
-                        sys_object = self.designTechnology(bas_deg, Aimptotreat, j, dcvpath, tech_applications, 
+                        sys_objects = self.designTechnology(bas_deg, Aimptotreat, j, dcvpath, tech_applications,
                                         soilK, minsize, maxsize, totalavailable, "Subbas", currentID, storeObj)
-                        if sys_object != 0:
+                        for sys_object in sys_objects:
                             sys_object.setDesignIncrement(bas_deg)
                             technologydesigns[bas_deg].append(sys_object)
                 else:
                     storeObj = np.inf
-                    sys_object = self.designTechnology(bas_deg, Aimptotreat, j, dcvpath, tech_applications, 
+                    sys_objects = self.designTechnology(bas_deg, Aimptotreat, j, dcvpath, tech_applications,
                                         soilK, minsize, maxsize, totalavailable, "Subbas", currentID, storeObj)
-                    if sys_object != 0:
+                    for sys_object in sys_objects:
                         sys_object.setDesignIncrement(bas_deg)
                         technologydesigns[bas_deg].append(sys_object)
         return technologydesigns
@@ -2792,8 +2873,8 @@ class Techplacement(UBModule):
             curscale = scalematrix[landuse]
         except KeyError:
             curscale = 'NA'
-            
-        Adesign_imp = Aimp * incr
+
+        Adesign_imp = Aimp * incr       #Target impervious area depends on the increment/i.e. level of treatment service
         
         if storeObj != np.inf:
             design_Dem = storeObj.getSupply()
@@ -2807,96 +2888,155 @@ class Techplacement(UBModule):
             systemK = eval("self."+str(techabbr)+"exfil")
         else:
             systemK = 0
-        
+
+        Asystem = {"Qty":[None, 1], "WQ":[None,1], "Rec":[None,1], "Size":[None, 1]}  #Template for system design, holds designs
+
         #OBJECTIVE 1 - Design for Runoff Control
         if tech_applications[0] == 1:
             purpose = [tech_applications[0], 0, 0]
-            AsystemQty = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')
-            #self.notify(AsystemQty)
+            Asystem["Qty"] = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')
+            #self.notify(Asystem["Qty"])
         else:
-            AsystemQty = [None, 1]
-        Asystem = AsystemQty    #First target, set as default system size, even if zero
+            Asystem["Qty"] = [None, 1]
+        Asystem["Size"] = Asystem["Qty"]    #First target, set as default system size, even if zero
         
         #OBJECTIVE 2 - Design for WQ Control
         if tech_applications[1] == 1:
             purpose = [0, tech_applications[1], 0]
-            AsystemWQ = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')    
-            #self.notify(AsystemWQ)
+            Asystem["WQ"] = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')
+            #self.notify(Asystem["WQ"])
         else:
-            AsystemWQ = [None, 1]
-        if AsystemWQ[0] > Asystem[0]:
-            Asystem = AsystemWQ #if area for water quality is greater, choose the governing one as the final system size
-        
-        #OBJECTIVE 3 - If system type permits storage, design for Recycling
-        if tech_applications[2] == 1 and storeObj != np.inf:
-            #First design for WQ control (assume raintanks don't treat for now)
-            purpose = [0, 1, 0]
-            if techabbr in ["RT", "GW"]:
-                AsystemRecWQ = [0, 1]
-            else:
-                AsystemRecWQ = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(systemK)+','+str(minsize)+','+str(maxsize)+')')    
-            
-            if techabbr in ["RT", "GW", "WSUR", "PB"]:        #Then design storage
-                sysdepth = self.sysdepths[techabbr]
-                vol = storeObj.getSize()
-                #self.notify(vol)
-                if vol == np.inf:       #Strange error where volume return is inf, yet the name 'inf' is not defined
-                    vol = np.inf
-                AsystemRecQty = eval('td.sizeStoreArea_'+str(techabbr)+'('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
-                if AsystemRecQty[0] > AsystemRecWQ[0]:
-                    AsystemRec = AsystemRecQty
-                else:
-                    AsystemRec = AsystemRecWQ
-                addstore = [storeObj, AsystemRec[0], techabbr, 1]    #Input arguments to addstore function
-            elif techabbr in ["BF"]:    #Special Case BF where you have multi-tech combination
-                vol = storeObj.getSize()
-                if curscale in ["L"]:
-                    sysdepth = self.sysdepths["RT"]
-                    AsystemRecQty = eval('td.sizeStoreArea_RT('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
-                    addstore = [storeObj, AsystemRecQty, "RT", 0]
-                elif curscale in ["N", "B"]:
-                    sysdepth = self.sysdepths["PB"]
-                    AsystemRecQty = eval('td.sizeStoreArea_PB('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
-                    addstore = [storeObj, AsystemRecQty, "PB", 0]
-                #Calculate new area by adding BF area to Pond/Tank Area
-                if AsystemRecWQ[0] in [np.inf, None] or AsystemRecQty[0] in [np.inf, None]:
-                    AsystemRec = [None, 1]
-                else:
-                    AsystemRec = [AsystemRecWQ[0] + AsystemRecQty[0], AsystemRecWQ]       #Planning Area to check for
-            else:
-                addstore = []
-                AsystemRec = [None, 1]
-        else:
-            addstore = []
-            AsystemRec = [None, 1]        #[surface area, area factor, storage volume], the only exception
-        
-        if AsystemRec[0] > Asystem[0]:
-            if techabbr in ["RT", "GW", "WSUR", "PB"]:  #Integrated storage systems
-                Asystem = AsystemRec     #If area for recycling is bigger, choose that instead
-            elif techabbr in ["BF"]:            #Non-integrated storage systems
-                Asystem = AsystemRec[1]  #If system is a biofilter, add surf area to the system's main attr, add the store area as additional
-        #self.notify("Final design outcome for :"+str(techabbr)+" "+str(Asystem))
-        if Asystem[0] < avail_sp and Asystem[0] != None:        #if it fits and is NOT a NoneType
-            #self.notify("Fits")
+            Asystem["WQ"] = [None, 1]
+        if Asystem["WQ"][0] > Asystem["Size"][0]:
+            Asystem["Size"] = Asystem["WQ"] #if area for water quality is greater, choose the governing one as the final system size
+
+        sys_objects_array = []  #Initialise the array that will hold the tech designs
+
+        #Add the WQ - Qty system combo first to the array. Assume no harvesting
+        if Asystem["Size"][0] < avail_sp and Asystem["Size"][0] != None:        #if it fits and is NOT a NoneType:
+            #IF THERE IS NO STORAGE, JUST CREATE THE TECH OBJECT WITHOUT THE STORE
             servicematrix = [0,0,0]
-            if AsystemQty[0] != None:
+            if Asystem["Qty"][0] != None:
                 servicematrix[0] = Adesign_imp
-            if AsystemWQ[0] != None:
+            if Asystem["WQ"][0] != None:
                 servicematrix[1] = Adesign_imp
-            if AsystemRec[0] != None:
+            if Asystem["Rec"][0] != None:
                 servicematrix[2] = design_Dem
             servicematrixstring = tt.convertArrayToDBString(servicematrix)
-            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+str(Asystem[0])+",'"+curscale+"','"+str(servicematrixstring)+"',"+str(Asystem[1])+",'"+str(landuse)+"',"+str(incr)+")")
-            sys_object = tt.WaterTech(techabbr, Asystem[0], curscale, servicematrix, Asystem[1], landuse, currentID)
-            if len(addstore) != 0:
-                sys_object.addRecycledStoreToTech(addstore[0], addstore[1], addstore[2], addstore[3])     #If analysis showed that system can accommodate store, add the store object
+            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
+                                str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+
+                                str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+
+                                str(incr)+",'N',"+str(0)+",'"+str('None')+"',"+str(0)+","+str(0)+","+str(0)+")")
+
+            sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
             sys_object.setDesignIncrement(incr)
-            return sys_object
-        else:
-            #self.notify("Does not fit or not feasible")
-            return 0
-    
-    
+            sys_objects_array.append(sys_object)
+
+        #OBJECTIVE 3 - If system type permits storage, design for Recycling - this includes WQ control first, then adding storage!
+        #   Only works if:
+        #       #1 - the harvesting application is checked
+        #       #2 - there is a store object that is not infinity
+        #       #3 - the system is one of those that supports harvesting
+        addstore = []   #Has several arguments [store object, WQsize, QTYsize, type of store, integrated?]
+        if tech_applications[2] == 1 and storeObj != np.inf:
+            #First design for WQ control (assume raintanks don't use natural treatment)
+            purpose = [0, 1, 0]
+            if techabbr in ["RT", "GW"]:        #If a raintank or greywater system, then no area required. Assume treatment is through some
+                AsystemRecWQ = [0, 1]           #   non-green-infrastructure means
+            else:   #Design for a fully lined system!
+                AsystemRecWQ = eval('td.design_'+str(techabbr)+'('+str(Adesign_imp)+',"'+str(dcvpath)+'",'+str(self.targetsvector)+','+str(purpose)+','+str(soilK)+','+str(0)+','+str(minsize)+','+str(maxsize)+')')
+                #Required surface are of a system that only does water quality management...
+
+            vol = storeObj.getSize()
+            #self.notify(vol)
+            if vol == np.inf:       #Strange error where volume return is inf, yet the name 'inf' is not defined
+                vol = np.inf
+
+            design_harvest = True
+            if AsystemRecWQ in [np.inf, None] or vol == np.inf:
+                #Skip harvesting design! Cannot fulfill treatment + storage
+                design_harvest = False
+
+            #Harvesting System Design: Part 1 - INTEGRATED Design extra storage space as integrated storage
+            #   WSUR = open water body as extra area
+            #   PB = part of the storage area
+            #   RT = standard storage volume
+            #   GW = standard storage volume
+            if techabbr in ["RT", "GW", "PB", "WSUR"] and design_harvest:        #Turn the WQ system into a SWH system based on hybrid combos
+                sysdepth = float(self.sysdepths[techabbr])     #obtain the system depth
+                AsystemRecQty = eval('td.sizeStoreArea_'+str(techabbr)+'('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
+                if AsystemRecQty[0] != None:
+                    addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, techabbr, 1])     #Input arguments to addstore function
+
+            #Harvesting System Design: Part 2 - HYBRID A Design extra storage space as closed auxillary storage
+            #   WSUR = into tank
+            #   BF = into tank
+            #   SW = into tank
+            if techabbr in ["WSUR", "BF", "SW"] and design_harvest:
+                sysdepth = float(self.sysdepths["RT"])
+                AsystemRecQty = td.sizeStoreArea_RT(vol, sysdepth, 0, 9999)
+                if AsystemRecQty[0] != None:
+                    addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "RT", 0])
+
+            #Harvesting System Design: Part 3 - HYBRID B Design extra storage space as open auxillary storage
+            #   BF = into pond
+            #   SW = into pond
+            if techabbr in ["BF", "SW"] and curscale in ["N", "B"] and design_harvest:
+                sysdepth = float(self.sysdepths["PB"])
+                AsystemRecQty = td.sizeStoreArea_PB(vol, sysdepth, 0.0, 9999.0)
+                if AsystemRecQty[0] != None:
+                    addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "PB", 0])
+
+        if len(addstore) == 0:
+            return sys_objects_array
+
+        for i in range(len(addstore)):
+            curstore = addstore[i]
+            if len(curstore) == 0:
+                # print "No Addstore Data, continuing"
+                continue
+            #CHECK WHAT THE TOTAL SYSTEM SIZE IS FIRST BY COMPARING LARGEST SYSTEM TO DATE VS. HARVESTING SYSTEM
+            recsize = curstore[1][0] + curstore[2][0]   #AsystemRecWQ + AsystemRecQTY
+            eafact = recsize/(curstore[1][0]/curstore[1][1] + curstore[2][0]/curstore[2][1])    #area factor, does not indicate relative factors for different systems!
+            #eafact is the same as WQfact and QtyFact if the system is integrated (e.g. Wetland buffer is ALWAYS 1.3)
+
+            Asystem["Rec"] = [recsize, eafact]  #This is the total recycling storage size
+            if curstore[4] == 1:                #Check if the system integrated? Differentiate between integrated and non-integrated systems!
+                Asystem["Size"] = Asystem["Rec"]    #Because the integrated system has same planning rules so EAFACT is the same
+            else:
+                Asystem["Size"] = curstore[1]   #if non-integrated, then base system is defined ONLY as WQ area/treatment...
+
+            #NOW CHECK AVAILABLE SPACE - CREATE OBJECT AND PASS TO FUNCTION RETURN
+            if recsize < avail_sp and recsize != None:        #if it fits and is NOT a NoneType
+                #self.notify("Fits")
+                servicematrix = [0,0,0]     #Skip water quantity, this is assumed negligible since the treatment system is lined and will not reduce flow
+                if AsystemRecWQ[0] != None:             #Harvesting system cannot do runoff reduction through normal means!
+                    servicematrix[1] = Adesign_imp
+                if AsystemRecQty[0] != None:
+                    servicematrix[2] = design_Dem
+                servicematrixstring = tt.convertArrayToDBString(servicematrix)
+                sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
+                sys_object.addRecycledStoreToTech(curstore[0], curstore[2], curstore[3], curstore[4])     #If analysis showed that system can accommodate store, add the store object
+                sys_object.setDesignIncrement(incr)
+
+                #Work out SWH Benefits for Quantity and Quality
+                if self.swh_benefits:
+                    if self.ration_runoff:      #NOW HAVE TO DETERMINE WHETHER TO DO THIS BASED ON UNIT RUNOFF RATE OR SOMETHING ELSE
+                        dcv.treatQTYbenefits(sys_object, self.swh_unitrunoff, Adesign_imp)
+                    if self.ration_pollute:
+                        dcv.treatWQbenefits(sys_object, self.swh_unitrunoff, self.targetsvector[1:4], Adesign_imp, self.swhbenefitstable)   #only the three pollution targets
+                    # print sys_object.getIAO("all")
+
+                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
+                                    str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+str(servicematrixstring)+
+                                    "',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'Y',"+str(curstore[4])+",'"+
+                                    str(curstore[3])+"',"+str(curstore[0].getSize())+","+str(sys_object.getIAO("Qty"))+
+                                    ","+str(sys_object.getIAO("WQ"))+")")
+
+                sys_objects_array.append(sys_object)
+        return sys_objects_array    #if no systems are design, returns an empty array
+
+
     def retrieveStreamBlockIDs(self, currentAttList, direction):
         """Returns a vector containing all upstream block IDs, allows quick collation of 
         details.
@@ -3049,8 +3189,9 @@ class Techplacement(UBModule):
             maxinflow = 0
             tank_templates = [] #use the possible greywater tank sizes
         
-        if maxinflow < recdemand:       #If Vsupp < Vdem
-            return np.inf       #cannot size a store that is supplying more than it is getting
+        if (self.rec_demrange_max/100.0)*maxinflow < recdemand or (self.rec_demrange_min/100.0)*maxinflow > recdemand:
+            #If Vdem not within the bounds of total inflow
+            return np.inf       #cannot size a store that is supplying more than it is getting or not economical to size
         
         #Depending on Method, size the store
         if self.sb_method == "Sim":
@@ -3173,9 +3314,9 @@ class Techplacement(UBModule):
                     inflow = 0
                     maxinflow = 0
                 
-                if maxinflow < recdemand:
+                if (self.rec_demrange_max/100.0)*maxinflow < recdemand or (self.rec_demrange_min/100.0)*maxinflow > recdemand:
                     storageVol[harvestincr][supplyincr] = np.inf 
-                    #Cannot size a store to supply more than it is getting
+                    #Cannot size a store that is not within the demand range specified
                     continue
                 
                 #Size the store depending on method
@@ -3309,8 +3450,8 @@ class Techplacement(UBModule):
                     inflow = 0
                     maxinflow = 0
                 
-                if maxinflow < recdemand:
-                    #Cannot design a storage to supply more than it is getting
+                if (self.rec_demrange_max/100.0)*maxinflow < recdemand or (self.rec_demrange_min/100.0)*maxinflow > recdemand:
+                    #Cannot design a storage for a demand that is not within the user-defined range of total annual inflow
                     storageVol[harvestincr][supplyincr] = np.inf
                     continue
                 
@@ -3351,7 +3492,7 @@ class Techplacement(UBModule):
         currentID = int(currentAttList.getAttribute("BlockID"))
         blockarea = pow(self.block_size,2)*currentAttList.getAttribute("Active")
         
-        for i in range(len(self.subbas_incr)):                #[0, 0.25, 0.5, 0.75, 1.0]
+        for i in range(len(self.subbas_incr)):                #e.g. for [0, 0.25, 0.5, 0.75, 1.0]
             allInBlockOptions[self.subbas_incr[i]] = []       #Bins are: 0 to 25%, >25% to 50%, >50% to 75%, >75% to 100% of block treatment
         
         #Obtain all variables needed to do area balance for Impervious Area Service
@@ -3381,7 +3522,7 @@ class Techplacement(UBModule):
         #   combinations are either 0 or the technologies that fit at that increment
         lot_tech = []
         for a in range(len(self.lot_incr)):     #lot_incr = [0, ....., 1.0]
-            lot_deg = self.lot_incr[a]   #currently working on all lot-scale systems of increment lot_deg
+            lot_deg = self.lot_incr[a]          #currently working on all lot-scale systems of increment lot_deg
             if lot_deg == 0:
                 lot_tech.append([lot_deg,0,0,0,0,0])      #([deg, res, hdr, li, hi, com])
                 continue
@@ -3430,6 +3571,7 @@ class Techplacement(UBModule):
                         continue    #all options in the combo are zero, then we have no technologies, skip this as well
                     
                     servicematrix = self.getTotalComboService(combo, lotcounts)
+                    offsetmatrix = self.getTotalIAOofCombo(combo, lotcounts)
                     #self.notify(servicematrix)
                     
                     if servicematrix[0] > AblockEIA or servicematrix[1] > AblockEIA:
@@ -3443,10 +3585,12 @@ class Techplacement(UBModule):
                         #Create Block Strategy and put it into one of the subbas bins of allInBlockOptions
                         servicebin = self.identifyBin(servicematrix, AblockEIA, blockDem)
                         blockstrat = tt.BlockStrategy(combo, servicematrix, lotcounts, currentID, servicebin)
-                        
-                        tt.CalculateMCATechScores(blockstrat,[AblockEIA, AblockEIA, blockDem],self.priorities, \
+                        blockstrat.setIAO("Qty", offsetmatrix[0])
+                        blockstrat.setIAO("WQ", offsetmatrix[1])
+
+                        tt.CalculateMCATechScores(blockstrat,[AblockEIA, AblockEIA, blockDem],self.curscalepref, self.priorities, \
                                                     self.mca_techlist, self.mca_tech, self.mca_env, self.mca_ecn, \
-                                                    self.mca_soc)
+                                                    self.mca_soc, self.iao_influence/100.0)
                         
                         tt.CalculateMCAStratScore(blockstrat, [self.bottomlines_tech_w, self.bottomlines_env_w, \
                                                                self.bottomlines_ecn_w, self.bottomlines_soc_w])
@@ -3486,7 +3630,29 @@ class Techplacement(UBModule):
         lowscore = min(scorelist)
         lowscoreindex = scorelist.index(lowscore)
         return lowscore, lowscoreindex
-    
+
+    def getTotalIAOofCombo(self, techarray, lotcounts):
+        """Tallies up the total impervious area offset for quantity and quality based on the WSUD objects' individual
+        offsets.
+        """
+        service_abbr = ["Qty", "WQ"]
+        offsetmatrix = [0, 0]
+        for j in range(len(service_abbr)):
+            abbr = service_abbr[j]
+            for tech in techarray:
+                if tech == 0:
+                    continue
+                if tech.getScale() == "L" and tech.getLandUse() == "RES":
+                    offsetmatrix[j] += tech.getIAO(abbr) * lotcounts[0]
+                elif tech.getScale() == "L" and tech.getLandUse() == "LI":
+                    offsetmatrix[j] += tech.getIAO(abbr) * lotcounts[2]
+                elif tech.getScale() == "L" and tech.getLandUse() == "HI":
+                    offsetmatrix[j] += tech.getIAO(abbr) * lotcounts[3]
+                elif tech.getScale() == "L" and tech.getLandUse() == "COM":
+                    offsetmatrix[j] += tech.getIAO(abbr) * lotcounts[4]
+                else:
+                    offsetmatrix[j] += tech.getIAO(abbr)
+        return offsetmatrix
     
     def getTotalComboService(self, techarray, lotcounts):
         """Retrieves all the impervious area served by an array of systems and returns
@@ -3618,7 +3784,7 @@ class Techplacement(UBModule):
         return subbas_chosenIDs, inblocks_chosenIDs
     
     
-    def calculateRemainingService(self, type, basinBlockIDs):
+    def calculateRemainingService(self, servtype, basinBlockIDs):
         """Assesses the alread treated area/demand for the current basin and returns
         the remaining area/demand to be treated with a strategy.
             - Type: refers to the type of objective "QTY" = quantity, WQ = quality, 
@@ -3627,32 +3793,43 @@ class Techplacement(UBModule):
         """
         #self.notify(basinBlockIDs)
         #self.notify(type)
-        if type in ["WQ", "QTY"]:
+        # print "Basin Blocks", basinBlockIDs
+        # print servtype
+
+        if servtype in ["WQ", "QTY"]:
             total = self.retrieveAttributeFromIDs(basinBlockIDs, "Manage_EIA", "sum")
-        elif type in ["REC"]:
+        elif servtype in ["REC"]:
             total = self.retrieveAttributeFromIDs(basinBlockIDs, "Blk_WD", "sum") - \
                     self.retrieveAttributeFromIDs(basinBlockIDs, "wd_Nres_IN", "sum")
+
+        # print "total", total
         #self.notify("Total Imp Area: "+str(total))
-        basinTreated = self.retrieveAttributeFromIDs(basinBlockIDs, "Serv"+str(type), "sum")
-        basinTreated += self.retrieveAttributeFromIDs(basinBlockIDs, "ServUp"+str(type), "sum")
+        basinTreated = self.retrieveAttributeFromIDs(basinBlockIDs, "Serv"+str(servtype), "sum")
+        basinTreated += self.retrieveAttributeFromIDs(basinBlockIDs, "ServUp"+str(servtype), "sum")
         if int(basinTreated) == 0:
             basinTreated = 0.0
+
+        # print "Treated: ", basinTreated
         #self.notify("Treated ImpArea: "+str(basinTreated))
         rationales = {"QTY": bool(int(self.ration_runoff)), "WQ": bool(int(self.ration_pollute)),
                       "REC": bool(int(self.ration_harvest)) }
         services = {"QTY": float(self.servicevector[0]), "WQ": float(self.servicevector[1]), "REC": float(self.servicevector[2])}
         
-        if rationales[type]:
+        if rationales[servtype]:
             basinRemain = max(total - basinTreated, 0)
         else:
             basinRemain = 0
-        
-        prevService = float(basinTreated)/float(total)
-        #self.notify("Prev Service")
+        # print "Total remaining: ", basinRemain
+
+        if total == 0:
+            prevService = 1
+        else:
+            prevService = float(basinTreated)/float(total)
+
         if max(1- prevService, 0) == 0:
             delta_percent = 0.0
         else:
-            delta_percent = max(services[type]/100.0*rationales[type] - prevService,0.0) / (1.0 - prevService)
+            delta_percent = max(services[servtype]/100.0*rationales[servtype] - prevService,0.0) / (1.0 - prevService)
         return delta_percent, basinRemain, basinTreated, total
     
     
@@ -3680,7 +3857,7 @@ class Techplacement(UBModule):
         
         #Loop across partakeID blocks (i.e. all blocks, which have a precinct tech)
         for i in range(len(partakeIDs)):
-            currentBlockID = partakeIDs[i]
+            currentBlockID = partakeIDs[i]      #DENOTES CURRENT POSITION IN THE MAP
             #currentAttList = self.getBlockUUID(currentBlockID, city)
             currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentBlockID))
             #self.notify("Currently on BlockID: "+str(currentBlockID))
@@ -3689,12 +3866,12 @@ class Techplacement(UBModule):
             downstreamIDs = self.retrieveStreamBlockIDs(currentAttList, "downstream")
             #self.notify("Upstream Blocks: "+str(upstreamIDs)+" downstream Blocks: "+str(downstreamIDs))
             
-            remainIDs = []
+            remainIDs = []    #All blocks upstream of current location that are unique to that location in the sub-basin
             for id in upstreamIDs:
                 remainIDs.append(id)
                 
             #(1) See if there are existing sub-basins inside the current sub-basin
-            subbasinIDs = []
+            subbasinIDs = []            #All blocks that are sub-basins within the subbasin denoted by the current location
             for id in partakeIDsTracker:
                 if id in upstreamIDs:
                     subbasinIDs.append(id)
@@ -3784,7 +3961,7 @@ class Techplacement(UBModule):
             #else:
                 #max_deg_matrix.append(0)
 
-            print "Max_deg_matrix", max_deg_matrix
+            # print "Max_deg_matrix", max_deg_matrix
             #self.notify("Max Degre matrix: "+str(max_deg_matrix)
             max_degree = min(max_deg_matrix)+float(self.service_redundancy/100.0)  #choose the minimum, bring in allowance using redundancy parameter
             
@@ -3794,12 +3971,12 @@ class Techplacement(UBModule):
             
             #(3) PICK A SUB-BASIN TECHNOLOGY
             if currentBlockID in subbas_chosenIDs:
-                deg, obj, treatedQTY, treatedWQ, treatedREC = self.pickOption(currentBlockID, max_degree, subbas_options, [totalAimpQTY, totalAimpWQ, totalDemREC], "SB") 
+                deg, obj, treatedQTY, treatedWQ, treatedREC, iaoqty, iaowq = self.pickOption(currentBlockID, max_degree, subbas_options, [totalAimpQTY, totalAimpWQ, totalDemREC], "SB")
                 #self.notify("Option Treats: "+str([treatedQTY, treatedWQ, treatedREC]))
                 #self.notify(obj)
 
-                subbas_treatedAimpQTY += treatedQTY
-                subbas_treatedAimpWQ += treatedWQ
+                subbas_treatedAimpQTY += treatedQTY + iaoqty
+                subbas_treatedAimpWQ += treatedWQ + iaowq
                 subbas_treatedDemREC += treatedREC
                 remainAimp_subbasinQTY = max(remainAimp_subbasinQTY - treatedQTY, 0)
                 remainAimp_subbasinWQ = max(remainAimp_subbasinWQ - treatedWQ, 0)
@@ -3837,12 +4014,12 @@ class Techplacement(UBModule):
                 #self.notify(str([block_Aimp*int(self.ration_runoff))+" "+str(block_Aimp*int(self.ration_pollute))+" "+str(block_Dem*int(self.ration_harvest)]))
                 
                 #self.notify("In Block Maximum Degree: "+str(max_degree))
-                deg, obj, treatedQTY, treatedWQ, treatedREC = self.pickOption(rbID,max_degree,inblock_options, [block_Aimp*bool(int(self.ration_runoff)), block_Aimp*bool(int(self.ration_pollute)), block_Dem*bool(int(self.ration_harvest))], "BS") 
+                deg, obj, treatedQTY, treatedWQ, treatedREC, iaoqty, iaowq = self.pickOption(rbID,max_degree,inblock_options, [block_Aimp*bool(int(self.ration_runoff)), block_Aimp*bool(int(self.ration_pollute)), block_Dem*bool(int(self.ration_harvest))], "BS")
                 #self.notify("Option Treats: "+str([treatedQTY, treatedWQ, treatedREC]))
                 #self.notify(obj)
 
-                subbas_treatedAimpQTY += treatedQTY
-                subbas_treatedAimpWQ += treatedWQ
+                subbas_treatedAimpQTY += treatedQTY + iaoqty
+                subbas_treatedAimpWQ += treatedWQ + iaowq
                 subbas_treatedDemREC += treatedREC
                 remainAimp_subbasinQTY = max(remainAimp_subbasinQTY - treatedQTY, 0)
                 remainAimp_subbasinWQ = max(remainAimp_subbasinWQ - treatedWQ, 0)
@@ -3852,9 +4029,9 @@ class Techplacement(UBModule):
                     current_bstrategy.appendTechnology(rbID, deg, obj, "b")
             
             #(5) FINALIZE THE SERVICE VALUES FOR QTY, WQ, REC BEFORE NEXT LOOP
-            #   Avoid overtreatment by saying either total area is treated or if treated area is smaller then using that
-            subbasID_treatedQTY[currentBlockID] = min(subbas_treatedAimpQTY, totalAimpQTY)
-            subbasID_treatedWQ[currentBlockID] = min(subbas_treatedAimpWQ, totalAimpWQ)
+            #Impervious area offset will result in options going over treatment threshold.
+            subbasID_treatedQTY[currentBlockID] = subbas_treatedAimpQTY #min(subbas_treatedAimpQTY, totalAimpQTY)
+            subbasID_treatedWQ[currentBlockID] = subbas_treatedAimpWQ #min(subbas_treatedAimpWQ, totalAimpWQ)
             subbasID_treatedREC[currentBlockID] = min(subbas_treatedDemREC, totalDemREC)
             #self.notify(subbasID_treatedQTY)
             #self.notify(subbasID_treatedWQ)
@@ -3926,7 +4103,7 @@ class Techplacement(UBModule):
 #                    options.append(j)
                     
             if len(options) == 0:
-                return 0, 0, 0, 0, 0
+                return 0, 0, 0, 0, 0, 0, 0
             scores = []
             for i in options:
                 scores.append(i.getTotalMCAscore())
@@ -3947,9 +4124,11 @@ class Techplacement(UBModule):
 #            treatedAimpWQ = chosen_deg * AimpWQ
 #            treatedDemREC = chosen_deg * DemREC            
             treatedAimpQTY = chosen_obj.getService("Qty")
+            iaoqty = chosen_obj.getIAO("Qty")
             treatedAimpWQ = chosen_obj.getService("WQ")
+            iaowq = chosen_obj.getIAO("WQ")
             treatedDemREC = chosen_obj.getService("Rec")
-            return chosen_obj.getBlockBin(), chosen_obj, treatedAimpQTY, treatedAimpWQ, treatedDemREC
+            return chosen_obj.getBlockBin(), chosen_obj, treatedAimpQTY, treatedAimpWQ, treatedDemREC, iaoqty, iaowq
         
         elif strattype == "SB":  #sub-basin strategy
             #Continuous-based picking
@@ -3988,15 +4167,17 @@ class Techplacement(UBModule):
 #                chosen_obj = options_collection["BlockID"+str(blockID)][chosen_deg][choice]
 #                
                 if chosen_obj == 0:
-                    return 0, 0, 0, 0, 0
+                    return 0, 0, 0, 0, 0, 0, 0
                 chosen_deg = chosen_obj.getDesignIncrement()
                 treatedAimpQTY = chosen_obj.getService("Qty")
+                iaoqty = chosen_obj.getIAO("Qty")
                 treatedAimpWQ = chosen_obj.getService("WQ")
+                iaowq = chosen_obj.getIAO("WQ")
                 treatedDemREC = chosen_obj.getService("Rec")
 
-                return chosen_deg, chosen_obj, treatedAimpQTY, treatedAimpWQ, treatedDemREC
+                return chosen_deg, chosen_obj, treatedAimpQTY, treatedAimpWQ, treatedDemREC, iaoqty, iaowq
             else:
-                return 0, 0, 0, 0, 0
+                return 0, 0, 0, 0, 0, 0, 0
     
     def createCDF(self, score_matrix):
         """Creates a cumulative distribution for an input list of values by normalizing

@@ -427,7 +427,11 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.ui.rec_rainfall_spin.setValue(int(self.module.getParameter("rain_length")))
 
         self.ui.swh_benefits_check.setChecked(bool(self.module.getParameter("swh_benefits")))
-
+        self.ui.rec_unitrunoff_box.setText(str(self.module.getParameter("swh_unitrunoff")))
+        self.ui.rec_unitrunoff_auto.setChecked(bool(self.module.getParameter("swh_unitrunoff_auto")))
+        self.swh_benefits_update()
+        QtCore.QObject.connect(self.ui.swh_benefits_check, QtCore.SIGNAL("clicked()"), self.swh_benefits_update)
+        QtCore.QObject.connect(self.ui.rec_unitrunoff_auto, QtCore.SIGNAL("clicked()"), self.swh_benefits_update)
 
         if self.module.getParameter("WEFstatus") == 1:
             self.ui.WEF_consider.setChecked(1)
@@ -877,6 +881,13 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.ui.bottomlines_socW_spin.setValue(int(self.module.getParameter("bottomlines_soc_w")))
 
         #-------- EVALUATION SCOPE & METHOD -----------------------------------#
+        if self.module.getParameter("score_strat") == "SNP":
+            self.ui.eval_methodscore_combo.setCurrentIndex(0)
+        elif self.module.getParameter("score_strat") == "SLP":
+            self.ui.eval_methodscore_combo.setCurrentIndex(1)
+        else:
+            self.ui.eval_methodscore_combo.setCurrentIndex(2)
+
         if self.module.getParameter("score_method") == "WPM":
             self.ui.eval_method_combo.setCurrentIndex(0)
         elif self.module.getParameter("score_method") == "WSM":
@@ -895,6 +906,8 @@ class TechplacementGUILaunch(QtGui.QDialog):
             self.ui.radioScoreMin.setChecked(True)
         if self.module.getParameter("ingroup_scoring") == "Max":
             self.ui.radioScoreMax.setChecked(True)
+
+        self.ui.iao_influence_spin.setValue(int(self.module.getParameter("iao_influence")))
 
         #-------- RANKING OF STRATEGIES ---------------------------------------#
         if self.module.getParameter("ranktype") == "RK":
@@ -1046,6 +1059,14 @@ class TechplacementGUILaunch(QtGui.QDialog):
             self.ui.WEF_distribution_combo.setEnabled(1)
             self.ui.WEF_distribution_select.setEnabled(1)
             self.ui.WEF_distribution_check.setEnabled(1)
+
+    def swh_benefits_update(self):
+        if self.ui.swh_benefits_check.isChecked():
+            self.ui.rec_unitrunoff_auto.setEnabled(1)
+            self.ui.rec_unitrunoff_box.setEnabled(int(not(self.ui.rec_unitrunoff_auto.isChecked())))
+        else:
+            self.ui.rec_unitrunoff_auto.setEnabled(0)
+            self.ui.rec_unitrunoff_box.setEnabled(0)
 
     ### TECHNOLOGIES TABS ###
 
@@ -1297,6 +1318,8 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("sb_method", str(self.sbmethod[self.ui.rec_assessment_combo.currentIndex()]))
         self.module.setParameter("rain_length", float(self.ui.rec_rainfall_spin.value()))
         self.module.setParameter("swh_benefits", int(self.ui.swh_benefits_check.isChecked()))
+        self.module.setParameter("swh_unitrunoff", float(self.ui.rec_unitrunoff_box.text()))
+        self.module.setParameter("swh_unitrunoff_auto", int(self.ui.rec_unitrunoff_auto.isChecked()))
 
         #######################################
         #Choose & Customize Technologies Tab
@@ -1541,6 +1564,11 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("score_method", score_method_matrix[self.ui.eval_method_combo.currentIndex()])
 
         self.module.setParameter("scope_stoch", int(self.ui.scope_stoch_check.isChecked()))
+
+        score_strat_matrix = ["SNP", "SLP", "SPP"]
+        self.module.setParameter("score_strat", score_strat_matrix[self.ui.eval_methodscore_combo.currentIndex()])
+
+        self.module.setParameter("iao_influence", float(self.ui.iao_influence_spin.value()))
 
         if self.ui.radioScoreAvg.isChecked() == True:
             ingroup_scoring = "Avg"
