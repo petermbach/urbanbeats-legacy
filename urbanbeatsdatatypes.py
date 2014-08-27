@@ -284,6 +284,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
     fielddefmatrix.append(ogr.FieldDefn("HDRCarPark", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("DemAptI", ogr.OFTReal))
 
+    fielddefmatrix.append(ogr.FieldDefn("LIjobs", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("LIestates", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("avSt_LI", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("LIAfront", ogr.OFTReal))
@@ -300,6 +301,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
     fielddefmatrix.append(ogr.FieldDefn("LI_IDD", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("LI_OAD", ogr.OFTReal))
 
+    fielddefmatrix.append(ogr.FieldDefn("HIjobs", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("HIestates", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("avSt_HI", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("HIAfront", ogr.OFTReal))
@@ -316,6 +318,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
     fielddefmatrix.append(ogr.FieldDefn("HI_IDD", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("HI_OAD", ogr.OFTReal))
 
+    fielddefmatrix.append(ogr.FieldDefn("COMjobs", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("COMestates", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("avSt_COM", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("COMAfront", ogr.OFTReal))
@@ -332,6 +335,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
     fielddefmatrix.append(ogr.FieldDefn("COM_IDD", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("COM_OAD", ogr.OFTReal))
 
+    fielddefmatrix.append(ogr.FieldDefn("ORCjobs", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("ORCestates", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("avSt_ORC", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("ORCAfront", ogr.OFTReal))
@@ -518,6 +522,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         feature.SetField("HDRCarPark", currentAttList.getAttribute("HDRCarPark"))
         feature.SetField("DemAptI", currentAttList.getAttribute("DemAptI"))
 
+        feature.SetField("LIjobs", currentAttList.getAttribute("LIjobs"))
         feature.SetField("LIestates", currentAttList.getAttribute("LIestates"))
         feature.SetField("avSt_LI", currentAttList.getAttribute("avSt_LI"))
         feature.SetField("LIAfront", currentAttList.getAttribute("LIAfront"))
@@ -534,6 +539,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         feature.SetField("LI_IDD", currentAttList.getAttribute("LI_IDD"))
         feature.SetField("LI_OAD", currentAttList.getAttribute("LI_OAD"))
 
+        feature.SetField("HIjobs", currentAttList.getAttribute("HIjobs"))
         feature.SetField("HIestates", currentAttList.getAttribute("HIestates"))
         feature.SetField("avSt_HI", currentAttList.getAttribute("avSt_HI"))
         feature.SetField("HIAfront", currentAttList.getAttribute("HIAfront"))
@@ -550,6 +556,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         feature.SetField("HI_IDD", currentAttList.getAttribute("HI_IDD"))
         feature.SetField("HI_OAD", currentAttList.getAttribute("HI_OAD"))
 
+        feature.SetField("COMjobs", currentAttList.getAttribute("COMjobs"))
         feature.SetField("COMestates", currentAttList.getAttribute("COMestates"))
         feature.SetField("avSt_COM", currentAttList.getAttribute("avSt_COM"))
         feature.SetField("COMAfront", currentAttList.getAttribute("COMAfront"))
@@ -566,6 +573,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         feature.SetField("COM_IDD", currentAttList.getAttribute("COM_IDD"))
         feature.SetField("COM_OAD", currentAttList.getAttribute("COM_OAD"))
 
+        feature.SetField("ORCjobs", currentAttList.getAttribute("ORCjobs"))
         feature.SetField("ORCestates", currentAttList.getAttribute("ORCestates"))
         feature.SetField("avSt_ORC", currentAttList.getAttribute("avSt_ORC"))
         feature.SetField("ORCAfront", currentAttList.getAttribute("ORCAfront"))
