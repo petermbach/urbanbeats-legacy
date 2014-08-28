@@ -272,7 +272,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
     fielddefmatrix.append(ogr.FieldDefn("ResLotEIA", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("ResGarden", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("DemPrivI", ogr.OFTReal))
-    fielddefmatrix.append(ogr.FieldDefn("ResRoofCon", ogr.OFTReal))
+    fielddefmatrix.append(ogr.FieldDefn("ResRoofCon", ogr.OFTString))
     fielddefmatrix.append(ogr.FieldDefn("HDRFlats", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("HDRRoofA", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("HDROccup", ogr.OFTReal))
