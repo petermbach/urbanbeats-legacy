@@ -315,8 +315,8 @@ def lookupSWHbenefit(systype, targets, swhbenefitstable):
         #Work out the m and b values by interpolation
         # print "CURTARGET", curtarget
         if curtarget in curpollT[2]:        #If the target is identical to the target for which m and b values exist then simply select
-            m.append(curpoll[3][curpollT.index(curtarget)])
-            bthresh.append(curpoll[4][curpollT.index(curtarget)])
+            m.append(curpollT[3][curpollT[2].index(curtarget)])
+            bthresh.append(curpollT[4][curpollT[2].index(curtarget)])
         elif curtarget < min(curpollT[2]):  #if the target is less than the minimum in the table, use the minimum benefits
             m.append(curpoll[3][curpollT.index(min(curpollT[2]))])
             bthresh.append(curpoll[4][curpollT.index(min(curpollT[2]))])
