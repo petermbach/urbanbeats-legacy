@@ -2682,7 +2682,7 @@ class Techplacement(UBModule):
                 
                 Aimptotreat = neigh_deg * AblockEIA
 
-                if bool(int(self.ration_harvest)):
+                if bool(int(self.ration_harvest)) and neighSWstores != np.inf:
                     curStoreObjs = neighSWstores[neigh_deg]
                     for supplyincr in self.neigh_incr:
                         if supplyincr == 0: 
@@ -2781,7 +2781,7 @@ class Techplacement(UBModule):
                 #self.notify("Aimp to treat: "+str(Aimptotreat))
                 
                 #Loop across all options in curStoreObj
-                if bool(int(self.ration_harvest)):
+                if bool(int(self.ration_harvest)) and subbasSWstores != np.inf:
                     curStoreObjs = subbasSWstores[bas_deg]  #current dict of possible stores based on harvestable area (bas_Deg)
                     for supplyincr in self.subbas_incr:
                         if supplyincr == 0 or Aimptotreat < 0.0001: 
