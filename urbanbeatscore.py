@@ -32,7 +32,7 @@ import urbanbeatsdatatypes as ubdata
 import urbanbeatsfiles as ubfiles
 
 #Modules
-import md_delinblocks, md_urbplanbb, md_techplacement, md_techimplement#, md_perfassess
+import md_delinblocks, md_urbplanbb, md_techplacement, md_techimplement, md_perfassess
 import md_getpreviousblocks, md_getsystems, md_writeMUSICsim
 
 # ------ CLASS DEFINITION -------
@@ -223,9 +223,9 @@ class UrbanBeatsSim(threading.Thread):
                 for i in range(int(paramlength-1)):
                     self.__techimplement.append(md_techimplement.Techimplement(self, i+1))
 
-        #if self.__projectinfo["sf_perfinclude"] == 1:
-        #    self.__perf_assess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
-        #    #No varying allowed in a static simulation as we are assuming that we're simulating the same catchment
+        if self.__projectinfo["sf_perfinclude"] == 1:
+           self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
+           #No varying allowed in a static simulation as we are assuming that we're simulating the same catchment
 
         self.__narratives = []
         for i in range(int(paramlength)):
@@ -289,11 +289,11 @@ class UrbanBeatsSim(threading.Thread):
             for i in range(int(paramlength-1)):
                 self.__techimplement.append(md_techimplement.Techimplement(self, i+1))
 
-        #if self.__projectinfo["df_perfinclude"] != 0:
-        #    self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
-        #    if self.__projectinfo["df_perfconstant"] == 0:
-        #        for i in range(int(paramlength-1)):
-        #            self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", i+1))
+        if self.__projectinfo["df_perfinclude"] != 0:
+           self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
+           if self.__projectinfo["df_perfconstant"] == 0:
+               for i in range(int(paramlength-1)):
+                   self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", i+1))
 
         self.__narratives = []
         for i in range(int(paramlength)):
@@ -491,7 +491,7 @@ class UrbanBeatsSim(threading.Thread):
         elif modulevector == "techimplement":
             vec_length = len(self.__techimplement)
         elif modulevector == "perf_assess":
-            vec_length = len(self.__perf_assess)
+            vec_length = len(self.__perfassess)
         return vec_length
     
     def getModuleDelinblocks(self):

@@ -172,14 +172,14 @@ class NewProjectSetup(QtGui.QDialog):
             yearstring = yearstring.rstrip(',')
             return yearstring
         elif dataformat == "MOD":   #If creating the parameter list.
-            if len(datavalues) == 0:
+            if len(datavalues) <= 4:
                 return []
             yeararray = datavalues.split(',')
             for i in range(len(yeararray)):
                 yeararray[i] = int(yeararray[i])
             return yeararray
         else:
-            return None
+            return []
 
     def adjTechplaceBoxes(self):
         """If "include techplacement" is not checked, then disabled a bunch of buttons thereafter"""

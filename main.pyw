@@ -39,6 +39,7 @@ import md_delinblocksguic
 import md_urbplanbbguic
 import md_techplacementguic
 import md_techimplementguic
+import md_perfassessguic
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -133,9 +134,9 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.pc_techplacement, QtCore.SIGNAL("clicked()"), self.callTechplacementGui)
         self.connect(self.ui.actionTechnology_Implementation, QtCore.SIGNAL("triggered()"), self.callTechimplementGui)
         self.connect(self.ui.ic_techimplement, QtCore.SIGNAL("clicked()"), self.callTechimplementGui)
-        #self.connect(self.ui.actionPlanning_Cycle, QtCore.SIGNAL("triggered()"), lambda ctype="pc": self.callPrepareperfGui(ctype))
+        self.connect(self.ui.actionPlanning_Cycle, QtCore.SIGNAL("triggered()"), lambda ctype="pc": self.callPrepareperfGui(ctype))
         #self.connect(self.ui.actionImplementation_Cycle, QtCore.SIGNAL("triggered()"), lambda ctype="ic": self.callPrepareperfGui(ctype))
-        #self.connect(self.ui.pa_assesspc, QtCore.SIGNAL("clicked()"), lambda ctype="pc": self.callPrepareperfGui(ctype))
+        self.connect(self.ui.pa_assesspc, QtCore.SIGNAL("clicked()"), lambda ctype="pc": self.callPrepareperfGui(ctype))
         #self.connect(self.ui.pa_assessic, QtCore.SIGNAL("clicked()"), lambda ctype="ic": self.callPrepareperfGui(ctype))
         self.connect(self.ui.actionVerify_Simulation_Setup, QtCore.SIGNAL("triggered()"), self.verifySimulation)
         self.connect(self.ui.resetSimButton, QtCore.SIGNAL("clicked()"), self.resetSimulationAssets)
@@ -804,16 +805,21 @@ class MainWindow(QtGui.QMainWindow):
            tabindex = self.ui.simconfig_tabs.currentIndex()
         techimplementguic = md_techimplementguic.TechimplementGUILaunch(self.getActiveSimulationObject(), tabindex)
         techimplementguic.exec_()
-#
-#    def callPrepareperfGui(self, cycle):
-#        if cycle == "pc":
-#            self.printc("Planning Cycle Performance Assessment Setup")
-#        else:
-#            self.printc("Implementation Cycle Performance Assessment Setup")
-#        #call the GUI based on which cycle you are setting parameters for.        
-#        #to do, call from VIBe
-#        pass
-#    
+
+    def callPrepareperfGui(self, cycle):
+        if cycle == "pc":
+            self.printc("Planning Cycle Performance Assessment Setup")
+            if self.__activeSimulationObject.getLengthOfModulesVector("perf_assess") == 1:
+                tabindex = 0
+            else:
+                tabindex = self.ui.simconfig_tabs.currentIndex()
+            perfassessguic = md_perfassessguic.PerfAssessGUILaunch(self.getActiveSimulationObject(), tabindex)
+            perfassessguic.exec_()
+        else:
+            self.printc("Implementation Cycle Performance Assessment Setup")
+        #call the GUI based on which cycle you are setting parameters for.
+        #to do, call from VIBe
+
     def customize_dataset(self, curstate):
         tabindex = self.ui.simconfig_tabs.currentIndex()       
         customdatadialog = ubdialogs.DataSelectGUILaunch(self.getActiveSimulationObject(), curstate, tabindex)
