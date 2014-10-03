@@ -460,9 +460,9 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         if map_attr.getAttribute("include_local_map"): feature.SetField("NFacil", currentAttList.getAttribute("NFacil"))
         if map_attr.getAttribute("patchdelin"): feature.SetField("Patches", currentAttList.getAttribute("Patches"))
         if map_attr.getAttribute("spatialmetrics"): feature.SetField("Rich", currentAttList.getAttribute("Rich"))            
-        if map_attr.getAttribute("spatialmetrics"): feature.SetField("ShDIV", currentAttList.getAttribute("ShDIV"))           
-        if map_attr.getAttribute("spatialmetrics"): feature.SetField("ShDOM", currentAttList.getAttribute("ShDOM"))          
-        if map_attr.getAttribute("spatialmetrics"): feature.SetField("ShEVEN", currentAttList.getAttribute("ShEVEN"))          
+        if map_attr.getAttribute("spatialmetrics"): feature.SetField("ShDIV", currentAttList.getAttribute("ShDiv"))
+        if map_attr.getAttribute("spatialmetrics"): feature.SetField("ShDOM", currentAttList.getAttribute("ShDom"))
+        if map_attr.getAttribute("spatialmetrics"): feature.SetField("ShEVEN", currentAttList.getAttribute("ShEven"))
         
         feature.SetField("downID", currentAttList.getAttribute("downID"))          
         feature.SetField("maxdZ", currentAttList.getAttribute("maxdZ"))           
