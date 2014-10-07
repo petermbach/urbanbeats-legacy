@@ -680,7 +680,7 @@ class UrbanBeatsSim(threading.Thread):
             urbplanbb.attach(self.__observers)  #Register the observer
             urbplanbb.run()
             urbplanbb.detach(self.__observers)
-            self.updateObservers("PROGRESSUPDATE||"+str(int(50.0*progressincrement+incrementcount)))
+            self.updateObservers("PROGRESSUPDATE||"+str(int(40.0*progressincrement+incrementcount)))
 
             #(4) Techplacement
             if len(self.__techplacement) > 0:
@@ -700,7 +700,7 @@ class UrbanBeatsSim(threading.Thread):
                 getSystems.attach(self.__observers)
                 getSystems.run()
                 getSystems.detach(self.__observers)
-                self.updateObservers("PROGRESSUPDATE||"+str(int(60.0*progressincrement+incrementcount)))
+                self.updateObservers("PROGRESSUPDATE||"+str(int(50.0*progressincrement+incrementcount)))
 
                 techplacement = self.getModuleTechplacement(tab)
                 techplacement.setParameter("num_output_strats", global_options["numstrats"])
@@ -713,16 +713,18 @@ class UrbanBeatsSim(threading.Thread):
                 techplacement.run()
                 techplacement.detach(self.__observers)
 
-                if int(global_options["MUSICwrite"]) == 1:
-                    self.updateObservers("Creating MUSIC Simulation File...")
-                    musicExport = self.__musicexport[0]
-                    musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
-                    musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
-                    musicExport.setParameter("masterplanmodel", 1)
-                    musicExport.setParameter("currentyear", current)
-                    musicExport.attach(self.__observers)
-                    musicExport.run()
-                    musicExport.detach(self.__observers)
+            self.updateObservers("PROGRESSUPDATE||"+str(int(70.0*progressincrement+incrementcount)))
+
+            #(4.5) Performance Assessment
+            if len(self.__perfassess) > 0:
+                perfassess = self.getModulePerfAssess(tab)
+                perfassess.setParameter("musicfilepathname", str(self.getActiveProjectPath()))
+                perfassess.setParameter("musicfilename", str(self.getGISExportDetails()["Filename"]))
+                perfassess.setParameter("masterplanmodel", 1)
+                perfassess.setParameter("currentyear", current)
+                perfassess.attach(self.__observers)
+                perfassess.run()
+                perfassess.detach(self.__observers)
 
             self.updateObservers("PROGRESSUPDATE||"+str(int(80.0*progressincrement+incrementcount)))
 
@@ -769,7 +771,7 @@ class UrbanBeatsSim(threading.Thread):
             urbplanbb.attach(self.__observers)  #Register the observer
             urbplanbb.run()
             urbplanbb.detach(self.__observers)
-            self.updateObservers("PROGRESSUPDATE||"+str(int(50*progressincrement+incrementcount)))
+            self.updateObservers("PROGRESSUPDATE||"+str(int(40.0*progressincrement+incrementcount)))
 
             #(3) Techimplement
             masterplansysfile = str(self.getActiveProjectPath()+"/"+prevfile_basename_pc+"_PlannedWSUD"+str(1)+".shp") #stratID = 1
@@ -782,7 +784,7 @@ class UrbanBeatsSim(threading.Thread):
             getSystems.attach(self.__observers)
             getSystems.run()
             getSystems.detach(self.__observers)
-            self.updateObservers("PROGRESSUPDATE||"+str(int(70*progressincrement+incrementcount)))
+            self.updateObservers("PROGRESSUPDATE||"+str(int(50.0*progressincrement+incrementcount)))
 
             techimplement = self.getModuleTechimplement(tab)
             techimplement.setParameter("currentyear", current)
@@ -791,16 +793,18 @@ class UrbanBeatsSim(threading.Thread):
             techimplement.run()
             techimplement.detach(self.__observers)
 
-            if int(global_options["MUSICwrite"]) == 1:
-                self.updateObservers("Creating MUSIC Simulation File...")
-                musicExport = self.__musicexport[0]
-                musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
-                musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
-                musicExport.setParameter("masterplanmodel", 0)
-                musicExport.setParameter("currentyear", current)
-                musicExport.attach(self.__observers)
-                musicExport.run()
-                musicExport.detach(self.__observers)
+            # if int(global_options["MUSICwrite"]) == 1:
+            #     self.updateObservers("Creating MUSIC Simulation File...")
+            #     musicExport = self.__musicexport[0]
+            #     musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
+            #     musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
+            #     musicExport.setParameter("masterplanmodel", 0)
+            #     musicExport.setParameter("currentyear", current)
+            #     musicExport.attach(self.__observers)
+            #     musicExport.run()
+            #     musicExport.detach(self.__observers)
+
+            self.updateObservers("PROGRESSUPDATE||"+str(int(70*progressincrement+incrementcount)))
 
             self.updateObservers("PROGRESSUPDATE||"+str(int(90*progressincrement+incrementcount)))
 

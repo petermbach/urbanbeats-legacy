@@ -35,7 +35,7 @@ def writeMUSICheader(f,climatepath):
     f.write("====================================================================================\n")
     f.write("VersionNumber,200,{MUSIC Setup File version number}\n")
     f.write("------------------------------------------------------------------------------------\n")
-    f.write("MeteorologicalTemplate,"+path+",{MLB Filename}\n")
+    f.write("MeteorologicalTemplate,"+climatepath+",{MLB Filename}\n")
     f.write("------------------------------------------------------------------------------------\n")
     f.write("====================================================================================\n")
     return True

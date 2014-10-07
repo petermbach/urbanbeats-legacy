@@ -351,20 +351,7 @@ class PreferencesDialogLaunch(QtGui.QDialog):
         else:
             self.ui.tech_highest_radio.setChecked(1)
 
-        self.ui.perf_writeMUSICcheck.setChecked(self.module.getConfigOptions("MUSICwrite"))
         self.ui.techplan_strats_spin.setValue(self.module.getConfigOptions("numstrats"))
-
-        self.ui.perf_musicauto_check.setChecked(bool(int(self.module.getConfigOptions("MUSICauto"))))
-        self.ui.perf_musicpath_box.setText(self.module.getConfigOptions("MUSICpath"))
-        self.connect(self.ui.perf_musicauto_check, QtCore.SIGNAL("clicked()"), self.enabledisableMUSICoptions)
-        self.connect(self.ui.perf_musicpath_browse, QtCore.SIGNAL("clicked()"), self.searchMUSICexe)
-        self.enabledisableMUSICoptions()
-
-        musicversions = ["Version5", "Version6"]
-        self.ui.perf_musicvercombo.setCurrentIndex(int(musicversions.index(self.module.getConfigOptions("MUSICver"))))
-
-        self.ui.perf_tte_check.setChecked(bool(int(self.module.getConfigOptions("MUSICtte"))))
-        self.ui.perf_flux_check.setChecked(bool(int(self.module.getConfigOptions("MUSICflux"))))
 
         if self.module.getConfigOptions("mapstyle") == "Style1":
             self.ui.style1_radio.setChecked(1)
@@ -385,27 +372,6 @@ class PreferencesDialogLaunch(QtGui.QDialog):
 
         self.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
         self.connect(self.ui.optionsReset_button, QtCore.SIGNAL("clicked()"), self.reset_values)
-
-    def enabledisableMUSICoptions(self):
-        if self.ui.perf_musicauto_check.isChecked():
-            self.ui.perf_flux_check.setEnabled(1)
-            self.ui.perf_tte_check.setEnabled(1)
-            self.ui.perf_musicpath_box.setEnabled(1)
-            self.ui.perf_musicpath_browse.setEnabled(1)
-            self.ui.perf_musicvercombo.setEnabled(1)
-        else:
-            self.ui.perf_flux_check.setEnabled(0)
-            self.ui.perf_tte_check.setEnabled(0)
-            self.ui.perf_musicpath_box.setEnabled(0)
-            self.ui.perf_musicpath_browse.setEnabled(0)
-            self.ui.perf_musicvercombo.setEnabled(0)
-        return True
-
-    def searchMUSICexe(self):
-        fname = QtGui.QFileDialog.getOpenFileName(self, "Locate MUSIC .exe...", os.curdir, str("Executable (*.exe)"))
-        if fname:
-            self.ui.perf_musicpath_box.setText(fname)
-        return True
 
     def enabledisableMapStyle(self):
         if self.ui.stylecustom_radio.isChecked():
@@ -443,16 +409,6 @@ class PreferencesDialogLaunch(QtGui.QDialog):
             self.module.setConfigOptions("decisiontype", "H")
 
         self.module.setConfigOptions("numstrats", int(self.ui.techplan_strats_spin.value()))
-
-        self.module.setConfigOptions("MUSICwrite", int(self.ui.perf_writeMUSICcheck.isChecked()))
-        self.module.setConfigOptions("MUSICauto", int(self.ui.perf_musicauto_check.isChecked()))
-        self.module.setConfigOptions("MUSICpath", str(self.ui.perf_musicpath_box.text()))
-
-        musicversions = ["Version5", "Version6"]
-        self.module.setConfigOptions("MUSICver", musicversions[self.ui.perf_musicvercombo.currentIndex()])
-
-        self.module.setConfigOptions("MUSICtte", int(self.ui.perf_tte_check.isChecked()))
-        self.module.setConfigOptions("MUSICflux", int(self.ui.perf_flux_check.isChecked()))
 
         if self.ui.style1_radio.isChecked():
             self.module.setConfigOptions("mapstyle", "Style1")
