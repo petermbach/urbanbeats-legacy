@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perfassessgui.ui'
 #
-# Created: Fri Oct 03 14:37:39 2014
+# Created: Tue Oct 07 11:08:31 2014
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -97,15 +97,15 @@ class Ui_Perfconfig_Dialog(object):
         self.simulationconfig_widget_3.setMinimumSize(QtCore.QSize(0, 100))
         self.simulationconfig_widget_3.setObjectName(_fromUtf8("simulationconfig_widget_3"))
         self.perf_MUSIC = QtGui.QCheckBox(self.simulationconfig_widget_3)
-        self.perf_MUSIC.setGeometry(QtCore.QRect(60, 20, 291, 17))
-        self.perf_MUSIC.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "MUSIC Model Creation", None, QtGui.QApplication.UnicodeUTF8))
+        self.perf_MUSIC.setGeometry(QtCore.QRect(60, 20, 361, 17))
+        self.perf_MUSIC.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "MUSIC Model Creation, Simulation and Assessment", None, QtGui.QApplication.UnicodeUTF8))
         self.perf_MUSIC.setObjectName(_fromUtf8("perf_MUSIC"))
         self.perf_Economics = QtGui.QCheckBox(self.simulationconfig_widget_3)
-        self.perf_Economics.setGeometry(QtCore.QRect(60, 60, 291, 17))
+        self.perf_Economics.setGeometry(QtCore.QRect(60, 60, 361, 17))
         self.perf_Economics.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Economic Analysis", None, QtGui.QApplication.UnicodeUTF8))
         self.perf_Economics.setObjectName(_fromUtf8("perf_Economics"))
         self.perf_Microclimate = QtGui.QCheckBox(self.simulationconfig_widget_3)
-        self.perf_Microclimate.setGeometry(QtCore.QRect(60, 100, 291, 17))
+        self.perf_Microclimate.setGeometry(QtCore.QRect(60, 100, 361, 17))
         self.perf_Microclimate.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Microclimate Analysis", None, QtGui.QApplication.UnicodeUTF8))
         self.perf_Microclimate.setObjectName(_fromUtf8("perf_Microclimate"))
         self.perf_EPANET = QtGui.QCheckBox(self.simulationconfig_widget_3)
@@ -213,7 +213,7 @@ class Ui_Perfconfig_Dialog(object):
         self.scrollArea_7.setWidgetResizable(True)
         self.scrollArea_7.setObjectName(_fromUtf8("scrollArea_7"))
         self.scrollAreaWidgetContents_7 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_7.setGeometry(QtCore.QRect(0, 0, 463, 278))
+        self.scrollAreaWidgetContents_7.setGeometry(QtCore.QRect(0, 0, 463, 436))
         self.scrollAreaWidgetContents_7.setObjectName(_fromUtf8("scrollAreaWidgetContents_7"))
         self.verticalLayout_12 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_7)
         self.verticalLayout_12.setObjectName(_fromUtf8("verticalLayout_12"))
@@ -231,7 +231,7 @@ class Ui_Perfconfig_Dialog(object):
         self.simulationconfig_widget.setMinimumSize(QtCore.QSize(0, 100))
         self.simulationconfig_widget.setObjectName(_fromUtf8("simulationconfig_widget"))
         self.musicsplit_check = QtGui.QCheckBox(self.simulationconfig_widget)
-        self.musicsplit_check.setGeometry(QtCore.QRect(20, 70, 381, 17))
+        self.musicsplit_check.setGeometry(QtCore.QRect(10, 70, 381, 17))
         self.musicsplit_check.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Write a separate simulation file for each basin", None, QtGui.QApplication.UnicodeUTF8))
         self.musicsplit_check.setObjectName(_fromUtf8("musicsplit_check"))
         self.music_browse_pathbox = QtGui.QLineEdit(self.simulationconfig_widget)
@@ -243,14 +243,14 @@ class Ui_Perfconfig_Dialog(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"right\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">.mlb Climate file Path:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">.mlb Climate file Path:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.music_browse_lbl.setObjectName(_fromUtf8("music_browse_lbl"))
         self.music_browse_button = QtGui.QToolButton(self.simulationconfig_widget)
         self.music_browse_button.setGeometry(QtCore.QRect(340, 40, 61, 19))
         self.music_browse_button.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Browse...", None, QtGui.QApplication.UnicodeUTF8))
         self.music_browse_button.setObjectName(_fromUtf8("music_browse_button"))
         self.music_version = QtGui.QLabel(self.simulationconfig_widget)
-        self.music_version.setGeometry(QtCore.QRect(20, 10, 121, 20))
+        self.music_version.setGeometry(QtCore.QRect(10, 10, 121, 20))
         self.music_version.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -258,12 +258,12 @@ class Ui_Perfconfig_Dialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Select MUSIC Version:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.music_version.setObjectName(_fromUtf8("music_version"))
         self.music_version_combo = QtGui.QComboBox(self.simulationconfig_widget)
-        self.music_version_combo.setGeometry(QtCore.QRect(130, 10, 111, 21))
+        self.music_version_combo.setGeometry(QtCore.QRect(130, 10, 201, 21))
         self.music_version_combo.setObjectName(_fromUtf8("music_version_combo"))
         self.music_version_combo.addItem(_fromUtf8(""))
-        self.music_version_combo.setItemText(0, QtGui.QApplication.translate("Perfconfig_Dialog", "Version 5", None, QtGui.QApplication.UnicodeUTF8))
+        self.music_version_combo.setItemText(0, QtGui.QApplication.translate("Perfconfig_Dialog", "eWater MUSIC Version 5", None, QtGui.QApplication.UnicodeUTF8))
         self.music_version_combo.addItem(_fromUtf8(""))
-        self.music_version_combo.setItemText(1, QtGui.QApplication.translate("Perfconfig_Dialog", "Version 6", None, QtGui.QApplication.UnicodeUTF8))
+        self.music_version_combo.setItemText(1, QtGui.QApplication.translate("Perfconfig_Dialog", "eWater MUSIC Version 6", None, QtGui.QApplication.UnicodeUTF8))
         self.verticalLayout_12.addWidget(self.simulationconfig_widget)
         self.musicwsudsetup_lbl = QtGui.QLabel(self.scrollAreaWidgetContents_7)
         self.musicwsudsetup_lbl.setMinimumSize(QtCore.QSize(445, 16))
@@ -276,10 +276,10 @@ class Ui_Perfconfig_Dialog(object):
         self.musicwsudsetup_lbl.setObjectName(_fromUtf8("musicwsudsetup_lbl"))
         self.verticalLayout_12.addWidget(self.musicwsudsetup_lbl)
         self.simulationconfig_widget_2 = QtGui.QWidget(self.scrollAreaWidgetContents_7)
-        self.simulationconfig_widget_2.setMinimumSize(QtCore.QSize(0, 100))
+        self.simulationconfig_widget_2.setMinimumSize(QtCore.QSize(0, 90))
         self.simulationconfig_widget_2.setObjectName(_fromUtf8("simulationconfig_widget_2"))
         self.musicBF_params = QtGui.QLabel(self.simulationconfig_widget_2)
-        self.musicBF_params.setGeometry(QtCore.QRect(10, 10, 151, 20))
+        self.musicBF_params.setGeometry(QtCore.QRect(10, 5, 151, 20))
         self.musicBF_params.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -287,10 +287,10 @@ class Ui_Perfconfig_Dialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Bioretention Parameters:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.musicBF_params.setObjectName(_fromUtf8("musicBF_params"))
         self.musicBF_TN_box = QtGui.QLineEdit(self.simulationconfig_widget_2)
-        self.musicBF_TN_box.setGeometry(QtCore.QRect(270, 40, 61, 20))
+        self.musicBF_TN_box.setGeometry(QtCore.QRect(270, 30, 61, 20))
         self.musicBF_TN_box.setObjectName(_fromUtf8("musicBF_TN_box"))
         self.musicBF_TN_lbl = QtGui.QLabel(self.simulationconfig_widget_2)
-        self.musicBF_TN_lbl.setGeometry(QtCore.QRect(30, 40, 181, 20))
+        self.musicBF_TN_lbl.setGeometry(QtCore.QRect(30, 30, 181, 20))
         self.musicBF_TN_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -298,7 +298,7 @@ class Ui_Perfconfig_Dialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">TN Content of Filter Media [mg/kg]</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.musicBF_TN_lbl.setObjectName(_fromUtf8("musicBF_TN_lbl"))
         self.musicBF_ortho_lbl = QtGui.QLabel(self.simulationconfig_widget_2)
-        self.musicBF_ortho_lbl.setGeometry(QtCore.QRect(30, 70, 241, 20))
+        self.musicBF_ortho_lbl.setGeometry(QtCore.QRect(30, 55, 241, 20))
         self.musicBF_ortho_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -306,9 +306,55 @@ class Ui_Perfconfig_Dialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Orthophosphate Content of Filter Media [mg/kg]</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.musicBF_ortho_lbl.setObjectName(_fromUtf8("musicBF_ortho_lbl"))
         self.musicBF_ortho_box = QtGui.QLineEdit(self.simulationconfig_widget_2)
-        self.musicBF_ortho_box.setGeometry(QtCore.QRect(270, 70, 61, 20))
+        self.musicBF_ortho_box.setGeometry(QtCore.QRect(270, 55, 61, 20))
         self.musicBF_ortho_box.setObjectName(_fromUtf8("musicBF_ortho_box"))
         self.verticalLayout_12.addWidget(self.simulationconfig_widget_2)
+        self.musicwsudsetup_lbl_2 = QtGui.QLabel(self.scrollAreaWidgetContents_7)
+        self.musicwsudsetup_lbl_2.setMinimumSize(QtCore.QSize(445, 16))
+        self.musicwsudsetup_lbl_2.setMaximumSize(QtCore.QSize(16777215, 16))
+        self.musicwsudsetup_lbl_2.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Auto-Run Simulations</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicwsudsetup_lbl_2.setObjectName(_fromUtf8("musicwsudsetup_lbl_2"))
+        self.verticalLayout_12.addWidget(self.musicwsudsetup_lbl_2)
+        self.simulationconfig_widget_4 = QtGui.QWidget(self.scrollAreaWidgetContents_7)
+        self.simulationconfig_widget_4.setMinimumSize(QtCore.QSize(0, 150))
+        self.simulationconfig_widget_4.setObjectName(_fromUtf8("simulationconfig_widget_4"))
+        self.musicpath_box = QtGui.QLineEdit(self.simulationconfig_widget_4)
+        self.musicpath_box.setEnabled(False)
+        self.musicpath_box.setGeometry(QtCore.QRect(120, 40, 141, 20))
+        self.musicpath_box.setObjectName(_fromUtf8("musicpath_box"))
+        self.musicpath_lbl = QtGui.QLabel(self.simulationconfig_widget_4)
+        self.musicpath_lbl.setGeometry(QtCore.QRect(10, 40, 111, 16))
+        self.musicpath_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Path to MUSIC.exe:", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicpath_lbl.setObjectName(_fromUtf8("musicpath_lbl"))
+        self.musicpath_browse = QtGui.QPushButton(self.simulationconfig_widget_4)
+        self.musicpath_browse.setEnabled(False)
+        self.musicpath_browse.setGeometry(QtCore.QRect(270, 40, 61, 23))
+        self.musicpath_browse.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Browse...", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicpath_browse.setObjectName(_fromUtf8("musicpath_browse"))
+        self.musicflux_check = QtGui.QCheckBox(self.simulationconfig_widget_4)
+        self.musicflux_check.setEnabled(False)
+        self.musicflux_check.setGeometry(QtCore.QRect(30, 120, 211, 18))
+        self.musicflux_check.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Flow and Pollution Time Series", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicflux_check.setObjectName(_fromUtf8("musicflux_check"))
+        self.musicexport_lbl = QtGui.QLabel(self.simulationconfig_widget_4)
+        self.musicexport_lbl.setGeometry(QtCore.QRect(10, 70, 141, 16))
+        self.musicexport_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Select Results to Export:", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicexport_lbl.setObjectName(_fromUtf8("musicexport_lbl"))
+        self.musictte_check = QtGui.QCheckBox(self.simulationconfig_widget_4)
+        self.musictte_check.setEnabled(False)
+        self.musictte_check.setGeometry(QtCore.QRect(30, 95, 221, 18))
+        self.musictte_check.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Treatment Train Effectiveness", None, QtGui.QApplication.UnicodeUTF8))
+        self.musictte_check.setObjectName(_fromUtf8("musictte_check"))
+        self.musicauto_check = QtGui.QCheckBox(self.simulationconfig_widget_4)
+        self.musicauto_check.setEnabled(False)
+        self.musicauto_check.setGeometry(QtCore.QRect(10, 10, 311, 18))
+        self.musicauto_check.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "AutoRun MUSIC Simulation Files", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicauto_check.setObjectName(_fromUtf8("musicauto_check"))
+        self.verticalLayout_12.addWidget(self.simulationconfig_widget_4)
         self.scrollArea_7.setWidget(self.scrollAreaWidgetContents_7)
         self.verticalLayout_15.addWidget(self.scrollArea_7)
         self.horizontalLayout_9.addWidget(self.general_params)
