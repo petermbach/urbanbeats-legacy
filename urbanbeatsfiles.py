@@ -127,7 +127,8 @@ def saveSimFile(activesim, filename):
     #---OTHER PLANNING-SUPPORT MODULES----
     modulefnames = {"urbplanbb":activesim.getModuleUrbplanbb,
                     "techplacement":activesim.getModuleTechplacement,
-                    "techimplement":activesim.getModuleTechimplement}
+                    "techimplement":activesim.getModuleTechimplement,
+                    "perfassess":activesim.getModulePerfAssess}
     for modname in modulefnames.keys():
         modules = modulefnames[modname](9999)   #Calls the representative function
         for i in range(len(modules)):
@@ -277,7 +278,8 @@ def loadSimFile(activesim, filename, projectpath):
 
     modulenames = {"urbplanbb":activesim.getModuleUrbplanbb,
                     "techplacement":activesim.getModuleTechplacement,
-                    "techimplement":activesim.getModuleTechimplement}
+                    "techimplement":activesim.getModuleTechimplement,
+                    "perfassess":activesim.getModulePerfAssess}
 
     for modname in modulenames.keys():
         modules = modulenames[modname](9999)
@@ -290,7 +292,7 @@ def loadSimFile(activesim, filename, projectpath):
                 data = lines.split("*||*")
                 moduledata[data[0]] = data[1]
             for keys in moduledata.keys():
-                #print keys, (moduledata[keys]), type(curmodule.getParameter(keys))
+                print keys, (moduledata[keys]), type(curmodule.getParameter(keys))
                 if curmodule.getParameterType(keys) == 'BOOL':
                     curmodule.setParameter(keys, type(curmodule.getParameter(keys))(int(float(moduledata[keys]))))
                 elif curmodule.getParameterType(keys) == 'STRING':
@@ -382,5 +384,4 @@ def resetGlobalOptions(root_directory):
     return True
 
 default_global_options = {"defaultmodeller": "<none>", "defaultaffil":"<none>", "iterations":1000, "city": "Melbourne",
-                      "decisiontype":"H", "numstrats":5,  "MUSICwrite":1, "MUSICauto":0, "MUSICpath":"", "MUSICver":"Version5", "MUSICtte":0,
-                      "MUSICflux":0, "mapstyle":"Style1", "tileserverURL":"", "gearth_path": "", "gearth_auto": 0}
+                      "decisiontype":"H", "numstrats":5, "mapstyle":"Style1", "tileserverURL":"", "gearth_path": "", "gearth_auto": 0}
