@@ -64,7 +64,7 @@ def saveSimFile(activesim, filename):
     narratives = activesim.getAllNarratives()       #Obtains all narratives, one narrative per line on the file
     for line in range(len(narratives)):
         nar = narratives[line]
-        f.write(str(nar[0]+"*||*"+nar[1]+"*||*\n"))
+        f.write(str(nar[0])+"*||*"+str(nar[1])+"*||*"+str(nar[2])+"*||*\n")
     f.close()
     archive.add(directory+"/narrative.txt", arcname="narrative.txt")
     tempfiles.append("narrative.txt")
@@ -199,7 +199,7 @@ def loadSimFile(activesim, filename, projectpath):
     tabindex = 0
     for lines in f:
         nar = lines.split('*||*')
-        activesim.setNarrative(tabindex, [nar[0], nar[1]])
+        activesim.setNarrative(tabindex, [nar[0], nar[1], nar[2]])
         tabindex += 1
     f.close()
 

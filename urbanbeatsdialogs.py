@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
 import sys, os, webbrowser
+import ubscripts
 from urbanbeatscore import *
 from PyQt4 import QtGui, QtCore
 
@@ -126,8 +127,7 @@ class NewProjectSetup(QtGui.QDialog):
             self.ui.dynamicinterval_check.setChecked(0)
         self.irregularYearBoxCheck()
 
-        yearstring = self.convertYearList(self.module.getParameter("dyn_irregularyears"), "GUI")
-        self.ui.dynamicinterval_box.setText(yearstring)
+        self.ui.dynamicinterval_box.setText(self.module.getParameter("dyn_irregularyears"))
 
         self.ui.dyn_ubpconstant.setChecked(bool(self.module.getParameter("df_ubpconstant")))
         self.ui.dyn_techplanconstant.setChecked(bool(self.module.getParameter("df_techplaceconstant")))
@@ -162,24 +162,6 @@ class NewProjectSetup(QtGui.QDialog):
             self.ui.dynamicperiod_spin.setEnabled(1)
             self.ui.dynamicstart_spin.setEnabled(1)
             self.ui.dynamicbreaks_spin.setEnabled(1)
-
-
-    def convertYearList(self, datavalues, dataformat):
-        if dataformat == "GUI":     #If transferring data back into the GUI
-            yearstring = ""
-            for i in datavalues:
-                yearstring += str(i)+", "
-            yearstring = yearstring.rstrip(',')
-            return yearstring
-        elif dataformat == "MOD":   #If creating the parameter list.
-            if len(datavalues) <= 4:
-                return []
-            yeararray = datavalues.split(',')
-            for i in range(len(yeararray)):
-                yeararray[i] = int(yeararray[i])
-            return yeararray
-        else:
-            return []
 
     def adjTechplaceBoxes(self):
         """If "include techplacement" is not checked, then disabled a bunch of buttons thereafter"""
@@ -258,7 +240,7 @@ class NewProjectSetup(QtGui.QDialog):
             self.module.setParameter("dyn_startyear", self.ui.dynamicstart_spin.value())
             self.module.setParameter("dyn_breaks", self.ui.dynamicbreaks_spin.value())
             self.module.setParameter("dyn_irregulardt", int(self.ui.dynamicinterval_check.isChecked()))
-            self.module.setParameter("dyn_irregularyears", self.convertYearList(str(self.ui.dynamicinterval_box.text()), "MOD"))
+            self.module.setParameter("dyn_irregularyears", str(self.ui.dynamicinterval_box.text()))
 
             self.module.setParameter("df_ubpconstant", int(self.ui.dyn_ubpconstant.isChecked()))
             self.module.setParameter("df_techplaceconstant", int(self.ui.dyn_techplanconstant.isChecked()))
@@ -293,7 +275,7 @@ class NarrativesGuiLaunch(QtGui.QDialog):
                 startyear = self.module.getParameter("dyn_startyear")
                 timestep = float(self.module.getParameter("dyn_totyears"))/float(self.module.getParameter("dyn_breaks"))
             else:
-                modelyears = self.module.getParameter("dyn_irregularyears")
+                modelyears = ubscripts.convertYearList(self.module.getParameter("dyn_irregularyears"), "MOD")
                 startyear = modelyears[0]
             if self.tabindex == 0:
                 self.ui.year_spin.setEnabled(0)
@@ -301,7 +283,7 @@ class NarrativesGuiLaunch(QtGui.QDialog):
             elif self.module.getParameter("dyn_irregulardt") == 0 and self.tabindex == self.module.getParameter("dyn_breaks"):
                 self.ui.year_spin.setEnabled(0)
                 self.ui.year_spin.setValue(int(startyear+self.module.getParameter("dyn_totyears")))
-            elif self.module.getParameter("dyn_irregulardt") == 1 and self.tabindex == len(self.module.getParameter("dyn_irregularyears"))-1:
+            elif self.module.getParameter("dyn_irregulardt") == 1 and self.tabindex == len(ubscripts.convertYearList(self.module.getParameter("dyn_irregularyears"), "MOD"))-1:
                 self.ui.year_spin.setEnabled(0)
                 self.ui.year_spin.setValue(int(self.module.getNarrative(self.tabindex)[2]))
             elif self.module.getParameter("dyn_irregulardt") == 1:

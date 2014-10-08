@@ -30,6 +30,7 @@ import threading, gc, os
 #Dependencies
 import urbanbeatsdatatypes as ubdata
 import urbanbeatsfiles as ubfiles
+import ubscripts
 
 #Modules
 import md_delinblocks, md_urbplanbb, md_techplacement, md_techimplement, md_perfassess
@@ -75,7 +76,7 @@ class UrbanBeatsSim(threading.Thread):
                 "dyn_startyear" : int(1960),
                 "dyn_breaks" : int(5),
                 "dyn_irregulardt" : int(0),
-                "dyn_irregularyears" : [],
+                "dyn_irregularyears" : "",
                 "df_ubpconstant":int(0),
                 "df_techplaceconstant":int(0),
                 "df_techimplconstant":int(0),
@@ -263,7 +264,8 @@ class UrbanBeatsSim(threading.Thread):
 
     def initializeParameterSetsDynamic(self):
         if self.__projectinfo["dyn_irregulardt"] == 1:
-            paramlength = len(self.__projectinfo["dyn_irregularyears"])
+            dyn_irregyearsarray = ubscripts.convertYearList(self.__projectinfo["dyn_irregularyears"], "MOD")
+            paramlength = len(dyn_irregyearsarray)
         else:
             paramlength = self.__projectinfo["dyn_breaks"] +1       #n breaks + baseline
 
@@ -298,7 +300,7 @@ class UrbanBeatsSim(threading.Thread):
         self.__narratives = []
         for i in range(int(paramlength)):
             if self.getParameter("dyn_irregulardt") == 1:
-                curyear = self.getParameter("dyn_irregularyears")[i]
+                curyear = dyn_irregyearsarray[i]
                 self.__narratives.append(["Header"+str(i), "insert current narrative here...", curyear])
             else:
                 startyear = self.getParameter("dyn_startyear")

@@ -28,6 +28,7 @@ import urbanbeatsfiles as ubfiles
 import urbanbeatsdialogs as ubdialogs
 import urbanbeatsresults as ubresults
 import urbanbeatssummaries as ubsum
+import ubscripts
 
 from urbanbeatsmaingui import Ui_urbanbeatsMain
 from startscreen import Ui_StartDialog
@@ -366,7 +367,7 @@ class MainWindow(QtGui.QMainWindow):
                     tabnames.append("Milestone"+str(int(i+1)))
                 tabnames.append("End Year"+str(activesimulation.getParameter("dyn_totyears") + activesimulation.getParameter("dyn_startyear")))
             else:
-                yearlabels = activesimulation.getParameter("dyn_irregularyears")
+                yearlabels = ubscripts.convertYearList(activesimulation.getParameter("dyn_irregularyears"), "MOD")
                 for i in range(len(yearlabels)-1):
                     if i == 0:
                         continue
