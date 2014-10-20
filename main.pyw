@@ -320,6 +320,16 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.pa_skippc.setEnabled(0)
             self.ui.actionPlanning_Cycle.setEnabled(0)
             self.ui.actionImplementation_Cycle.setEnabled(0)
+        elif state == "perfonly":
+            self.ui.ic_dataset.setEnabled(0)
+            self.ui.ic_techimplement.setEnabled(0)
+            self.ui.ic_techimplement_help.setEnabled(0)
+            self.ui.pa_dataset.setEnabled(0)
+            self.ui.pa_assessic.setEnabled(0)
+            self.ui.pa_assessic_help.setEnabled(0)
+            self.ui.pa_skippc.setEnabled(0)
+            self.ui.actionTechnology_Implementation.setEnabled(0)
+            self.ui.actionImplementation_Cycle.setEnabled(0)
 
     def resetConfigInterface(self):
         n = self.ui.simconfig_tabs.count()
@@ -424,8 +434,10 @@ class MainWindow(QtGui.QMainWindow):
         activesim = self.getActiveSimulationObject()
         self.updateNewProject()
         if activesim.getParameter("simtype") == "S":
-            if activesim.getParameter("sf_perfinclude") == 1:
+            if activesim.getParameter("sf_perfinclude") == 1 and activesim.getParameter("sf_techimplinclude") == 1:
                 self.disable_select_guis("all")
+            elif activesim.getParameter("sf_perfinclude") == 1 and activesim.getParameter("sf_techimplinclude") == 0:
+                self.disable_select_guis("perfonly")
             elif activesim.getParameter("sf_techimplinclude") == 1:
                 self.disable_select_guis("techimpl")
             elif activesim.getParameter("sf_techplaninclude") == 1:
