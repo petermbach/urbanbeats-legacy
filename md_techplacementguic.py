@@ -924,8 +924,24 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.ui.top_rank_spin.setValue(int(self.module.getParameter("topranklimit")))
         self.ui.top_CI_spin.setValue(int(self.module.getParameter("conf_int")))
 
-        #CONNECT DETAILS WITH THE OK BUTTON SO THAT GUI UPDATES MODULE
-        QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
+        #Note, do not need to connect OK button with Save_values, this is done via the overwritten
+        #done() method. See below.
+
+    ### OVERWRITTEN METHODS ###
+    def done(self, r):
+        """Overwriting the done method so that checks can be made before closing the GUI,
+        automatically gets called when the signals "accepted()" or "rejected()" are triggered
+        """
+        if self.Accepted == r:
+            if os.path.isfile(self.ui.mca_scoringmat_box.text()):   #More checks in future
+                self.save_values()
+                QtGui.QDialog.done(self, r)
+            else:
+                prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
+                QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
+                return False
+        else:
+            QtGui.QDialog.done(self, r) #Calls the parent's method instead of the overwritten method
 
     ### GENERAL TAB ###
     def enableLotRigour(self):
@@ -1162,7 +1178,6 @@ class TechplacementGUILaunch(QtGui.QDialog):
         if self.ui.top_score_combo.currentIndex() == 1:         #CI option
             self.ui.top_rank_spin.setEnabled(0)
             self.ui.top_CI_spin.setEnabled(1)
-
 
     #OK BUTTON PRESS FUNCTION
     def save_values(self):
