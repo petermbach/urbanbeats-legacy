@@ -426,7 +426,9 @@ class AddDataLaunch(QtGui.QDialog):
         self.ui.setupUi(self)   
         
         self.connect(self.ui.adddatabrowse, QtCore.SIGNAL("clicked()"), self.loaddata)
-        self.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
+        self.connect(self.ui.multi_adddata, QtCore.SIGNAL("clicked()"), self.save_values)
+        self.connect(self.ui.multi_cleardata, QtCore.SIGNAL("clicked()"), self.clear_values)
+        self.connect(self.ui.done_button, QtCore.SIGNAL("clicked()"), self.close_dialog)
         
     def loaddata(self):
         fname = QtGui.QFileDialog.getOpenFileName(self, "Locate Simulation Data File...", os.curdir, "")
@@ -434,12 +436,23 @@ class AddDataLaunch(QtGui.QDialog):
             self.ui.databox.setText(fname)
     
     def save_values(self):
-        type_index = self.ui.datatypecombo.currentIndex()
-        if self.ui.databox.text() == "":
-            pass
+        if os.path.isfile(self.ui.databox.text()) and self.ui.datatypecombo.currentIndex() != 0:
+            type_index = self.ui.datatypecombo.currentIndex()
+            if self.ui.databox.text() == "":
+                pass
+            else:
+                self.emit(QtCore.SIGNAL("added_data"), self.ui.databox.text(), type_index, True)
+                self.clear_values()
         else:
-            self.emit(QtCore.SIGNAL("added_data"), self.ui.databox.text(), type_index, True)
-   
+            prompt_msg = "Invalid data file or data category!"
+            QtGui.QMessageBox.warning(self, 'Invalid File or Category',prompt_msg, QtGui.QMessageBox.Ok)
+
+    def clear_values(self):
+        self.ui.databox.setText("")
+        self.ui.datatypecombo.setCurrentIndex(0)
+
+    def close_dialog(self):
+        QtGui.QDialog.done(self, 1)
 
 class ReportOptionsDialogLaunch(QtGui.QDialog):
     def __init__(self, activesim, parent = None):

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'adddatadialog.ui'
 #
-# Created: Mon Jan 14 16:37:53 2013
+# Created: Tue Oct 21 09:59:02 2014
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_AddDataDialog(object):
     def setupUi(self, AddDataDialog):
         AddDataDialog.setObjectName(_fromUtf8("AddDataDialog"))
-        AddDataDialog.resize(320, 240)
+        AddDataDialog.resize(320, 222)
         AddDataDialog.setWindowTitle(QtGui.QApplication.translate("AddDataDialog", "Add Data...", None, QtGui.QApplication.UnicodeUTF8))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("../../../../../ubeatsicon.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -62,25 +62,25 @@ class Ui_AddDataDialog(object):
         self.maindb_widget = QtGui.QWidget(AddDataDialog)
         self.maindb_widget.setObjectName(_fromUtf8("maindb_widget"))
         self.adddatabrowse = QtGui.QToolButton(self.maindb_widget)
-        self.adddatabrowse.setGeometry(QtCore.QRect(230, 30, 61, 20))
+        self.adddatabrowse.setGeometry(QtCore.QRect(230, 20, 61, 20))
         self.adddatabrowse.setText(QtGui.QApplication.translate("AddDataDialog", "Browse...", None, QtGui.QApplication.UnicodeUTF8))
         self.adddatabrowse.setObjectName(_fromUtf8("adddatabrowse"))
         self.databox = QtGui.QLineEdit(self.maindb_widget)
-        self.databox.setGeometry(QtCore.QRect(60, 30, 161, 20))
+        self.databox.setGeometry(QtCore.QRect(60, 20, 161, 20))
         self.databox.setReadOnly(False)
         self.databox.setObjectName(_fromUtf8("databox"))
         self.datafile_lbl = QtGui.QLabel(self.maindb_widget)
-        self.datafile_lbl.setGeometry(QtCore.QRect(10, 30, 61, 16))
+        self.datafile_lbl.setGeometry(QtCore.QRect(10, 20, 61, 16))
         self.datafile_lbl.setWhatsThis(QtGui.QApplication.translate("AddDataDialog", "Rainfall time series, obtain data from weather station or climate authority of your city. Time series should be in rainfall depth and have units millimetres.", None, QtGui.QApplication.UnicodeUTF8))
         self.datafile_lbl.setText(QtGui.QApplication.translate("AddDataDialog", "Data File:", None, QtGui.QApplication.UnicodeUTF8))
         self.datafile_lbl.setObjectName(_fromUtf8("datafile_lbl"))
         self.datatype_lbl = QtGui.QLabel(self.maindb_widget)
-        self.datatype_lbl.setGeometry(QtCore.QRect(10, 80, 101, 16))
+        self.datatype_lbl.setGeometry(QtCore.QRect(10, 60, 91, 16))
         self.datatype_lbl.setWhatsThis(QtGui.QApplication.translate("AddDataDialog", "Rainfall time series, obtain data from weather station or climate authority of your city. Time series should be in rainfall depth and have units millimetres.", None, QtGui.QApplication.UnicodeUTF8))
         self.datatype_lbl.setText(QtGui.QApplication.translate("AddDataDialog", "Select Data Type:", None, QtGui.QApplication.UnicodeUTF8))
         self.datatype_lbl.setObjectName(_fromUtf8("datatype_lbl"))
         self.datatypecombo = QtGui.QComboBox(self.maindb_widget)
-        self.datatypecombo.setGeometry(QtCore.QRect(100, 80, 191, 20))
+        self.datatypecombo.setGeometry(QtCore.QRect(100, 60, 191, 20))
         self.datatypecombo.setObjectName(_fromUtf8("datatypecombo"))
         self.datatypecombo.addItem(_fromUtf8(""))
         self.datatypecombo.setItemText(0, QtGui.QApplication.translate("AddDataDialog", "<undefined>", None, QtGui.QApplication.UnicodeUTF8))
@@ -122,17 +122,26 @@ class Ui_AddDataDialog(object):
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.footwidget)
         self.horizontalLayout_2.setMargin(0)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.buttonBox = QtGui.QDialogButtonBox(self.footwidget)
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
-        self.horizontalLayout_2.addWidget(self.buttonBox)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem)
+        self.multi_adddata = QtGui.QToolButton(self.footwidget)
+        self.multi_adddata.setMinimumSize(QtCore.QSize(75, 20))
+        self.multi_adddata.setText(QtGui.QApplication.translate("AddDataDialog", "Add Data", None, QtGui.QApplication.UnicodeUTF8))
+        self.multi_adddata.setObjectName(_fromUtf8("multi_adddata"))
+        self.horizontalLayout_2.addWidget(self.multi_adddata)
+        self.multi_cleardata = QtGui.QToolButton(self.footwidget)
+        self.multi_cleardata.setMinimumSize(QtCore.QSize(75, 0))
+        self.multi_cleardata.setText(QtGui.QApplication.translate("AddDataDialog", "Clear", None, QtGui.QApplication.UnicodeUTF8))
+        self.multi_cleardata.setObjectName(_fromUtf8("multi_cleardata"))
+        self.horizontalLayout_2.addWidget(self.multi_cleardata)
+        self.done_button = QtGui.QPushButton(self.footwidget)
+        self.done_button.setText(QtGui.QApplication.translate("AddDataDialog", "Done", None, QtGui.QApplication.UnicodeUTF8))
+        self.done_button.setObjectName(_fromUtf8("done_button"))
+        self.horizontalLayout_2.addWidget(self.done_button)
         self.verticalLayout.addWidget(self.footwidget)
 
         self.retranslateUi(AddDataDialog)
         self.datatypecombo.setCurrentIndex(0)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), AddDataDialog.accept)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), AddDataDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(AddDataDialog)
 
     def retranslateUi(self, AddDataDialog):
