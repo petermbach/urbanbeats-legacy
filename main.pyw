@@ -142,8 +142,8 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.actionVerify_Simulation_Setup, QtCore.SIGNAL("triggered()"), self.verifySimulation)
         self.connect(self.ui.resetSimButton, QtCore.SIGNAL("clicked()"), self.resetSimulationAssets)
         self.connect(self.ui.actionReset_Simulation, QtCore.SIGNAL("triggered()"), self.resetSimulationAssets)
-        self.connect(self.ui.actionRun_Simulation, QtCore.SIGNAL("triggered()"), self.run_simulation)
-        self.connect(self.ui.runButton, QtCore.SIGNAL("clicked()"), self.run_simulation)
+        self.connect(self.ui.actionRun_Simulation, QtCore.SIGNAL("triggered()"), self.checks_before_run)
+        self.connect(self.ui.runButton, QtCore.SIGNAL("clicked()"), self.checks_before_run)
         self.connect(self.ui.pc_dataset, QtCore.SIGNAL("clicked()"), lambda curstate="pc": self.customize_dataset(curstate))
         self.connect(self.ui.ic_dataset, QtCore.SIGNAL("clicked()"), lambda curstate="ic": self.customize_dataset(curstate))
         self.connect(self.ui.pa_dataset, QtCore.SIGNAL("clicked()"), lambda curstate="pa": self.customize_dataset(curstate))        
@@ -910,6 +910,36 @@ class MainWindow(QtGui.QMainWindow):
             event.ignore()
 
     #RUN SIMULATION
+    def checks_before_run(self):
+        all_clear = 0
+        #Check all maps
+            # (1) Do the map exist?
+        # prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
+        # QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
+        # all_clear = 0
+        # # return
+        #     # (2) Have the maps been allocated to ALL snapshots/milestones?
+        #
+        # prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
+        # QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
+        # all_clear = 0
+        # # return
+        # #Check output paths
+        #     # (1) Are the output paths correct?
+        # prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
+        # QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
+        # all_clear = 0
+        # # return
+        #     # (2) Check if Model has write access to the path
+        # prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
+        # QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
+        all_clear = 0
+        # return
+        #Check inputs
+            #
+
+        return self.run_simulation()
+
     def run_simulation(self):
         try:
             active_simulation = self.getActiveSimulationObject()
