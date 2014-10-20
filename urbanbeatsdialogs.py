@@ -143,18 +143,17 @@ class NewProjectSetup(QtGui.QDialog):
         #Connect GUI Elements
         self.connect(self.ui.dynamicinterval_check, QtCore.SIGNAL("clicked()"), self.irregularYearBoxCheck)
         self.connect(self.ui.projectpath_button, QtCore.SIGNAL("clicked()"), self.setProjectPath)
-        self.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
 
     def done(self, r):
         """Overwriting the done method so that checks can be made before closing the GUI,
         automatically gets called when the signals "accepted()" or "rejected()" are triggered
         """
         if self.Accepted == r:
-            if os.path.isfile(self.ui.mca_scoringmat_box.text()):   #More checks in future
+            if os.path.exists(self.ui.projectpath_box.text()):   #More checks in future
                 self.save_values()
                 QtGui.QDialog.done(self, r)
             else:
-                prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
+                prompt_msg = "Invalid project path, please set a valid path!"
                 QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
                 return False
         else:
