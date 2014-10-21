@@ -921,34 +921,55 @@ class MainWindow(QtGui.QMainWindow):
         else:
             event.ignore()
 
+    def raiseUBErrorMessage(self, message):
+        QtGui.QMessageBox.warning(self, 'Error', message, QtGui.QMessageBox.Ok)
+
     #RUN SIMULATION
     def checks_before_run(self):
-        all_clear = 0
+        active_simulation = self.getActiveSimulationObject()
+        tabs = active_simulation.getNumberOfTabs()
+        minmaptypes = ["Elevation", "Soil", "Land Use", "Population"]
+        all_clear = 1
         #Check all maps
-            # (1) Do the map exist?
-        # prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
-        # QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
-        # all_clear = 0
-        # # return
-        #     # (2) Have the maps been allocated to ALL snapshots/milestones?
-        #
-        # prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
-        # QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
-        # all_clear = 0
-        # # return
-        # #Check output paths
-        #     # (1) Are the output paths correct?
-        # prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
-        # QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
-        # all_clear = 0
-        # # return
-        #     # (2) Check if Model has write access to the path
-        # prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
-        # QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
-        all_clear = 0
-        # return
-        #Check inputs
-            #
+            # (1) Have the maps all been allocated and (2) are they of the right type?
+        for t in range(tabs):
+            maps = active_simulation.getCycleDataSet("pc", t)
+            print "Length of Map Set ", len(maps), maps
+            if len(maps) < 4:
+                self.raiseUBErrorMessage(str(self.ui.simconfig_tabs.tabText(t))+"'s Planning Cycle does not have enough maps allocated!")
+                all_clear = 0
+                return
+
+            for cat in minmaptypes:
+                if cat not in maps.keys():
+                    self.raiseUBErrorMessage(str(self.ui.simconfig_tabs.tabText(t))+"'s Planning Cycle is missing information about "+str(cat)+"!")
+                    all_clear = 0
+                    return
+
+        if active_simulation.getLengthOfModulesVector("techimplement") > 0:
+            for t in range(tabs):
+                maps = active_simulation.getCycleDataSet("ic", t)
+                if len(maps) < 4:
+                    self.raiseUBErrorMessage(str(self.ui.simconfig_tabs.tabText(t))+"'s Implementation Cycle does not have enough maps allocated!")
+                    all_clear = 0
+                    return
+
+                for cat in minmaptypes:
+                    if cat not in maps.keys():
+                        self.raiseUBErrorMessage(str(self.ui.simconfig_tabs.tabText(t))+"'s Implementation Cycle is missing information about "+str(cat)+"!")
+                        all_clear = 0
+                        return
+
+        #Check some input information
+            # (1) Check the MCA Scoring Matrix Path
+        if active_simulation.getLengthOfModulesVector("techplacement") > 0:
+            for t in range(tabs):
+                if os.path.isfile(active_simulation.getModuleTechplacement(t).getParameter("scoringmatrix_path")):
+                    pass
+                else:
+                    self.raiseUBErrorMessage("The MCA Scoring Matrix File in "+str(self.ui.simconfig_tabs.tabText(t))+" does not exist. Please locate a valid file!")
+                    all_clear = 0
+                    return
 
         return self.run_simulation()
 

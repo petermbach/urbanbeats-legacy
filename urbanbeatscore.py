@@ -434,6 +434,9 @@ class UrbanBeatsSim(threading.Thread):
         return [self.__data_geographic_pc, self.__data_geographic_ic, self.__data_climate]
 
     ### -------------- PARAMETER MANIPULATION ---------------------------
+    def getNumberOfTabs(self):
+        return self.__tabs
+
     def setParameter(self, name, value):
         self.__projectinfo[name] = value
         return True
