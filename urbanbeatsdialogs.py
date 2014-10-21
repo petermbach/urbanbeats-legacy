@@ -155,7 +155,7 @@ class NewProjectSetup(QtGui.QDialog):
             else:
                 prompt_msg = "Invalid project path, please set a valid path!"
                 QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
-                return False
+                return
         else:
             QtGui.QDialog.done(self, r) #Calls the parent's method instead of the overwritten method
 

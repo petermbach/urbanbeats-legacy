@@ -939,7 +939,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
             else:
                 prompt_msg = "The MCA scoring matrix filepath is invalid, please check path"
                 QtGui.QMessageBox.warning(self, 'Invalid Paths',prompt_msg, QtGui.QMessageBox.Ok)
-                return False
+                return
         else:
             QtGui.QDialog.done(self, r) #Calls the parent's method instead of the overwritten method
 
