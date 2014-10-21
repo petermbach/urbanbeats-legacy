@@ -503,11 +503,13 @@ class MainWindow(QtGui.QMainWindow):
                     self.resetConfigInterface()
                     return False
 
-            ubfiles.loadSimFile(activesim, fname, projectpath)
+            mapmiss = ubfiles.loadSimFile(activesim, fname, projectpath)
             self.setActiveProjectPath(activesim.getActiveProjectPath())
             self.setupTreeWidgetFromDict()
             self.initializeNewProject()
             self.printc("Simulation Core Initialised")
+            if mapmiss:
+                self.raiseUBErrorMessage("Some input maps could not be loaded. Please locate these before starting the simulation!")
         else:
             self.enabledisable_sim_guis(0)
 
@@ -578,11 +580,12 @@ class MainWindow(QtGui.QMainWindow):
             fileconstrain = ""
         fname = str(QtGui.QFileDialog.getOpenFileName(self, "Import Data Archive...", os.curdir, fileconstrain))
         if fname:
-            ubfiles.importDataArchiveFile(activesim, fname, filetype)
+            mapmiss = ubfiles.importDataArchiveFile(activesim, fname, filetype)
             self.ui.databrowseTree.clear()
             self.resetDatabank(0)
             self.setupTreeWidgetFromDict()
-
+            if mapmiss:
+                self.raiseUBErrorMessage("Some input maps could not be loaded!")
         return True
 
     def directAddData(self, dtype):

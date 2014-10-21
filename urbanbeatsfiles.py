@@ -159,6 +159,7 @@ def getSimFileProjectPath(filename):
     return ""   #If that attribute is not in the savefile, then simply create a new one
 
 def loadSimFile(activesim, filename, projectpath):
+    mapmiss = 0
     archive = tarfile.open(str(filename), 'r')
     #Retrieve Project Details
     projectinfo = {}
@@ -190,7 +191,10 @@ def loadSimFile(activesim, filename, projectpath):
                 continue
             else:
                 continue
-        activesim.addDataToArchive(category, dataarray[i][0])
+        if os.path.isfile(dataarray[i][0]):
+            activesim.addDataToArchive(category, dataarray[i][0])
+        else:
+            mapmiss = 1
         i += 1
     f.close()
 
@@ -257,7 +261,8 @@ def loadSimFile(activesim, filename, projectpath):
                 j += 2  #Skips two lines ahead (the next header onto the first line
                 continue
             line = dataarray[j].split("*||*")
-            dataset[line[0]] = line[1]
+            if os.path.isfile(line[1]):
+                dataset[line[0]] = line[1]
             j += 1
         f.close()
 
@@ -302,7 +307,7 @@ def loadSimFile(activesim, filename, projectpath):
             f.close()
 
     archive.close()
-    return True
+    return mapmiss
 
 def exportDataArchiveFile(activesim, filename):
     """Saves the current data archive to a separate file, which can be independently imported into a new project. This
@@ -322,6 +327,7 @@ def exportDataArchiveFile(activesim, filename):
 def importDataArchiveFile(activesim, filename, filetype):
     """Loads the data archive from a specific file (filetype = 'uda') or project (filetype = 'ubs') and adds
     whatever is available to the existing data archive."""
+    mapmiss = 0
     if filetype == "ubs":   #Code to extract archive file from the project archive
         arch = tarfile.open(str(filename), 'r')
         f = arch.extractfile("dataarch.txt")     #Category, then read lines until '---eol---'
@@ -344,12 +350,15 @@ def importDataArchiveFile(activesim, filename, filetype):
                 continue
             else:
                 continue
-        activesim.addDataToArchive(category, dataarray[i][0])
+        if os.path.isfile(dataarray[i][0]):
+            activesim.addDataToArchive(category, dataarray[i][0])
+        else:
+            mapmiss = 1
         i += 1
     f.close()
 
     if filetype == "ubs": arch.close()
-    return True
+    return mapmiss
 
 def readGlobalOptionsConfig(root_directory):
     """Reads the config file of global options and returns the dictionary of global options."""
