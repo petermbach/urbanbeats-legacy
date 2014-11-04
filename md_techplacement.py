@@ -2952,7 +2952,7 @@ class Techplacement(UBModule):
                 vol = np.inf
 
             design_harvest = True
-            if AsystemRecWQ in [np.inf, None] or vol == np.inf:
+            if AsystemRecWQ[0] in [np.inf, None] or vol == np.inf:
                 #Skip harvesting design! Cannot fulfill treatment + storage
                 design_harvest = False
 
