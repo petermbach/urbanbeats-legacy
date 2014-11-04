@@ -65,6 +65,15 @@ def importRasterData(filepath):
     rasterdata.setData(dataarray)
     return rasterdata            
 
+def reviewFileName(fname):
+    """Checks the filename for illegal characters, if there are illegal characters, function
+    removes them and modifies the filename so that the export function does not crash"""
+    illegal_char = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
+    for char in illegal_char:
+        if char in fname:
+            fname = fname.replace(char, '')
+    return fname
+
 ### GIS EXPORT FUNCTIONS
 def exportGISShapeFile(activesim, tabindex, curcycle):
     """Exports the Active Simulation's Asset Data to the specified shapefiles requested
@@ -80,6 +89,7 @@ def exportGISShapeFile(activesim, tabindex, curcycle):
     gisoptions = activesim.getGISExportDetails()
     map_data = activesim.getAssetWithName("MapAttributes")
     fname = gisoptions["Filename"]+"_"+str(current)+str(curcycle)
+    fname = reviewFileName(fname)
     if gisoptions["ProjUser"] == True:
         proj = gisoptions["Proj4"]
     else:
