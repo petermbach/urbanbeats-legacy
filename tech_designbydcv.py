@@ -55,6 +55,7 @@ def readDCVFile(pathfname, systemtype):
             #print designcurve[i]
             continue
         for j in range(len(designcurve[i])):
+            # print designcurve[i][j]
             finaldcv[j].append(float(designcurve[i][j]))
     return finaldcv
 
@@ -149,6 +150,9 @@ def findTargetSize(bracket, targetvalues):
             #print ".dcv designs cannot meet current target"
             Apercent.append(np.inf)
             continue
+        elif target == 0:
+            Apercent.append(0)
+            continue    #if target is zero, just return zero
         lower = 0                   #initialize lower and upper variables
         upper = min(bracket[i+2])
         for j in range(len(bracket[i+2])):
@@ -170,7 +174,7 @@ def getFinalSizeRequirement(klow, kup, minsizes, maxsizes, ksat):
     #retrieves the final system size required based on two sets of sizes for the lower and upper kbracket
     if klow == kup:       #if there was only one bracket, no interpolation needed
 #        print max(minsizes) #min and max sizes are identical        
-        return max(minsizes)    #the maximum size among the brackets
+        return float(max(minsizes))/100    #the maximum size among the brackets
         
     Apercent = []   #initialize possible areas
     for i in range(len(minsizes)):
@@ -184,7 +188,8 @@ def getFinalSizeRequirement(klow, kup, minsizes, maxsizes, ksat):
     return float(Afinal)/100
 
 def linearInterpolate(x0, x1, y0, y1, x):
-    y = y0+(x - x0)*((y1 - y0)/(x1 - x0))    
+    # print x0, x1, y0, y1, x
+    y = y0+(x - x0)*((y1 - y0)/(x1 - x0))
     return y
 
 ### ------------------------------------------------------------------------ ###

@@ -336,6 +336,7 @@ def sizeStoreArea_RT(vol, sysdepth, minsize, maxsize):
     if surfarea < minsize:
         Areq = minsize
     if surfarea > maxsize:
+        # print "raintank no fit"
         return [None, 1]
     
     return [Areq, 1]    #No buffer for raintanks
