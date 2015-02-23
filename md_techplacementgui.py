@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_techplacementgui.ui'
 #
-# Created: Fri Aug 01 09:37:09 2014
+# Created: Mon Feb 23 22:21:11 2015
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -593,7 +593,7 @@ class Ui_TechPlace_Dialog(object):
         self.design_crit_inputs_2.setWidgetResizable(True)
         self.design_crit_inputs_2.setObjectName(_fromUtf8("design_crit_inputs_2"))
         self.design_crit_inputs_widget_2 = QtGui.QWidget()
-        self.design_crit_inputs_widget_2.setGeometry(QtCore.QRect(0, 0, 465, 598))
+        self.design_crit_inputs_widget_2.setGeometry(QtCore.QRect(0, 0, 279, 598))
         self.design_crit_inputs_widget_2.setObjectName(_fromUtf8("design_crit_inputs_widget_2"))
         self.verticalLayout_6 = QtGui.QVBoxLayout(self.design_crit_inputs_widget_2)
         self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
@@ -940,7 +940,7 @@ class Ui_TechPlace_Dialog(object):
         self.design_crit_inputs_3.setWidgetResizable(True)
         self.design_crit_inputs_3.setObjectName(_fromUtf8("design_crit_inputs_3"))
         self.design_crit_inputs_widget_3 = QtGui.QWidget()
-        self.design_crit_inputs_widget_3.setGeometry(QtCore.QRect(0, 0, 465, 1236))
+        self.design_crit_inputs_widget_3.setGeometry(QtCore.QRect(0, 0, 387, 1236))
         self.design_crit_inputs_widget_3.setObjectName(_fromUtf8("design_crit_inputs_widget_3"))
         self.verticalLayout_9 = QtGui.QVBoxLayout(self.design_crit_inputs_widget_3)
         self.verticalLayout_9.setObjectName(_fromUtf8("verticalLayout_9"))
@@ -1690,7 +1690,7 @@ class Ui_TechPlace_Dialog(object):
         self.techselect_scroll.setWidgetResizable(True)
         self.techselect_scroll.setObjectName(_fromUtf8("techselect_scroll"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 464, 415))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 81, 413))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.horizontalLayout_12 = QtGui.QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout_12.setObjectName(_fromUtf8("horizontalLayout_12"))
@@ -3496,7 +3496,7 @@ class Ui_TechPlace_Dialog(object):
         self.top_rank_spin = QtGui.QSpinBox(self.ranking_widget)
         self.top_rank_spin.setGeometry(QtCore.QRect(320, 45, 51, 16))
         self.top_rank_spin.setMinimum(5)
-        self.top_rank_spin.setMaximum(50)
+        self.top_rank_spin.setMaximum(100)
         self.top_rank_spin.setSingleStep(5)
         self.top_rank_spin.setObjectName(_fromUtf8("top_rank_spin"))
         self.top_score_combo = QtGui.QComboBox(self.ranking_widget)

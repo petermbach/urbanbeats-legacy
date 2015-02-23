@@ -1546,7 +1546,7 @@ p, li { white-space: pre-wrap; }
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>465</width>
+               <width>279</width>
                <height>598</height>
               </rect>
              </property>
@@ -2447,7 +2447,7 @@ p, li { white-space: pre-wrap; }
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>465</width>
+               <width>387</width>
                <height>1236</height>
               </rect>
              </property>
@@ -4500,8 +4500,8 @@ p, li { white-space: pre-wrap; }
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>464</width>
-               <height>415</height>
+               <width>81</width>
+               <height>413</height>
               </rect>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -9467,7 +9467,7 @@ p, li { white-space: pre-wrap; }
                   <number>5</number>
                  </property>
                  <property name="maximum">
-                  <number>50</number>
+                  <number>100</number>
                  </property>
                  <property name="singleStep">
                   <number>5</number>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'preferencesdialog.ui'
 #
-# Created: Mon Feb 23 22:04:08 2015
+# Created: Mon Feb 23 22:20:42 2015
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -164,7 +164,7 @@ class Ui_PreferencesDialog(object):
         self.techplan_strats_spin.setGeometry(QtCore.QRect(240, 145, 131, 22))
         self.techplan_strats_spin.setSuffix(QtGui.QApplication.translate("PreferencesDialog", " strategies", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_strats_spin.setMinimum(0)
-        self.techplan_strats_spin.setMaximum(10)
+        self.techplan_strats_spin.setMaximum(100)
         self.techplan_strats_spin.setSingleStep(1)
         self.techplan_strats_spin.setProperty("value", 5)
         self.techplan_strats_spin.setObjectName(_fromUtf8("techplan_strats_spin"))
