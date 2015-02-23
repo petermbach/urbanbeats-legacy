@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'preferencesdialog.ui'
 #
-# Created: Tue Oct 07 11:10:57 2014
+# Created: Mon Feb 23 22:04:08 2015
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -130,7 +130,7 @@ class Ui_PreferencesDialog(object):
         self.techplan_iter_spin.setGeometry(QtCore.QRect(240, 35, 131, 22))
         self.techplan_iter_spin.setSuffix(QtGui.QApplication.translate("PreferencesDialog", " realisations", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_iter_spin.setMinimum(500)
-        self.techplan_iter_spin.setMaximum(10000)
+        self.techplan_iter_spin.setMaximum(100000)
         self.techplan_iter_spin.setSingleStep(500)
         self.techplan_iter_spin.setObjectName(_fromUtf8("techplan_iter_spin"))
         self.techplan_city_combo = QtGui.QComboBox(self.widget_5)
