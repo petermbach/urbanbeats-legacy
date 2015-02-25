@@ -72,6 +72,28 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.musicclimatefile = ""
         self.musicseparatebasin = 1
 
+        self.createParameter("include_pervious", BOOL, "Include pervious areas in simulation?")
+        self.createParameter("musicRR_soil", DOUBLE, "MUSIC soil storage capacity")
+        self.createParameter("musicRR_field", DOUBLE, "MUSIC field storage capacity")
+        self.createParameter("musicRR_bfr", DOUBLE, "MUSIC daily baseflow rate")
+        self.createParameter("musicRR_rcr", DOUBLE, "Daily recharge rate")
+        self.createParameter("musicRR_dsr", DOUBLE, "Daily deep seepage rate")
+        self.include_pervious = 1
+        self.musicRR_soil = 120.0
+        self.musicRR_field = 80
+        self.musicRR_bfr = 5.00
+        self.musicRR_rcr = 25.00
+        self.musicRR_dsr = 0.00
+
+        self.createParameter("include_route", BOOL, "Include flow routing?")
+        self.createParameter("musicRR_muskk_auto", BOOL, "Auto-determine Muskingum K based on blocks?")
+        self.createParameter("musicRR_muskk", DOUBLE, "Muskingum Cunge K value")
+        self.createParameter("musicRR_musktheta", DOUBLE, "Muskingum Cunge theta value")
+        self.include_route = 1
+        self.musicRR_muskk_auto = 0
+        self.musicRR_muskk = 30.0
+        self.musicRR_musktheta = 0.1
+
         self.createParameter("bf_tncontent", DOUBLE, "TN content of Bioretention filter media")
         self.createParameter("bf_orthophosphate", DOUBLE, "Orthophosphate content of filter media")
         self.bf_tncontent = 800.0
@@ -115,6 +137,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.notify("Now Running Performance Assessment")
 
         if self.perf_MUSIC:
+            self.notify("Exporting MUSIC Simulation...")
             self.writeMUSIC()
 
         if self.perf_Economics:
@@ -190,7 +213,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
                     musicnodedb["BlockID"+str(currentID)] = {}
                     blocksystems = self.getBlockSystems(currentID, systemlist)
-                    self.notify(str(blocksystems))
+                    #self.notify(str(blocksystems))
 
                     blockX = currentAttList.getAttribute("CentreX")
                     blockY = currentAttList.getAttribute("CentreY")
@@ -198,12 +221,35 @@ class PerformanceAssess(UBModule):      #UBCORE
                     #(1) WRITE CATCHMENT NODES - maximum possibility of 7 Nodes (Lot x 6, non-lot x 1)
                     #       Lot: RES, HDR, COM, LI, HI, ORC
                     #       Street/Neigh: x 1
-                    catchment_parameter_list = [1,120,30,80,200,1,10,25,5,0]
-                    total_catch_imparea = currentAttList.getAttribute("Blk_EIA")/10000      #[ha]
+                    if self.include_pervious:
+                        catchment_parameter_list = [1, self.musicRR_soil, self.musicRR_field, 80,200, 1, 10, self.musicRR_rcr, self.musicRR_bfr, self.musicRR_dsr]
+                        total_catch_area = (blocks_size * blocks_size) / 10000      #[ha]
+                        total_catch_imparea = currentAttList.getAttribute("Blk_EIA")/10000
+                        total_catch_EIF = (total_catch_imparea / total_catch_area)
+                    else:
+                        catchment_parameter_list = [1,120,30,80,200,1,10,25,5,0]
+                        total_catch_area = currentAttList.getAttribute("Blk_EIA")/10000      #[ha]
+                        total_catch_imparea = total_catch_area
+                        total_catch_EIF = 1     #100% impervious
+
                     catchnodecount = self.determineBlockCatchmentNodeCount(blocksystems)
                     lotcount = catchnodecount - 1   #one less
-                    lotareas = self.determineCatchmentLotAreas(currentAttList, blocksystems)
-                    nonlotarea = total_catch_imparea - sum(lotareas.values())
+                    lotareas, loteifs = self.determineCatchmentLotAreas(currentAttList, blocksystems)
+
+                    nonlotarea = total_catch_area - sum(lotareas.values())
+                    if self.include_pervious:
+                        total_lot_imparea = 0.0
+                        for j in lotareas.keys():
+                            total_lot_imparea += lotareas[j] * loteifs[j]/100
+                        nonlotimparea = total_catch_imparea - total_lot_imparea
+                        if nonlotarea == 0:
+                            nonloteia = 0.0
+                        else:
+                            nonloteia = nonlotimparea / nonlotarea
+                    else:
+                        nonlotarea = total_catch_imparea - sum(lotareas.values())
+                        nonloteia = 100
+
                     if nonlotarea == 0:
                         self.notify("ISSUE: NONLOT AREA ZERO ON BLOCK: "+str(currentID))
                     ncount_list = []
@@ -214,20 +260,20 @@ class PerformanceAssess(UBModule):      #UBCORE
                             if lotareas[j] == 0:
                                 continue
                             ncount_list.append(ncount)
-                            ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, j, ncount, (blockX-blocks_size/4+(lotoffset*blocks_size/12))*scalar, (blockY+blocks_size/4+(lotoffset*blocks_size/12))*scalar, lotareas[j], 1, catchment_parameter_list)
+                            ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, j, ncount, (blockX-blocks_size/4+(lotoffset*blocks_size/12))*scalar, (blockY+blocks_size/4+(lotoffset*blocks_size/12))*scalar, lotareas[j], loteifs[j], catchment_parameter_list)
                             lotoffset += 1
                             musicnodedb["BlockID"+str(currentID)]["C_"+j] = ncount
                             ncount += 1
 
                         #Write Street/Neigh Catchment Node
                         ncount_list.append(ncount)
-                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount, (blockX-blocks_size/4)*scalar, (blockY)*scalar, nonlotarea,1, catchment_parameter_list)
+                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount, (blockX-blocks_size/4)*scalar, (blockY)*scalar, nonlotarea, nonloteia, catchment_parameter_list)
                         musicnodedb["BlockID"+str(currentID)]["C_R"] = ncount
                         ncount += 1
                     else:
                         ncount_list.append(0)
                         ncount_list.append(ncount)
-                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount, (blockX-blocks_size/4)*scalar, (blockY)*scalar, total_catch_imparea,1, catchment_parameter_list)
+                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount, (blockX-blocks_size/4)*scalar, (blockY)*scalar, total_catch_area, total_catch_EIF, catchment_parameter_list)
                         musicnodedb["BlockID"+str(currentID)]["C_R"] = ncount
                         ncount += 1
 
@@ -269,15 +315,26 @@ class PerformanceAssess(UBModule):      #UBCORE
 
                     #(4) WRITE ALL LINKS WITHIN BLOCK
                     nodelinks = self.getInBlockNodeLinks(musicnodedb["BlockID"+str(currentID)])
-
+                    routeparams = ["Not Routed", 30, 0.25]
                     for link in range(len(nodelinks)):
-                        ubmusicwrite.writeMUSIClink(ufile, nodelinks[link][0], nodelinks[link][1])
+                        ubmusicwrite.writeMUSIClink(ufile, nodelinks[link][0], nodelinks[link][1], routeparams)
 
                 #(5) WRITE ALL LINKS BETWEEN BLOCKS
                 for i in basinblockIDs:
                     currentID = i
                     currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
                     downID = int(currentAttList.getAttribute("downID"))
+                    #Determine routing parameters
+                    if self.include_route:
+                        if self.musicRR_muskk_auto:
+                            #Work out Muskingum k approximation based on block size and 1m/s flow
+                            musk_K = max(int(float(blocks_size)/60.0), 3)
+                        else:
+                            musk_K = self.musicRR_muskk
+                        routeparams = ["Routed", musk_K, self.musicRR_musktheta]
+                    else:
+                        routeparams = ["Not Routed", 30, 0.25]  #Defaults
+
                     if downID == -1 or downID == 0:
                         downID = int(currentAttList.getAttribute("drainID"))
                     if downID == -1 or downID == 0:
@@ -285,9 +342,9 @@ class PerformanceAssess(UBModule):      #UBCORE
                     if int(currentAttList.getAttribute("Outlet")) == 1:
                         continue
                     else:
-                        print musicnodedb
+                        #print musicnodedb
                         nodelink = self.getDownstreamNodeLink(musicnodedb["BlockID"+str(currentID)], musicnodedb["BlockID"+str(downID)])
-                        ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1])
+                        ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
 
                 ubmusicwrite.writeMUSICfooter(ufile)
         return True
@@ -385,36 +442,72 @@ class PerformanceAssess(UBModule):      #UBCORE
     def determineCatchmentLotAreas(self, currentAttList, blocksystems):
         """Determines the areas for each of the lots, which have a system present."""
         lotareas = {"L_RES":0, "L_HDR":0, "L_LI":0, "L_HI":0, "L_COM":0, "L_ORC":0}
+        loteifs = {"L_RES":100, "L_HDR":100,"L_LI":100,"L_HI":100,"L_COM":100,"L_ORC":100}
 
         #Residential Areas
         if len(blocksystems["L_RES"]) != 0:
-            lotareas["L_RES"] = currentAttList.getAttribute("ResAllots") * \
-                currentAttList.getAttribute("ResLotEIA") / 10000        #[ha]
+            resEIA = currentAttList.getAttribute("ResAllots") * \
+                     currentAttList.getAttribute("ResLotEIA") / 10000        #[ha]
+            if self.include_pervious:
+                lotareas["L_RES"] = currentAttList.getAttribute("ResAllots") * \
+                    currentAttList.getAttribute("ResLotArea") / 10000
+                loteifs["L_RES"] = float (resEIA / lotareas["L_RES"])
+            else:
+                lotareas["L_RES"] = resEIA
 
         #High-Density Residential Areas
         if len(blocksystems["L_HDR"]) != 0:
-            lotareas["L_HDR"] = currentAttList.getAttribute("HDR_EIA") / 10000
+            hdrEIA = currentAttList.getAttribute("HDR_EIA") / 10000
+            if self.include_pervious:
+                lotareas["L_HDR"] = currentAttList.getAttribute("HDR_TIA") + currentAttList.getAttribute("HDRGarden")
+                loteifs["L_HDR"] = float( hdrEIA / lotareas["L_HDR"])
+            else:
+                lotareas["L_HDR"] = hdrEIA
 
         #Light Industrial Areas
         if len(blocksystems["L_LI"]) != 0:
-            lotareas["L_LI"] = currentAttList.getAttribute("LIAeEIA") * \
+            liEIA = currentAttList.getAttribute("LIAeEIA") * \
                 currentAttList.getAttribute("LIestates") / 10000
+            if self.include_pervious:
+                lotareas["L_LI"] = (currentAttList.getAttribute("LIAeEIA") + currentAttList.getAttribute("avLt_LI")) * \
+                        currentAttList.getAttribute("LIestates") / 10000
+                loteifs["L_LI"] = float(liEIA / lotareas["L_LI"])
+            else:
+                lotareas["L_LI"] = liEIA
 
         #Heavy Industrial Areas
         if len(blocksystems["L_HI"]) != 0:
-            lotareas["L_HI"] = currentAttList.getAttribute("HIAeEIA") * \
+            hiEIA = currentAttList.getAttribute("HIAeEIA") * \
                 currentAttList.getAttribute("HIestates") / 10000
+            if self.include_pervious:
+                lotareas["L_HI"] = (currentAttList.getAttribute("HIAeEIA") + currentAttList.getAttribute("avLt_HI")) * \
+                        currentAttList.getAttribute("HIestates") / 10000
+                loteifs["L_HI"] = float(hiEIA / lotareas["L_HI"])
+            else:
+                lotareas["L_HI"] = hiEIA
 
         #Commercial Areas
         if len(blocksystems["L_COM"]) != 0:
-            lotareas["L_COM"] = currentAttList.getAttribute("COMAeEIA") * \
+            comEIA = currentAttList.getAttribute("COMAeEIA") * \
                 currentAttList.getAttribute("COMestates") / 10000
+            if self.include_pervious:
+                lotareas["L_COM"] = (currentAttList.getAttribute("COMAeEIA") + currentAttList.getAttribute("avLt_COM")) * \
+                        currentAttList.getAttribute("COMestates") / 10000
+                loteifs["L_COM"] = float(comEIA / lotareas["L_COM"])
+            else:
+                lotareas["L_COM"] = comEIA
 
         #Office/ResCom Mixed Areas
         if len(blocksystems["L_ORC"]) != 0:
-            lotareas["L_ORC"] = currentAttList.getAttribute("ORCAeEIA") * \
+            orcEIA = currentAttList.getAttribute("ORCAeEIA") * \
                 currentAttList.getAttribute("ORCestates") / 10000
-        return lotareas
+            if self.include_pervious:
+                lotareas["L_ORC"] = (currentAttList.getAttribute("ORCAeEIA") + currentAttList.getAttribute("avLt_ORC")) * \
+                        currentAttList.getAttribute("ORCestates") / 10000
+                loteifs["L_ORC"] = float(orcEIA / lotareas["L_ORC"])
+            else:
+                lotareas["L_ORC"] = orcEIA
+        return lotareas, loteifs
 
     def getInBlockNodeLinks(self, nodedb):
         """Returns an array of nodeIDs that are connected by a link for all within-block aspects for

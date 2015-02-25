@@ -338,13 +338,13 @@ def writeMUSICnodeSW(f, ID, nodepart, ncount, x, y, parameter_list):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSIClink(f, upN, downN):
+def writeMUSIClink(f, upN, downN, routeparams):
     f.write("Link Name,Drainage Link,\n")
     f.write("Source Node ID,"+str(upN)+",{The is the ID of the upstream node}\n")
     f.write("Target Node ID,"+str(downN)+",{This is the ID of the downstream node}\n")
-    f.write("Routing,Not Routed,{either \"Not Routed\" or \"Routed\"}\n")
-    f.write("Muskingum K,30,{no value required for no routing or \"numerical value\" for routed}\n")
-    f.write("Muskingum Theta,0.25,{no value required for no routing or \"numerical value\" for routed. Must be between 0.1 and 0.49}\n")
+    f.write("Routing,"+str(routeparams[0])+",{either \"Not Routed\" or \"Routed\"}\n")
+    f.write("Muskingum K,"+str(routeparams[1])+",{no value required for no routing or \"numerical value\" for routed}\n")
+    f.write("Muskingum Theta,"+str(routeparams[2])+",{no value required for no routing or \"numerical value\" for routed. Must be between 0.1 and 0.49}\n")
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
