@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perfassessgui.ui'
 #
-# Created: Tue Oct 07 11:08:31 2014
+# Created: Wed Feb 25 13:36:39 2015
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -213,7 +213,7 @@ class Ui_Perfconfig_Dialog(object):
         self.scrollArea_7.setWidgetResizable(True)
         self.scrollArea_7.setObjectName(_fromUtf8("scrollArea_7"))
         self.scrollAreaWidgetContents_7 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_7.setGeometry(QtCore.QRect(0, 0, 463, 436))
+        self.scrollAreaWidgetContents_7.setGeometry(QtCore.QRect(0, 0, 463, 764))
         self.scrollAreaWidgetContents_7.setObjectName(_fromUtf8("scrollAreaWidgetContents_7"))
         self.verticalLayout_12 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_7)
         self.verticalLayout_12.setObjectName(_fromUtf8("verticalLayout_12"))
@@ -265,6 +265,142 @@ class Ui_Perfconfig_Dialog(object):
         self.music_version_combo.addItem(_fromUtf8(""))
         self.music_version_combo.setItemText(1, QtGui.QApplication.translate("Perfconfig_Dialog", "eWater MUSIC Version 6", None, QtGui.QApplication.UnicodeUTF8))
         self.verticalLayout_12.addWidget(self.simulationconfig_widget)
+        self.musiccatchment_lbl = QtGui.QLabel(self.scrollAreaWidgetContents_7)
+        self.musiccatchment_lbl.setMinimumSize(QtCore.QSize(445, 16))
+        self.musiccatchment_lbl.setMaximumSize(QtCore.QSize(16777215, 16))
+        self.musiccatchment_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Catchment Hydrology Setup</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.musiccatchment_lbl.setObjectName(_fromUtf8("musiccatchment_lbl"))
+        self.verticalLayout_12.addWidget(self.musiccatchment_lbl)
+        self.musiccatchment_widget = QtGui.QWidget(self.scrollAreaWidgetContents_7)
+        self.musiccatchment_widget.setMinimumSize(QtCore.QSize(0, 300))
+        self.musiccatchment_widget.setObjectName(_fromUtf8("musiccatchment_widget"))
+        self.rnr_params_lbl = QtGui.QLabel(self.musiccatchment_widget)
+        self.rnr_params_lbl.setGeometry(QtCore.QRect(30, 35, 151, 20))
+        self.rnr_params_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Rainfall-Runoff Parameters</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.rnr_params_lbl.setObjectName(_fromUtf8("rnr_params_lbl"))
+        self.musicRR_soil_box = QtGui.QLineEdit(self.musiccatchment_widget)
+        self.musicRR_soil_box.setGeometry(QtCore.QRect(270, 60, 61, 20))
+        self.musicRR_soil_box.setObjectName(_fromUtf8("musicRR_soil_box"))
+        self.musicRR_soil_lbl = QtGui.QLabel(self.musiccatchment_widget)
+        self.musicRR_soil_lbl.setGeometry(QtCore.QRect(50, 60, 141, 20))
+        self.musicRR_soil_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Soil Storage Capacity [mm]</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_soil_lbl.setObjectName(_fromUtf8("musicRR_soil_lbl"))
+        self.musicRR_field_lbl = QtGui.QLabel(self.musiccatchment_widget)
+        self.musicRR_field_lbl.setGeometry(QtCore.QRect(50, 85, 161, 20))
+        self.musicRR_field_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Field Capacity [mm]</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_field_lbl.setObjectName(_fromUtf8("musicRR_field_lbl"))
+        self.musicRR_field_box = QtGui.QLineEdit(self.musiccatchment_widget)
+        self.musicRR_field_box.setGeometry(QtCore.QRect(270, 85, 61, 20))
+        self.musicRR_field_box.setObjectName(_fromUtf8("musicRR_field_box"))
+        self.include_pervious = QtGui.QCheckBox(self.musiccatchment_widget)
+        self.include_pervious.setGeometry(QtCore.QRect(10, 10, 411, 17))
+        self.include_pervious.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Include Pervious Areas in Catchment Simulation?", None, QtGui.QApplication.UnicodeUTF8))
+        self.include_pervious.setObjectName(_fromUtf8("include_pervious"))
+        self.musicRR_bfr_lbl = QtGui.QLabel(self.musiccatchment_widget)
+        self.musicRR_bfr_lbl.setGeometry(QtCore.QRect(50, 110, 161, 20))
+        self.musicRR_bfr_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Daily Baseflow Rate</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_bfr_lbl.setObjectName(_fromUtf8("musicRR_bfr_lbl"))
+        self.musicRR_rcr_lbl = QtGui.QLabel(self.musiccatchment_widget)
+        self.musicRR_rcr_lbl.setGeometry(QtCore.QRect(50, 135, 161, 20))
+        self.musicRR_rcr_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Daily Recharge Rate</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_rcr_lbl.setObjectName(_fromUtf8("musicRR_rcr_lbl"))
+        self.musicRR_dsr_lbl = QtGui.QLabel(self.musiccatchment_widget)
+        self.musicRR_dsr_lbl.setGeometry(QtCore.QRect(50, 160, 161, 20))
+        self.musicRR_dsr_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Daily Deep Seepage Rate</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_dsr_lbl.setObjectName(_fromUtf8("musicRR_dsr_lbl"))
+        self.musicRR_bfr_spin = QtGui.QDoubleSpinBox(self.musiccatchment_widget)
+        self.musicRR_bfr_spin.setGeometry(QtCore.QRect(270, 110, 62, 16))
+        self.musicRR_bfr_spin.setSuffix(QtGui.QApplication.translate("Perfconfig_Dialog", "%", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_bfr_spin.setDecimals(1)
+        self.musicRR_bfr_spin.setMaximum(100.0)
+        self.musicRR_bfr_spin.setProperty("value", 5.0)
+        self.musicRR_bfr_spin.setObjectName(_fromUtf8("musicRR_bfr_spin"))
+        self.musicRR_rcr_spin = QtGui.QDoubleSpinBox(self.musiccatchment_widget)
+        self.musicRR_rcr_spin.setGeometry(QtCore.QRect(270, 135, 62, 16))
+        self.musicRR_rcr_spin.setSuffix(QtGui.QApplication.translate("Perfconfig_Dialog", "%", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_rcr_spin.setDecimals(1)
+        self.musicRR_rcr_spin.setObjectName(_fromUtf8("musicRR_rcr_spin"))
+        self.musicRR_dsr_spin = QtGui.QDoubleSpinBox(self.musiccatchment_widget)
+        self.musicRR_dsr_spin.setGeometry(QtCore.QRect(270, 160, 62, 16))
+        self.musicRR_dsr_spin.setSuffix(QtGui.QApplication.translate("Perfconfig_Dialog", "%", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_dsr_spin.setDecimals(1)
+        self.musicRR_dsr_spin.setObjectName(_fromUtf8("musicRR_dsr_spin"))
+        self.include_route = QtGui.QCheckBox(self.musiccatchment_widget)
+        self.include_route.setGeometry(QtCore.QRect(10, 190, 411, 17))
+        self.include_route.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Including Runoff Routing Across Catchment?", None, QtGui.QApplication.UnicodeUTF8))
+        self.include_route.setObjectName(_fromUtf8("include_route"))
+        self.musicRR_musk_lbl1 = QtGui.QLabel(self.musiccatchment_widget)
+        self.musicRR_musk_lbl1.setGeometry(QtCore.QRect(50, 210, 191, 20))
+        self.musicRR_musk_lbl1.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Muskingum-Cunge K [min]</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_musk_lbl1.setObjectName(_fromUtf8("musicRR_musk_lbl1"))
+        self.musicRR_muskk_auto = QtGui.QRadioButton(self.musiccatchment_widget)
+        self.musicRR_muskk_auto.setGeometry(QtCore.QRect(80, 230, 141, 17))
+        self.musicRR_muskk_auto.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Determine automatically", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_muskk_auto.setObjectName(_fromUtf8("musicRR_muskk_auto"))
+        self.musicRR_muskk_custom = QtGui.QRadioButton(self.musiccatchment_widget)
+        self.musicRR_muskk_custom.setGeometry(QtCore.QRect(80, 250, 91, 17))
+        self.musicRR_muskk_custom.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "Specify value", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_muskk_custom.setObjectName(_fromUtf8("musicRR_muskk_custom"))
+        self.musicRR_musktheta_lbl = QtGui.QLabel(self.musiccatchment_widget)
+        self.musicRR_musktheta_lbl.setGeometry(QtCore.QRect(50, 270, 191, 20))
+        self.musicRR_musktheta_lbl.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Muskingum-Cunge Theta (0.1 - 0.49)</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_musktheta_lbl.setObjectName(_fromUtf8("musicRR_musktheta_lbl"))
+        self.musicRR_musk_lbl2 = QtGui.QLabel(self.musiccatchment_widget)
+        self.musicRR_musk_lbl2.setGeometry(QtCore.QRect(340, 250, 81, 20))
+        self.musicRR_musk_lbl2.setText(QtGui.QApplication.translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">mins</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.musicRR_musk_lbl2.setObjectName(_fromUtf8("musicRR_musk_lbl2"))
+        self.musicRR_muskk_spin = QtGui.QSpinBox(self.musiccatchment_widget)
+        self.musicRR_muskk_spin.setGeometry(QtCore.QRect(270, 250, 61, 16))
+        self.musicRR_muskk_spin.setMinimum(3)
+        self.musicRR_muskk_spin.setMaximum(500)
+        self.musicRR_muskk_spin.setObjectName(_fromUtf8("musicRR_muskk_spin"))
+        self.musicRR_musktheta_spin = QtGui.QDoubleSpinBox(self.musiccatchment_widget)
+        self.musicRR_musktheta_spin.setGeometry(QtCore.QRect(270, 270, 62, 16))
+        self.musicRR_musktheta_spin.setMinimum(0.1)
+        self.musicRR_musktheta_spin.setMaximum(0.49)
+        self.musicRR_musktheta_spin.setSingleStep(0.01)
+        self.musicRR_musktheta_spin.setObjectName(_fromUtf8("musicRR_musktheta_spin"))
+        self.verticalLayout_12.addWidget(self.musiccatchment_widget)
         self.musicwsudsetup_lbl = QtGui.QLabel(self.scrollAreaWidgetContents_7)
         self.musicwsudsetup_lbl.setMinimumSize(QtCore.QSize(445, 16))
         self.musicwsudsetup_lbl.setMaximumSize(QtCore.QSize(16777215, 16))

@@ -68,6 +68,22 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.music_browse_button, QtCore.SIGNAL("clicked()"), self.perf_MUSIC_climatefile)
 
         self.ui.musicsplit_check.setChecked(self.module.getParameter("musicseparatebasin"))
+
+        self.ui.include_pervious.setChecked(self.module.getParameter("include_pervious"))
+        self.ui.musicRR_soil_box.setText(str(self.module.getParameter("musicRR_soil")))
+        self.ui.musicRR_field_box.setText(str(self.module.getParameter("musicRR_field")))
+        self.ui.musicRR_bfr_spin.setValue(self.module.getParameter("musicRR_bfr"))
+        self.ui.musicRR_rcr_spin.setValue(self.module.getParameter("musicRR_rcr"))
+        self.ui.musicRR_dsr_spin.setValue(self.module.getParameter("musicRR_dsr"))
+
+        self.ui.include_route.setChecked(self.module.getParameter("include_route"))
+        if self.module.getParameter("musicRR_muskk_auto") == 1:
+            self.ui.musicRR_muskk_auto.setChecked(1)
+        else:
+            self.ui.musicRR_muskk_custom.setChecked(1)
+        self.ui.musicRR_muskk_spin.setValue(self.module.getParameter("musicRR_muskk"))
+        self.ui.musicRR_musktheta_spin.setValue(self.module.getParameter("musicRR_musktheta"))
+
         self.ui.musicBF_TN_box.setText(str(self.module.getParameter("bf_tncontent")))
         self.ui.musicBF_ortho_box.setText(str(self.module.getParameter("bf_orthophosphate")))
 
@@ -79,6 +95,11 @@ class PerfAssessGUILaunch(QtGui.QDialog):
 
         self.ui.musictte_check.setChecked(self.module.getParameter("musicTTE"))
         self.ui.musicflux_check.setChecked(self.module.getParameter("musicFlux"))
+
+        self.connect(self.ui.include_pervious, QtCore.SIGNAL("clicked()"), self.ed_catchment)
+        self.connect(self.ui.include_route, QtCore.SIGNAL("clicked()"), self.ed_route)
+        self.ed_catchment()
+        self.ed_route()
 
         #----------------------------------------------------------------------#
         #-------- ECONOMICS ---------------------------------------------------#
@@ -99,6 +120,18 @@ class PerfAssessGUILaunch(QtGui.QDialog):
 
         QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
 
+    def ed_catchment(self):
+        self.ui.musicRR_soil_box.setEnabled(self.ui.include_pervious.isChecked())
+        self.ui.musicRR_field_box.setEnabled(self.ui.include_pervious.isChecked())
+        self.ui.musicRR_bfr_spin.setEnabled(self.ui.include_pervious.isChecked())
+        self.ui.musicRR_rcr_spin.setEnabled(self.ui.include_pervious.isChecked())
+        self.ui.musicRR_dsr_spin.setEnabled(self.ui.include_pervious.isChecked())
+
+    def ed_route(self):
+        self.ui.musicRR_muskk_auto.setEnabled(self.ui.include_route.isChecked())
+        self.ui.musicRR_muskk_spin.setEnabled(self.ui.include_route.isChecked())
+        self.ui.musicRR_muskk_custom.setEnabled(self.ui.include_route.isChecked())
+        self.ui.musicRR_musktheta_spin.setEnabled(self.ui.include_route.isChecked())
 
     def ed_MUSIC(self):
         self.ui.music_version_combo.setEnabled(int(self.ui.perf_MUSIC.isChecked()))
@@ -164,6 +197,22 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.module.setParameter("musicversion", self.versioncombo[int(self.ui.music_version_combo.currentIndex())])
         self.module.setParameter("musicclimatefile", self.ui.music_browse_pathbox.text())
         self.module.setParameter("musicseparatebasin", int(self.ui.musicsplit_check.isChecked()))
+        self.module.setParameter("include_pervious", int(self.ui.include_pervious.isChecked()))
+        self.module.setParameter("musicRR_soil", float(self.ui.musicRR_soil_box.text()))
+        self.module.setParameter("musicRR_field", float(self.ui.musicRR_field_box.text()))
+        self.module.setParameter("musicRR_bfr", self.ui.musicRR_bfr_spin.value())
+        self.module.setParameter("musicRR_rcr", self.ui.musicRR_rcr_spin.value())
+        self.module.setParameter("musicRR_dsr", self.ui.musicRR_dsr_spin.value())
+
+        self.module.setParameter("include_route", int(self.ui.include_route.isChecked()))
+        self.module.setParameter("musicRR_muskk", self.ui.musicRR_muskk_spin.value())
+        self.module.setParameter("musicRR_musktheta", self.ui.musicRR_musktheta_spin.value())
+
+        if self.ui.musicRR_muskk_auto.isChecked():
+            self.module.setParameter("musicRR_muskk_auto", 1)
+        else:
+            self.module.setParameter("musicRR_muskk_auto", 0)
+
         self.module.setParameter("bf_tncontent", float(self.ui.musicBF_TN_box.text()))
         self.module.setParameter("bf_orthophosphate", float(self.ui.musicBF_ortho_box.text()))
         self.module.setParameter("musicautorun", int(self.ui.musicauto_check.isChecked()))
