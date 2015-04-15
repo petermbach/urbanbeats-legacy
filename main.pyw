@@ -838,7 +838,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def customize_dataset(self, curstate):
         tabindex = self.ui.simconfig_tabs.currentIndex()       
-        customdatadialog = ubdialogs.DataSelectGUI(self.getActiveSimulationObject(), curstate, tabindex)
+        customdatadialog = ubdialogs.DataSelectGUILaunch(self.getActiveSimulationObject(), curstate, tabindex)
         customdatadialog.exec_()
         
         return True

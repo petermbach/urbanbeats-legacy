@@ -408,7 +408,26 @@ class PerformanceAssess(UBModule):      #UBCORE
         """ Conducts integration with EPANET and water supply modelling. Coming Soon. Subject of
         future research
         """
-        pass
+        map_attr = self.activesim.getAssetWithName("MapAttributes")     #fetches global map attributes
+        blocks_num = map_attr.getAttribute("NumBlocks")
+        blocks_size = map_attr.getAttribute("BlockSize")
+        totalbasins = map_attr.getAttribute("TotalBasins")
+        strats = map_attr.getAttribute("OutputStrats")
+
+        if self.masterplanmodel:    #differentiate between planning and implementation models
+            filesuffix = "PC"
+        else:
+            filesuffix = "IC"
+            strats = 1
+
+        self.notify("Total Basins: "+str(totalbasins))
+        self.notify("Total Strategies: "+str(strats))
+
+        #Part 1 - Demand Downscaling Data
+
+
+
+
 
         return True
 
