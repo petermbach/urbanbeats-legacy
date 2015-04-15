@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
 from md_perfassessgui import Ui_Perfconfig_Dialog
+from md_perf_custompattern import Ui_CustomPatternDialog
 from PyQt4 import QtGui, QtCore
 import os
 
@@ -112,6 +113,44 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #----------------------------------------------------------------------#
         #-------- EPANET ------------------------------------------------------#
         #----------------------------------------------------------------------#
+        self.patterncomboindex = ["SDD", "CDP", "AHC", "UDP"]
+
+        self.ui.dp_kitchen_combo.setCurrentIndex(self.patterncomboindex.index(self.module.getParameter("kitchenpat")))
+        self.ui.dp_shower_combo.setCurrentIndex(self.patterncomboindex.index(self.module.getParameter("showerpat")))
+        self.ui.dp_toilet_combo.setCurrentIndex(self.patterncomboindex.index(self.module.getParameter("toiletpat")))
+        self.ui.dp_laundry_combo.setCurrentIndex(self.patterncomboindex.index(self.module.getParameter("laundrypat")))
+        self.ui.dp_irrigate_combo.setCurrentIndex(self.patterncomboindex.index(self.module.getParameter("irrigationpat")))
+        self.ui.dp_com_combo.setCurrentIndex(self.patterncomboindex.index(self.module.getParameter("compat")))
+        self.ui.dp_ind_combo.setCurrentIndex(self.patterncomboindex.index(self.module.getParameter("indpat")))
+        self.ui.dp_pubirr_combo.setCurrentIndex(self.patterncomboindex.index(self.module.getParameter("publicirripat")))
+
+        self.ui.dp_kitchen_custom.setEnabled(self.ui.dp_kitchen_combo.currentIndex()==3)
+        self.ui.dp_shower_custom.setEnabled(self.ui.dp_shower_combo.currentIndex()==3)
+        self.ui.dp_toilet_custom.setEnabled(self.ui.dp_toilet_combo.currentIndex()==3)
+        self.ui.dp_laundry_custom.setEnabled(self.ui.dp_laundry_combo.currentIndex()==3)
+        self.ui.dp_irrigate_custom.setEnabled(self.ui.dp_irrigate_combo.currentIndex()==3)
+        self.ui.dp_com_custom.setEnabled(self.ui.dp_com_combo.currentIndex()==3)
+        self.ui.dp_ind_custom.setEnabled(self.ui.dp_ind_combo.currentIndex()==3)
+        self.ui.dp_pubirr_custom.setEnabled(self.ui.dp_pubirr_combo.currentIndex()==3)
+
+        QtCore.QObject.connect(self.ui.dp_kitchen_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.dp_combo_customise)
+        QtCore.QObject.connect(self.ui.dp_shower_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.dp_combo_customise)
+        QtCore.QObject.connect(self.ui.dp_toilet_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.dp_combo_customise)
+        QtCore.QObject.connect(self.ui.dp_laundry_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.dp_combo_customise)
+        QtCore.QObject.connect(self.ui.dp_irrigate_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.dp_combo_customise)
+        QtCore.QObject.connect(self.ui.dp_com_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.dp_combo_customise)
+        QtCore.QObject.connect(self.ui.dp_ind_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.dp_combo_customise)
+        QtCore.QObject.connect(self.ui.dp_pubirr_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.dp_combo_customise)
+
+        QtCore.QObject.connect(self.ui.dp_kitchen_custom, QtCore.SIGNAL("clicked()"),lambda enduse="kitchen": self.callPatternGui(enduse))
+        QtCore.QObject.connect(self.ui.dp_shower_custom, QtCore.SIGNAL("clicked()"), lambda enduse="shower": self.callPatternGui(enduse))
+        QtCore.QObject.connect(self.ui.dp_toilet_custom, QtCore.SIGNAL("clicked()"), lambda enduse="toilet": self.callPatternGui(enduse))
+        QtCore.QObject.connect(self.ui.dp_laundry_custom, QtCore.SIGNAL("clicked()"), lambda enduse="laundry": self.callPatternGui(enduse))
+        QtCore.QObject.connect(self.ui.dp_irrigate_custom, QtCore.SIGNAL("clicked()"), lambda enduse="irrigation": self.callPatternGui(enduse))
+        QtCore.QObject.connect(self.ui.dp_com_custom, QtCore.SIGNAL("clicked()"), lambda enduse="com": self.callPatternGui(enduse))
+        QtCore.QObject.connect(self.ui.dp_ind_custom, QtCore.SIGNAL("clicked()"), lambda enduse="ind": self.callPatternGui(enduse))
+        QtCore.QObject.connect(self.ui.dp_pubirr_custom, QtCore.SIGNAL("clicked()"), lambda enduse="publicirri": self.callPatternGui(enduse))
+
 
         #----------------------------------------------------------------------#
         #-------- INTEGRATED WATER CYCLE MODEL  -------------------------------#
@@ -119,6 +158,21 @@ class PerfAssessGUILaunch(QtGui.QDialog):
 
 
         QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
+
+    def callPatternGui(self, enduse):
+        custompatternguic = CustomPatternGUILaunch(self.module, enduse)
+        custompatternguic.exec_()
+        return True
+
+    def dp_combo_customise(self):
+        self.ui.dp_kitchen_custom.setEnabled(self.ui.dp_kitchen_combo.currentIndex()==3)
+        self.ui.dp_shower_custom.setEnabled(self.ui.dp_shower_combo.currentIndex()==3)
+        self.ui.dp_toilet_custom.setEnabled(self.ui.dp_toilet_combo.currentIndex()==3)
+        self.ui.dp_laundry_custom.setEnabled(self.ui.dp_laundry_combo.currentIndex()==3)
+        self.ui.dp_irrigate_custom.setEnabled(self.ui.dp_irrigate_combo.currentIndex()==3)
+        self.ui.dp_com_custom.setEnabled(self.ui.dp_com_combo.currentIndex()==3)
+        self.ui.dp_ind_custom.setEnabled(self.ui.dp_ind_combo.currentIndex()==3)
+        self.ui.dp_pubirr_custom.setEnabled(self.ui.dp_pubirr_combo.currentIndex()==3)
 
     def ed_catchment(self):
         self.ui.musicRR_soil_box.setEnabled(self.ui.include_pervious.isChecked())
@@ -231,7 +285,45 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #----------------------------------------------------------------------#
         #-------- EPANET ------------------------------------------------------#
         #----------------------------------------------------------------------#
+        self.module.setParameter("kitchenpat", self.patterncomboindex[self.ui.dp_kitchen_combo.currentIndex()])
+        self.module.setParameter("showerpat", self.patterncomboindex[self.ui.dp_shower_combo.currentIndex()])
+        self.module.setParameter("toiletpat", self.patterncomboindex[self.ui.dp_toilet_combo.currentIndex()])
+        self.module.setParameter("laundrypat", self.patterncomboindex[self.ui.dp_laundry_combo.currentIndex()])
+        self.module.setParameter("irrigationpat", self.patterncomboindex[self.ui.dp_irrigate_combo.currentIndex()])
+        self.module.setParameter("compat", self.patterncomboindex[self.ui.dp_com_combo.currentIndex()])
+        self.module.setParameter("indpat", self.patterncomboindex[self.ui.dp_ind_combo.currentIndex()])
+        self.module.setParameter("publicirripat", self.patterncomboindex[self.ui.dp_pubirr_combo.currentIndex()])
 
         #----------------------------------------------------------------------#
         #-------- INTEGRATED WATER CYCLE MODEL  -------------------------------#
         #----------------------------------------------------------------------#
+
+
+class CustomPatternGUILaunch(QtGui.QDialog):
+    def __init__(self, activesim, enduse, parent = None):
+        QtGui.QDialog.__init__(self, parent)
+        self.ui = Ui_CustomPatternDialog()
+        self.ui.setupUi(self)
+        self.module = activesim
+        self.enduse = enduse
+        #Transfer pattern data into table
+
+        endusekeys = {"kitchen":"Kitchen", "shower": "Shower", "toilet":"Toilet", "laundry":"Laundry",
+                      "irrigation": "Garden Irrigation", "com": "Commercial", "ind":"Light & Heavy Industry",
+                      "publicirri": "Public Open Space Irrigation"}
+
+        self.ui.endusetype.setText(endusekeys[self.enduse])
+        self.pattern = self.module.getCustomPattern(self.enduse)
+
+        for i in range(24):
+            self.ui.tableWidget.item(i,0).setText(str(self.pattern[i]))
+
+        QtCore.QObject.connect(self.ui.button_Box, QtCore.SIGNAL("accepted()"), self.save_values)
+
+    def save_values(self):
+        for i in range(24):
+            self.pattern[i] = float(self.ui.tableWidget.item(i,0).text())
+
+        self.module.changeCustomPattern(self.enduse, self.pattern)
+
+        return True

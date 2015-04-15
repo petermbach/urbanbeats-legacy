@@ -122,7 +122,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.out_textrep_select, QtCore.SIGNAL("clicked()"), self.showReportingOptionsDialog)        
         self.connect(self.ui.out_gis_maps, QtCore.SIGNAL("clicked()"), self.showGISOptionsDialog)
         self.connect(self.ui.out_gis_customize, QtCore.SIGNAL("clicked()"), self.showGISAdvancedDialog)
-        #self.connect(self.ui.out_resultsbrowse, QtCore.SIGNAL("clicked()"), self.showResultsBrowseDialog)
+        self.connect(self.ui.out_resultsbrowse, QtCore.SIGNAL("clicked()"), self.showResultsBrowseDialog)
         self.connect(self.ui.out_projectfolder, QtCore.SIGNAL("clicked()"), self.openActiveProjectFolder)        
         
         #Simulation Menu
@@ -838,7 +838,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def customize_dataset(self, curstate):
         tabindex = self.ui.simconfig_tabs.currentIndex()       
-        customdatadialog = ubdialogs.DataSelectGUILaunch(self.getActiveSimulationObject(), curstate, tabindex)
+        customdatadialog = ubdialogs.DataSelectGUI(self.getActiveSimulationObject(), curstate, tabindex)
         customdatadialog.exec_()
         
         return True

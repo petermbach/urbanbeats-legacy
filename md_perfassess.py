@@ -125,6 +125,38 @@ class PerformanceAssess(UBModule):      #UBCORE
         #MICROCLIMATE TAB
 
         #WATER SUPPLY
+        #Pattern names include: SDD - standard daily diurnal, CDP - constant daily pattern,
+        #                       AHC - after-hours constant, UDP - user-defined pattern
+        self.createParameter("kitchenpat", STRING, "")
+        self.createParameter("showerpat", STRING, "")
+        self.createParameter("toiletpat", STRING, "")
+        self.createParameter("laundrypat", STRING, "")
+        self.createParameter("irrigationpat", STRING, "")
+        self.createParameter("compat", STRING, "")
+        self.createParameter("indpat", STRING, "")
+        self.createParameter("publicirripat", STRING, "")
+        self.kitchenpat = "SDD"
+        self.showerpat = "SDD"
+        self.toiletpat = "SDD"
+        self.laundrypat = "SDD"
+        self.irrigationpat = "SDD"
+        self.compat = "UDP"
+        self.indpat = "SDD"
+        self.publicirripat = "SDD"
+
+        self.ssd = [0.3,0.3,0.3,0.3,0.5,1.0,1.5,1.5,1.3,1.0,1.0,1.5,1.5,1.2,1.0,1.0,1.0,1.3,1.3,0.8,0.8,0.5,0.5,0.5]
+        self.cdp = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        self.ahc = [2.0,2.0,2.0,2.0,2.0,2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2.0,2.0,2.0,2.0,2.0,2.0]
+
+        #Custom pattern variables if needed
+        self.cp_kitchen = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        self.cp_shower = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        self.cp_toilet = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        self.cp_laundry = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        self.cp_irrigation = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        self.cp_com = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        self.cp_ind = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        self.cp_publicirri = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
 
         #INTEGRATED WATER CYCLE MODEL
 
@@ -132,6 +164,7 @@ class PerformanceAssess(UBModule):      #UBCORE
 
 
         # ----------------------------------------------------------------------------
+
 
     def run(self):
         self.notify("Now Running Performance Assessment")
@@ -154,6 +187,12 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         return True
 
+
+    def changeCustomPattern(self, enduse, patternvector):
+        exec("self.cp_"+str(enduse)+" = "+str(patternvector))
+
+    def getCustomPattern(self, enduse):
+        return eval("self.cp_"+str(enduse))
 
     def writeMUSIC(self):
         """ Executes the export option to a MUSIC simulation file, the program uses the options

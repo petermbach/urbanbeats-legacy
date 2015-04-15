@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perf_custompattern.ui'
 #
-# Created: Wed Apr 15 19:05:55 2015
+# Created: Wed Apr 15 23:15:41 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -202,7 +202,7 @@ class Ui_CustomPatternDialog(object):
         QtCore.QMetaObject.connectSlotsByName(CustomPatternDialog)
 
     def retranslateUi(self, CustomPatternDialog):
-        CustomPatternDialog.setWindowTitle(_translate("CustomPatternDialog", "Dialog", None))
+        CustomPatternDialog.setWindowTitle(_translate("CustomPatternDialog", "Define Custom Pattern", None))
         self.demand_down_title.setText(_translate("CustomPatternDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
