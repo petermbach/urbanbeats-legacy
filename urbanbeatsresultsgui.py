@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatsresultsgui.ui'
 #
-# Created: Thu Apr 16 01:23:04 2015
+# Created: Thu Apr 16 02:08:58 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -267,7 +267,7 @@ class Ui_ResultsBrowseDialog(object):
         self.wd_comboScope.addItem(_fromUtf8(""))
         self.verticalLayout_18.addWidget(self.wd_comboScope)
         self.wd_categoryTree = QtGui.QTreeWidget(self.wd_sidebarWidget)
-        self.wd_categoryTree.setMinimumSize(QtCore.QSize(200, 250))
+        self.wd_categoryTree.setMinimumSize(QtCore.QSize(200, 230))
         self.wd_categoryTree.setMaximumSize(QtCore.QSize(200, 16777215))
         self.wd_categoryTree.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.wd_categoryTree.setObjectName(_fromUtf8("wd_categoryTree"))
@@ -278,6 +278,23 @@ class Ui_ResultsBrowseDialog(object):
         self.wd_multiselect = QtGui.QCheckBox(self.wd_sidebarWidget)
         self.wd_multiselect.setObjectName(_fromUtf8("wd_multiselect"))
         self.verticalLayout_18.addWidget(self.wd_multiselect)
+        self.wd_units_widget = QtGui.QWidget(self.wd_sidebarWidget)
+        self.wd_units_widget.setMinimumSize(QtCore.QSize(200, 38))
+        self.wd_units_widget.setMaximumSize(QtCore.QSize(200, 38))
+        self.wd_units_widget.setObjectName(_fromUtf8("wd_units_widget"))
+        self.horizontalLayout_12 = QtGui.QHBoxLayout(self.wd_units_widget)
+        self.horizontalLayout_12.setMargin(0)
+        self.horizontalLayout_12.setObjectName(_fromUtf8("horizontalLayout_12"))
+        self.wd_units_lbl = QtGui.QLabel(self.wd_units_widget)
+        self.wd_units_lbl.setObjectName(_fromUtf8("wd_units_lbl"))
+        self.horizontalLayout_12.addWidget(self.wd_units_lbl)
+        self.wd_unitslps = QtGui.QRadioButton(self.wd_units_widget)
+        self.wd_unitslps.setObjectName(_fromUtf8("wd_unitslps"))
+        self.horizontalLayout_12.addWidget(self.wd_unitslps)
+        self.wd_unitskl = QtGui.QRadioButton(self.wd_units_widget)
+        self.wd_unitskl.setObjectName(_fromUtf8("wd_unitskl"))
+        self.horizontalLayout_12.addWidget(self.wd_unitskl)
+        self.verticalLayout_18.addWidget(self.wd_units_widget)
         self.ue_exportWidget_2 = QtGui.QWidget(self.wd_sidebarWidget)
         self.ue_exportWidget_2.setMinimumSize(QtCore.QSize(200, 38))
         self.ue_exportWidget_2.setMaximumSize(QtCore.QSize(200, 38))
@@ -549,11 +566,17 @@ class Ui_ResultsBrowseDialog(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Quick Info</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">ID: ##</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Population: ##</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Total Indoor [kL/day]: ##</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Total Outdoor [kl/day]: ##</span></p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Households: ##</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Flats: ##</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Efficiency Rating: ***</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Recycling: NO</span></p></body></html>", None))
         self.wd_multiselect.setText(_translate("ResultsBrowseDialog", "Enable Multiple Selection", None))
+        self.wd_units_lbl.setText(_translate("ResultsBrowseDialog", "Units:", None))
+        self.wd_unitslps.setText(_translate("ResultsBrowseDialog", "[L/sec]", None))
+        self.wd_unitskl.setText(_translate("ResultsBrowseDialog", "[kL]", None))
         self.wd_exportResults.setText(_translate("ResultsBrowseDialog", "Export Results ...", None))
         self.wd_Sim_lbl.setText(_translate("ResultsBrowseDialog", "Simulation #", None))
         self.wd_Sim_box.setText(_translate("ResultsBrowseDialog", "Milestone1", None))
