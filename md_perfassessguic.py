@@ -315,15 +315,28 @@ class CustomPatternGUILaunch(QtGui.QDialog):
         self.ui.endusetype.setText(endusekeys[self.enduse])
         self.pattern = self.module.getCustomPattern(self.enduse)
 
+        avgscalar = sum(self.pattern)/len(self.pattern)
+        self.ui.avg_box.setText(str(round(avgscalar,3)))
+
         for i in range(24):
             self.ui.tableWidget.item(i,0).setText(str(self.pattern[i]))
 
+        QtCore.QObject.connect(self.ui.tableWidget, QtCore.SIGNAL("itemChanged(QTableWidgetItem *)"), self.recalcAvg)
         QtCore.QObject.connect(self.ui.button_Box, QtCore.SIGNAL("accepted()"), self.save_values)
+
+    def recalcAvg(self):
+        subpattern = []
+        for i in range(24):
+            subpattern.append(float(self.ui.tableWidget.item(i,0).text()))
+        try:
+            avgscalar = sum(subpattern)/len(subpattern)
+            self.ui.avg_box.setText(str(round(avgscalar,3)))
+        except:
+            self.ui.avg_box.setText("ERROR")
 
     def save_values(self):
         for i in range(24):
             self.pattern[i] = float(self.ui.tableWidget.item(i,0).text())
 
         self.module.changeCustomPattern(self.enduse, self.pattern)
-
         return True

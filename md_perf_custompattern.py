@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perf_custompattern.ui'
 #
-# Created: Wed Apr 15 23:15:41 2015
+# Created: Thu Apr 16 00:21:35 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,14 +38,17 @@ class Ui_CustomPatternDialog(object):
         self.widget = QtGui.QWidget(CustomPatternDialog)
         self.widget.setMinimumSize(QtCore.QSize(0, 40))
         self.widget.setObjectName(_fromUtf8("widget"))
+        self.horizontalLayout_2 = QtGui.QHBoxLayout(self.widget)
+        self.horizontalLayout_2.setMargin(0)
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.enduselbl = QtGui.QLabel(self.widget)
+        self.enduselbl.setObjectName(_fromUtf8("enduselbl"))
+        self.horizontalLayout_2.addWidget(self.enduselbl)
         self.endusetype = QtGui.QLineEdit(self.widget)
-        self.endusetype.setGeometry(QtCore.QRect(80, 10, 171, 20))
         self.endusetype.setAcceptDrops(False)
         self.endusetype.setReadOnly(True)
         self.endusetype.setObjectName(_fromUtf8("endusetype"))
-        self.enduselbl = QtGui.QLabel(self.widget)
-        self.enduselbl.setGeometry(QtCore.QRect(10, 13, 71, 16))
-        self.enduselbl.setObjectName(_fromUtf8("enduselbl"))
+        self.horizontalLayout_2.addWidget(self.endusetype)
         self.verticalLayout.addWidget(self.widget)
         self.tableWidget = QtGui.QTableWidget(CustomPatternDialog)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
@@ -182,6 +185,21 @@ class Ui_CustomPatternDialog(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.verticalHeader().setMinimumSectionSize(30)
         self.verticalLayout.addWidget(self.tableWidget)
+        self.widget_2 = QtGui.QWidget(CustomPatternDialog)
+        self.widget_2.setMinimumSize(QtCore.QSize(0, 40))
+        self.widget_2.setObjectName(_fromUtf8("widget_2"))
+        self.horizontalLayout = QtGui.QHBoxLayout(self.widget_2)
+        self.horizontalLayout.setMargin(0)
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.avg_lbl = QtGui.QLabel(self.widget_2)
+        self.avg_lbl.setObjectName(_fromUtf8("avg_lbl"))
+        self.horizontalLayout.addWidget(self.avg_lbl)
+        self.avg_box = QtGui.QLineEdit(self.widget_2)
+        self.avg_box.setAcceptDrops(False)
+        self.avg_box.setReadOnly(True)
+        self.avg_box.setObjectName(_fromUtf8("avg_box"))
+        self.horizontalLayout.addWidget(self.avg_box)
+        self.verticalLayout.addWidget(self.widget_2)
         self.footer_widget = QtGui.QWidget(CustomPatternDialog)
         self.footer_widget.setMinimumSize(QtCore.QSize(0, 38))
         self.footer_widget.setMaximumSize(QtCore.QSize(16777215, 38))
@@ -208,8 +226,8 @@ class Ui_CustomPatternDialog(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Define Custom Pattern (24h)</span></p></body></html>", None))
-        self.endusetype.setText(_translate("CustomPatternDialog", "<end use type>", None))
         self.enduselbl.setText(_translate("CustomPatternDialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">End Use:</span></p></body></html>", None))
+        self.endusetype.setText(_translate("CustomPatternDialog", "<end use type>", None))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("CustomPatternDialog", "      00:00      ", None))
         item = self.tableWidget.verticalHeaderItem(1)
@@ -263,4 +281,6 @@ class Ui_CustomPatternDialog(object):
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
         self.tableWidget.setSortingEnabled(__sortingEnabled)
+        self.avg_lbl.setText(_translate("CustomPatternDialog", "<html><head/><body><p>Average Scaling:</p></body></html>", None))
+        self.avg_box.setText(_translate("CustomPatternDialog", "1.0", None))
 
