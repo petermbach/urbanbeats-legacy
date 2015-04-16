@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatsresultsgui.ui'
 #
-# Created: Thu Apr 16 02:08:58 2015
+# Created: Thu Apr 16 22:53:50 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -257,6 +257,7 @@ class Ui_ResultsBrowseDialog(object):
         self.wd_comboSelect.addItem(_fromUtf8(""))
         self.wd_comboSelect.addItem(_fromUtf8(""))
         self.wd_comboSelect.addItem(_fromUtf8(""))
+        self.wd_comboSelect.addItem(_fromUtf8(""))
         self.verticalLayout_18.addWidget(self.wd_comboSelect)
         self.wd_comboScope = QtGui.QComboBox(self.wd_sidebarWidget)
         self.wd_comboScope.setMinimumSize(QtCore.QSize(200, 20))
@@ -266,12 +267,10 @@ class Ui_ResultsBrowseDialog(object):
         self.wd_comboScope.addItem(_fromUtf8(""))
         self.wd_comboScope.addItem(_fromUtf8(""))
         self.verticalLayout_18.addWidget(self.wd_comboScope)
-        self.wd_categoryTree = QtGui.QTreeWidget(self.wd_sidebarWidget)
-        self.wd_categoryTree.setMinimumSize(QtCore.QSize(200, 230))
-        self.wd_categoryTree.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.wd_categoryTree.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
-        self.wd_categoryTree.setObjectName(_fromUtf8("wd_categoryTree"))
-        self.verticalLayout_18.addWidget(self.wd_categoryTree)
+        self.wd_listwidget = QtGui.QListWidget(self.wd_sidebarWidget)
+        self.wd_listwidget.setMinimumSize(QtCore.QSize(0, 230))
+        self.wd_listwidget.setObjectName(_fromUtf8("wd_listwidget"))
+        self.verticalLayout_18.addWidget(self.wd_listwidget)
         self.wd_summarybox = QtGui.QTextBrowser(self.wd_sidebarWidget)
         self.wd_summarybox.setObjectName(_fromUtf8("wd_summarybox"))
         self.verticalLayout_18.addWidget(self.wd_summarybox)
@@ -529,7 +528,7 @@ class Ui_ResultsBrowseDialog(object):
         QtCore.QMetaObject.connectSlotsByName(ResultsBrowseDialog)
 
     def retranslateUi(self, ResultsBrowseDialog):
-        ResultsBrowseDialog.setWindowTitle(_translate("ResultsBrowseDialog", "Dialog", None))
+        ResultsBrowseDialog.setWindowTitle(_translate("ResultsBrowseDialog", "UrbanBEATS Results Explorer", None))
         self.windowtitle.setText(_translate("ResultsBrowseDialog", "Model Output Explorer", None))
         self.windowsubtitle.setText(_translate("ResultsBrowseDialog", "Explore and Export Model Outputs for current Project", None))
         self.ps_categoryTree.headerItem().setText(0, _translate("ResultsBrowseDialog", "Outline", None))
@@ -556,12 +555,12 @@ class Ui_ResultsBrowseDialog(object):
         self.ue_Sim_box.setText(_translate("ResultsBrowseDialog", "Milestone1", None))
         self.resultTabs.setTabText(self.resultTabs.indexOf(self.tab_2), _translate("ResultsBrowseDialog", "Urban Environment", None))
         self.wd_comboSelect.setItemText(0, _translate("ResultsBrowseDialog", "<select category>", None))
-        self.wd_comboSelect.setItemText(1, _translate("ResultsBrowseDialog", "24h Water Demand Breakdown ", None))
-        self.wd_comboSelect.setItemText(2, _translate("ResultsBrowseDialog", "Extended Period Demand", None))
+        self.wd_comboSelect.setItemText(1, _translate("ResultsBrowseDialog", "Average End Use Summary", None))
+        self.wd_comboSelect.setItemText(2, _translate("ResultsBrowseDialog", "24h Water Demand Breakdown ", None))
+        self.wd_comboSelect.setItemText(3, _translate("ResultsBrowseDialog", "Extended Period Demand", None))
         self.wd_comboScope.setItemText(0, _translate("ResultsBrowseDialog", "<select scope>", None))
         self.wd_comboScope.setItemText(1, _translate("ResultsBrowseDialog", "Block Level", None))
         self.wd_comboScope.setItemText(2, _translate("ResultsBrowseDialog", "Basin Level", None))
-        self.wd_categoryTree.headerItem().setText(0, _translate("ResultsBrowseDialog", "Urban Regions", None))
         self.wd_summarybox.setHtml(_translate("ResultsBrowseDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

@@ -642,14 +642,13 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
             feature.SetField("Blk_WD", currentAttList.getAttribute("Blk_WD"))
             feature.SetField("Blk_WD_OUT", currentAttList.getAttribute("Blk_WD_OUT"))
 
-            feature.SetField("Blk_Kitch", currentAttList.getAttribute("Blk_Kitch"))
-            feature.SetField("Blk_Shower", currentAttList.getAttribute("Blk_Shower"))
-            feature.SetField("Blk_Toilet", currentAttList.getAttribute("Blk_Toilet"))
-            feature.SetField("Blk_Laund", currentAttList.getAttribute("Blk_Laund"))
-            feature.SetField("Blk_Garden", currentAttList.getAttribute("Blk_Garden"))
-            feature.SetField("Blk_Com", currentAttList.getAttribute("Blk_Com"))
-            feature.SetField("Blk_Ind", currentAttList.getAttribute("Blk_Ind"))
-            feature.SetField("Blk_PubIrr", currentAttList.getAttribute("Blk_PubIrr"))
+            feature.SetField("Blk_Kitch", currentAttList.getAttribute("Blk_kitchen"))
+            feature.SetField("Blk_Shower", currentAttList.getAttribute("Blk_shower"))
+            feature.SetField("Blk_Toilet", currentAttList.getAttribute("Blk_toilet"))
+            feature.SetField("Blk_Laund", currentAttList.getAttribute("Blk_laundry"))
+            feature.SetField("Blk_Com", currentAttList.getAttribute("Blk_com"))
+            feature.SetField("Blk_Ind", currentAttList.getAttribute("Blk_ind"))
+            feature.SetField("Blk_PubIrr", currentAttList.getAttribute("Blk_publicirri"))
 
             feature.SetField("ServedIA", currentAttList.getAttribute("ServedIA"))
 

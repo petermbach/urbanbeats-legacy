@@ -968,14 +968,15 @@ class Techplacement(UBModule):
             currentAttList.addAttribute("Blk_WD", wdDict["TotalBlockWD"])       #[kL/yr]
             currentAttList.addAttribute("Blk_WD_OUT", wdDict["TotalOutdoorWD"]) #[kL/yr]
 
-            currentAttList.addAttribute("Blk_Kitch", wdDict["Blk_Kitch"])   #[kL/day]
-            currentAttList.addAttribute("Blk_Shower", wdDict["Blk_Shower"])     #[kL/day]
-            currentAttList.addAttribute("Blk_Toilet", wdDict["Blk_Toilet"])     #[kL/day]
-            currentAttList.addAttribute("Blk_Laund", wdDict["Blk_Laund"])   #[kL/day]
-            currentAttList.addAttribute("Blk_Garden", wdDict["Blk_Garden"])     #[kL/day]
-            currentAttList.addAttribute("Blk_Com", wdDict["Blk_Com"])           #[kL/day]
-            currentAttList.addAttribute("Blk_Ind", wdDict["Blk_Ind"])           #[kL/day]
-            currentAttList.addAttribute("Blk_PubIrr", wdDict["Blk_PubIrr"])     #[kL/day]
+            currentAttList.addAttribute("Blk_kitchen", wdDict["Blk_kitchen"])   #[kL/day]
+            currentAttList.addAttribute("Blk_shower", wdDict["Blk_shower"])     #[kL/day]
+            currentAttList.addAttribute("Blk_toilet", wdDict["Blk_toilet"])     #[kL/day]
+            currentAttList.addAttribute("Blk_laundry", wdDict["Blk_laundry"])   #[kL/day]
+            currentAttList.addAttribute("Blk_irrigation", wdDict["Blk_irrigation"])     #[kL/day]
+            currentAttList.addAttribute("Blk_com", wdDict["Blk_com"])           #[kL/day]
+            currentAttList.addAttribute("Blk_ind", wdDict["Blk_ind"])           #[kL/day]
+            currentAttList.addAttribute("Blk_publicirri", wdDict["Blk_publicirri"])     #[kL/day]
+
 
         ###-------------------------------------------------------------------###
         #---  INTERMEDIATE LOOP - RECALCULATE IMP AREA TO SERVE
@@ -1727,14 +1728,14 @@ class Techplacement(UBModule):
         waterDemandDict["TotalOutdoorWD"] = block_TOutWD
         waterDemandDict["TotalBlockWD"] = block_TotalWD
 
-        waterDemandDict["Blk_Kitch"] = blockKitchen
-        waterDemandDict["Blk_Shower"] = blockShower
-        waterDemandDict["Blk_Toilet"] = blockToilet
-        waterDemandDict["Blk_Laund"] = blockLaundry
-        waterDemandDict["Blk_Garden"] = blockIrrigation
-        waterDemandDict["Blk_Com"] = blockCom
-        waterDemandDict["Blk_Ind"] = blockInd
-        waterDemandDict["Blk_PubIrr"] = blockPubIrr
+        waterDemandDict["Blk_kitchen"] = blockKitchen
+        waterDemandDict["Blk_shower"] = blockShower
+        waterDemandDict["Blk_toilet"] = blockToilet
+        waterDemandDict["Blk_laundry"] = blockLaundry
+        waterDemandDict["Blk_irrigation"] = blockIrrigation
+        waterDemandDict["Blk_com"] = blockCom
+        waterDemandDict["Blk_ind"] = blockInd
+        waterDemandDict["Blk_publicirri"] = blockPubIrr
         return waterDemandDict
 
 

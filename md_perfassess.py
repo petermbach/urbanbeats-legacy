@@ -144,7 +144,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.indpat = "SDD"
         self.publicirripat = "SDD"
 
-        self.ssd = [0.3,0.3,0.3,0.3,0.5,1.0,1.5,1.5,1.3,1.0,1.0,1.5,1.5,1.2,1.0,1.0,1.0,1.3,1.3,0.8,0.8,0.5,0.5,0.5]
+        self.sdd = [0.3,0.3,0.3,0.3,0.5,1.0,1.5,1.5,1.3,1.0,1.0,1.5,1.5,1.2,1.0,1.0,1.0,1.3,1.3,0.8,0.8,0.5,0.5,0.5]
         self.cdp = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
         self.ahc = [2.0,2.0,2.0,2.0,2.0,2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2.0,2.0,2.0,2.0,2.0,2.0]
 
@@ -424,9 +424,16 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.notify("Total Strategies: "+str(strats))
 
         #Part 1 - Demand Downscaling Data
-
-
-
+        enduses = ["kitchen", "shower", "toilet", "laundry", "irrigation", "com", "ind", "publicirri"]
+        for i in enduses:
+            if eval("self."+i+"pat") == "SDD":
+                map_attr.addAttribute("wdp_"+i, self.sdd)
+            elif eval("self."+i+"pat") == "CDP":
+                map_attr.addAttribute("wdp_"+i, self.cdp)
+            elif eval("self."+i+"pat") == "AHC":
+                map_attr.addAttribute("wdp_"+i, self.ahc)
+            else:
+                map_attr.addAttribute("wdp_"+i, eval("self.cp_"+i))
 
 
         return True

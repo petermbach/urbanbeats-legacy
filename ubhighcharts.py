@@ -260,6 +260,93 @@ $(function () {
 </html>"""
     return htmlscript    
 
+
+def addCurveDataHTML(name, curvedata):
+    curvestringdata = ""
+    curvestringdata += "{ name: '"+str(name)+"', data: [ "
+    for i in range(len(curvedata)):
+        curvestringdata += str(curvedata[i])+","
+    curvestringdata.rstrip(",")
+    curvestringdata += "] },"
+    return curvestringdata
+
+def addCurveDataXYHTMK(name, curvedata):
+    #Refer to Da Capo code
+    pass
+
+def stacked_chart(options_root, charttitle, categories, axislabel, valueunits, datadict):
+    """Stacked area chart
+
+    """
+    #Parse datastring from input dictionary
+    curvestrings = ""
+    for wd in datadict.keys():
+        curvestrings += addCurveDataHTML(wd, datadict[wd])
+    curvestrings.rstrip(',')
+
+    htmlscript = """
+    <!DOCTYPE HTML>
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>"""+str(charttitle)+"""</title>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript">
+        $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'area'
+            },
+            title: {
+                text: '"""+str(charttitle)+"""'
+            },
+            subtitle: {
+                text: 'UrbanBEATS v1.0'
+            },
+            xAxis: {
+                categories: """+categories+""",
+                tickmarkPlacement: 'on',
+                title: {
+                    enabled: false
+                }
+            },
+            yAxis: {
+                title: {
+                    text: '"""+str(axislabel[1])+"""'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value / 1000;
+                    }
+                }
+            },
+            tooltip: {
+                shared: true,
+                valueSuffix: ' """+str(valueunits)+"""'
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'normal',
+                    lineColor: '#666666',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#666666'
+                    }
+                }
+            },
+            series: ["""+str(curvestrings)+"""]
+        });
+    });
+    </script>
+    </head>
+    <body>
+        <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
+        <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+    </body>
+    </html>"""
+    return htmlscript
+
 def bar_basic(options_root, charttitle, categories, axislabel, valueunits, datadict):
     """Basic Bar Chart (Horizontal) (as seen @ http://www.highcharts.com/demo/bar-basic)
         - charttitle = title of the chart    

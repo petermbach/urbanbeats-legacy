@@ -92,7 +92,6 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         toplevitems = [category1, category2, category3, category4, category5, category6, category7, category8, category9]
         self.ui.ue_categoryTree.addTopLevelItems(toplevitems)
 
-
         #Data Prep for CATEGORY 1
         testcharttitle = "Random temperatures for different cities"
         testcategories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -224,6 +223,128 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
 
         #Test - Click on Export Button to plot a chart in the GUI
         self.connect(self.ui.ue_categoryTree, QtCore.SIGNAL("itemSelectionChanged()"), self.plotHighChart)
+
+
+        #WATER DEMAND RESULTS
+        self.updateWDList()
+        self.connect(self.ui.wd_comboScope, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateWDList)
+        self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.plotWD)
+        self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.updateWDQuickInfo)
+
+        # category1 = QtGui.QTreeWidgetItem()
+        # category1.setText(0, "BasicLinePlot")
+        # category2 = QtGui.QTreeWidgetItem()
+        # category2.setText(0, "PieChart")
+        # category3 = QtGui.QTreeWidgetItem()
+        # category3.setText(0, "BasicBarChart")
+        # category4 = QtGui.QTreeWidgetItem()
+        # category4.setText(0, "BasicColumnChart")
+        # category5 = QtGui.QTreeWidgetItem()
+        # category5.setText(0, "ScatterPlotExample")
+        # category6 = QtGui.QTreeWidgetItem()
+        # category6.setText(0, "SpiderWeb")
+        # category7 = QtGui.QTreeWidgetItem()
+        # category7.setText(0, "BoxPlotExample")
+        # category8 = QtGui.QTreeWidgetItem()
+        # category8.setText(0, "BarNegativeStack")
+        # category9 = QtGui.QTreeWidgetItem()
+        # category9.setText(0, "ColumnStackedExample")
+        # category10 = QtGui.QTreeWidgetItem()
+        # category10.setText(0, "")
+        # toplevitems = []
+        # self.ui.ue_categoryTree.addTopLevelItems(toplevitems)
+
+    def updateWDQuickInfo(self, blockdata):
+        """Updates the quick info box to match the selection"""
+        # self.ui.wd_summarybox.setHtml(_translate("ResultsBrowseDialog",
+        #         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        #         "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+        #         "p, li { white-space: pre-wrap; }\n"
+        #         "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Quick Info</span></p>\n"
+        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">ID: "+str(blockdata.getAttribute("BlockID"))+"</span></p>\n"
+        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Population: "+str(int(blockdata.getAttribute("Pop")))+"</span></p>\n"
+        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Households: "+str(int(blockdata.getAttribute("ResHouses")))+"</span></p>\n"
+        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Flats: "+str(int(blockdata.getAttribute("HDRFlats")))+"</span></p>\n"
+        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Efficiency Rating: "+str(int(blockdata.getAttribute("wd_Rating")))+"</span></p>\n"
+        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Recycling: NO</span></p></body></html>", None))
+        pass
+
+    def plotWD(self):
+        """Plots the water demand stack chart based on the combo box's settings"""
+        timeaxis = "['0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']"
+        axes = ["Time HH:MM", "Water Demand [kL]"]
+
+        if self.ui.wd_comboSelect.currentIndex() == 0:
+            return True #Do nothing
+        elif self.ui.wd_comboSelect.currentIndex() == 1:
+            #Summary Demand Plot
+            pass
+        elif self.ui.wd_comboSelect.currentIndex() == 2:
+            #24 hour Pattern Plot
+            if self.ui.wd_comboScope.currentIndex() == 1:
+                #Block Data
+                blockdata = self.module.getAssetWithName(str(self.ui.wd_listwidget.currentItem().text()))
+                plotdata = self.getDemandPatternsBlock(blockdata)
+                self.updateWDQuickInfo(blockdata)
+                self.htmlscriptWD = ubhighcharts.stacked_chart(self.options_root, "24-hour Water Demand Pattern",
+                                                               timeaxis, axes, "L", plotdata)
+
+                self.ui.wd_WebView.setHtml(self.htmlscriptWD)
+
+
+
+        elif self.ui.wd_comboSelect.currentIndex() == 3:
+            #Extended Period Demand Pattern
+            pass
+
+    def getDemandPatternsBlock(self, blockdata):
+        map_attr = self.module.getAssetWithName("MapAttributes")
+        enduses = ["kitchen", "shower", "toilet", "laundry", "irrigation", "com", "ind", "publicirri"]
+        plotlabels = ["Kitchen", "Shower", "Toilet", "Laundry", "Garden", "Commercial", "Industrial", "Public Irrigation"]
+        patterndict = {}
+        for i in range(len(enduses)):
+            pattern = map_attr.getAttribute("wdp_"+enduses[i])   #retrieve the array with pattern info
+            if pattern == 0:
+                print "WARNING Perf Assess probably not configured properly!"
+                pattern = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+            avgdemand = float(blockdata.getAttribute("Blk_"+enduses[i]) / 24.0)  #retrieve kl/day and convert to per hour
+            demandseries = []
+            for j in range(len(pattern)):
+                demandseries.append(round(avgdemand * 1000 * pattern[j],2))
+            patterndict[plotlabels[i]] = demandseries
+        return patterndict
+
+
+    def updateWDList(self):
+        """Water Demand Tab: Updates the list widget with either a list of blocks or basin IDs to choose from"""
+        cat_types = ['none', 'block', 'basin']
+        self.addCategoriesToList(self.ui.wd_listwidget, cat_types[self.ui.wd_comboScope.currentIndex()])
+
+    def addCategoriesToList(self, listobject, cat_type):
+        listobject.clear()
+        if cat_type == 'none':
+            return True
+        elif cat_type == 'block':
+            blockslist=  self.module.getAssetsWithIdentifier("BlockID")
+            blockIDlist = []
+            for i in blockslist:
+                if i.getAttribute("Status") == 0:
+                    continue
+                blockIDlist.append(i.getAttribute("BlockID"))
+            blockIDlist.sort()
+            for i in range(len(blockIDlist)):
+                c = QtGui.QListWidgetItem()
+                c.setText("BlockID"+str(blockIDlist[i]))
+                self.ui.wd_listwidget.addItem(c)
+        elif cat_type == 'basin':
+            basins = self.module.getAssetWithName("MapAttributes").getAttribute("TotalBasins")
+            print basins
+            for i in range(basins):
+                c = QtGui.QListWidgetItem()
+                c.setText("BasinID"+str(i+1))
+                self.ui.wd_listwidget.addItem(c)
+        return True
 
 
     def changeLeafletMap(self, tabindex):

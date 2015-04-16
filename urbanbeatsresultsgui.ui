@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>UrbanBEATS Results Explorer</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -568,6 +568,11 @@
                </item>
                <item>
                 <property name="text">
+                 <string>Average End Use Summary</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>24h Water Demand Breakdown </string>
                 </property>
                </item>
@@ -610,27 +615,13 @@
               </widget>
              </item>
              <item>
-              <widget class="QTreeWidget" name="wd_categoryTree">
+              <widget class="QListWidget" name="wd_listwidget">
                <property name="minimumSize">
                 <size>
-                 <width>200</width>
+                 <width>0</width>
                  <height>230</height>
                 </size>
                </property>
-               <property name="maximumSize">
-                <size>
-                 <width>200</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::MultiSelection</enum>
-               </property>
-               <column>
-                <property name="text">
-                 <string>Urban Regions</string>
-                </property>
-               </column>
               </widget>
              </item>
              <item>
