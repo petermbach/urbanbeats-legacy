@@ -940,33 +940,42 @@ class Techplacement(UBModule):
                 continue
             wdDict = self.calculateBlockWaterDemand(currentAttList)
             currentAttList.addAttribute("wd_Rating", wdDict["Efficiency"])      #[stars]
-            currentAttList.addAttribute("wd_RES_K", wdDict["RESkitchen"])       #[L/hh/day]
-            currentAttList.addAttribute("wd_RES_S", wdDict["RESshower"])        #[L/hh/day]
-            currentAttList.addAttribute("wd_RES_T", wdDict["REStoilet"])        #[L/hh/day]
-            currentAttList.addAttribute("wd_RES_L", wdDict["RESlaundry"])       #[L/hh/day]
-            currentAttList.addAttribute("wd_RES_I", wdDict["RESirrigation"])    #[kL/lot/yr]
+            currentAttList.addAttribute("wd_RES_K", wdDict["RESkitchen"])       #[kL/day]
+            currentAttList.addAttribute("wd_RES_S", wdDict["RESshower"])        #[kL/day]
+            currentAttList.addAttribute("wd_RES_T", wdDict["REStoilet"])        #[kL/day]
+            currentAttList.addAttribute("wd_RES_L", wdDict["RESlaundry"])       #[kL/day]
+            currentAttList.addAttribute("wd_RES_I", wdDict["RESirrigation"])    #[kL/day]
             currentAttList.addAttribute("wd_RES_IN", wdDict["REStotalIN"])      #[kL/yr]
             currentAttList.addAttribute("wd_RES_OUT", wdDict["REStotalOUT"])    #[kL/yr]
-            currentAttList.addAttribute("wd_HDR_K", wdDict["HDRkitchen"])       #[L/hh/day]
-            currentAttList.addAttribute("wd_HDR_S", wdDict["HDRshower"])        #[L/hh/day]
-            currentAttList.addAttribute("wd_HDR_T", wdDict["HDRtoilet"])        #[L/hh/day]
-            currentAttList.addAttribute("wd_HDR_L", wdDict["HDRlaundry"])       #[L/hh/day]
-            currentAttList.addAttribute("wd_HDR_I", wdDict["HDRirrigation"])    #[kL/yr]
+            currentAttList.addAttribute("wd_HDR_K", wdDict["HDRkitchen"])       #[kL/day]
+            currentAttList.addAttribute("wd_HDR_S", wdDict["HDRshower"])        #[kL/day]
+            currentAttList.addAttribute("wd_HDR_T", wdDict["HDRtoilet"])        #[kL/day]
+            currentAttList.addAttribute("wd_HDR_L", wdDict["HDRlaundry"])       #[kL/day]
+            currentAttList.addAttribute("wd_HDR_I", wdDict["HDRirrigation"])    #[kL/day]
             currentAttList.addAttribute("wd_HDR_IN", wdDict["HDRtotalIN"])      #[kL/yr]
             currentAttList.addAttribute("wd_HDR_OUT", wdDict["HDRtotalOUT"])    #[kL/yr]
             currentAttList.addAttribute("wd_PrivIN", wdDict["TotalPrivateIN"])  #[kL/yr]
             currentAttList.addAttribute("wd_PrivOUT", wdDict["TotalPrivateOUT"])#[kL/yr]
             
-            currentAttList.addAttribute("wd_LI", wdDict["LIDemand"])            #[L/day]
-            currentAttList.addAttribute("wd_HI", wdDict["HIDemand"])            #[L/day]
-            currentAttList.addAttribute("wd_COM", wdDict["COMDemand"])          #[L/day]
-            currentAttList.addAttribute("wd_ORC", wdDict["ORCDemand"])          #[L/day]
+            currentAttList.addAttribute("wd_LI", wdDict["LIDemand"])            #[kL/day]
+            currentAttList.addAttribute("wd_HI", wdDict["HIDemand"])            #[kL/day]
+            currentAttList.addAttribute("wd_COM", wdDict["COMDemand"])          #[kL/day]
+            currentAttList.addAttribute("wd_ORC", wdDict["ORCDemand"])          #[kL/day]
             currentAttList.addAttribute("wd_Nres_IN", wdDict["TotalNonResDemand"]) #[kL/yr]
             
             currentAttList.addAttribute("Apub_irr", wdDict["APublicIrrigate"])  #[sqm]
             currentAttList.addAttribute("wd_PubOUT", wdDict["TotalOutdoorPublicWD"]) #[kL/yr]
             currentAttList.addAttribute("Blk_WD", wdDict["TotalBlockWD"])       #[kL/yr]
             currentAttList.addAttribute("Blk_WD_OUT", wdDict["TotalOutdoorWD"]) #[kL/yr]
+
+            currentAttList.addAttribute("Blk_Kitchen", wdDict["Blk_Kitchen"])   #[kL/day]
+            currentAttList.addAttribute("Blk_Shower", wdDict["Blk_Shower"])     #[kL/day]
+            currentAttList.addAttribute("Blk_Toilet", wdDict["Blk_Toilet"])     #[kL/day]
+            currentAttList.addAttribute("Blk_Laundry", wdDict["Blk_Laundry"])   #[kL/day]
+            currentAttList.addAttribute("Blk_Garden", wdDict["Blk_Garden"])     #[kL/day]
+            currentAttList.addAttribute("Blk_Com", wdDict["Blk_Com"])           #[kL/day]
+            currentAttList.addAttribute("Blk_Ind", wdDict["Blk_Ind"])           #[kL/day]
+            currentAttList.addAttribute("Blk_PubIrr", wdDict["Blk_PubIrr"])     #[kL/day]
 
         ###-------------------------------------------------------------------###
         #---  INTERMEDIATE LOOP - RECALCULATE IMP AREA TO SERVE
@@ -1502,7 +1511,16 @@ class Techplacement(UBModule):
         Block and writes the information to the attributes list based on current
         settings for usage patterns, water efficiency, etc. Returns a dictionary with
         all the water demand information for the Block"""
-        
+
+        blockKitchen = 0        #Total Kitchen End use  [kL/day]
+        blockShower = 0         #Total Shwoer End use
+        blockToilet = 0         #Total Toilet End use
+        blockLaundry = 0        #Total Laundry End use
+        blockIrrigation = 0     #Total Irrigation End use
+        blockCom = 0            #Total Commercial/Office End use
+        blockInd = 0            #Total Industrial End use
+        blockPubIrr = 0         #Total Public Irrigation
+
         block_TInWD = 0             #Block total indoor water demand
         block_TOutWD = 0            #Block total outdoor water demand
         block_TInPrivWD = 0         #Block total indoor private water demand
@@ -1528,24 +1546,31 @@ class Techplacement(UBModule):
                 resflows = flowratesZero
                 
             occup = currentAttList.getAttribute("HouseOccup")
+            houses = currentAttList.getAttribute("ResHouses")
             kitchendem, showerdem, toiletdem, laundrydem = self.getResIndoorDemands(occup, resflows, flowratesVary)
             totalHouseIndoor = (kitchendem + showerdem + toiletdem + laundrydem)/1000 #[kL/hh/day]
-            totalIndoorAnn = totalHouseIndoor*365*currentAttList.getAttribute("ResHouses")
-            waterDemandDict["RESkitchen"] = round(kitchendem,2)
-            waterDemandDict["RESshower"] = round(showerdem,2)
-            waterDemandDict["REStoilet"] = round(toiletdem,2)
-            waterDemandDict["RESlaundry"] = round(laundrydem,2)
-            
+            totalIndoorAnn = totalHouseIndoor*365*houses
+            waterDemandDict["RESkitchen"] = round(kitchendem*houses/1000,2)  #[kL/day]
+            blockKitchen += waterDemandDict["RESkitchen"]
+            waterDemandDict["RESshower"] = round(showerdem*houses/1000,2)
+            blockShower += waterDemandDict["RESshower"]
+            waterDemandDict["REStoilet"] = round(toiletdem*houses/1000,2)
+            blockToilet += waterDemandDict["REStoilet"]
+            waterDemandDict["RESlaundry"] = round(laundrydem*houses/1000,2)
+            blockLaundry += waterDemandDict["RESlaundry"]
+
             #Irrigation demand
             gardenSpace = currentAttList.getAttribute("ResGarden")
-            irrigationDem = (self.priv_irr_vol * gardenSpace/10000) * 1000  #[kL/year]
+            allots = currentAttList.getAttribute("ResAllots")
+            irrigationDem = (self.priv_irr_vol * gardenSpace/10000) * 1000/365 * allots  #[kL/day]
             waterDemandDict["RESirrigation"] = round(irrigationDem,2)
-            totalHouseOutdoor = irrigationDem/365   #[kL/day]
-            totalOutdoorAnn = irrigationDem*currentAttList.getAttribute("ResAllots")
-            
+            blockIrrigation += waterDemandDict["RESirrigation"]
+
+            totalOutdoorAnn = irrigationDem*365*allots  #[kL/year]
             waterDemandDict["REStotalIN"] = round(totalIndoorAnn,2)
             waterDemandDict["REStotalOUT"] = round(totalOutdoorAnn,2)
             totalRES = totalIndoorAnn + totalOutdoorAnn     #[kL/yr]
+
             block_TInPrivWD += totalIndoorAnn       #[kL/yr]
             block_TOutPrivWD += totalOutdoorAnn     #[kL/yr]
             block_TInWD += totalIndoorAnn
@@ -1569,24 +1594,30 @@ class Techplacement(UBModule):
                 resflows = flowratesZero
             
             occup = currentAttList.getAttribute("HDROccup")
+            houses = currentAttList.getAttribute("HDRFlats")
             kitchendem, showerdem, toiletdem, laundrydem = self.getResIndoorDemands(occup, resflows, flowratesVary)
             totalFlatIndoor = (kitchendem + showerdem + toiletdem + laundrydem)/1000        #[kL/day]
-            totalIndoorAnn = totalFlatIndoor*365*currentAttList.getAttribute("HDRFlats")
-            waterDemandDict["HDRkitchen"] = round(kitchendem,2)
-            waterDemandDict["HDRshower"] = round(showerdem,2)
-            waterDemandDict["HDRtoilet"] = round(toiletdem,2)
-            waterDemandDict["HDRlaundry"] = round(laundrydem,2)
+            totalIndoorAnn = totalFlatIndoor*365*houses
+            waterDemandDict["HDRkitchen"] = round(kitchendem*houses/1000,2)
+            blockKitchen += waterDemandDict["HDRkitchen"]
+            waterDemandDict["HDRshower"] = round(showerdem*houses/1000,2)
+            blockShower += waterDemandDict["HDRshower"]
+            waterDemandDict["HDRtoilet"] = round(toiletdem*houses/1000,2)
+            blockToilet += waterDemandDict["HDRtoilet"]
+            waterDemandDict["HDRlaundry"] = round(laundrydem*houses/1000,2)
+            blockLaundry += waterDemandDict["HDRlaundry"]
             
             #Irrigation demand
             gardenSpace = currentAttList.getAttribute("HDRGarden")
-            irrigationDem = (gardenSpace/10000 * self.priv_irr_vol) * 1000        #[kL/year]
+            irrigationDem = (gardenSpace/10000 * self.priv_irr_vol) * 1000/365        #[kL/day]
             waterDemandDict["HDRirrigation"] = round(irrigationDem,2)
-            totalHDROutdoorDaily = irrigationDem/365
-            totalOutdoorAnn = irrigationDem
-            
+            blockIrrigation += waterDemandDict["HDRirrigation"]
+
+            totalOutdoorAnn = irrigationDem*365 #[kL/yr]
             waterDemandDict["HDRtotalIN"] = round(totalIndoorAnn,2)
             waterDemandDict["HDRtotalOUT"] = round(totalOutdoorAnn,2)
             totalHDR = totalIndoorAnn + totalOutdoorAnn
+
             block_TInPrivWD += totalIndoorAnn       #[kL/yr]
             block_TOutPrivWD += totalOutdoorAnn     #[kL/yr]
             block_TInWD += totalIndoorAnn
@@ -1616,7 +1647,8 @@ class Techplacement(UBModule):
                 employed = currentAttList.getAttribute("LIjobs")
                 demand = self.getNonResIndoorDemand(employed, self.li_demand, self.li_demandvary/100)
             lipublic = currentAttList.getAttribute("avLt_LI")*currentAttList.getAttribute("LIestates")
-            waterDemandDict["LIDemand"] = demand/1000
+            waterDemandDict["LIDemand"] = demand/1000   #[kL/day]
+            blockInd += waterDemandDict["LIDemand"]
             totalBlockNonResWD += demand/1000
         else:
             waterDemandDict["LIDemand"] = 0
@@ -1631,7 +1663,8 @@ class Techplacement(UBModule):
                 employed = currentAttList.getAttribute("HIjobs")
                 demand = self.getNonResIndoorDemand(employed, self.hi_demand, self.hi_demandvary/100)
             hipublic = currentAttList.getAttribute("avLt_HI")*currentAttList.getAttribute("HIestates")
-            waterDemandDict["HIDemand"] = demand/1000
+            waterDemandDict["HIDemand"] = demand/1000   #[kL/day]
+            blockInd += waterDemandDict["HIDemand"]
             totalBlockNonResWD += demand/1000
         else:
             waterDemandDict["HIDemand"] = 0
@@ -1647,6 +1680,7 @@ class Techplacement(UBModule):
                 demand = self.getNonResIndoorDemand(employed, self.com_demand, self.com_demandvary/100)
             compublic = currentAttList.getAttribute("avLt_COM")*currentAttList.getAttribute("COMestates")
             waterDemandDict["COMDemand"] = demand/1000
+            blockCom += waterDemandDict["COMDemand"]
             totalBlockNonResWD += demand/1000
         else:
             waterDemandDict["COMDemand"] = 0
@@ -1662,6 +1696,7 @@ class Techplacement(UBModule):
                 demand = self.getNonResIndoorDemand(employed, self.com_demand, self.com_demandvary/100)
             orcpublic = currentAttList.getAttribute("avLt_ORC")*currentAttList.getAttribute("ORCestates")
             waterDemandDict["ORCDemand"] = demand/1000
+            blockCom += waterDemandDict["COMDemand"]
             totalBlockNonResWD += demand/1000
         else:
             waterDemandDict["ORCDemand"] = 0
@@ -1684,12 +1719,22 @@ class Techplacement(UBModule):
             pass    #No irrigation demand
         else:
             block_TOutPubWD += totalPublicSpace/10000 * self.public_irr_vol * 1000  #[kL/yr]
+            blockPubIrr += block_TOutPubWD / 365    #[kL/day]
             block_TOutWD += block_TOutPubWD
             block_TotalWD += block_TOutPubWD
         
         waterDemandDict["TotalOutdoorPublicWD"] = block_TOutPubWD
         waterDemandDict["TotalOutdoorWD"] = block_TOutWD
         waterDemandDict["TotalBlockWD"] = block_TotalWD
+
+        waterDemandDict["Blk_Kitchen"] = blockKitchen
+        waterDemandDict["Blk_Shower"] = blockShower
+        waterDemandDict["Blk_Toilet"] = blockToilet
+        waterDemandDict["Blk_Laundry"] = blockLaundry
+        waterDemandDict["Blk_Garden"] = blockIrrigation
+        waterDemandDict["Blk_Com"] = blockCom
+        waterDemandDict["Blk_Ind"] = blockInd
+        waterDemandDict["Blk_PubIrr"] = blockPubIrr
         return waterDemandDict
 
 
