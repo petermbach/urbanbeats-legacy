@@ -274,7 +274,7 @@ def addCurveDataXYHTMK(name, curvedata):
     #Refer to Da Capo code
     pass
 
-def stacked_chart(options_root, charttitle, categories, axislabel, valueunits, datadict):
+def stacked_chart(options_root, charttitle, categories, axislabel, valueunits, datadict, plotunits):
     """Stacked area chart
 
     """
@@ -283,6 +283,11 @@ def stacked_chart(options_root, charttitle, categories, axislabel, valueunits, d
     for wd in datadict.keys():
         curvestrings += addCurveDataHTML(wd, datadict[wd])
     curvestrings.rstrip(',')
+
+    if plotunits == "L/sec":
+        formattervalue = 1.0
+    else:
+        formattervalue = 1000.0
 
     htmlscript = """
     <!DOCTYPE HTML>
@@ -316,7 +321,7 @@ def stacked_chart(options_root, charttitle, categories, axislabel, valueunits, d
                 },
                 labels: {
                     formatter: function () {
-                        return this.value / 1000;
+                        return this.value / """+str(formattervalue)+""";
                     }
                 }
             },

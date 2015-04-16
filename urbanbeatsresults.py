@@ -229,19 +229,24 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.connect(self.ui.ue_categoryTree, QtCore.SIGNAL("itemSelectionChanged()"), self.plotHighChart)
 
 
-
         #WATER DEMAND RESULTS
         self.updateWDList()
+        self.ui.wd_unitskl.setChecked(1)
         self.connect(self.ui.wd_comboScope, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateWDList)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.plotWD)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.updateWDQuickInfo)
         self.connect(self.ui.wd_exportResults, QtCore.SIGNAL("clicked()"), self.export_wd_results)
-        # self.connect(self.ui.wd_)
+        self.connect(self.ui.wd_unitskl, QtCore.SIGNAL("clicked()"), self.plotWD)
+        self.connect(self.ui.wd_unitslps, QtCore.SIGNAL("clicked()"), self.plotWD)
 
     def export_wd_results(self):
         pass
 
-    def updateWDQuickInfo(self, blockdata, peak, maxuse):
+    def adjustUnits(self):
+        pass
+
+
+    def updateWDQuickInfo(self, blockdata, peak, maxuse, plotunits):
         """Updates the quick info box to match the selection"""
         self.ui.wd_summarybox.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
                 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -253,14 +258,21 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
                 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Households: "+str(int(blockdata.getAttribute("ResHouses")))+"</span></p>\n"
                 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Flats: "+str(int(blockdata.getAttribute("HDRFlats")))+"</span></p>\n"
                 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Efficiency Rating: "+str(int(blockdata.getAttribute("wd_Rating")))+"</span></p>\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Peak Demand: "+str(peak[0])+" @ "+str(int(peak[1]))+":00</span></p>\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Largest Use: "+str(maxuse[1])+" ("+str(maxuse[0])+")</span></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Peak Demand: "+str(peak[0])+plotunits+" @ "+str(int(peak[1]))+":00</span></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Largest Use: "+str(maxuse[1])+" ("+str(maxuse[0])+plotunits+")</span></p>\n"
                 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Recycling: NO</span></p></body></html>")
 
     def plotWD(self):
         """Plots the water demand stack chart based on the combo box's settings"""
         timeaxis = "['0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']"
-        axes = ["Time HH:MM", "Water Demand [kL]"]
+
+        #Determine Units
+        if self.ui.wd_unitslps.isChecked():
+            plotunits = "L/sec"
+        else:
+            plotunits = "kL"
+
+        axes = ["Time HH:MM", "Water Demand ["+str(plotunits)+"]"]
 
         if self.ui.wd_comboSelect.currentIndex() == 0:
             return True #Do nothing
@@ -273,13 +285,13 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
                 #Block Data
                 blockdata = self.module.getAssetWithName(str(self.ui.wd_listwidget.currentItem().text()))
 
-                plotdata = self.getDemandPatternsBlock(blockdata)
+                plotdata = self.getDemandPatternsBlock(blockdata, plotunits)
                 peakvalue, time = self.getPeakDemandValue(plotdata)
                 maxuse, maxusetype = self.getLargestEndUse(plotdata)
-                self.updateWDQuickInfo(blockdata, [peakvalue, time], [maxuse, maxusetype])
+                self.updateWDQuickInfo(blockdata, [peakvalue, time], [maxuse, maxusetype], plotunits)
 
                 self.htmlscriptWD = ubhighcharts.stacked_chart(self.options_root, "24-hour Water Demand Pattern",
-                                                               timeaxis, axes, "L", plotdata)
+                                                               timeaxis, axes, "L", plotdata, plotunits)
                 self.ui.wd_WebView.setHtml(self.htmlscriptWD)
 
 
@@ -310,23 +322,28 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         peaktime = totaldemseries.index(peakdem)
         return peakdem, peaktime
 
-    def getDemandPatternsBlock(self, blockdata):
+    def getDemandPatternsBlock(self, blockdata, plotunits):
         map_attr = self.module.getAssetWithName("MapAttributes")
         enduses = ["kitchen", "shower", "toilet", "laundry", "irrigation", "com", "ind", "publicirri"]
         plotlabels = ["Kitchen", "Shower", "Toilet", "Laundry", "Garden", "Commercial", "Industrial", "Public Irrigation"]
         patterndict = {}
+        if plotunits == "L/sec":
+            conversionfactor = float(1.0/(24.0*3600.0))
+        else:
+            conversionfactor = float(1.0/24.0)
+
         for i in range(len(enduses)):
             pattern = map_attr.getAttribute("wdp_"+enduses[i])   #retrieve the array with pattern info
             if pattern == 0:
                 print "WARNING Perf Assess probably not configured properly!"
                 pattern = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
-            avgdemand = float(blockdata.getAttribute("Blk_"+enduses[i]) / 24.0)  #retrieve kl/day and convert to per hour
+
+            avgdemand = float(blockdata.getAttribute("Blk_"+enduses[i])*conversionfactor)  #retrieve kl/day and convert to representative units
             demandseries = []
             for j in range(len(pattern)):
-                demandseries.append(round(avgdemand * 1000 * pattern[j],2))
+                demandseries.append(round(avgdemand * 1000 * pattern[j],2))     #Converts to Litres
             patterndict[plotlabels[i]] = demandseries
         return patterndict
-
 
     def updateWDList(self):
         """Water Demand Tab: Updates the list widget with either a list of blocks or basin IDs to choose from"""
