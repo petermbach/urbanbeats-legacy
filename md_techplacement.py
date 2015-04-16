@@ -968,10 +968,10 @@ class Techplacement(UBModule):
             currentAttList.addAttribute("Blk_WD", wdDict["TotalBlockWD"])       #[kL/yr]
             currentAttList.addAttribute("Blk_WD_OUT", wdDict["TotalOutdoorWD"]) #[kL/yr]
 
-            currentAttList.addAttribute("Blk_Kitchen", wdDict["Blk_Kitchen"])   #[kL/day]
+            currentAttList.addAttribute("Blk_Kitch", wdDict["Blk_Kitch"])   #[kL/day]
             currentAttList.addAttribute("Blk_Shower", wdDict["Blk_Shower"])     #[kL/day]
             currentAttList.addAttribute("Blk_Toilet", wdDict["Blk_Toilet"])     #[kL/day]
-            currentAttList.addAttribute("Blk_Laundry", wdDict["Blk_Laundry"])   #[kL/day]
+            currentAttList.addAttribute("Blk_Laund", wdDict["Blk_Laund"])   #[kL/day]
             currentAttList.addAttribute("Blk_Garden", wdDict["Blk_Garden"])     #[kL/day]
             currentAttList.addAttribute("Blk_Com", wdDict["Blk_Com"])           #[kL/day]
             currentAttList.addAttribute("Blk_Ind", wdDict["Blk_Ind"])           #[kL/day]
@@ -1727,10 +1727,10 @@ class Techplacement(UBModule):
         waterDemandDict["TotalOutdoorWD"] = block_TOutWD
         waterDemandDict["TotalBlockWD"] = block_TotalWD
 
-        waterDemandDict["Blk_Kitchen"] = blockKitchen
+        waterDemandDict["Blk_Kitch"] = blockKitchen
         waterDemandDict["Blk_Shower"] = blockShower
         waterDemandDict["Blk_Toilet"] = blockToilet
-        waterDemandDict["Blk_Laundry"] = blockLaundry
+        waterDemandDict["Blk_Laund"] = blockLaundry
         waterDemandDict["Blk_Garden"] = blockIrrigation
         waterDemandDict["Blk_Com"] = blockCom
         waterDemandDict["Blk_Ind"] = blockInd
