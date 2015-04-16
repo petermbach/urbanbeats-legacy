@@ -69,6 +69,10 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
 
 
         #URBAN ENVIRONMENT RESULTS
+
+
+
+        #Some example charts
         category1 = QtGui.QTreeWidgetItem()
         category1.setText(0, "BasicLinePlot")
         category2 = QtGui.QTreeWidgetItem()
@@ -225,50 +229,27 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.connect(self.ui.ue_categoryTree, QtCore.SIGNAL("itemSelectionChanged()"), self.plotHighChart)
 
 
+
         #WATER DEMAND RESULTS
         self.updateWDList()
         self.connect(self.ui.wd_comboScope, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateWDList)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.plotWD)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.updateWDQuickInfo)
 
-        # category1 = QtGui.QTreeWidgetItem()
-        # category1.setText(0, "BasicLinePlot")
-        # category2 = QtGui.QTreeWidgetItem()
-        # category2.setText(0, "PieChart")
-        # category3 = QtGui.QTreeWidgetItem()
-        # category3.setText(0, "BasicBarChart")
-        # category4 = QtGui.QTreeWidgetItem()
-        # category4.setText(0, "BasicColumnChart")
-        # category5 = QtGui.QTreeWidgetItem()
-        # category5.setText(0, "ScatterPlotExample")
-        # category6 = QtGui.QTreeWidgetItem()
-        # category6.setText(0, "SpiderWeb")
-        # category7 = QtGui.QTreeWidgetItem()
-        # category7.setText(0, "BoxPlotExample")
-        # category8 = QtGui.QTreeWidgetItem()
-        # category8.setText(0, "BarNegativeStack")
-        # category9 = QtGui.QTreeWidgetItem()
-        # category9.setText(0, "ColumnStackedExample")
-        # category10 = QtGui.QTreeWidgetItem()
-        # category10.setText(0, "")
-        # toplevitems = []
-        # self.ui.ue_categoryTree.addTopLevelItems(toplevitems)
 
     def updateWDQuickInfo(self, blockdata):
         """Updates the quick info box to match the selection"""
-        # self.ui.wd_summarybox.setHtml(_translate("ResultsBrowseDialog",
-        #         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-        #         "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-        #         "p, li { white-space: pre-wrap; }\n"
-        #         "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Quick Info</span></p>\n"
-        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">ID: "+str(blockdata.getAttribute("BlockID"))+"</span></p>\n"
-        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Population: "+str(int(blockdata.getAttribute("Pop")))+"</span></p>\n"
-        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Households: "+str(int(blockdata.getAttribute("ResHouses")))+"</span></p>\n"
-        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Flats: "+str(int(blockdata.getAttribute("HDRFlats")))+"</span></p>\n"
-        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Efficiency Rating: "+str(int(blockdata.getAttribute("wd_Rating")))+"</span></p>\n"
-        #         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Recycling: NO</span></p></body></html>", None))
-        pass
+        self.ui.wd_summarybox.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                "p, li { white-space: pre-wrap; }\n"
+                "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Quick Info</span></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">ID: "+str(blockdata.getAttribute("BlockID"))+"</span></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Population: "+str(int(blockdata.getAttribute("Pop")))+"</span></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Households: "+str(int(blockdata.getAttribute("ResHouses")))+"</span></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Flats: "+str(int(blockdata.getAttribute("HDRFlats")))+"</span></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Efficiency Rating: "+str(int(blockdata.getAttribute("wd_Rating")))+"</span></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Recycling: NO</span></p></body></html>")
 
     def plotWD(self):
         """Plots the water demand stack chart based on the combo box's settings"""
