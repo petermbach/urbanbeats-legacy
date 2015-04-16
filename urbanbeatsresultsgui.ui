@@ -546,6 +546,12 @@
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QWidget" name="wd_sidebarWidget" native="true">
+            <property name="maximumSize">
+             <size>
+              <width>281</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_18">
              <item>
               <widget class="QComboBox" name="wd_comboSelect">
@@ -581,6 +587,11 @@
                  <string>Extended Period Demand</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>Recycled Water Usage</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item>
@@ -612,10 +623,21 @@
                  <string>Basin Level</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>Case Study</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item>
               <widget class="QListWidget" name="wd_listwidget">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -626,6 +648,12 @@
              </item>
              <item>
               <widget class="QTextBrowser" name="wd_summarybox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="html">
                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -637,14 +665,9 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Households: ##&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Flats: ##&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Efficiency Rating: ***&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Peak Demand: ???&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Largest End Use: ???&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Recycling: NO&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="wd_multiselect">
-               <property name="text">
-                <string>Enable Multiple Selection</string>
                </property>
               </widget>
              </item>
@@ -703,7 +726,7 @@ p, li { white-space: pre-wrap; }
                </property>
                <widget class="QPushButton" name="wd_exportResults">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="geometry">
                  <rect>
@@ -838,17 +861,12 @@ p, li { white-space: pre-wrap; }
                </item>
                <item>
                 <property name="text">
+                 <string>Technology Sizing</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>Utilisation</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Water Demands</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Water Efficiency Rating</string>
                 </property>
                </item>
               </widget>

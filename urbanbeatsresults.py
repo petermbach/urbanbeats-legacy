@@ -235,9 +235,13 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.connect(self.ui.wd_comboScope, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateWDList)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.plotWD)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.updateWDQuickInfo)
+        self.connect(self.ui.wd_exportResults, QtCore.SIGNAL("clicked()"), self.export_wd_results)
+        # self.connect(self.ui.wd_)
 
+    def export_wd_results(self):
+        pass
 
-    def updateWDQuickInfo(self, blockdata):
+    def updateWDQuickInfo(self, blockdata, peak, maxuse):
         """Updates the quick info box to match the selection"""
         self.ui.wd_summarybox.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
                 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -249,6 +253,8 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
                 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Households: "+str(int(blockdata.getAttribute("ResHouses")))+"</span></p>\n"
                 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Flats: "+str(int(blockdata.getAttribute("HDRFlats")))+"</span></p>\n"
                 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Efficiency Rating: "+str(int(blockdata.getAttribute("wd_Rating")))+"</span></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Peak Demand: "+str(peak[0])+" @ "+str(int(peak[1]))+":00</span></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Largest Use: "+str(maxuse[1])+" ("+str(maxuse[0])+")</span></p>\n"
                 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Recycling: NO</span></p></body></html>")
 
     def plotWD(self):
@@ -266,18 +272,43 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
             if self.ui.wd_comboScope.currentIndex() == 1:
                 #Block Data
                 blockdata = self.module.getAssetWithName(str(self.ui.wd_listwidget.currentItem().text()))
+
                 plotdata = self.getDemandPatternsBlock(blockdata)
-                self.updateWDQuickInfo(blockdata)
+                peakvalue, time = self.getPeakDemandValue(plotdata)
+                maxuse, maxusetype = self.getLargestEndUse(plotdata)
+                self.updateWDQuickInfo(blockdata, [peakvalue, time], [maxuse, maxusetype])
+
                 self.htmlscriptWD = ubhighcharts.stacked_chart(self.options_root, "24-hour Water Demand Pattern",
                                                                timeaxis, axes, "L", plotdata)
-
                 self.ui.wd_WebView.setHtml(self.htmlscriptWD)
-
 
 
         elif self.ui.wd_comboSelect.currentIndex() == 3:
             #Extended Period Demand Pattern
             pass
+
+    def getLargestEndUse(self, patterndict):
+        """Determines the largest end use and the hourly value"""
+        maxenduse = 0   #Stores max value
+        maxtype = ""    #stores type name
+        for i in patterndict.keys():
+            if max(patterndict[i]) > maxenduse:
+                maxenduse = max(patterndict[i])
+                maxtype = i
+        return maxenduse, maxtype
+
+    def getPeakDemandValue(self, patterndict):
+        """Calculates the peak value in the stacked chart and returns the value and time of occurrence
+        :param patterndict:
+        :return:
+        """
+        totaldemseries = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        for i in patterndict.keys():
+            for j in range(len(patterndict[i])):
+                totaldemseries[j] += patterndict[i][j]
+        peakdem = max(totaldemseries)
+        peaktime = totaldemseries.index(peakdem)
+        return peakdem, peaktime
 
     def getDemandPatternsBlock(self, blockdata):
         map_attr = self.module.getAssetWithName("MapAttributes")

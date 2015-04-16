@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatsresultsgui.ui'
 #
-# Created: Thu Apr 16 22:53:50 2015
+# Created: Fri Apr 17 08:46:38 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -246,6 +246,7 @@ class Ui_ResultsBrowseDialog(object):
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.tab_6)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.wd_sidebarWidget = QtGui.QWidget(self.tab_6)
+        self.wd_sidebarWidget.setMaximumSize(QtCore.QSize(281, 16777215))
         self.wd_sidebarWidget.setObjectName(_fromUtf8("wd_sidebarWidget"))
         self.verticalLayout_18 = QtGui.QVBoxLayout(self.wd_sidebarWidget)
         self.verticalLayout_18.setMargin(0)
@@ -258,6 +259,7 @@ class Ui_ResultsBrowseDialog(object):
         self.wd_comboSelect.addItem(_fromUtf8(""))
         self.wd_comboSelect.addItem(_fromUtf8(""))
         self.wd_comboSelect.addItem(_fromUtf8(""))
+        self.wd_comboSelect.addItem(_fromUtf8(""))
         self.verticalLayout_18.addWidget(self.wd_comboSelect)
         self.wd_comboScope = QtGui.QComboBox(self.wd_sidebarWidget)
         self.wd_comboScope.setMinimumSize(QtCore.QSize(200, 20))
@@ -266,17 +268,25 @@ class Ui_ResultsBrowseDialog(object):
         self.wd_comboScope.addItem(_fromUtf8(""))
         self.wd_comboScope.addItem(_fromUtf8(""))
         self.wd_comboScope.addItem(_fromUtf8(""))
+        self.wd_comboScope.addItem(_fromUtf8(""))
         self.verticalLayout_18.addWidget(self.wd_comboScope)
         self.wd_listwidget = QtGui.QListWidget(self.wd_sidebarWidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.wd_listwidget.sizePolicy().hasHeightForWidth())
+        self.wd_listwidget.setSizePolicy(sizePolicy)
         self.wd_listwidget.setMinimumSize(QtCore.QSize(0, 230))
         self.wd_listwidget.setObjectName(_fromUtf8("wd_listwidget"))
         self.verticalLayout_18.addWidget(self.wd_listwidget)
         self.wd_summarybox = QtGui.QTextBrowser(self.wd_sidebarWidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.wd_summarybox.sizePolicy().hasHeightForWidth())
+        self.wd_summarybox.setSizePolicy(sizePolicy)
         self.wd_summarybox.setObjectName(_fromUtf8("wd_summarybox"))
         self.verticalLayout_18.addWidget(self.wd_summarybox)
-        self.wd_multiselect = QtGui.QCheckBox(self.wd_sidebarWidget)
-        self.wd_multiselect.setObjectName(_fromUtf8("wd_multiselect"))
-        self.verticalLayout_18.addWidget(self.wd_multiselect)
         self.wd_units_widget = QtGui.QWidget(self.wd_sidebarWidget)
         self.wd_units_widget.setMinimumSize(QtCore.QSize(200, 38))
         self.wd_units_widget.setMaximumSize(QtCore.QSize(200, 38))
@@ -299,7 +309,7 @@ class Ui_ResultsBrowseDialog(object):
         self.ue_exportWidget_2.setMaximumSize(QtCore.QSize(200, 38))
         self.ue_exportWidget_2.setObjectName(_fromUtf8("ue_exportWidget_2"))
         self.wd_exportResults = QtGui.QPushButton(self.ue_exportWidget_2)
-        self.wd_exportResults.setEnabled(False)
+        self.wd_exportResults.setEnabled(True)
         self.wd_exportResults.setGeometry(QtCore.QRect(9, 9, 182, 20))
         self.wd_exportResults.setObjectName(_fromUtf8("wd_exportResults"))
         self.verticalLayout_18.addWidget(self.ue_exportWidget_2)
@@ -354,7 +364,6 @@ class Ui_ResultsBrowseDialog(object):
         self.wi_comboSelect.setMinimumSize(QtCore.QSize(200, 20))
         self.wi_comboSelect.setMaximumSize(QtCore.QSize(200, 20))
         self.wi_comboSelect.setObjectName(_fromUtf8("wi_comboSelect"))
-        self.wi_comboSelect.addItem(_fromUtf8(""))
         self.wi_comboSelect.addItem(_fromUtf8(""))
         self.wi_comboSelect.addItem(_fromUtf8(""))
         self.wi_comboSelect.addItem(_fromUtf8(""))
@@ -558,9 +567,11 @@ class Ui_ResultsBrowseDialog(object):
         self.wd_comboSelect.setItemText(1, _translate("ResultsBrowseDialog", "Average End Use Summary", None))
         self.wd_comboSelect.setItemText(2, _translate("ResultsBrowseDialog", "24h Water Demand Breakdown ", None))
         self.wd_comboSelect.setItemText(3, _translate("ResultsBrowseDialog", "Extended Period Demand", None))
+        self.wd_comboSelect.setItemText(4, _translate("ResultsBrowseDialog", "Recycled Water Usage", None))
         self.wd_comboScope.setItemText(0, _translate("ResultsBrowseDialog", "<select scope>", None))
         self.wd_comboScope.setItemText(1, _translate("ResultsBrowseDialog", "Block Level", None))
         self.wd_comboScope.setItemText(2, _translate("ResultsBrowseDialog", "Basin Level", None))
+        self.wd_comboScope.setItemText(3, _translate("ResultsBrowseDialog", "Case Study", None))
         self.wd_summarybox.setHtml(_translate("ResultsBrowseDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -571,8 +582,9 @@ class Ui_ResultsBrowseDialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Households: ##</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Flats: ##</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Efficiency Rating: ***</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Peak Demand: ???</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Largest End Use: ???</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Recycling: NO</span></p></body></html>", None))
-        self.wd_multiselect.setText(_translate("ResultsBrowseDialog", "Enable Multiple Selection", None))
         self.wd_units_lbl.setText(_translate("ResultsBrowseDialog", "Units:", None))
         self.wd_unitslps.setText(_translate("ResultsBrowseDialog", "[L/sec]", None))
         self.wd_unitskl.setText(_translate("ResultsBrowseDialog", "[kL]", None))
@@ -583,9 +595,8 @@ class Ui_ResultsBrowseDialog(object):
         self.wi_comboSelect.setItemText(0, _translate("ResultsBrowseDialog", "<select category>", None))
         self.wi_comboSelect.setItemText(1, _translate("ResultsBrowseDialog", "Service Levels", None))
         self.wi_comboSelect.setItemText(2, _translate("ResultsBrowseDialog", "Technology Selection", None))
-        self.wi_comboSelect.setItemText(3, _translate("ResultsBrowseDialog", "Utilisation", None))
-        self.wi_comboSelect.setItemText(4, _translate("ResultsBrowseDialog", "Water Demands", None))
-        self.wi_comboSelect.setItemText(5, _translate("ResultsBrowseDialog", "Water Efficiency Rating", None))
+        self.wi_comboSelect.setItemText(3, _translate("ResultsBrowseDialog", "Technology Sizing", None))
+        self.wi_comboSelect.setItemText(4, _translate("ResultsBrowseDialog", "Utilisation", None))
         self.wi_categoryTree.headerItem().setText(0, _translate("ResultsBrowseDialog", "Urban Regions", None))
         self.wi_multiselect.setText(_translate("ResultsBrowseDialog", "Enable Multiple Selection", None))
         self.wi_neighbourhood.setText(_translate("ResultsBrowseDialog", "Show only Block Neighbourhood", None))
