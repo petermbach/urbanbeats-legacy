@@ -63,7 +63,7 @@ def line_basic(options_root, charttitle, categories, xlabel, ylabel, valueunits,
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>"""+str(charttitle)+"""</title>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
         <script type="text/javascript">
         $(function () {
             $('#container').highcharts({
@@ -290,7 +290,7 @@ def stacked_chart(options_root, charttitle, categories, axislabel, valueunits, d
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>"""+str(charttitle)+"""</title>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
         <script type="text/javascript">
         $(function () {
         $('#container').highcharts({
@@ -364,7 +364,7 @@ def bar_basic(options_root, charttitle, categories, axislabel, valueunits, datad
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>"""+str(charttitle)+"""</title>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
         <script type="text/javascript">
         $(function () {
             $('#container').highcharts({
@@ -438,7 +438,7 @@ def bar_negative_stack(options_root, charttitle, categories, datadict):
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Highcharts Example</title>
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
 		<script type="text/javascript">
 $(function () {
     var chart,
@@ -520,7 +520,7 @@ def column_basic(options_root, charttitle, categories, axislabel, labelformat, v
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>"""+str(charttitle)+"""</title>
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
 		<script type="text/javascript">
         $(function () {
             $('#container').highcharts({
@@ -580,7 +580,7 @@ def column_stacked(options_root, charttitle, categories, ylabel, datadict):
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>"""+str(charttitle)+"""</title>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
 		<script type="text/javascript">
     $(function () {
         $('#container').highcharts({
@@ -818,7 +818,7 @@ def pie_basic(options_root, charttitle, seriesname, datadict):
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>"""+str(charttitle)+"""</title>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
         <script type="text/javascript">
         $(function () {
             $('#container').highcharts({
@@ -1019,7 +1019,7 @@ def scatter_plot(options_root, charttitle, xlabel, ylabel, markersize, valueunit
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>"""+str(charttitle)+"""</title>
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
 		<script type="text/javascript">
         $(function () {
             $('#container').highcharts({
@@ -1300,7 +1300,7 @@ def box_plot(options_root, charttitle, categories, xlabel, ylabel, valueunits, d
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>"""+str(charttitle)+"""</title>
 
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
         <script type="text/javascript">
     $(function () {
         $('#container').highcharts({
@@ -1367,7 +1367,7 @@ def spiderweb(options_root, charttitle, categories, valueunits, datadict):
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>"""+str(charttitle)+"""</title>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
 		<script type="text/javascript">
         $(function () {
             $('#container').highcharts({
@@ -1424,7 +1424,7 @@ def TODOmaster_detail_plot():
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Highcharts Example</title>
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src=" """+str(options_root.replace('\\\\', '/'))+"""/ancillary/jquery.min.js"></script>
 		<script type="text/javascript">
 $(function () {
     var data = [
