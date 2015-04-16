@@ -92,7 +92,7 @@ class MainWindow(QtGui.QMainWindow):
         
         #View Menu
         self.connect(self.ui.actionProject_Description, QtCore.SIGNAL("triggered()"), self.viewProjectInfo)
-        #self.connect(self.ui.actionSimulation_Results, QtCore.SIGNAL("triggered()"), self.showResultsBrowseDialog)
+        self.connect(self.ui.actionSimulation_Results, QtCore.SIGNAL("triggered()"), self.showResultsBrowseDialog)
         #----------------------------------------------------------------------------------------------<<<
         
         #Data Menu
