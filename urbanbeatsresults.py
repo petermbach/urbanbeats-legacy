@@ -242,68 +242,78 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.connect(self.ui.wd_unitskl, QtCore.SIGNAL("clicked()"), self.plotWD)
         self.connect(self.ui.wd_unitslps, QtCore.SIGNAL("clicked()"), self.plotWD)
 
-    def export_wd_results(self):
-        """Exports the water demand results to the project directory. The custom file format is .csv and is based on individual
-        end uses. The export is for the current Block's data
-            - File header: Time, End use values [units], ... , ... , ... , ...
+        #WSUD PLANNING RESULTS
+
+
+        #OTHER PERFORMANCE ASSESSMENT RESULTS
+
+
+        #CORRELATION EXPLORER
+        self.populateCorrelationList()
+        self.connect(self.ui.correlX_list, QtCore.SIGNAL("itemSelectionChanged()"), self.plotCorrel)
+        self.connect(self.ui.correlY_list, QtCore.SIGNAL("itemSelectionChanged()"), self.plotCorrel)
+
+    def plotCorrel(self):
+        """Plots a scatter plot showing the correlation of two of the selected attributes at the Block Level
         :return:
         """
-        graphnames = ["none", "AvgEnduses", "24hUse", "EPUse", "Recycled"]  #Based on plotting categories
-        curgraph = graphnames[self.ui.wd_comboSelect.currentIndex()]
-        if self.ui.wd_unitslps.isChecked():
-            units = "LPS"
-            cf = 1.0
-        else:
-            units = "kL"
-            cf = 1.0/1000.0  #cf = conversion factor
-
-        if self.current_active_plotdata == None:
-            QtGui.QMessageBox.warning(self, "No Export", "Nothing to export! Plot some results.", QtGui.QMessageBox.Ok)
+        if self.ui.correlX_list.currentItem() == None or self.ui.correlY_list.currentItem() == None:
             return True
-        else:
-            curscope = self.ui.wd_listwidget.currentItem().text()
-            #ParseFilename and create .csv file
-            f = open(self.project_path+"/Output-"+curgraph+"-["+units+"]-"+curscope+".csv", 'w')
 
-            if curgraph == "AvgEnduses":
-                f.write("Coming Soon!")
+        x_name = str(self.ui.correlX_list.currentItem().text())
+        y_name = str(self.ui.correlY_list.currentItem().text())
+        x_values = self.getAttributesArray(x_name)
+        y_values = self.getAttributesArray(y_name)
+        datadict = {x_name+" vs. "+y_name : []}
+        for i in range(len(x_values)):
+            datadict[x_name+" vs. "+y_name].append([x_values[i], y_values[i]])
 
-            elif curgraph == "24hUse":
-                f.write("Time, 0:00, 1:00, 2:00, 3:00, 4:00, 5:00, 6:00, 7:00, 8:00, 9:00, 10:00, 11:00, 12:00,"
-                        "13:00, 14:00, 15:00, 16:00, 17:00, 18:00, 19:00, 20:00, 21:00, 22:00, 23:00\n")
-                for enduse in self.current_active_plotdata.keys():
-                    datastring = enduse+","
-                    for v in range(len(self.current_active_plotdata[enduse])):
-                        datastring += str(float(self.current_active_plotdata[enduse][v])*cf)+","
-                    datastring.rstrip(',')
-                    datastring += "\n"
-                    f.write(datastring)
-
-            elif curgraph == "EPUse":
-                f.write("Coming Soon!")
-
-            elif curgraph == "Recycled":
-                f.write("Coming Soon!")
-
-            f.close()
-            QtGui.QMessageBox.warning(self, "Export Complete", "Results for current graph successfully \n exported to project path!", QtGui.QMessageBox.Ok)
+        self.htmlscriptCorrel = ubhighcharts.scatter_plot(self.options_root, x_name+" vs. "+y_name, x_name, y_name, 3, "", "", datadict)
+        self.ui.correl_webView.setHtml(self.htmlscriptCorrel)
 
 
-    def updateWDQuickInfo(self, blockdata, peak, maxuse, plotunits):
-        """Updates the quick info box to match the selection"""
-        self.ui.wd_summarybox.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-                "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Quick Info</span></p>\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">ID: "+str(blockdata.getAttribute("BlockID"))+"</span></p>\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Population: "+str(int(blockdata.getAttribute("Pop")))+"</span></p>\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Households: "+str(int(blockdata.getAttribute("ResHouses")))+"</span></p>\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Flats: "+str(int(blockdata.getAttribute("HDRFlats")))+"</span></p>\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Efficiency Rating: "+str(int(blockdata.getAttribute("wd_Rating")))+"</span></p>\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Peak Demand: "+str(peak[0])+plotunits+" @ "+str(int(peak[1]))+":00</span></p>\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Largest Use: "+str(maxuse[1])+" ("+str(maxuse[0])+plotunits+")</span></p>\n"
-                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Recycling: NO</span></p></body></html>")
+    def populateCorrelationList(self):
+        """Updates the list widgets on both sides with the relevant numerical block attributes.
+        :return:
+        """
+        invalidattributes = ["UndType", "ResRoofCon"]
+        status = 0
+        blockindex = 0
+        blockdata = self.module.getAssetsWithIdentifier("BlockID")
+        while status == 0:
+            status = blockdata[blockindex].getAttribute("Status")
+            if status == 1:
+                blockattributes = blockdata[blockindex].getAllAttributes()
+            blockindex += 1
+
+        attnames = blockattributes.keys()
+        attnames.sort()
+        for i in attnames:
+            if i not in invalidattributes:
+                c = QtGui.QListWidgetItem()
+                d = QtGui.QListWidgetItem()
+                c.setText(i)
+                d.setText(i)
+                self.ui.correlX_list.addItem(c)
+                self.ui.correlY_list.addItem(d)
+
+    def getAttributesArray(self, attname):
+        blockdata = self.module.getAssetsWithIdentifier("BlockID")
+        attvalues = []
+        for i in range(len(blockdata)):
+            if blockdata[i].getAttribute("Status") == 0:
+                continue
+            attvalues.append(blockdata[i].getAttribute(attname))
+        return attvalues
+
+    def calculateCorrelations(self, x, y):
+        """Calculates and returns the pearson and spearman rank correlation coefficients R of two equal length
+        vectors
+        :param x:
+        :param y:
+        :return: pearson R, spearman R
+        """
+        pass
 
     def plotWD(self):
         """Plots the water demand stack chart based on the combo box's settings"""
@@ -343,6 +353,72 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         elif self.ui.wd_comboSelect.currentIndex() == 3:
             #Extended Period Demand Pattern
             pass
+        return True
+
+    def export_wd_results(self):
+        """Exports the water demand results to the project directory. The custom file format is .csv and is based on individual
+        end uses. The export is for the current Block's data
+            - File header: Time, End use values [units], ... , ... , ... , ...
+        :return:
+        """
+        graphnames = ["none", "AvgEnduses", "24hUse", "EPUse", "Recycled"]  #Based on plotting categories
+        curgraph = graphnames[self.ui.wd_comboSelect.currentIndex()]
+
+        if self.ui.wd_unitslps.isChecked():
+            units = "LPS"
+            cf = 1.0
+        else:
+            units = "kL"
+            cf = 1.0/1000.0  #cf = conversion factor
+
+        if self.current_active_plotdata == None:
+            QtGui.QMessageBox.warning(self, "No Export", "Nothing to export! Plot some results.", QtGui.QMessageBox.Ok)
+            return True
+        else:
+            curscope = self.ui.wd_listwidget.currentItem().text()
+            #ParseFilename and create .csv file
+            f = open(self.project_path+"/Output-"+curgraph+"-["+units+"]-"+curscope+".csv", 'w')
+
+            if curgraph == "AvgEnduses":
+                f.write("Coming Soon!")
+
+            elif curgraph == "24hUse":
+                f.write("Time, 0:00, 1:00, 2:00, 3:00, 4:00, 5:00, 6:00, 7:00, 8:00, 9:00, 10:00, 11:00, 12:00,"
+                        "13:00, 14:00, 15:00, 16:00, 17:00, 18:00, 19:00, 20:00, 21:00, 22:00, 23:00\n")
+                for enduse in self.current_active_plotdata.keys():
+                    datastring = enduse+","
+                    for v in range(len(self.current_active_plotdata[enduse])):
+                        datastring += str(float(self.current_active_plotdata[enduse][v])*cf)+","
+                    datastring.rstrip(',')
+                    datastring += "\n"
+                    f.write(datastring)
+
+            elif curgraph == "EPUse":
+                f.write("Coming Soon!")
+
+            elif curgraph == "Recycled":
+                f.write("Coming Soon!")
+
+            f.close()
+            QtGui.QMessageBox.warning(self, "Export Complete", "Results for current graph successfully \n exported to project path!", QtGui.QMessageBox.Ok)
+        return True
+
+    def updateWDQuickInfo(self, blockdata, peak, maxuse, plotunits):
+        """Updates the quick info box to match the selection"""
+        self.ui.wd_summarybox.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+            "p, li { white-space: pre-wrap; }\n"
+            "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Quick Info</span></p>\n"
+            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">ID: "+str(blockdata.getAttribute("BlockID"))+"</span></p>\n"
+            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Population: "+str(int(blockdata.getAttribute("Pop")))+"</span></p>\n"
+            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Households: "+str(int(blockdata.getAttribute("ResHouses")))+"</span></p>\n"
+            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Flats: "+str(int(blockdata.getAttribute("HDRFlats")))+"</span></p>\n"
+            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Efficiency Rating: "+str(int(blockdata.getAttribute("wd_Rating")))+"</span></p>\n"
+            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Peak Demand: "+str(peak[0])+plotunits+" @ "+str(int(peak[1]))+":00</span></p>\n"
+            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Largest Use: "+str(maxuse[1])+" ("+str(maxuse[0])+plotunits+")</span></p>\n"
+            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Recycling: NO</span></p></body></html>")
+        return True
 
     def getLargestEndUse(self, patterndict):
         """Determines the largest end use and the hourly value"""
@@ -392,7 +468,7 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
 
     def updateWDList(self):
         """Water Demand Tab: Updates the list widget with either a list of blocks or basin IDs to choose from"""
-        cat_types = ['none', 'block', 'basin']
+        cat_types = ['none', 'block', 'basin', 'casestudy']
         self.addCategoriesToList(self.ui.wd_listwidget, cat_types[self.ui.wd_comboScope.currentIndex()])
 
     def addCategoriesToList(self, listobject, cat_type):
@@ -418,8 +494,11 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
                 c = QtGui.QListWidgetItem()
                 c.setText("BasinID"+str(i+1))
                 self.ui.wd_listwidget.addItem(c)
+        elif cat_type == 'casestudy':
+            c = QtGui.QListWidgetItem()
+            c.setText("Case Study")
+            self.ui.wd_listwidget.addItem(c)
         return True
-
 
     def changeLeafletMap(self, tabindex):
 

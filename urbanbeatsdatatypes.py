@@ -1273,7 +1273,10 @@ class UBComponent(object):
         except KeyError:
             #print "Error, no such attribute, "+str(name)+". returning zero"
             return 0
-    
+
+    def getAllAttributes(self):
+        return self.__attributes
+
 class UBVector(UBComponent):
     def __init__(self, coordinates):
         UBComponent.__init__(self)        

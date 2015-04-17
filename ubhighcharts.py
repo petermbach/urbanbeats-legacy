@@ -270,7 +270,7 @@ def addCurveDataHTML(name, curvedata):
     curvestringdata += "] },"
     return curvestringdata
 
-def addCurveDataXYHTMK(name, curvedata):
+def addCurveDataXYHTML(name, curvedata):
     #Refer to Da Capo code
     pass
 
@@ -1054,8 +1054,8 @@ def scatter_plot(options_root, charttitle, xlabel, ylabel, markersize, valueunit
             },
             legend: {
                 layout: 'vertical',
-                align: 'left',
-                verticalAlign: 'top',
+                align: 'right',
+                verticalAlign: 'bottom',
                 x: 100,
                 y: 70,
                 floating: true,
