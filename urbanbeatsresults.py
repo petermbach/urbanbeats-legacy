@@ -53,6 +53,8 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.gis_details = activesim.getGISExportDetails()
         self.map_files = self.gis_details["Filename"]
 
+        self.current_active_plotdata = None
+
         #PROJECT SUMMARY WINDOW
         toplevitems = [createTopLevelItem("FULL SUMMARY"), createTopLevelItem("General Info"), createTopLevelItem("Synopsis"), createTopLevelItem("Simulation Details")]
         narratives = activesim.getAllNarratives()
@@ -232,6 +234,7 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         #WATER DEMAND RESULTS
         self.updateWDList()
         self.ui.wd_unitskl.setChecked(1)
+        self.connect(self.ui.resultTabs, QtCore.SIGNAL("activated()"), self.plotWD)
         self.connect(self.ui.wd_comboScope, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateWDList)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.plotWD)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.updateWDQuickInfo)
@@ -240,10 +243,50 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.connect(self.ui.wd_unitslps, QtCore.SIGNAL("clicked()"), self.plotWD)
 
     def export_wd_results(self):
-        pass
+        """Exports the water demand results to the project directory. The custom file format is .csv and is based on individual
+        end uses. The export is for the current Block's data
+            - File header: Time, End use values [units], ... , ... , ... , ...
+        :return:
+        """
+        graphnames = ["none", "AvgEnduses", "24hUse", "EPUse", "Recycled"]  #Based on plotting categories
+        curgraph = graphnames[self.ui.wd_comboSelect.currentIndex()]
+        if self.ui.wd_unitslps.isChecked():
+            units = "LPS"
+            cf = 1.0
+        else:
+            units = "kL"
+            cf = 1.0/1000.0  #cf = conversion factor
 
-    def adjustUnits(self):
-        pass
+        if self.current_active_plotdata == None:
+            QtGui.QMessageBox.warning(self, "No Export", "Nothing to export! Plot some results.", QtGui.QMessageBox.Ok)
+            return True
+        else:
+            curscope = self.ui.wd_listwidget.currentItem().text()
+            #ParseFilename and create .csv file
+            f = open(self.project_path+"/Output-"+curgraph+"-["+units+"]-"+curscope+".csv", 'w')
+
+            if curgraph == "AvgEnduses":
+                f.write("Coming Soon!")
+
+            elif curgraph == "24hUse":
+                f.write("Time, 0:00, 1:00, 2:00, 3:00, 4:00, 5:00, 6:00, 7:00, 8:00, 9:00, 10:00, 11:00, 12:00,"
+                        "13:00, 14:00, 15:00, 16:00, 17:00, 18:00, 19:00, 20:00, 21:00, 22:00, 23:00\n")
+                for enduse in self.current_active_plotdata.keys():
+                    datastring = enduse+","
+                    for v in range(len(self.current_active_plotdata[enduse])):
+                        datastring += str(float(self.current_active_plotdata[enduse][v])*cf)+","
+                    datastring.rstrip(',')
+                    datastring += "\n"
+                    f.write(datastring)
+
+            elif curgraph == "EPUse":
+                f.write("Coming Soon!")
+
+            elif curgraph == "Recycled":
+                f.write("Coming Soon!")
+
+            f.close()
+            QtGui.QMessageBox.warning(self, "Export Complete", "Results for current graph successfully \n exported to project path!", QtGui.QMessageBox.Ok)
 
 
     def updateWDQuickInfo(self, blockdata, peak, maxuse, plotunits):
@@ -264,6 +307,7 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
 
     def plotWD(self):
         """Plots the water demand stack chart based on the combo box's settings"""
+        self.current_active_plotdata = None #Reset
         timeaxis = "['0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']"
 
         #Determine Units
@@ -286,6 +330,8 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
                 blockdata = self.module.getAssetWithName(str(self.ui.wd_listwidget.currentItem().text()))
 
                 plotdata = self.getDemandPatternsBlock(blockdata, plotunits)
+                self.current_active_plotdata = plotdata     #Set the current data set as the active plot data
+
                 peakvalue, time = self.getPeakDemandValue(plotdata)
                 maxuse, maxusetype = self.getLargestEndUse(plotdata)
                 self.updateWDQuickInfo(blockdata, [peakvalue, time], [maxuse, maxusetype], plotunits)
@@ -293,7 +339,6 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
                 self.htmlscriptWD = ubhighcharts.stacked_chart(self.options_root, "24-hour Water Demand Pattern",
                                                                timeaxis, axes, "L", plotdata, plotunits)
                 self.ui.wd_WebView.setHtml(self.htmlscriptWD)
-
 
         elif self.ui.wd_comboSelect.currentIndex() == 3:
             #Extended Period Demand Pattern
