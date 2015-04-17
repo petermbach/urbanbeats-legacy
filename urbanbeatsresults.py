@@ -276,7 +276,7 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         """Updates the list widgets on both sides with the relevant numerical block attributes.
         :return:
         """
-        invalidattributes = ["UndType", "ResRoofCon"]
+        invalidattributes = ["UndType", "ResRoofCon", "Status"]
         status = 0
         blockindex = 0
         blockdata = self.module.getAssetsWithIdentifier("BlockID")

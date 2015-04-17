@@ -1036,7 +1036,7 @@ def scatter_plot(options_root, charttitle, xlabel, ylabel, markersize, valueunit
                 text: '"""+str(charttitle)+"""'
             },
             subtitle: {
-                text: 'UrbanBEATS Simulation Results'
+                text: ''
             },
             xAxis: {
                 title: {
@@ -1093,7 +1093,7 @@ def scatter_plot(options_root, charttitle, xlabel, ylabel, markersize, valueunit
 	</head>
 	<body>
         <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
-        <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+        <div id="container" style="min-width: 400px; height: auto; margin: 0 auto"></div>
 	</body>
     </html>"""
     return htmlscript
