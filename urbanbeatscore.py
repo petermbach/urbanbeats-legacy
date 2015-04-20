@@ -51,6 +51,7 @@ class UrbanBeatsSim(threading.Thread):
         self.__simulation_has_completed = 0
         self.__filename= ""                 #Filename of the simulation
         self.__tabs = 1
+        self.__moduleactivity = [0,0,0]     #["techplacement", "techimplement", "perfassess"]
         ### ---------- Project information, Narrative Information and Simulation Details ------------
         self.__projectinfo = {
                 "name" : "<enter name>",
@@ -537,6 +538,15 @@ class UrbanBeatsSim(threading.Thread):
     def printAllModules(self):
         return [self.__delinblocks, self.__urbplanbb, self.__techplacement, self.__techimplement, self.__perfassess]
 
+    def changeModuleStatus(self, modname, setstate):
+        if modname == "techplacement":
+            self.__moduleactivity[0] = setstate
+        elif modname == "techimplement":
+            self.__moduleactivity[1] = setstate
+        elif modname == "perfassess":
+            self.__moduleactivity[2] = setstate
+        return True
+
     ### ----------- SIMULATION DATA TYPE MANIPULATION ------------------------
     def addAsset(self, name, asset):
         """Adds a new asset to the asset dictionary with the key 'name'"""
@@ -688,7 +698,7 @@ class UrbanBeatsSim(threading.Thread):
             self.updateObservers("PROGRESSUPDATE||"+str(int(40.0*progressincrement+incrementcount)))
 
             #(4) Techplacement
-            if len(self.__techplacement) > 0:
+            if len(self.__techplacement) > 0 and self.__moduleactivity[0] == 1:
                 if tab == 0:
                     self.__getSystems[0].setParameter("ubeats_file", 1)
                     self.__getSystems[0].setParameter("path_name", self.emptySysPath)
@@ -721,15 +731,16 @@ class UrbanBeatsSim(threading.Thread):
             self.updateObservers("PROGRESSUPDATE||"+str(int(70.0*progressincrement+incrementcount)))
 
             #(4.5) Performance Assessment
-            if len(self.__perfassess) > 0:
+            if len(self.__perfassess) > 0 and (self.__moduleactivity[0] == 1 or self.__moduleactivity[2] == 1):
                 perfassess = self.getModulePerfAssess(tab)
-                perfassess.setParameter("musicfilepathname", str(self.getActiveProjectPath()))
-                perfassess.setParameter("musicfilename", str(self.getGISExportDetails()["Filename"]))
-                perfassess.setParameter("masterplanmodel", 1)
-                perfassess.setParameter("currentyear", current)
-                perfassess.attach(self.__observers)
-                perfassess.run()
-                perfassess.detach(self.__observers)
+                if perfassess.getParameter("cycletype") == "pc":
+                    perfassess.setParameter("musicfilepathname", str(self.getActiveProjectPath()))
+                    perfassess.setParameter("musicfilename", str(self.getGISExportDetails()["Filename"]))
+                    perfassess.setParameter("masterplanmodel", 1)
+                    perfassess.setParameter("currentyear", current)
+                    perfassess.attach(self.__observers)
+                    perfassess.run()
+                    perfassess.detach(self.__observers)
 
             self.updateObservers("PROGRESSUPDATE||"+str(int(80.0*progressincrement+incrementcount)))
 
@@ -744,8 +755,11 @@ class UrbanBeatsSim(threading.Thread):
             #----------------------------------------#
             #IMPLEMENTATION CYCLE START (IF SELECTED)#
             #----------------------------------------#
-            if len(self.getModuleTechimplement(9999)) == 0:
+            if len(self.__techimplement) == 0:
                 continue    #Skip the loop, otherwise implement stuff
+            if self.__moduleactivity[0] == 0 or self.__moduleactivity[1] == 0:
+                continue    #Skip if the user has decided not to run techimplement
+
             self.resetAssets()  #Reset the asset vector
             incrementcount += 1
 
@@ -798,18 +812,19 @@ class UrbanBeatsSim(threading.Thread):
             techimplement.run()
             techimplement.detach(self.__observers)
 
-            # if int(global_options["MUSICwrite"]) == 1:
-            #     self.updateObservers("Creating MUSIC Simulation File...")
-            #     musicExport = self.__musicexport[0]
-            #     musicExport.setParameter("pathname", str(self.getActiveProjectPath()))
-            #     musicExport.setParameter("filename", str(self.getGISExportDetails()["Filename"]))
-            #     musicExport.setParameter("masterplanmodel", 0)
-            #     musicExport.setParameter("currentyear", current)
-            #     musicExport.attach(self.__observers)
-            #     musicExport.run()
-            #     musicExport.detach(self.__observers)
-
             self.updateObservers("PROGRESSUPDATE||"+str(int(70*progressincrement+incrementcount)))
+
+            #(4.5) Performance Assessment
+            if len(self.__perfassess) > 0 and self.__moduleactivity[2] == 1:
+                perfassess = self.getModulePerfAssess(tab)
+                if perfassess.getParameter("cycletype") == "ic":
+                    perfassess.setParameter("musicfilepathname", str(self.getActiveProjectPath()))
+                    perfassess.setParameter("musicfilename", str(self.getGISExportDetails()["Filename"]))
+                    perfassess.setParameter("masterplanmodel", 1)
+                    perfassess.setParameter("currentyear", current)
+                    perfassess.attach(self.__observers)
+                    perfassess.run()
+                    perfassess.detach(self.__observers)
 
             self.updateObservers("PROGRESSUPDATE||"+str(int(90*progressincrement+incrementcount)))
 

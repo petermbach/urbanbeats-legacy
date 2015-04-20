@@ -289,6 +289,9 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.md_techplacement_check.setChecked(1)
             self.ui.md_techimplement_check.setChecked(1)
             self.ui.md_perfassess_check.setChecked(1)
+            self.getActiveSimulationObject().changeModuleStatus("techplacement", 1)
+            self.getActiveSimulationObject().changeModuleStatus("techimplement", 1)
+            self.getActiveSimulationObject().changeModuleStatus("perfassess", 1)
         elif state == "basic":
             self.ui.pc_techplacement.setEnabled(0)
             self.ui.pc_techplacement_help.setEnabled(0)
@@ -309,6 +312,9 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.actionTechnology_Implementation.setEnabled(0)
             self.ui.actionPlanning_Cycle.setEnabled(0)
             self.ui.actionImplementation_Cycle.setEnabled(0)
+            self.getActiveSimulationObject().changeModuleStatus("techplacement", 0)
+            self.getActiveSimulationObject().changeModuleStatus("techimplement", 0)
+            self.getActiveSimulationObject().changeModuleStatus("perfassess", 0)
         elif state == "techplan":
             self.ui.ic_dataset.setEnabled(0)
             self.ui.md_techplacement_check.setChecked(1)
@@ -325,6 +331,9 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.actionTechnology_Implementation.setEnabled(0)
             self.ui.actionPlanning_Cycle.setEnabled(0)
             self.ui.actionImplementation_Cycle.setEnabled(0)
+            self.getActiveSimulationObject().changeModuleStatus("techplacement", 1)
+            self.getActiveSimulationObject().changeModuleStatus("techimplement", 0)
+            self.getActiveSimulationObject().changeModuleStatus("perfassess", 0)
         elif state == "techimpl":
             self.ui.md_techplacement_check.setChecked(1)
             self.ui.md_techimplement_check.setChecked(1)
@@ -336,6 +345,9 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.rerun_perfassess.setEnabled(0)
             self.ui.actionPlanning_Cycle.setEnabled(0)
             self.ui.actionImplementation_Cycle.setEnabled(0)
+            self.getActiveSimulationObject().changeModuleStatus("techplacement", 1)
+            self.getActiveSimulationObject().changeModuleStatus("techimplement", 1)
+            self.getActiveSimulationObject().changeModuleStatus("perfassess", 0)
         elif state == "perfonly":
             self.ui.md_techplacement_check.setChecked(1)
             self.ui.md_perfassess_check.setChecked(1)
@@ -347,6 +359,9 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.pa_dataset.setEnabled(0)
             self.ui.actionTechnology_Implementation.setEnabled(0)
             self.ui.actionImplementation_Cycle.setEnabled(0)
+            self.getActiveSimulationObject().changeModuleStatus("techplacement", 1)
+            self.getActiveSimulationObject().changeModuleStatus("techimplement", 0)
+            self.getActiveSimulationObject().changeModuleStatus("perfassess", 1)
 
     def enabledisable_sim_modules(self):
         """Response to clicking a module's checkbox, this function enables or disables access to the parameter screen of
@@ -362,10 +377,14 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.pa_assess.setEnabled(0)
             self.ui.pa_dataset.setEnabled(0)
             self.ui.rerun_perfassess.setEnabled(0)
+            self.getActiveSimulationObject().changeModuleStatus("techplacement", 0)
+            self.getActiveSimulationObject().changeModuleStatus("techimplement", 0)
+            self.getActiveSimulationObject().changeModuleStatus("perfassess", 0)
             return True
         else:
             #Case 2 - Techplacement enabled --> check others
             self.ui.pc_techplacement.setEnabled(1)
+            self.getActiveSimulationObject().changeModuleStatus("techplacement", 1)
 
         #Check existence of Techimplement, then whether box is checked
         print "checking implement"
@@ -373,13 +392,16 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.md_techimplement_check.setEnabled(1)
             if self.ui.md_techimplement_check.isChecked() == 0:
                 self.ui.ic_techimplement.setEnabled(0)
+                self.getActiveSimulationObject().changeModuleStatus("techimplement", 0)
             else:
                 self.ui.ic_techimplement.setEnabled(1)
                 self.ui.ic_dataset.setEnabled(1)
+                self.getActiveSimulationObject().changeModuleStatus("techimplement", 1)
         else:
             self.ui.md_techimplement_check.setEnabled(0)
             self.ui.ic_techimplement.setEnabled(0)
             self.ui.ic_dataset.setEnabled(0)
+            self.getActiveSimulationObject().changeModuleStatus("techimplement", 0)
 
         #Check existence of PerfAssess, then whether box is checked
         print "checking perfassess"
@@ -388,15 +410,18 @@ class MainWindow(QtGui.QMainWindow):
             if self.ui.md_perfassess_check.isChecked() == 0:
                 self.ui.pa_assess.setEnabled(0)
                 self.ui.rerun_perfassess.setEnabled(0)
+                self.getActiveSimulationObject().changeModuleStatus("perfassess", 0)
             else:
                 self.ui.pa_assess.setEnabled(1)
                 self.ui.rerun_perfassess.setEnabled(1)
                 self.ui.pa_dataset.setEnabled(1)
+                self.getActiveSimulationObject().changeModuleStatus("perfassess", 1)
         else:
             self.ui.pa_assess.setEnabled(0)
             self.ui.md_perfassess_check.setEnabled(0)
             self.ui.rerun_perfassess.setEnabled(0)
             self.ui.pa_dataset.setEnabled(0)
+            self.getActiveSimulationObject().changeModuleStatus("perfassess", 0)
 
     def resetConfigInterface(self):
         n = self.ui.simconfig_tabs.count()
@@ -953,7 +978,16 @@ class MainWindow(QtGui.QMainWindow):
         path = str(self.getActiveProjectPath())
         subprocess.Popen(r'explorer "'+path+'"')
         pass
-    
+
+    def resetSimulationPartial(self):
+        """Only reintializes the thread, but does not reset the assets"""
+        active_simulation = self.getActiveSimulationObject()
+        active_simulation.reinitializeThread()
+        active_simulation.updateSimulationCompletion(False)
+        self.printc("----> Partial Reset Performed!")
+        self.printc("")
+        return True
+
     def resetSimulationAssets(self):
         """Sets the reference to all Block Assets in the Model to Null causing garbage
         collection of all existing simulation assets (Blocks, Networks, Points, etc.). This
@@ -1051,9 +1085,15 @@ class MainWindow(QtGui.QMainWindow):
         """Runs only the performance assessment instead of going through the whole assessment cycle. This saves users time
         with certain post-planning analyses.
         """
-        pass
-
-
+        active_simulation = self.getActiveSimulationObject()
+        active_simulation.resetSimulationPartial()
+        try:
+            self.updateProgressBar(0)
+            active_simulation.start()
+        except RuntimeError as e:
+            self.printc(e)
+            self.printc("Something went wrong!")
+        return True
 
 
 class ConsoleObserver(QtCore.QObject):
