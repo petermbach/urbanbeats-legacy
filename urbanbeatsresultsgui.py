@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatsresultsgui.ui'
 #
-# Created: Fri Apr 17 11:52:30 2015
+# Created: Mon Apr 20 13:00:28 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -230,6 +230,7 @@ class Ui_ResultsBrowseDialog(object):
         self.ue_ScrollBar.setSizePolicy(sizePolicy)
         self.ue_ScrollBar.setMinimumSize(QtCore.QSize(0, 0))
         self.ue_ScrollBar.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.ue_ScrollBar.setMaximum(10)
         self.ue_ScrollBar.setOrientation(QtCore.Qt.Horizontal)
         self.ue_ScrollBar.setObjectName(_fromUtf8("ue_ScrollBar"))
         self.horizontalLayout_4.addWidget(self.ue_ScrollBar)
@@ -339,6 +340,8 @@ class Ui_ResultsBrowseDialog(object):
         self.wd_ScrollBar.setSizePolicy(sizePolicy)
         self.wd_ScrollBar.setMinimumSize(QtCore.QSize(0, 0))
         self.wd_ScrollBar.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.wd_ScrollBar.setMaximum(10)
+        self.wd_ScrollBar.setSingleStep(1)
         self.wd_ScrollBar.setOrientation(QtCore.Qt.Horizontal)
         self.wd_ScrollBar.setObjectName(_fromUtf8("wd_ScrollBar"))
         self.horizontalLayout_11.addWidget(self.wd_ScrollBar)
@@ -518,6 +521,11 @@ class Ui_ResultsBrowseDialog(object):
         self.correlX_title = QtGui.QLabel(self.correlX_sidebar)
         self.correlX_title.setObjectName(_fromUtf8("correlX_title"))
         self.verticalLayout_20.addWidget(self.correlX_title)
+        self.xcycle_combo = QtGui.QComboBox(self.correlX_sidebar)
+        self.xcycle_combo.setObjectName(_fromUtf8("xcycle_combo"))
+        self.xcycle_combo.addItem(_fromUtf8(""))
+        self.xcycle_combo.addItem(_fromUtf8(""))
+        self.verticalLayout_20.addWidget(self.xcycle_combo)
         self.correlX_list = QtGui.QListWidget(self.correlX_sidebar)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -539,6 +547,7 @@ class Ui_ResultsBrowseDialog(object):
         self.correl_pearsR_lbl.setObjectName(_fromUtf8("correl_pearsR_lbl"))
         self.horizontalLayout_14.addWidget(self.correl_pearsR_lbl)
         self.correl_pearsR_box = QtGui.QLineEdit(self.correl_pearsR_widget)
+        self.correl_pearsR_box.setReadOnly(True)
         self.correl_pearsR_box.setObjectName(_fromUtf8("correl_pearsR_box"))
         self.horizontalLayout_14.addWidget(self.correl_pearsR_box)
         self.verticalLayout_20.addWidget(self.correl_pearsR_widget)
@@ -568,6 +577,10 @@ class Ui_ResultsBrowseDialog(object):
         self.correl_ScrollBar.setSizePolicy(sizePolicy)
         self.correl_ScrollBar.setMinimumSize(QtCore.QSize(0, 0))
         self.correl_ScrollBar.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.correl_ScrollBar.setMinimum(0)
+        self.correl_ScrollBar.setMaximum(10)
+        self.correl_ScrollBar.setProperty("value", 0)
+        self.correl_ScrollBar.setTracking(True)
         self.correl_ScrollBar.setOrientation(QtCore.Qt.Horizontal)
         self.correl_ScrollBar.setObjectName(_fromUtf8("correl_ScrollBar"))
         self.horizontalLayout_13.addWidget(self.correl_ScrollBar)
@@ -587,6 +600,11 @@ class Ui_ResultsBrowseDialog(object):
         self.correlY_title = QtGui.QLabel(self.correlY_sidebar)
         self.correlY_title.setObjectName(_fromUtf8("correlY_title"))
         self.verticalLayout_21.addWidget(self.correlY_title)
+        self.ycycle_combo = QtGui.QComboBox(self.correlY_sidebar)
+        self.ycycle_combo.setObjectName(_fromUtf8("ycycle_combo"))
+        self.ycycle_combo.addItem(_fromUtf8(""))
+        self.ycycle_combo.addItem(_fromUtf8(""))
+        self.verticalLayout_21.addWidget(self.ycycle_combo)
         self.correlY_list = QtGui.QListWidget(self.correlY_sidebar)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -608,6 +626,7 @@ class Ui_ResultsBrowseDialog(object):
         self.correl_spearR_lbl.setObjectName(_fromUtf8("correl_spearR_lbl"))
         self.horizontalLayout_16.addWidget(self.correl_spearR_lbl)
         self.correl_spearR_box = QtGui.QLineEdit(self.correl_spearR_widget)
+        self.correl_spearR_box.setReadOnly(True)
         self.correl_spearR_box.setObjectName(_fromUtf8("correl_spearR_box"))
         self.horizontalLayout_16.addWidget(self.correl_spearR_box)
         self.verticalLayout_21.addWidget(self.correl_spearR_widget)
@@ -718,10 +737,14 @@ class Ui_ResultsBrowseDialog(object):
         self.sp_Sim_box.setText(_translate("ResultsBrowseDialog", "Milestone1", None))
         self.resultTabs.setTabText(self.resultTabs.indexOf(self.tab_4), _translate("ResultsBrowseDialog", "System Performance", None))
         self.correlX_title.setText(_translate("ResultsBrowseDialog", "<html><head/><body><p><span style=\" font-weight:600;\">Select Attribute for X-axis:</span></p></body></html>", None))
+        self.xcycle_combo.setItemText(0, _translate("ResultsBrowseDialog", "Planning Cycle", None))
+        self.xcycle_combo.setItemText(1, _translate("ResultsBrowseDialog", "Implementation Cycle", None))
         self.correl_pearsR_lbl.setText(_translate("ResultsBrowseDialog", "Pearson R:", None))
         self.correl_Sim_lbl.setText(_translate("ResultsBrowseDialog", "Simulation #", None))
         self.correl_Sim_box.setText(_translate("ResultsBrowseDialog", "Milestone1", None))
         self.correlY_title.setText(_translate("ResultsBrowseDialog", "<html><head/><body><p><span style=\" font-weight:600;\">Select Attribute for Y-axis:</span></p></body></html>", None))
+        self.ycycle_combo.setItemText(0, _translate("ResultsBrowseDialog", "Planning Cycle", None))
+        self.ycycle_combo.setItemText(1, _translate("ResultsBrowseDialog", "Implementation Cycle", None))
         self.correl_spearR_lbl.setText(_translate("ResultsBrowseDialog", "Spearman R:", None))
         self.resultTabs.setTabText(self.resultTabs.indexOf(self.tab_7), _translate("ResultsBrowseDialog", "Correlation Explorer", None))
         self.remarks.setText(_translate("ResultsBrowseDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

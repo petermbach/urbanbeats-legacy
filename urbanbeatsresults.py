@@ -253,6 +253,20 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.connect(self.ui.correlX_list, QtCore.SIGNAL("itemSelectionChanged()"), self.plotCorrel)
         self.connect(self.ui.correlY_list, QtCore.SIGNAL("itemSelectionChanged()"), self.plotCorrel)
 
+    def retrieveModelData(self, cycle, tabindex, identifier):
+        """Retrieves all relevant assets from a specific cycle (e.g. planning/implementation) and from a particular
+        milestone/snapshot for further analysis and plotting
+
+        :param cycle:   planning (pc) or implementation (ic) cycle?
+        :param tabindex: current tab index (i.e. milestone/snapshot)
+        :param identifier: the identifier of the asset (e.g. Block, Patch, etc.)
+        :return:    an array of all assets with that identifier from the respective cycle and tab
+        """
+        allassetdata = self.module.retrieveAssetsFromCollection(cycle, tabindex)
+        assetdata = self.module.getAssetsWithIdentifier(identifier, assetcol=allassetdata)
+        return assetdata
+
+
     def plotCorrel(self):
         """Plots a scatter plot showing the correlation of two of the selected attributes at the Block Level
         :return:

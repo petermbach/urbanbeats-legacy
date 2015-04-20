@@ -60,7 +60,7 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.perf_MUSIC, QtCore.SIGNAL("clicked()"), self.ed_MUSIC)
         # QtCore.QObject.connect(self.ui.perf_Economics, QtCore.SIGNAL("clicked()"), self.ed_Economics)
         # QtCore.QObject.connect(self.ui.perf_Microclimate, QtCore.SIGNAL("clicked()"), self.ed_Microclimate)
-        # QtCore.QObject.connect(self.ui.perf_EPANET, QtCore.SIGNAL("clicked()"), self.ed_EPANET)
+        QtCore.QObject.connect(self.ui.perf_EPANET, QtCore.SIGNAL("clicked()"), self.ed_EPANET)
         # QtCore.QObject.connect(self.ui.perf_CD3, QtCore.SIGNAL("clicked()"), self.ed_CD3)
 
         #----------------------------------------------------------------------#
@@ -295,6 +295,7 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #----------------------------------------------------------------------#
         #-------- EPANET ------------------------------------------------------#
         #----------------------------------------------------------------------#
+        #Demand Downscaling
         self.module.setParameter("kitchenpat", self.patterncomboindex[self.ui.dp_kitchen_combo.currentIndex()])
         self.module.setParameter("showerpat", self.patterncomboindex[self.ui.dp_shower_combo.currentIndex()])
         self.module.setParameter("toiletpat", self.patterncomboindex[self.ui.dp_toilet_combo.currentIndex()])
@@ -303,6 +304,13 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.module.setParameter("compat", self.patterncomboindex[self.ui.dp_com_combo.currentIndex()])
         self.module.setParameter("indpat", self.patterncomboindex[self.ui.dp_ind_combo.currentIndex()])
         self.module.setParameter("publicirripat", self.patterncomboindex[self.ui.dp_pubirr_combo.currentIndex()])
+
+        #Weekly and Seasonal Scaling
+
+        #Network Hydraulics
+
+        #EPANET Link
+
 
         #----------------------------------------------------------------------#
         #-------- INTEGRATED WATER CYCLE MODEL  -------------------------------#

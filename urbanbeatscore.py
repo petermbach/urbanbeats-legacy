@@ -557,14 +557,19 @@ class UrbanBeatsSim(threading.Thread):
         """Returns the Asset Object with the key 'name' from the asset collection"""
         return self.__assets[name]
 
-    def getAssetsWithIdentifier(self, idstring):
+    def getAssetsWithIdentifier(self, idstring, **kwargs):
         """Scans the complete Asset List and returns all assets with the idstring contained
         in their name (e.g. BlockID contained in the name "BlockID1", "BlockID2", etc.)
+            - kwargs: 'assetcol' = {} custom dictionary of assets
         """
         assetcollection = []
-        for i in self.__assets:
+        try:
+            tempassetcol = kwargs["assetcol"]
+        except KeyError:
+            tempassetcol = self.__assets
+        for i in tempassetcol:
             if idstring in i:
-                assetcollection.append(self.__assets[i])
+                assetcollection.append(tempassetcol[i])
         return assetcollection
 
     def removeAssetByName(self, name):
