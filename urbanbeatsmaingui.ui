@@ -593,35 +593,6 @@ p, li { white-space: pre-wrap; }
               <string>Narrative Description</string>
              </property>
             </widget>
-            <widget class="QPushButton" name="pc_delinblocks_help_2">
-             <property name="geometry">
-              <rect>
-               <x>390</x>
-               <y>30</y>
-               <width>23</width>
-               <height>23</height>
-              </rect>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>23</width>
-               <height>23</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="toolbaricons/guitoolbaricons.qrc">
-               <normaloff>:/guitoolbaricons/help.png</normaloff>:/guitoolbaricons/help.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>23</width>
-               <height>23</height>
-              </size>
-             </property>
-            </widget>
             <widget class="QCheckBox" name="md_techplacement_check">
              <property name="geometry">
               <rect>
@@ -953,9 +924,6 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Edit</string>
     </property>
-    <addaction name="actionUndo"/>
-    <addaction name="actionRedo"/>
-    <addaction name="separator"/>
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
@@ -1105,8 +1073,6 @@ p, li { white-space: pre-wrap; }
    <addaction name="actionSave"/>
    <addaction name="actionExit"/>
    <addaction name="separator"/>
-   <addaction name="actionUndo"/>
-   <addaction name="actionRedo"/>
    <addaction name="actionEdit_Project_Info"/>
    <addaction name="separator"/>
    <addaction name="actionAddData"/>
@@ -1638,30 +1604,6 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Project Description</string>
-   </property>
-  </action>
-  <action name="actionUndo">
-   <property name="icon">
-    <iconset resource="toolbaricons/guitoolbaricons.qrc">
-     <normaloff>:/guitoolbaricons/undo.png</normaloff>:/guitoolbaricons/undo.png</iconset>
-   </property>
-   <property name="text">
-    <string>Undo</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Z</string>
-   </property>
-  </action>
-  <action name="actionRedo">
-   <property name="icon">
-    <iconset resource="toolbaricons/guitoolbaricons.qrc">
-     <normaloff>:/guitoolbaricons/forward.png</normaloff>:/guitoolbaricons/forward.png</iconset>
-   </property>
-   <property name="text">
-    <string>Redo</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Y</string>
    </property>
   </action>
   <action name="actionMinimize">

@@ -85,7 +85,7 @@ class MainWindow(QtGui.QMainWindow):
         #----------------------------------------------------------------------------------------------<<<
         
         #Edit Menu
-        #undo, redo, cut, copy, paste
+        #cut, copy, paste
         self.connect(self.ui.actionEdit_Project_Info, QtCore.SIGNAL("triggered()"), self.editProjectInfo)
         self.connect(self.ui.actionPreferences, QtCore.SIGNAL("triggered()"), self.editPreferences)
         #----------------------------------------------------------------------------------------------<<<        
@@ -603,7 +603,7 @@ class MainWindow(QtGui.QMainWindow):
             activesim.setFullFileName(fname)
         
     #Edit Menu
-    #undo, redo, cut, copy, paste
+    #cut, copy, paste
     def editProjectInfo(self):
         projectdialog = ubdialogs.NewProjectSetup(self.getActiveSimulationObject(), 'update')
         projectdialog.exec_()
