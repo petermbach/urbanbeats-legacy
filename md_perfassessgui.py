@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perfassessgui.ui'
 #
-# Created: Wed Apr 15 19:05:39 2015
+# Created: Mon Apr 20 10:00:38 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -81,17 +81,51 @@ class Ui_Perfconfig_Dialog(object):
         self.scrollArea_9.setWidgetResizable(True)
         self.scrollArea_9.setObjectName(_fromUtf8("scrollArea_9"))
         self.scrollAreaWidgetContents_9 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_9.setGeometry(QtCore.QRect(0, 0, 463, 278))
+        self.scrollAreaWidgetContents_9.setGeometry(QtCore.QRect(0, 0, 463, 383))
         self.scrollAreaWidgetContents_9.setObjectName(_fromUtf8("scrollAreaWidgetContents_9"))
-        self.verticalLayout_14 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_9)
-        self.verticalLayout_14.setObjectName(_fromUtf8("verticalLayout_14"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_9)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.musicsimconfig_lbl_3 = QtGui.QLabel(self.scrollAreaWidgetContents_9)
+        self.musicsimconfig_lbl_3.setMinimumSize(QtCore.QSize(445, 16))
+        self.musicsimconfig_lbl_3.setMaximumSize(QtCore.QSize(16777215, 16))
+        self.musicsimconfig_lbl_3.setObjectName(_fromUtf8("musicsimconfig_lbl_3"))
+        self.verticalLayout_2.addWidget(self.musicsimconfig_lbl_3)
+        self.widget = QtGui.QWidget(self.scrollAreaWidgetContents_9)
+        self.widget.setMinimumSize(QtCore.QSize(0, 85))
+        self.widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.widget.setObjectName(_fromUtf8("widget"))
+        self.select_pc = QtGui.QRadioButton(self.widget)
+        self.select_pc.setGeometry(QtCore.QRect(60, 10, 351, 21))
+        self.select_pc.setObjectName(_fromUtf8("select_pc"))
+        self.pushButton_2 = QtGui.QPushButton(self.widget)
+        self.pushButton_2.setGeometry(QtCore.QRect(20, 5, 31, 31))
+        self.pushButton_2.setText(_fromUtf8(""))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/images/cycle_planning_icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_2.setIcon(icon)
+        self.pushButton_2.setIconSize(QtCore.QSize(30, 30))
+        self.pushButton_2.setFlat(True)
+        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
+        self.pushButton_3 = QtGui.QPushButton(self.widget)
+        self.pushButton_3.setGeometry(QtCore.QRect(20, 45, 31, 31))
+        self.pushButton_3.setText(_fromUtf8(""))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/images/cycle_implement_icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_3.setIcon(icon1)
+        self.pushButton_3.setIconSize(QtCore.QSize(30, 30))
+        self.pushButton_3.setFlat(True)
+        self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
+        self.select_ic = QtGui.QRadioButton(self.widget)
+        self.select_ic.setGeometry(QtCore.QRect(60, 50, 351, 21))
+        self.select_ic.setObjectName(_fromUtf8("select_ic"))
+        self.verticalLayout_2.addWidget(self.widget)
         self.musicsimconfig_lbl_2 = QtGui.QLabel(self.scrollAreaWidgetContents_9)
         self.musicsimconfig_lbl_2.setMinimumSize(QtCore.QSize(445, 16))
         self.musicsimconfig_lbl_2.setMaximumSize(QtCore.QSize(16777215, 16))
         self.musicsimconfig_lbl_2.setObjectName(_fromUtf8("musicsimconfig_lbl_2"))
-        self.verticalLayout_14.addWidget(self.musicsimconfig_lbl_2)
+        self.verticalLayout_2.addWidget(self.musicsimconfig_lbl_2)
         self.simulationconfig_widget_3 = QtGui.QWidget(self.scrollAreaWidgetContents_9)
-        self.simulationconfig_widget_3.setMinimumSize(QtCore.QSize(0, 100))
+        self.simulationconfig_widget_3.setMinimumSize(QtCore.QSize(0, 230))
         self.simulationconfig_widget_3.setObjectName(_fromUtf8("simulationconfig_widget_3"))
         self.perf_MUSIC = QtGui.QCheckBox(self.simulationconfig_widget_3)
         self.perf_MUSIC.setGeometry(QtCore.QRect(60, 20, 361, 17))
@@ -135,7 +169,7 @@ class Ui_Perfconfig_Dialog(object):
         self.label_6.setText(_fromUtf8(""))
         self.label_6.setPixmap(QtGui.QPixmap(_fromUtf8(":/guitoolbaricons/world.png")))
         self.label_6.setObjectName(_fromUtf8("label_6"))
-        self.verticalLayout_14.addWidget(self.simulationconfig_widget_3)
+        self.verticalLayout_2.addWidget(self.simulationconfig_widget_3)
         self.scrollArea_9.setWidget(self.scrollAreaWidgetContents_9)
         self.verticalLayout_17.addWidget(self.scrollArea_9)
         self.horizontalLayout_2.addWidget(self.general_params_3)
@@ -995,13 +1029,20 @@ class Ui_Perfconfig_Dialog(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Performance Assessment</span></p></body></html>", None))
+        self.musicsimconfig_lbl_3.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Select Simulation Cycle to use for Performance Assessment</span></p></body></html>", None))
+        self.select_pc.setText(_translate("Perfconfig_Dialog", "Planning Cycle Performance Assessment", None))
+        self.select_ic.setText(_translate("Perfconfig_Dialog", "Implementation Cycle Performance Assessment", None))
         self.musicsimconfig_lbl_2.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Select which Analyses to conduct</span></p></body></html>", None))
         self.perf_MUSIC.setText(_translate("Perfconfig_Dialog", "MUSIC Model Creation, Simulation and Assessment", None))
-        self.perf_Economics.setText(_translate("Perfconfig_Dialog", "Economic Analysis", None))
+        self.perf_Economics.setText(_translate("Perfconfig_Dialog", "Economic Life Cycle Costing Analysis", None))
         self.perf_Microclimate.setText(_translate("Perfconfig_Dialog", "Microclimate Analysis", None))
         self.perf_EPANET.setText(_translate("Perfconfig_Dialog", "Integrated Water Supply Systems Analysis", None))
         self.perf_CD3.setText(_translate("Perfconfig_Dialog", "Integrated Urban Water Cycle Modelling", None))

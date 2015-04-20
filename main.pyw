@@ -135,10 +135,8 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.pc_techplacement, QtCore.SIGNAL("clicked()"), self.callTechplacementGui)
         self.connect(self.ui.actionTechnology_Implementation, QtCore.SIGNAL("triggered()"), self.callTechimplementGui)
         self.connect(self.ui.ic_techimplement, QtCore.SIGNAL("clicked()"), self.callTechimplementGui)
-        self.connect(self.ui.actionPlanning_Cycle, QtCore.SIGNAL("triggered()"), lambda ctype="pc": self.callPrepareperfGui(ctype))
-        #self.connect(self.ui.actionImplementation_Cycle, QtCore.SIGNAL("triggered()"), lambda ctype="ic": self.callPrepareperfGui(ctype))
-        self.connect(self.ui.pa_assesspc, QtCore.SIGNAL("clicked()"), lambda ctype="pc": self.callPrepareperfGui(ctype))
-        #self.connect(self.ui.pa_assessic, QtCore.SIGNAL("clicked()"), lambda ctype="ic": self.callPrepareperfGui(ctype))
+        self.connect(self.ui.actionPerformance_Assessment, QtCore.SIGNAL("triggered()"), self.callPrepareperfGui)
+        self.connect(self.ui.pa_assess, QtCore.SIGNAL("clicked()"), self.callPrepareperfGui)
         self.connect(self.ui.actionVerify_Simulation_Setup, QtCore.SIGNAL("triggered()"), self.verifySimulation)
         self.connect(self.ui.resetSimButton, QtCore.SIGNAL("clicked()"), self.resetSimulationAssets)
         self.connect(self.ui.actionReset_Simulation, QtCore.SIGNAL("triggered()"), self.resetSimulationAssets)
@@ -172,6 +170,12 @@ class MainWindow(QtGui.QMainWindow):
 
         #self.connect(self.progressbarobserver, QtCore.SIGNAL("updateProgress"), self.updateProgressBar)
 
+        #Module Checkboxes and Performance Rerun button
+        self.connect(self.ui.md_techplacement_check, QtCore.SIGNAL("clicked()"), self.enabledisable_sim_modules)
+        self.connect(self.ui.md_techimplement_check, QtCore.SIGNAL("clicked()"), self.enabledisable_sim_modules)
+        self.connect(self.ui.md_perfassess_check, QtCore.SIGNAL("clicked()"), self.enabledisable_sim_modules)
+        self.connect(self.ui.rerun_perfassess, QtCore.SIGNAL("clicked()"), self.run_simulation_perfonly)
+        #----------------------------------------------------------------------------------------------<<<
 
     def createNewProjectInstance(self):
         newsimulation = ubc.UrbanBeatsSim(UBEATSROOT)
@@ -244,11 +248,12 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.ic_techimplement.setEnabled(setstate)
         self.ui.ic_techimplement_help.setEnabled(setstate)
         self.ui.pa_dataset.setEnabled(setstate)  
-        self.ui.pa_assesspc.setEnabled(setstate)
-        self.ui.pa_assessic.setEnabled(setstate)
-        self.ui.pa_assesspc_help.setEnabled(setstate)
-        self.ui.pa_assessic_help.setEnabled(setstate)
-        self.ui.pa_skippc.setEnabled(0)
+        self.ui.pa_assess.setEnabled(setstate)
+        self.ui.pa_assess_help.setEnabled(setstate)
+        self.ui.md_techplacement_check.setEnabled(setstate)
+        self.ui.md_techimplement_check.setEnabled(setstate)
+        self.ui.md_perfassess_check.setEnabled(setstate)
+        self.ui.rerun_perfassess.setEnabled(setstate)
 
         self.ui.out_textrep_select.setEnabled(setstate)        
         self.ui.out_gis_maps.setEnabled(setstate)
@@ -281,55 +286,117 @@ class MainWindow(QtGui.QMainWindow):
 
     def disable_select_guis(self, state):
         if state == "all":
-            self.ui.pa_skippc.setEnabled(0)
+            self.ui.md_techplacement_check.setChecked(1)
+            self.ui.md_techimplement_check.setChecked(1)
+            self.ui.md_perfassess_check.setChecked(1)
         elif state == "basic":
             self.ui.pc_techplacement.setEnabled(0)
             self.ui.pc_techplacement_help.setEnabled(0)
+            self.ui.md_techplacement_check.setEnabled(0)
+            self.ui.md_techplacement_check.setChecked(0)
             self.ui.ic_dataset.setEnabled(0)
             self.ui.ic_techimplement.setEnabled(0)
             self.ui.ic_techimplement_help.setEnabled(0)
+            self.ui.md_techimplement_check.setEnabled(0)
+            self.ui.md_techimplement_check.setChecked(0)
             self.ui.pa_dataset.setEnabled(0)
-            self.ui.pa_assesspc.setEnabled(0)
-            self.ui.pa_assessic.setEnabled(0)
-            self.ui.pa_assesspc_help.setEnabled(0)
-            self.ui.pa_assessic_help.setEnabled(0)
-            self.ui.pa_skippc.setEnabled(0)
+            self.ui.pa_assess.setEnabled(0)
+            self.ui.pa_assess_help.setEnabled(0)
+            self.ui.md_perfassess_check.setEnabled(0)
+            self.ui.md_perfassess_check.setChecked(0)
+            self.ui.rerun_perfassess.setEnabled(0)
             self.ui.actionCustomize_Technologies.setEnabled(0)
             self.ui.actionTechnology_Implementation.setEnabled(0)
             self.ui.actionPlanning_Cycle.setEnabled(0)
             self.ui.actionImplementation_Cycle.setEnabled(0)
         elif state == "techplan":
             self.ui.ic_dataset.setEnabled(0)
+            self.ui.md_techplacement_check.setChecked(1)
             self.ui.ic_techimplement.setEnabled(0)
             self.ui.ic_techimplement_help.setEnabled(0)
+            self.ui.md_techimplement_check.setEnabled(0)
+            self.ui.md_techimplement_check.setChecked(0)
             self.ui.pa_dataset.setEnabled(0)
-            self.ui.pa_assesspc.setEnabled(0)
-            self.ui.pa_assessic.setEnabled(0)
-            self.ui.pa_assesspc_help.setEnabled(0)
-            self.ui.pa_assessic_help.setEnabled(0)
-            self.ui.pa_skippc.setEnabled(0)
+            self.ui.pa_assess.setEnabled(0)
+            self.ui.pa_assess_help.setEnabled(0)
+            self.ui.rerun_perfassess.setEnabled(0)
+            self.ui.md_perfassess_check.setEnabled(0)
+            self.ui.md_perfassess_check.setChecked(0)
             self.ui.actionTechnology_Implementation.setEnabled(0)
             self.ui.actionPlanning_Cycle.setEnabled(0)
             self.ui.actionImplementation_Cycle.setEnabled(0)
         elif state == "techimpl":
+            self.ui.md_techplacement_check.setChecked(1)
+            self.ui.md_techimplement_check.setChecked(1)
             self.ui.pa_dataset.setEnabled(0)
-            self.ui.pa_assesspc.setEnabled(0)
-            self.ui.pa_assessic.setEnabled(0)
-            self.ui.pa_assesspc_help.setEnabled(0)
-            self.ui.pa_assessic_help.setEnabled(0)
-            self.ui.pa_skippc.setEnabled(0)
+            self.ui.pa_assess.setEnabled(0)
+            self.ui.pa_assess_help.setEnabled(0)
+            self.ui.md_perfassess_check.setEnabled(0)
+            self.ui.md_perfassess_check.setChecked(0)
+            self.ui.rerun_perfassess.setEnabled(0)
             self.ui.actionPlanning_Cycle.setEnabled(0)
             self.ui.actionImplementation_Cycle.setEnabled(0)
         elif state == "perfonly":
+            self.ui.md_techplacement_check.setChecked(1)
+            self.ui.md_perfassess_check.setChecked(1)
             self.ui.ic_dataset.setEnabled(0)
             self.ui.ic_techimplement.setEnabled(0)
             self.ui.ic_techimplement_help.setEnabled(0)
+            self.ui.md_techimplement_check.setEnabled(0)
+            self.ui.md_techimplement_check.setChecked(0)
             self.ui.pa_dataset.setEnabled(0)
-            self.ui.pa_assessic.setEnabled(0)
-            self.ui.pa_assessic_help.setEnabled(0)
-            self.ui.pa_skippc.setEnabled(0)
             self.ui.actionTechnology_Implementation.setEnabled(0)
             self.ui.actionImplementation_Cycle.setEnabled(0)
+
+    def enabledisable_sim_modules(self):
+        """Response to clicking a module's checkbox, this function enables or disables access to the parameter screen of
+        a particular module. This allows more light-weight simulations to be done.
+        """
+        if self.ui.md_techplacement_check.isChecked() == 0:
+            #Case 1 - Techplacement disabled -- > everything else disabled, return
+            self.ui.pc_techplacement.setEnabled(0)
+            self.ui.md_techimplement_check.setEnabled(0)
+            self.ui.ic_techimplement.setEnabled(0)
+            self.ui.ic_dataset.setEnabled(0)
+            self.ui.md_perfassess_check.setEnabled(0)
+            self.ui.pa_assess.setEnabled(0)
+            self.ui.pa_dataset.setEnabled(0)
+            self.ui.rerun_perfassess.setEnabled(0)
+            return True
+        else:
+            #Case 2 - Techplacement enabled --> check others
+            self.ui.pc_techplacement.setEnabled(1)
+
+        #Check existence of Techimplement, then whether box is checked
+        print "checking implement"
+        if self.getActiveSimulationObject().getLengthOfModulesVector("techimplement") != 0:
+            self.ui.md_techimplement_check.setEnabled(1)
+            if self.ui.md_techimplement_check.isChecked() == 0:
+                self.ui.ic_techimplement.setEnabled(0)
+            else:
+                self.ui.ic_techimplement.setEnabled(1)
+                self.ui.ic_dataset.setEnabled(1)
+        else:
+            self.ui.md_techimplement_check.setEnabled(0)
+            self.ui.ic_techimplement.setEnabled(0)
+            self.ui.ic_dataset.setEnabled(0)
+
+        #Check existence of PerfAssess, then whether box is checked
+        print "checking perfassess"
+        if self.getActiveSimulationObject().getLengthOfModulesVector("perf_assess") != 0:
+            self.ui.md_perfassess_check.setEnabled(1)
+            if self.ui.md_perfassess_check.isChecked() == 0:
+                self.ui.pa_assess.setEnabled(0)
+                self.ui.rerun_perfassess.setEnabled(0)
+            else:
+                self.ui.pa_assess.setEnabled(1)
+                self.ui.rerun_perfassess.setEnabled(1)
+                self.ui.pa_dataset.setEnabled(1)
+        else:
+            self.ui.pa_assess.setEnabled(0)
+            self.ui.md_perfassess_check.setEnabled(0)
+            self.ui.rerun_perfassess.setEnabled(0)
+            self.ui.pa_dataset.setEnabled(0)
 
     def resetConfigInterface(self):
         n = self.ui.simconfig_tabs.count()
@@ -822,19 +889,13 @@ class MainWindow(QtGui.QMainWindow):
         techimplementguic = md_techimplementguic.TechimplementGUILaunch(self.getActiveSimulationObject(), tabindex)
         techimplementguic.exec_()
 
-    def callPrepareperfGui(self, cycle):
-        if cycle == "pc":
-            self.printc("Planning Cycle Performance Assessment Setup")
-            if self.__activeSimulationObject.getLengthOfModulesVector("perf_assess") == 1:
-                tabindex = 0
-            else:
-                tabindex = self.ui.simconfig_tabs.currentIndex()
-            perfassessguic = md_perfassessguic.PerfAssessGUILaunch(self.getActiveSimulationObject(), tabindex)
-            perfassessguic.exec_()
+    def callPrepareperfGui(self):
+        if self.__activeSimulationObject.getLengthOfModulesVector("perf_assess") == 1:
+            tabindex = 0
         else:
-            self.printc("Implementation Cycle Performance Assessment Setup")
-        #call the GUI based on which cycle you are setting parameters for.
-        #to do, call from VIBe
+            tabindex = self.ui.simconfig_tabs.currentIndex()
+        perfassessguic = md_perfassessguic.PerfAssessGUILaunch(self.getActiveSimulationObject(), tabindex)
+        perfassessguic.exec_()
 
     def customize_dataset(self, curstate):
         tabindex = self.ui.simconfig_tabs.currentIndex()       
@@ -985,6 +1046,15 @@ class MainWindow(QtGui.QMainWindow):
             self.printc(e)
             self.printc("Please reset simulation before starting a new run!")
         return True
+
+    def run_simulation_perfonly(self):
+        """Runs only the performance assessment instead of going through the whole assessment cycle. This saves users time
+        with certain post-planning analyses.
+        """
+        pass
+
+
+
 
 class ConsoleObserver(QtCore.QObject):
     def updateObserver(self, textmessage):

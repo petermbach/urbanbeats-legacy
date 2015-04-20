@@ -225,7 +225,7 @@ class UrbanBeatsSim(threading.Thread):
                     self.__techimplement.append(md_techimplement.Techimplement(self, i+1))
 
         if self.__projectinfo["sf_perfinclude"] == 1:
-           self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
+           self.__perfassess.append(md_perfassess.PerformanceAssess(self, 0))
            #No varying allowed in a static simulation as we are assuming that we're simulating the same catchment
 
         self.__narratives = []
@@ -292,10 +292,10 @@ class UrbanBeatsSim(threading.Thread):
                 self.__techimplement.append(md_techimplement.Techimplement(self, i+1))
 
         if self.__projectinfo["df_perfinclude"] != 0:
-           self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", 0))
+           self.__perfassess.append(md_perfassess.PerformanceAssess(self, 0))
            if self.__projectinfo["df_perfconstant"] == 0:
                for i in range(int(paramlength-1)):
-                   self.__perfassess.append(md_perfassess.PerformanceAssess(self, "pc", i+1))
+                   self.__perfassess.append(md_perfassess.PerformanceAssess(self, i+1))
 
         self.__narratives = []
         for i in range(int(paramlength)):

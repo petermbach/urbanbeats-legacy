@@ -40,6 +40,11 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #----------------------------------------------------------------------#
         #-------- SELECT ANALYSES ---------------------------------------------#
         #----------------------------------------------------------------------#
+        if self.module.getParameter("cycletype") == "pc":
+            self.ui.select_pc.setChecked(1)
+        else:
+            self.ui.select_ic.setChecked(1)
+
         self.ui.perf_MUSIC.setChecked(self.module.getParameter("perf_MUSIC"))
         self.ui.perf_Economics.setChecked(self.module.getParameter("perf_Economics"))
         self.ui.perf_Microclimate.setChecked(self.module.getParameter("perf_Microclimate"))
@@ -47,10 +52,9 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.ui.perf_CD3.setChecked(self.module.getParameter("perf_CD3"))
 
         self.ed_MUSIC()
-
         #self.ed_Economics()
         #self.ed_Microclimate()
-        #self.ed_EPANET()
+        self.ed_EPANET()
         #self.ed_CD3()
 
         QtCore.QObject.connect(self.ui.perf_MUSIC, QtCore.SIGNAL("clicked()"), self.ed_MUSIC)
@@ -227,6 +231,7 @@ class PerfAssessGUILaunch(QtGui.QDialog):
 
 
     def ed_EPANET(self):
+        #To write once first pass EPANET module is done
         return True
 
 
@@ -239,6 +244,11 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #----------------------------------------------------------------------#
         #-------- SELECT ANALYSES ---------------------------------------------#
         #----------------------------------------------------------------------#
+        if self.ui.select_pc.isChecked():
+            self.module.setParameter("cycletype", "pc")
+        else:
+            self.module.setParameter("cycletype", "ic")
+
         self.module.setParameter("perf_MUSIC", int(self.ui.perf_MUSIC.isChecked()))
         self.module.setParameter("perf_Economics", int(self.ui.perf_Economics.isChecked()))
         self.module.setParameter("perf_Microclimate", int(self.ui.perf_Microclimate.isChecked()))

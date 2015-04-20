@@ -142,10 +142,127 @@ p, li { white-space: pre-wrap; }
                <x>0</x>
                <y>0</y>
                <width>463</width>
-               <height>278</height>
+               <height>383</height>
               </rect>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_14">
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QLabel" name="musicsimconfig_lbl_3">
+                <property name="minimumSize">
+                 <size>
+                  <width>445</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Select Simulation Cycle to use for Performance Assessment&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="widget" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>85</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <widget class="QRadioButton" name="select_pc">
+                 <property name="geometry">
+                  <rect>
+                   <x>60</x>
+                   <y>10</y>
+                   <width>351</width>
+                   <height>21</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Planning Cycle Performance Assessment</string>
+                 </property>
+                </widget>
+                <widget class="QPushButton" name="pushButton_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>5</y>
+                   <width>31</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="toolbaricons/guitoolbaricons.qrc">
+                   <normaloff>:/images/images/cycle_planning_icon.png</normaloff>:/images/images/cycle_planning_icon.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="flat">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+                <widget class="QPushButton" name="pushButton_3">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>45</y>
+                   <width>31</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="toolbaricons/guitoolbaricons.qrc">
+                   <normaloff>:/images/images/cycle_implement_icon.png</normaloff>:/images/images/cycle_implement_icon.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="flat">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="select_ic">
+                 <property name="geometry">
+                  <rect>
+                   <x>60</x>
+                   <y>50</y>
+                   <width>351</width>
+                   <height>21</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Implementation Cycle Performance Assessment</string>
+                 </property>
+                </widget>
+               </widget>
+              </item>
               <item>
                <widget class="QLabel" name="musicsimconfig_lbl_2">
                 <property name="minimumSize">
@@ -174,7 +291,7 @@ p, li { white-space: pre-wrap; }
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>100</height>
+                  <height>230</height>
                  </size>
                 </property>
                 <widget class="QCheckBox" name="perf_MUSIC">
@@ -200,7 +317,7 @@ p, li { white-space: pre-wrap; }
                   </rect>
                  </property>
                  <property name="text">
-                  <string>Economic Analysis</string>
+                  <string>Economic Life Cycle Costing Analysis</string>
                  </property>
                 </widget>
                 <widget class="QCheckBox" name="perf_Microclimate">
@@ -2456,38 +2573,6 @@ p, li { white-space: pre-wrap; }
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Rules for Alternative Water Sources&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
-                <zorder>dagg_dp_noonpic_2</zorder>
-                <zorder>dagg_dp_morningpic_2</zorder>
-                <zorder>dagg_dp_nightpic_2</zorder>
-                <zorder>dp_kitchen_combo</zorder>
-                <zorder>demand_res_lbl</zorder>
-                <zorder>dp_kitchen_lbl</zorder>
-                <zorder>dp_shower_lbl</zorder>
-                <zorder>dp_toilet_lbl</zorder>
-                <zorder>dp_laundry_lbl</zorder>
-                <zorder>dp_shower_combo</zorder>
-                <zorder>dp_toilet_combo</zorder>
-                <zorder>dp_laundry_combo</zorder>
-                <zorder>dp_irrigate_lbl</zorder>
-                <zorder>dp_irrigate_combo</zorder>
-                <zorder>demand_nonres_lbl</zorder>
-                <zorder>dp_com_combo</zorder>
-                <zorder>dp_com_lbl</zorder>
-                <zorder>dp_ind_combo</zorder>
-                <zorder>dp_ind_lbl</zorder>
-                <zorder>dp_kitchen_custom</zorder>
-                <zorder>dp_shower_custom</zorder>
-                <zorder>dp_toilet_custom</zorder>
-                <zorder>dp_laundry_custom</zorder>
-                <zorder>dp_irrigate_custom</zorder>
-                <zorder>dp_com_custom</zorder>
-                <zorder>dp_ind_custom</zorder>
-                <zorder>dp_pubirr_combo</zorder>
-                <zorder>dp_pubirr_lbl</zorder>
-                <zorder>dp_pubirr_custom</zorder>
-                <zorder>eps_title</zorder>
-                <zorder>footer_widget</zorder>
-                <zorder>altwater_title</zorder>
                </widget>
               </item>
               <item>
@@ -2651,11 +2736,6 @@ p, li { white-space: pre-wrap; }
                   <pixmap>evening-small.png</pixmap>
                  </property>
                 </widget>
-                <zorder>dagg_dp_noonpic_3</zorder>
-                <zorder>dagg_dp_morningpic_3</zorder>
-                <zorder>dagg_dp_nightpic_3</zorder>
-                <zorder>dagg_dp_eveningpic_3</zorder>
-                <zorder>dp_config_widget</zorder>
                </widget>
               </item>
               <item>

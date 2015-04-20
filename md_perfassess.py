@@ -44,15 +44,18 @@ class PerformanceAssess(UBModule):      #UBCORE
         @author Peter M Bach
         """
 
-    def __init__(self, activesim, tabindex, cycletype):      #UBCORE
+    def __init__(self, activesim, tabindex):      #UBCORE
         UBModule.__init__(self)      #UBCORE
-        self.cycletype = cycletype       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
+        # CORE: contains either planning or implementation (so it knows what to do and whether to skip)
         self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
         self.activesim = activesim      #UBCORE
 
         #PARAMETER LIST START
         #-----------------------------------------------------------------------
         #SELECT ANALYSES TAB
+        self.createParameter("cycletype", STRING, "Use which data set?, pc or ic")
+        self.cycletype = "pc"
+
         self.createParameter("perf_MUSIC", BOOL, "Yes/No MUSIC")
         self.createParameter("perf_Economics", BOOL, "Yes/No Economic Stuff")
         self.createParameter("perf_Microclimate", BOOL, "Yes/No Microclimate Stuff")

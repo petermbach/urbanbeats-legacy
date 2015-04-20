@@ -123,7 +123,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pc_delinblocks">
              <property name="geometry">
               <rect>
-               <x>201</x>
+               <x>221</x>
                <y>60</y>
                <width>161</width>
                <height>23</height>
@@ -136,7 +136,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pc_urbplanbb">
              <property name="geometry">
               <rect>
-               <x>201</x>
+               <x>221</x>
                <y>90</y>
                <width>161</width>
                <height>23</height>
@@ -149,7 +149,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pc_techplacement">
              <property name="geometry">
               <rect>
-               <x>201</x>
+               <x>221</x>
                <y>120</y>
                <width>161</width>
                <height>23</height>
@@ -162,7 +162,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="ic_techimplement">
              <property name="geometry">
               <rect>
-               <x>200</x>
+               <x>220</x>
                <y>180</y>
                <width>161</width>
                <height>23</height>
@@ -175,7 +175,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pc_dataset">
              <property name="geometry">
               <rect>
-               <x>131</x>
+               <x>125</x>
                <y>50</y>
                <width>61</width>
                <height>61</height>
@@ -195,17 +195,17 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
             </widget>
-            <widget class="QPushButton" name="pa_assesspc">
+            <widget class="QPushButton" name="pa_assess">
              <property name="geometry">
               <rect>
-               <x>200</x>
+               <x>220</x>
                <y>290</y>
                <width>161</width>
                <height>23</height>
               </rect>
              </property>
              <property name="text">
-              <string>Assess for Planning Cycle</string>
+              <string>Performance Assessment</string>
              </property>
             </widget>
             <widget class="QLabel" name="pc_lbl">
@@ -259,23 +259,10 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Performance Assessment&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
-            <widget class="QCheckBox" name="pa_skippc">
-             <property name="geometry">
-              <rect>
-               <x>205</x>
-               <y>350</y>
-               <width>261</width>
-               <height>17</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Skip Planning Cycle Assessment</string>
-             </property>
-            </widget>
             <widget class="QPushButton" name="ic_dataset">
              <property name="geometry">
               <rect>
-               <x>130</x>
+               <x>125</x>
                <y>180</y>
                <width>61</width>
                <height>61</height>
@@ -295,23 +282,10 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
             </widget>
-            <widget class="QPushButton" name="pa_assessic">
-             <property name="geometry">
-              <rect>
-               <x>200</x>
-               <y>320</y>
-               <width>161</width>
-               <height>23</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Assess after Implementation</string>
-             </property>
-            </widget>
             <widget class="QPushButton" name="pa_dataset">
              <property name="geometry">
               <rect>
-               <x>130</x>
+               <x>125</x>
                <y>290</y>
                <width>61</width>
                <height>61</height>
@@ -334,7 +308,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pc_delinblocks_help">
              <property name="geometry">
               <rect>
-               <x>381</x>
+               <x>391</x>
                <y>60</y>
                <width>23</width>
                <height>23</height>
@@ -363,7 +337,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pc_urbplanbb_help">
              <property name="geometry">
               <rect>
-               <x>381</x>
+               <x>391</x>
                <y>90</y>
                <width>23</width>
                <height>23</height>
@@ -392,7 +366,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pc_techplacement_help">
              <property name="geometry">
               <rect>
-               <x>381</x>
+               <x>391</x>
                <y>120</y>
                <width>23</width>
                <height>23</height>
@@ -421,7 +395,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="ic_techimplement_help">
              <property name="geometry">
               <rect>
-               <x>380</x>
+               <x>390</x>
                <y>180</y>
                <width>23</width>
                <height>23</height>
@@ -447,40 +421,11 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
             </widget>
-            <widget class="QPushButton" name="pa_assesspc_help">
+            <widget class="QPushButton" name="pa_assess_help">
              <property name="geometry">
               <rect>
-               <x>380</x>
+               <x>390</x>
                <y>290</y>
-               <width>23</width>
-               <height>23</height>
-              </rect>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>23</width>
-               <height>23</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="toolbaricons/guitoolbaricons.qrc">
-               <normaloff>:/guitoolbaricons/help.png</normaloff>:/guitoolbaricons/help.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>23</width>
-               <height>23</height>
-              </size>
-             </property>
-            </widget>
-            <widget class="QPushButton" name="pa_assessic_help">
-             <property name="geometry">
-              <rect>
-               <x>380</x>
-               <y>320</y>
                <width>23</width>
                <height>23</height>
               </rect>
@@ -508,7 +453,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QLabel" name="label">
              <property name="geometry">
               <rect>
-               <x>140</x>
+               <x>134</x>
                <y>110</y>
                <width>46</width>
                <height>13</height>
@@ -521,7 +466,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QLabel" name="label_2">
              <property name="geometry">
               <rect>
-               <x>140</x>
+               <x>135</x>
                <y>240</y>
                <width>46</width>
                <height>13</height>
@@ -534,7 +479,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QLabel" name="label_3">
              <property name="geometry">
               <rect>
-               <x>140</x>
+               <x>135</x>
                <y>350</y>
                <width>46</width>
                <height>13</height>
@@ -638,7 +583,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pc_narrative">
              <property name="geometry">
               <rect>
-               <x>200</x>
+               <x>220</x>
                <y>30</y>
                <width>161</width>
                <height>23</height>
@@ -651,7 +596,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pc_delinblocks_help_2">
              <property name="geometry">
               <rect>
-               <x>380</x>
+               <x>390</x>
                <y>30</y>
                <width>23</width>
                <height>23</height>
@@ -675,6 +620,65 @@ p, li { white-space: pre-wrap; }
                <width>23</width>
                <height>23</height>
               </size>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="md_techplacement_check">
+             <property name="geometry">
+              <rect>
+               <x>200</x>
+               <y>122</y>
+               <width>21</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="md_techimplement_check">
+             <property name="geometry">
+              <rect>
+               <x>200</x>
+               <y>182</y>
+               <width>21</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="md_perfassess_check">
+             <property name="geometry">
+              <rect>
+               <x>200</x>
+               <y>293</y>
+               <width>21</width>
+               <height>17</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="rerun_perfassess">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>320</y>
+               <width>161</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Re-run the Performance Assessment without having to re-simulate all model options.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Re-Run only Performance</string>
+             </property>
+             <property name="icon">
+              <iconset resource="toolbaricons/guitoolbaricons.qrc">
+               <normaloff>:/guitoolbaricons/Play-icon.png</normaloff>:/guitoolbaricons/Play-icon.png</iconset>
              </property>
             </widget>
            </widget>
@@ -1006,18 +1010,11 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Simulation</string>
     </property>
-    <widget class="QMenu" name="menuSetup_Performance_Assessment">
-     <property name="title">
-      <string>Setup Performance Assessment</string>
-     </property>
-     <addaction name="actionPlanning_Cycle"/>
-     <addaction name="actionImplementation_Cycle"/>
-    </widget>
     <addaction name="actionSet_Spatial_Delineation"/>
     <addaction name="actionDefine_Urban_Planning_Rules"/>
     <addaction name="actionCustomize_Technologies"/>
     <addaction name="actionTechnology_Implementation"/>
-    <addaction name="menuSetup_Performance_Assessment"/>
+    <addaction name="actionPerformance_Assessment"/>
     <addaction name="separator"/>
     <addaction name="actionVerify_Simulation_Setup"/>
     <addaction name="actionReset_Simulation"/>
@@ -1055,6 +1052,7 @@ p, li { white-space: pre-wrap; }
      </property>
      <addaction name="actionMUSIC_Model"/>
      <addaction name="actionGoogle_Earth"/>
+     <addaction name="actionEPANET"/>
     </widget>
     <addaction name="menuUrban_Form"/>
     <addaction name="actionSimulation_Options"/>
@@ -1817,6 +1815,16 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+T</string>
+   </property>
+  </action>
+  <action name="actionEPANET">
+   <property name="text">
+    <string>EPANET 2</string>
+   </property>
+  </action>
+  <action name="actionPerformance_Assessment">
+   <property name="text">
+    <string>Performance Assessment...</string>
    </property>
   </action>
  </widget>
