@@ -878,5 +878,117 @@ class UrbanBeatsSim(threading.Thread):
     def runPerfOnly(self):
         print "Performance Only"
         #END OF SIMULATION
+        if self.getParameter("simtype") == "D":
+            totaltime = self.getParameter("dyn_totyears")
+            numbreaks = self.getParameter("dyn_breaks")
+            startyear = self.getParameter("dyn_startyear")
+            timestep = float(totaltime)/float(numbreaks)
+        else:
+            startyear = 0
+            timestep = 0
+
+        self.updateObservers("Starting Simulation")
+        global_options = ubfiles.readGlobalOptionsConfig(self.__options_root)
+        if len(self.__techimplement) == 0:
+            progressincrement = 1.0/float(self.__tabs)   #1 divided by number of tabs e.g. 4 tabs, each tab will be 25% of progress bar
+        else:
+            progressincrement = 1.0/(float(self.__tabs * 2.0))  #if there is implementation, one progress increment is twice as short
+
+        incrementcount = 0.0
+        prevfile_basename_pc = ""   #Initializing
+        prevfile_basename_ic = ""   #Initializing
+        for tab in range(self.__tabs):
+            if self.getParameter("simtype") == "D":
+                current = int(startyear + float(tab)*timestep)
+                self.updateObservers("Current Year: "+str(current))
+            else:
+                startyear = tab
+                current = tab
+                self.updateObservers("Tab No. "+str(tab+1))
+
+            #Current iteration index = tab's value
+
+            #-------------------- BASIC SIMULATION STRUCTURE BEGINS HERE -----------------
+            #----------------------------------------#
+            #PLANNING CYCLE START                    #
+            #----------------------------------------#
+            self.resetAssets()  #Reset the asset vector
+            if self.restoreAssetsFromCollection("pc",tab):
+                pass
+            else:
+                self.updateObservers("Error, need to fully reset simulation!")
+                self.changeSimulationStatus("fullreset")
+                return True
+
+            self.updateObservers("PROGRESSUPDATE||"+str(int(70.0*progressincrement+incrementcount)))
+
+            #(4.5) Performance Assessment
+            if len(self.__perfassess) > 0 and (self.__moduleactivity[0] == 1 or self.__moduleactivity[2] == 1):
+                perfassess = self.getModulePerfAssess(tab)
+                if perfassess.getParameter("cycletype") == "pc":
+                    perfassess.setParameter("musicfilepathname", str(self.getActiveProjectPath()))
+                    perfassess.setParameter("musicfilename", str(self.getGISExportDetails()["Filename"]))
+                    perfassess.setParameter("masterplanmodel", 1)
+                    perfassess.setParameter("currentyear", current)
+                    perfassess.attach(self.__observers)
+                    perfassess.run()
+                    perfassess.detach(self.__observers)
+
+            self.updateObservers("PROGRESSUPDATE||"+str(int(80.0*progressincrement+incrementcount)))
+
+            #(5) Export
+            self.updateObservers("PROGRESSUPDATE||"+str(int(90.0*progressincrement+incrementcount)))
+            self.transferCurrentAssetsToCollection("pc")
+            self.exportGIS(tab, "pc")
+            prevfile_basename_pc = self.getGISExportDetails()["Filename"]+"_"+str(current)+"pc"    #Used to for dynamic cycle
+            self.updateObservers("PROGRESSUPDATE||"+str(int(100.0*progressincrement+incrementcount)))
+            incrementcount += 100.0*progressincrement
+
+            #----------------------------------------#
+            #IMPLEMENTATION CYCLE START (IF SELECTED)#
+            #----------------------------------------#
+            if len(self.__techimplement) == 0:
+                continue    #Skip the loop, otherwise implement stuff
+            if self.__moduleactivity[0] == 0 or self.__moduleactivity[1] == 0:
+                continue    #Skip if the user has decided not to run techimplement
+
+            self.resetAssets()  #Reset the asset vector
+            if self.restoreAssetsFromCollection("ic",tab):
+                pass
+            else:
+                self.updateObservers("Error, need to fully reset simulation!")
+                self.changeSimulationStatus("fullreset")
+                return True
+
+            incrementcount += 1
+
+            self.updateObservers("PROGRESSUPDATE||"+str(int(70*progressincrement+incrementcount)))
+
+            #(4.5) Performance Assessment
+            if len(self.__perfassess) > 0 and self.__moduleactivity[2] == 1:
+                perfassess = self.getModulePerfAssess(tab)
+                if perfassess.getParameter("cycletype") == "ic":
+                    perfassess.setParameter("musicfilepathname", str(self.getActiveProjectPath()))
+                    perfassess.setParameter("musicfilename", str(self.getGISExportDetails()["Filename"]))
+                    perfassess.setParameter("masterplanmodel", 1)
+                    perfassess.setParameter("currentyear", current)
+                    perfassess.attach(self.__observers)
+                    perfassess.run()
+                    perfassess.detach(self.__observers)
+
+            self.updateObservers("PROGRESSUPDATE||"+str(int(90*progressincrement+incrementcount)))
+
+            #(5) Export
+            self.updateObservers("Exporting Results")
+            self.transferCurrentAssetsToCollection("ic")
+            self.exportGIS(tab, "ic")
+            prevfile_basename_ic = self.getGISExportDetails()["Filename"]+"_"+str(current)+"ic"    #Used for dynamic cycle
+            self.updateObservers("PROGRESSUPDATE||"+str(int(100*progressincrement+incrementcount)))
+            incrementcount += 100.0*progressincrement
+
+        #----------------- BASIC SIMULATION STRUCTURE ENS HERE ------------------
+        self.updateObservers("End of Simulation")
+        self.updateObservers("PROGRESSUPDATE||100")
         self.changeSimulationStatus("nosim")
+        #END OF SIMULATION
         return True
