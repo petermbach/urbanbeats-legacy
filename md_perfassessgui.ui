@@ -1937,7 +1937,7 @@ p, li { white-space: pre-wrap; }
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-437</y>
+               <y>-469</y>
                <width>463</width>
                <height>996</height>
               </rect>
@@ -2613,7 +2613,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>350</x>
-                   <y>145</y>
+                   <y>180</y>
                    <width>75</width>
                    <height>23</height>
                   </rect>
@@ -2626,7 +2626,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>130</x>
-                   <y>145</y>
+                   <y>180</y>
                    <width>211</width>
                    <height>20</height>
                   </rect>
@@ -2636,7 +2636,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>20</x>
-                   <y>145</y>
+                   <y>180</y>
                    <width>91</width>
                    <height>16</height>
                   </rect>
@@ -2649,7 +2649,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>130</x>
-                   <y>170</y>
+                   <y>205</y>
                    <width>291</width>
                    <height>17</height>
                   </rect>
@@ -2662,7 +2662,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>10</x>
-                   <y>120</y>
+                   <y>155</y>
                    <width>411</width>
                    <height>16</height>
                   </rect>
@@ -2675,7 +2675,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>20</x>
-                   <y>200</y>
+                   <y>235</y>
                    <width>111</width>
                    <height>16</height>
                   </rect>
@@ -2688,7 +2688,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>130</x>
-                   <y>200</y>
+                   <y>235</y>
                    <width>211</width>
                    <height>21</height>
                   </rect>
@@ -2828,6 +2828,19 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="maximum">
                   <double>5.000000000000000</double>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="epanet_exportvisual">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>120</y>
+                   <width>401</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Export spatial analysis results as a shapefile for post-analysis</string>
                  </property>
                 </widget>
                </widget>

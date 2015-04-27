@@ -28,7 +28,7 @@ from PyQt4.QtGui import *
 import PyQt4
 
 import sys, random, numpy, math
-import pymusic, ubmusicwrite
+import pymusic, ubmusicwrite, ubepanet
 
 from urbanbeatsmodule import *
 
@@ -166,13 +166,15 @@ class PerformanceAssess(UBModule):      #UBCORE
         #EPANET integration variables
         self.createParameter("epanetintmethod", STRING, "")
         self.createParameter("epanet_scanradius", DOUBLE, "")
+        self.createParameter("epanet_exportshp", BOOL, "")
         self.createParameter("epanet_inpfname", STRING, "")
         self.createParameter("runBaseInp", BOOL, "")
         self.createParameter("epanet_simtype", STRING, "")
 
         #VD = voronoi diagram, DT = delaunay triangulation, RS = radial scan, NN = nearest neighbour
-        self.epanetintmethod = "VOR"
+        self.epanetintmethod = "VD"
         self.epanet_scanradius = 0.5  #only for radial scan method
+        self.epanet_exportshp = 1   #export a visual illustration of the spatial integration between blocks and network
         self.epanet_inpfname = ""   #input filename
         self.runBaseInp = 0         #run the base simulation? will rebuild the .inp file
         #STS = static sim, 24H = 24-hour, EPS = extended period sim (72hrs), LTS = long-term sim
@@ -457,8 +459,32 @@ class PerformanceAssess(UBModule):      #UBCORE
             else:
                 map_attr.addAttribute("wdp_"+i, eval("self.cp_"+i))
 
+        #Part 2 - EPANET Link
+        base_inpfile = ubepanet.readInpFile(self.epanet_inpfname)
+        node_list = ubepanet.getNodeCoordinates(base_inpfile)
+        print node_list
+
+        #Run the corresponding integration, which will return a dictionary of the node-block relationship
+        if self.epanetintmethod == "VD":
+            nbrelation = self.analyseVoronoi(node_list)
+        elif self.epanetintmethod == "DT":
+            nbrelation = self.analyseDelaunay(node_list)
+        elif self.epanetintmethod == "RS":
+            nbrelation = self.analyseRadialScan(node_list)
+        elif self.epanetintmethod == "NN":
+            nbrelation = self.analyseNearestNeigh(node_list)
+
+        #Use the node block list to work out the new demands and rewrite the epanet file
+        if self.runBaseInp:
+            self.rewriteEPANETbase(base_inpfile)
+
+        self.writeUB_EPANETfile(base_inpfile, node_list, nbrelation)
+
+        #Run the EPANET Simulations
+        self.runEPANETsim()
 
         return True
+
 
     def runIWCM(self):
         """ Creates a simulation file and calls the CityDrain3 Modelling Platform to undertake
@@ -469,6 +495,57 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         return True
 
+    ########################################################
+    #EPANET Integration SUBFUNCTIONS                       #
+    ########################################################
+    def analyseVoronoi(self, node_list):
+        nbrelation = {}  #Node ID: [[blockID, weight],...]
+
+        #Create Numpylist
+
+        #Run scipy.spatial Voronoi
+
+        #Deal with infinite edges, create the data of polygons
+
+
+        #Get block layer, transform into proper coordinate system
+
+
+        #Intersect layers, calculate areas
+
+
+        #Write the dictionary, export the intersected shapefile
+
+
+
+        return nbrelation
+
+    def analyseDelaunay(self, node_list):
+        nbrelation = {}  #Node ID: [[blockID, weight],...]
+
+        return nbrelation
+
+    def analyseNearestNeigh(self, node_list):
+        nbrelation = {}  #Node ID: [[blockID, weight],...]
+
+        return nbrelation
+
+    def analyseRadialScan(self, node_list):
+        nbrelation = {}  #Node ID: [[blockID, weight],...]
+
+        return nbrelation
+
+    def rewriteEPANETbase(self, basedata):
+        print "Re-run the base input file"
+        return True
+
+    def writeUB_EPANETfile(self, basedata, node_list, nbrelation):
+        print "write the UB-EPANET combo file"
+        return True
+
+    def runEPANETsim(self):
+        print "Calling EPANET"
+        return True
 
     ########################################################
     #WriteMUSICSim SUBFUNCTIONS                            #

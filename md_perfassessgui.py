@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perfassessgui.ui'
 #
-# Created: Mon Apr 27 22:23:59 2015
+# Created: Mon Apr 27 23:10:54 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -665,7 +665,7 @@ class Ui_Perfconfig_Dialog(object):
         self.scrollArea_10.setWidgetResizable(True)
         self.scrollArea_10.setObjectName(_fromUtf8("scrollArea_10"))
         self.scrollAreaWidgetContents_10 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_10.setGeometry(QtCore.QRect(0, -437, 463, 996))
+        self.scrollAreaWidgetContents_10.setGeometry(QtCore.QRect(0, -469, 463, 996))
         self.scrollAreaWidgetContents_10.setObjectName(_fromUtf8("scrollAreaWidgetContents_10"))
         self.verticalLayout_19 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_10)
         self.verticalLayout_19.setObjectName(_fromUtf8("verticalLayout_19"))
@@ -821,25 +821,25 @@ class Ui_Perfconfig_Dialog(object):
         self.wsnetwork_config_widget.setMinimumSize(QtCore.QSize(0, 300))
         self.wsnetwork_config_widget.setObjectName(_fromUtf8("wsnetwork_config_widget"))
         self.epanet_browse = QtGui.QPushButton(self.wsnetwork_config_widget)
-        self.epanet_browse.setGeometry(QtCore.QRect(350, 145, 75, 23))
+        self.epanet_browse.setGeometry(QtCore.QRect(350, 180, 75, 23))
         self.epanet_browse.setObjectName(_fromUtf8("epanet_browse"))
         self.epanet_line = QtGui.QLineEdit(self.wsnetwork_config_widget)
-        self.epanet_line.setGeometry(QtCore.QRect(130, 145, 211, 20))
+        self.epanet_line.setGeometry(QtCore.QRect(130, 180, 211, 20))
         self.epanet_line.setObjectName(_fromUtf8("epanet_line"))
         self.epanet_lbl = QtGui.QLabel(self.wsnetwork_config_widget)
-        self.epanet_lbl.setGeometry(QtCore.QRect(20, 145, 91, 16))
+        self.epanet_lbl.setGeometry(QtCore.QRect(20, 180, 91, 16))
         self.epanet_lbl.setObjectName(_fromUtf8("epanet_lbl"))
         self.epanet_basesim_check = QtGui.QCheckBox(self.wsnetwork_config_widget)
-        self.epanet_basesim_check.setGeometry(QtCore.QRect(130, 170, 291, 17))
+        self.epanet_basesim_check.setGeometry(QtCore.QRect(130, 205, 291, 17))
         self.epanet_basesim_check.setObjectName(_fromUtf8("epanet_basesim_check"))
         self.epanet_lbl3 = QtGui.QLabel(self.wsnetwork_config_widget)
-        self.epanet_lbl3.setGeometry(QtCore.QRect(10, 120, 411, 16))
+        self.epanet_lbl3.setGeometry(QtCore.QRect(10, 155, 411, 16))
         self.epanet_lbl3.setObjectName(_fromUtf8("epanet_lbl3"))
         self.epanet_lbl4 = QtGui.QLabel(self.wsnetwork_config_widget)
-        self.epanet_lbl4.setGeometry(QtCore.QRect(20, 200, 111, 16))
+        self.epanet_lbl4.setGeometry(QtCore.QRect(20, 235, 111, 16))
         self.epanet_lbl4.setObjectName(_fromUtf8("epanet_lbl4"))
         self.epanet_simtypecombo = QtGui.QComboBox(self.wsnetwork_config_widget)
-        self.epanet_simtypecombo.setGeometry(QtCore.QRect(130, 200, 211, 21))
+        self.epanet_simtypecombo.setGeometry(QtCore.QRect(130, 235, 211, 21))
         self.epanet_simtypecombo.setObjectName(_fromUtf8("epanet_simtypecombo"))
         self.epanet_simtypecombo.addItem(_fromUtf8(""))
         self.epanet_simtypecombo.addItem(_fromUtf8(""))
@@ -874,6 +874,9 @@ class Ui_Perfconfig_Dialog(object):
         self.epanet_scanradius.setMinimum(0.5)
         self.epanet_scanradius.setMaximum(5.0)
         self.epanet_scanradius.setObjectName(_fromUtf8("epanet_scanradius"))
+        self.epanet_exportvisual = QtGui.QCheckBox(self.wsnetwork_config_widget)
+        self.epanet_exportvisual.setGeometry(QtCore.QRect(20, 120, 401, 17))
+        self.epanet_exportvisual.setObjectName(_fromUtf8("epanet_exportvisual"))
         self.verticalLayout_19.addWidget(self.wsnetwork_config_widget)
         self.ws_network_title = QtGui.QLabel(self.scrollAreaWidgetContents_10)
         self.ws_network_title.setEnabled(True)
@@ -1386,6 +1389,7 @@ class Ui_Perfconfig_Dialog(object):
         self.epanet_intrscan.setText(_translate("Perfconfig_Dialog", "Radial Scan", None))
         self.epanet_intnn.setText(_translate("Perfconfig_Dialog", "Nearest Neighbour", None))
         self.epanet_lbl2_2.setText(_translate("Perfconfig_Dialog", "Set Search Radius [scalar of Block width] (radial scan only):", None))
+        self.epanet_exportvisual.setText(_translate("Perfconfig_Dialog", "Export spatial analysis results as a shapefile for post-analysis", None))
         self.ws_network_title.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

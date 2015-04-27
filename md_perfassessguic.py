@@ -353,6 +353,7 @@ class PerfAssessGUILaunch(QtGui.QDialog):
             self.module.setParameter("epanetintmethod", "VD")
 
         self.module.setParameter("epanet_scanradius", float(self.ui.epanet_scanradius.value()))
+        self.module.setParameter("epanet_exportshp", int(self.ui.epanet_exportvisual.isChecked()))
         self.module.setParameter("epanet_inpfname", str(self.ui.epanet_line.text()))
         self.module.setParameter("runBaseInp", int(self.ui.epanet_basesim_check.isChecked()))
         self.module.setParameter("epanet_simtype", self.epanet_simtypes[self.ui.epanet_simtypecombo.currentIndex()])
