@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perfassessgui.ui'
 #
-# Created: Mon Apr 20 13:00:11 2015
+# Created: Mon Apr 27 22:23:59 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -665,7 +665,7 @@ class Ui_Perfconfig_Dialog(object):
         self.scrollArea_10.setWidgetResizable(True)
         self.scrollArea_10.setObjectName(_fromUtf8("scrollArea_10"))
         self.scrollAreaWidgetContents_10 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_10.setGeometry(QtCore.QRect(0, 0, 463, 896))
+        self.scrollAreaWidgetContents_10.setGeometry(QtCore.QRect(0, -437, 463, 996))
         self.scrollAreaWidgetContents_10.setObjectName(_fromUtf8("scrollAreaWidgetContents_10"))
         self.verticalLayout_19 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_10)
         self.verticalLayout_19.setObjectName(_fromUtf8("verticalLayout_19"))
@@ -811,43 +811,76 @@ class Ui_Perfconfig_Dialog(object):
         self.altwater_title.setGeometry(QtCore.QRect(10, 360, 261, 16))
         self.altwater_title.setObjectName(_fromUtf8("altwater_title"))
         self.verticalLayout_19.addWidget(self.dp_config_widget)
-        self.ws_network_title = QtGui.QLabel(self.scrollAreaWidgetContents_10)
-        self.ws_network_title.setEnabled(True)
-        self.ws_network_title.setMinimumSize(QtCore.QSize(445, 16))
-        self.ws_network_title.setMaximumSize(QtCore.QSize(16777215, 16))
-        self.ws_network_title.setObjectName(_fromUtf8("ws_network_title"))
-        self.verticalLayout_19.addWidget(self.ws_network_title)
-        self.wsnetwork_config_widget = QtGui.QWidget(self.scrollAreaWidgetContents_10)
-        self.wsnetwork_config_widget.setMinimumSize(QtCore.QSize(0, 200))
-        self.wsnetwork_config_widget.setObjectName(_fromUtf8("wsnetwork_config_widget"))
-        self.dagg_dp_noonpic_3 = QtGui.QLabel(self.wsnetwork_config_widget)
-        self.dagg_dp_noonpic_3.setGeometry(QtCore.QRect(155, 175, 41, 41))
-        self.dagg_dp_noonpic_3.setText(_fromUtf8(""))
-        self.dagg_dp_noonpic_3.setPixmap(QtGui.QPixmap(_fromUtf8("noon-small.png")))
-        self.dagg_dp_noonpic_3.setObjectName(_fromUtf8("dagg_dp_noonpic_3"))
-        self.dagg_dp_morningpic_3 = QtGui.QLabel(self.wsnetwork_config_widget)
-        self.dagg_dp_morningpic_3.setEnabled(True)
-        self.dagg_dp_morningpic_3.setGeometry(QtCore.QRect(55, 175, 41, 41))
-        self.dagg_dp_morningpic_3.setText(_fromUtf8(""))
-        self.dagg_dp_morningpic_3.setPixmap(QtGui.QPixmap(_fromUtf8("morning-small.png")))
-        self.dagg_dp_morningpic_3.setObjectName(_fromUtf8("dagg_dp_morningpic_3"))
-        self.dagg_dp_nightpic_3 = QtGui.QLabel(self.wsnetwork_config_widget)
-        self.dagg_dp_nightpic_3.setGeometry(QtCore.QRect(355, 175, 41, 41))
-        self.dagg_dp_nightpic_3.setText(_fromUtf8(""))
-        self.dagg_dp_nightpic_3.setPixmap(QtGui.QPixmap(_fromUtf8("night-small.png")))
-        self.dagg_dp_nightpic_3.setObjectName(_fromUtf8("dagg_dp_nightpic_3"))
-        self.dagg_dp_eveningpic_3 = QtGui.QLabel(self.wsnetwork_config_widget)
-        self.dagg_dp_eveningpic_3.setGeometry(QtCore.QRect(255, 175, 41, 41))
-        self.dagg_dp_eveningpic_3.setText(_fromUtf8(""))
-        self.dagg_dp_eveningpic_3.setPixmap(QtGui.QPixmap(_fromUtf8("evening-small.png")))
-        self.dagg_dp_eveningpic_3.setObjectName(_fromUtf8("dagg_dp_eveningpic_3"))
-        self.verticalLayout_19.addWidget(self.wsnetwork_config_widget)
         self.ws_network_title_2 = QtGui.QLabel(self.scrollAreaWidgetContents_10)
         self.ws_network_title_2.setEnabled(True)
         self.ws_network_title_2.setMinimumSize(QtCore.QSize(445, 16))
         self.ws_network_title_2.setMaximumSize(QtCore.QSize(16777215, 16))
         self.ws_network_title_2.setObjectName(_fromUtf8("ws_network_title_2"))
         self.verticalLayout_19.addWidget(self.ws_network_title_2)
+        self.wsnetwork_config_widget = QtGui.QWidget(self.scrollAreaWidgetContents_10)
+        self.wsnetwork_config_widget.setMinimumSize(QtCore.QSize(0, 300))
+        self.wsnetwork_config_widget.setObjectName(_fromUtf8("wsnetwork_config_widget"))
+        self.epanet_browse = QtGui.QPushButton(self.wsnetwork_config_widget)
+        self.epanet_browse.setGeometry(QtCore.QRect(350, 145, 75, 23))
+        self.epanet_browse.setObjectName(_fromUtf8("epanet_browse"))
+        self.epanet_line = QtGui.QLineEdit(self.wsnetwork_config_widget)
+        self.epanet_line.setGeometry(QtCore.QRect(130, 145, 211, 20))
+        self.epanet_line.setObjectName(_fromUtf8("epanet_line"))
+        self.epanet_lbl = QtGui.QLabel(self.wsnetwork_config_widget)
+        self.epanet_lbl.setGeometry(QtCore.QRect(20, 145, 91, 16))
+        self.epanet_lbl.setObjectName(_fromUtf8("epanet_lbl"))
+        self.epanet_basesim_check = QtGui.QCheckBox(self.wsnetwork_config_widget)
+        self.epanet_basesim_check.setGeometry(QtCore.QRect(130, 170, 291, 17))
+        self.epanet_basesim_check.setObjectName(_fromUtf8("epanet_basesim_check"))
+        self.epanet_lbl3 = QtGui.QLabel(self.wsnetwork_config_widget)
+        self.epanet_lbl3.setGeometry(QtCore.QRect(10, 120, 411, 16))
+        self.epanet_lbl3.setObjectName(_fromUtf8("epanet_lbl3"))
+        self.epanet_lbl4 = QtGui.QLabel(self.wsnetwork_config_widget)
+        self.epanet_lbl4.setGeometry(QtCore.QRect(20, 200, 111, 16))
+        self.epanet_lbl4.setObjectName(_fromUtf8("epanet_lbl4"))
+        self.epanet_simtypecombo = QtGui.QComboBox(self.wsnetwork_config_widget)
+        self.epanet_simtypecombo.setGeometry(QtCore.QRect(130, 200, 211, 21))
+        self.epanet_simtypecombo.setObjectName(_fromUtf8("epanet_simtypecombo"))
+        self.epanet_simtypecombo.addItem(_fromUtf8(""))
+        self.epanet_simtypecombo.addItem(_fromUtf8(""))
+        self.epanet_simtypecombo.addItem(_fromUtf8(""))
+        self.epanet_simtypecombo.addItem(_fromUtf8(""))
+        self.epanet_lbl2 = QtGui.QLabel(self.wsnetwork_config_widget)
+        self.epanet_lbl2.setGeometry(QtCore.QRect(20, 35, 121, 16))
+        self.epanet_lbl2.setObjectName(_fromUtf8("epanet_lbl2"))
+        self.epanet_intdelaunay = QtGui.QRadioButton(self.wsnetwork_config_widget)
+        self.epanet_intdelaunay.setEnabled(False)
+        self.epanet_intdelaunay.setGeometry(QtCore.QRect(140, 60, 131, 17))
+        self.epanet_intdelaunay.setObjectName(_fromUtf8("epanet_intdelaunay"))
+        self.epanet_intvoronoi = QtGui.QRadioButton(self.wsnetwork_config_widget)
+        self.epanet_intvoronoi.setGeometry(QtCore.QRect(290, 60, 121, 17))
+        self.epanet_intvoronoi.setObjectName(_fromUtf8("epanet_intvoronoi"))
+        self.epanet_lbl1 = QtGui.QLabel(self.wsnetwork_config_widget)
+        self.epanet_lbl1.setGeometry(QtCore.QRect(10, 10, 411, 16))
+        self.epanet_lbl1.setObjectName(_fromUtf8("epanet_lbl1"))
+        self.epanet_intrscan = QtGui.QRadioButton(self.wsnetwork_config_widget)
+        self.epanet_intrscan.setEnabled(False)
+        self.epanet_intrscan.setGeometry(QtCore.QRect(290, 35, 121, 17))
+        self.epanet_intrscan.setObjectName(_fromUtf8("epanet_intrscan"))
+        self.epanet_intnn = QtGui.QRadioButton(self.wsnetwork_config_widget)
+        self.epanet_intnn.setGeometry(QtCore.QRect(140, 35, 121, 17))
+        self.epanet_intnn.setObjectName(_fromUtf8("epanet_intnn"))
+        self.epanet_lbl2_2 = QtGui.QLabel(self.wsnetwork_config_widget)
+        self.epanet_lbl2_2.setGeometry(QtCore.QRect(20, 90, 301, 16))
+        self.epanet_lbl2_2.setObjectName(_fromUtf8("epanet_lbl2_2"))
+        self.epanet_scanradius = QtGui.QDoubleSpinBox(self.wsnetwork_config_widget)
+        self.epanet_scanradius.setGeometry(QtCore.QRect(320, 90, 51, 16))
+        self.epanet_scanradius.setDecimals(1)
+        self.epanet_scanradius.setMinimum(0.5)
+        self.epanet_scanradius.setMaximum(5.0)
+        self.epanet_scanradius.setObjectName(_fromUtf8("epanet_scanradius"))
+        self.verticalLayout_19.addWidget(self.wsnetwork_config_widget)
+        self.ws_network_title = QtGui.QLabel(self.scrollAreaWidgetContents_10)
+        self.ws_network_title.setEnabled(True)
+        self.ws_network_title.setMinimumSize(QtCore.QSize(445, 16))
+        self.ws_network_title.setMaximumSize(QtCore.QSize(16777215, 16))
+        self.ws_network_title.setObjectName(_fromUtf8("ws_network_title"))
+        self.verticalLayout_19.addWidget(self.ws_network_title)
         self.wsnetwork_config_widget_2 = QtGui.QWidget(self.scrollAreaWidgetContents_10)
         self.wsnetwork_config_widget_2.setMinimumSize(QtCore.QSize(0, 200))
         self.wsnetwork_config_widget_2.setObjectName(_fromUtf8("wsnetwork_config_widget_2"))
@@ -872,6 +905,21 @@ class Ui_Perfconfig_Dialog(object):
         self.dagg_dp_eveningpic_4.setText(_fromUtf8(""))
         self.dagg_dp_eveningpic_4.setPixmap(QtGui.QPixmap(_fromUtf8("evening-small.png")))
         self.dagg_dp_eveningpic_4.setObjectName(_fromUtf8("dagg_dp_eveningpic_4"))
+        self.epanet_lbl_4 = QtGui.QLabel(self.wsnetwork_config_widget_2)
+        self.epanet_lbl_4.setGeometry(QtCore.QRect(10, 10, 151, 16))
+        self.epanet_lbl_4.setObjectName(_fromUtf8("epanet_lbl_4"))
+        self.epanet_lbl_5 = QtGui.QLabel(self.wsnetwork_config_widget_2)
+        self.epanet_lbl_5.setGeometry(QtCore.QRect(20, 35, 91, 16))
+        self.epanet_lbl_5.setObjectName(_fromUtf8("epanet_lbl_5"))
+        self.epanet_lbl_6 = QtGui.QLabel(self.wsnetwork_config_widget_2)
+        self.epanet_lbl_6.setGeometry(QtCore.QRect(20, 60, 91, 16))
+        self.epanet_lbl_6.setObjectName(_fromUtf8("epanet_lbl_6"))
+        self.epanet_lbl_7 = QtGui.QLabel(self.wsnetwork_config_widget_2)
+        self.epanet_lbl_7.setGeometry(QtCore.QRect(200, 30, 91, 16))
+        self.epanet_lbl_7.setObjectName(_fromUtf8("epanet_lbl_7"))
+        self.epanet_lbl_8 = QtGui.QLabel(self.wsnetwork_config_widget_2)
+        self.epanet_lbl_8.setGeometry(QtCore.QRect(200, 60, 91, 16))
+        self.epanet_lbl_8.setObjectName(_fromUtf8("epanet_lbl_8"))
         self.verticalLayout_19.addWidget(self.wsnetwork_config_widget_2)
         self.scrollArea_10.setWidget(self.scrollAreaWidgetContents_10)
         self.verticalLayout_18.addWidget(self.scrollArea_10)
@@ -1016,7 +1064,7 @@ class Ui_Perfconfig_Dialog(object):
         self.verticalLayout.addWidget(self.footer_widget)
 
         self.retranslateUi(Perfconfig_Dialog)
-        self.main_input_widget.setCurrentIndex(0)
+        self.main_input_widget.setCurrentIndex(4)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), Perfconfig_Dialog.accept)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), Perfconfig_Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Perfconfig_Dialog)
@@ -1317,60 +1365,32 @@ class Ui_Perfconfig_Dialog(object):
         self.dp_pubirr_custom.setText(_translate("Perfconfig_Dialog", "Custom...", None))
         self.eps_title.setText(_translate("Perfconfig_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Weekly, Monthly &amp; Seasonal Settings</span></p></body></html>", None))
         self.altwater_title.setText(_translate("Perfconfig_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Rules for Alternative Water Sources</span></p></body></html>", None))
+        self.ws_network_title_2.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">EPANET Integration</span></p></body></html>", None))
+        self.epanet_browse.setText(_translate("Perfconfig_Dialog", "Browse...", None))
+        self.epanet_lbl.setText(_translate("Perfconfig_Dialog", "EPANET .inp File:", None))
+        self.epanet_basesim_check.setText(_translate("Perfconfig_Dialog", "Rebuild .inp File and run a Base Simulation", None))
+        self.epanet_lbl3.setText(_translate("Perfconfig_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Simulation Configuration</span></p></body></html>", None))
+        self.epanet_lbl4.setText(_translate("Perfconfig_Dialog", "Simulation Type:", None))
+        self.epanet_simtypecombo.setItemText(0, _translate("Perfconfig_Dialog", "Static Simulation", None))
+        self.epanet_simtypecombo.setItemText(1, _translate("Perfconfig_Dialog", "24h Simulation", None))
+        self.epanet_simtypecombo.setItemText(2, _translate("Perfconfig_Dialog", "Extended Period Simulation (72h)", None))
+        self.epanet_simtypecombo.setItemText(3, _translate("Perfconfig_Dialog", "Long-term Simulation (1 year ++)", None))
+        self.epanet_lbl2.setText(_translate("Perfconfig_Dialog", "Integration Method:", None))
+        self.epanet_intdelaunay.setText(_translate("Perfconfig_Dialog", "Delaunay Triangulation", None))
+        self.epanet_intvoronoi.setText(_translate("Perfconfig_Dialog", "Voronoi Diagram", None))
+        self.epanet_lbl1.setText(_translate("Perfconfig_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Data Coupling</span></p></body></html>", None))
+        self.epanet_intrscan.setText(_translate("Perfconfig_Dialog", "Radial Scan", None))
+        self.epanet_intnn.setText(_translate("Perfconfig_Dialog", "Nearest Neighbour", None))
+        self.epanet_lbl2_2.setText(_translate("Perfconfig_Dialog", "Set Search Radius [scalar of Block width] (radial scan only):", None))
         self.ws_network_title.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Network Data &amp; Hydraulics</span></p></body></html>", None))
-        self.dagg_dp_noonpic_3.setToolTip(_translate("Perfconfig_Dialog", "approx. 6am to 12pm", None))
-        self.dagg_dp_noonpic_3.setWhatsThis(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Select the minimum water quality requirement to source from when meeting demand.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">PO = Potable Water</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">NP = Non-potable Water</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">RW = Rainwater</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">SW = Stormwater</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">GW = Greywater</span></p></body></html>", None))
-        self.dagg_dp_morningpic_3.setToolTip(_translate("Perfconfig_Dialog", "approx. 6am to 12pm", None))
-        self.dagg_dp_morningpic_3.setWhatsThis(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Select the minimum water quality requirement to source from when meeting demand.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">PO = Potable Water</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">NP = Non-potable Water</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">RW = Rainwater</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">SW = Stormwater</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">GW = Greywater</span></p></body></html>", None))
-        self.dagg_dp_nightpic_3.setToolTip(_translate("Perfconfig_Dialog", "approx. 6am to 12pm", None))
-        self.dagg_dp_nightpic_3.setWhatsThis(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Select the minimum water quality requirement to source from when meeting demand.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">PO = Potable Water</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">NP = Non-potable Water</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">RW = Rainwater</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">SW = Stormwater</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">GW = Greywater</span></p></body></html>", None))
-        self.dagg_dp_eveningpic_3.setToolTip(_translate("Perfconfig_Dialog", "approx. 6am to 12pm", None))
-        self.dagg_dp_eveningpic_3.setWhatsThis(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Select the minimum water quality requirement to source from when meeting demand.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">PO = Potable Water</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">NP = Non-potable Water</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">RW = Rainwater</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">SW = Stormwater</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">GW = Greywater</span></p></body></html>", None))
-        self.ws_network_title_2.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">EPANET Simulation Management</span></p></body></html>", None))
         self.dagg_dp_noonpic_4.setToolTip(_translate("Perfconfig_Dialog", "approx. 6am to 12pm", None))
         self.dagg_dp_noonpic_4.setWhatsThis(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -1415,6 +1435,11 @@ class Ui_Perfconfig_Dialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">RW = Rainwater</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">SW = Stormwater</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">GW = Greywater</span></p></body></html>", None))
+        self.epanet_lbl_4.setText(_translate("Perfconfig_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">EPANET Defaults:</span></p></body></html>", None))
+        self.epanet_lbl_5.setText(_translate("Perfconfig_Dialog", "Units", None))
+        self.epanet_lbl_6.setText(_translate("Perfconfig_Dialog", "Headloss:", None))
+        self.epanet_lbl_7.setText(_translate("Perfconfig_Dialog", "Specific Gravity:", None))
+        self.epanet_lbl_8.setText(_translate("Perfconfig_Dialog", "Viscosity:", None))
         self.general_descr_4.setHtml(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

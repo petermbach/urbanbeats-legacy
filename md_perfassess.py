@@ -129,7 +129,8 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         #WATER SUPPLY
         #Pattern names include: SDD - standard daily diurnal, CDP - constant daily pattern,
-        #                       AHC - after-hours constant, UDP - user-defined pattern
+        #                       AHC - after-hours constant, OHC - office hours constant
+        #                       UDP - user-defined pattern
         self.createParameter("kitchenpat", STRING, "")
         self.createParameter("showerpat", STRING, "")
         self.createParameter("toiletpat", STRING, "")
@@ -150,6 +151,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.sdd = [0.3,0.3,0.3,0.3,0.5,1.0,1.5,1.5,1.3,1.0,1.0,1.5,1.5,1.2,1.0,1.0,1.0,1.3,1.3,0.8,0.8,0.5,0.5,0.5]
         self.cdp = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
         self.ahc = [2.0,2.0,2.0,2.0,2.0,2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2.0,2.0,2.0,2.0,2.0,2.0]
+        self.ohc = []
 
         #Custom pattern variables if needed
         self.cp_kitchen = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
@@ -161,7 +163,24 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.cp_ind = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
         self.cp_publicirri = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
 
+        #EPANET integration variables
+        self.createParameter("epanetintmethod", STRING, "")
+        self.createParameter("epanet_scanradius", DOUBLE, "")
+        self.createParameter("epanet_inpfname", STRING, "")
+        self.createParameter("runBaseInp", BOOL, "")
+        self.createParameter("epanet_simtype", STRING, "")
+
+        #VD = voronoi diagram, DT = delaunay triangulation, RS = radial scan, NN = nearest neighbour
+        self.epanetintmethod = "VOR"
+        self.epanet_scanradius = 0.5  #only for radial scan method
+        self.epanet_inpfname = ""   #input filename
+        self.runBaseInp = 0         #run the base simulation? will rebuild the .inp file
+        #STS = static sim, 24H = 24-hour, EPS = extended period sim (72hrs), LTS = long-term sim
+        self.epanet_simtype = "STS"
+
+
         #INTEGRATED WATER CYCLE MODEL
+
 
         #ADVANCED PARAMETERS ---------------------------------------------------------
 

@@ -155,6 +155,29 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.dp_ind_custom, QtCore.SIGNAL("clicked()"), lambda enduse="ind": self.callPatternGui(enduse))
         QtCore.QObject.connect(self.ui.dp_pubirr_custom, QtCore.SIGNAL("clicked()"), lambda enduse="publicirri": self.callPatternGui(enduse))
 
+        if self.module.getParameter("epanetintmethod") == "NN":
+            self.ui.epanet_intnn.setChecked(1)
+        elif self.module.getParameter("epanetintmethod") == "RS":
+            self.ui.epanet_intrscan.setChecked(1)
+        elif self.module.getParameter("epanetintmethod") == "DT":
+            self.ui.epanet_intdelaunay.setChecked(1)
+        elif self.module.getParameter("epanetintmethod") == "VD":
+            self.ui.epanet_intvoronoi.setChecked(1)
+
+        self.ui.epanet_scanradius.setEnabled(self.ui.epanet_intrscan.isChecked())
+        self.ui.epanet_scanradius.setValue(float(self.module.getParameter("epanet_scanradius")))
+
+        self.ui.epanet_line.setText(str(self.module.getParameter("epanet_inpfname")))
+        self.ui.epanet_basesim_check.setChecked(int(self.module.getParameter("runBaseInp")))
+
+        self.epanet_simtypes = ["STS", "24H", "EPS", "LTS"]
+        self.ui.epanet_simtypecombo.setCurrentIndex(self.epanet_simtypes.index(self.module.getParameter("epanet_simtype")))
+
+        QtCore.QObject.connect(self.ui.epanet_intnn, QtCore.SIGNAL("clicked()"), self.rscan_boxchange)
+        QtCore.QObject.connect(self.ui.epanet_intrscan, QtCore.SIGNAL("clicked()"), self.rscan_boxchange)
+        QtCore.QObject.connect(self.ui.epanet_intdelaunay, QtCore.SIGNAL("clicked()"), self.rscan_boxchange)
+        QtCore.QObject.connect(self.ui.epanet_intvoronoi, QtCore.SIGNAL("clicked()"), self.rscan_boxchange)
+        QtCore.QObject.connect(self.ui.epanet_browse, QtCore.SIGNAL("clicked()"), self.getEpanetInpName)
 
         #----------------------------------------------------------------------#
         #-------- INTEGRATED WATER CYCLE MODEL  -------------------------------#
@@ -162,6 +185,16 @@ class PerfAssessGUILaunch(QtGui.QDialog):
 
 
         QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
+
+    def rscan_boxchange(self):
+        self.ui.epanet_scanradius.setEnabled(self.ui.epanet_intrscan.isChecked())
+        return True
+
+    def getEpanetInpName(self):
+        fname = QtGui.QFileDialog.getOpenFileName(self, "Locate EPANET .inp File...", os.curdir, str("EPANET File (*.inp)"))
+        if fname:
+            self.ui.epanet_line.setText(fname)
+        return True
 
     def callPatternGui(self, enduse):
         custompatternguic = CustomPatternGUILaunch(self.module, enduse)
@@ -310,6 +343,19 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #Network Hydraulics
 
         #EPANET Link
+        if self.ui.epanet_intnn.isChecked():
+            self.module.setParameter("epanetintmethod", "NN")
+        elif self.ui.epanet_intrscan.isChecked():
+            self.module.setParameter("epanetintmethod", "RS")
+        elif self.ui.epanet_intdelaunay.isChecked():
+            self.module.setParameter("epanetintmethod", "DT")
+        elif self.ui.epanet_intvoronoi.isChecked():
+            self.module.setParameter("epanetintmethod", "VD")
+
+        self.module.setParameter("epanet_scanradius", float(self.ui.epanet_scanradius.value()))
+        self.module.setParameter("epanet_inpfname", str(self.ui.epanet_line.text()))
+        self.module.setParameter("runBaseInp", int(self.ui.epanet_basesim_check.isChecked()))
+        self.module.setParameter("epanet_simtype", self.epanet_simtypes[self.ui.epanet_simtypecombo.currentIndex()])
 
 
         #----------------------------------------------------------------------#

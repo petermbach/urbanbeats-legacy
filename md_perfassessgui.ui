@@ -100,7 +100,7 @@ p, li { white-space: pre-wrap; }
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
@@ -1937,9 +1937,9 @@ p, li { white-space: pre-wrap; }
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
+               <y>-437</y>
                <width>463</width>
-               <height>896</height>
+               <height>996</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_19">
@@ -2576,6 +2576,263 @@ p, li { white-space: pre-wrap; }
                </widget>
               </item>
               <item>
+               <widget class="QLabel" name="ws_network_title_2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>445</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;EPANET Integration&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="wsnetwork_config_widget" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>300</height>
+                 </size>
+                </property>
+                <widget class="QPushButton" name="epanet_browse">
+                 <property name="geometry">
+                  <rect>
+                   <x>350</x>
+                   <y>145</y>
+                   <width>75</width>
+                   <height>23</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Browse...</string>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="epanet_line">
+                 <property name="geometry">
+                  <rect>
+                   <x>130</x>
+                   <y>145</y>
+                   <width>211</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>145</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>EPANET .inp File:</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="epanet_basesim_check">
+                 <property name="geometry">
+                  <rect>
+                   <x>130</x>
+                   <y>170</y>
+                   <width>291</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Rebuild .inp File and run a Base Simulation</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl3">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>120</y>
+                   <width>411</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Simulation Configuration&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl4">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>200</y>
+                   <width>111</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Simulation Type:</string>
+                 </property>
+                </widget>
+                <widget class="QComboBox" name="epanet_simtypecombo">
+                 <property name="geometry">
+                  <rect>
+                   <x>130</x>
+                   <y>200</y>
+                   <width>211</width>
+                   <height>21</height>
+                  </rect>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Static Simulation</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>24h Simulation</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Extended Period Simulation (72h)</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Long-term Simulation (1 year ++)</string>
+                  </property>
+                 </item>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl2">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>35</y>
+                   <width>121</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Integration Method:</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="epanet_intdelaunay">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>60</y>
+                   <width>131</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Delaunay Triangulation</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="epanet_intvoronoi">
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>60</y>
+                   <width>121</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Voronoi Diagram</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl1">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>411</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Data Coupling&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="epanet_intrscan">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>35</y>
+                   <width>121</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Radial Scan</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="epanet_intnn">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>35</y>
+                   <width>121</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Nearest Neighbour</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl2_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>90</y>
+                   <width>301</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Set Search Radius [scalar of Block width] (radial scan only):</string>
+                 </property>
+                </widget>
+                <widget class="QDoubleSpinBox" name="epanet_scanradius">
+                 <property name="geometry">
+                  <rect>
+                   <x>320</x>
+                   <y>90</y>
+                   <width>51</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                 <property name="minimum">
+                  <double>0.500000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>5.000000000000000</double>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+              <item>
                <widget class="QLabel" name="ws_network_title">
                 <property name="enabled">
                  <bool>true</bool>
@@ -2598,169 +2855,6 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Network Data &amp;amp; Hydraulics&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="wsnetwork_config_widget" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>200</height>
-                 </size>
-                </property>
-                <widget class="QLabel" name="dagg_dp_noonpic_3">
-                 <property name="geometry">
-                  <rect>
-                   <x>155</x>
-                   <y>175</y>
-                   <width>41</width>
-                   <height>41</height>
-                  </rect>
-                 </property>
-                 <property name="toolTip">
-                  <string>approx. 6am to 12pm</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select the minimum water quality requirement to source from when meeting demand.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;PO = Potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;NP = Non-potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;RW = Rainwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;SW = Stormwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;GW = Greywater&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="pixmap">
-                  <pixmap>noon-small.png</pixmap>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="dagg_dp_morningpic_3">
-                 <property name="enabled">
-                  <bool>true</bool>
-                 </property>
-                 <property name="geometry">
-                  <rect>
-                   <x>55</x>
-                   <y>175</y>
-                   <width>41</width>
-                   <height>41</height>
-                  </rect>
-                 </property>
-                 <property name="toolTip">
-                  <string>approx. 6am to 12pm</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select the minimum water quality requirement to source from when meeting demand.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;PO = Potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;NP = Non-potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;RW = Rainwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;SW = Stormwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;GW = Greywater&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="pixmap">
-                  <pixmap>morning-small.png</pixmap>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="dagg_dp_nightpic_3">
-                 <property name="geometry">
-                  <rect>
-                   <x>355</x>
-                   <y>175</y>
-                   <width>41</width>
-                   <height>41</height>
-                  </rect>
-                 </property>
-                 <property name="toolTip">
-                  <string>approx. 6am to 12pm</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select the minimum water quality requirement to source from when meeting demand.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;PO = Potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;NP = Non-potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;RW = Rainwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;SW = Stormwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;GW = Greywater&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="pixmap">
-                  <pixmap>night-small.png</pixmap>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="dagg_dp_eveningpic_3">
-                 <property name="geometry">
-                  <rect>
-                   <x>255</x>
-                   <y>175</y>
-                   <width>41</width>
-                   <height>41</height>
-                  </rect>
-                 </property>
-                 <property name="toolTip">
-                  <string>approx. 6am to 12pm</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select the minimum water quality requirement to source from when meeting demand.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;PO = Potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;NP = Non-potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;RW = Rainwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;SW = Stormwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;GW = Greywater&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="pixmap">
-                  <pixmap>evening-small.png</pixmap>
-                 </property>
-                </widget>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="ws_network_title_2">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>445</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;EPANET Simulation Management&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                </widget>
               </item>
@@ -2897,6 +2991,71 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="pixmap">
                   <pixmap>evening-small.png</pixmap>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl_4">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>151</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;EPANET Defaults:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl_5">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>35</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Units</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl_6">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>60</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Headloss:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl_7">
+                 <property name="geometry">
+                  <rect>
+                   <x>200</x>
+                   <y>30</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Specific Gravity:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl_8">
+                 <property name="geometry">
+                  <rect>
+                   <x>200</x>
+                   <y>60</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Viscosity:</string>
                  </property>
                 </widget>
                </widget>

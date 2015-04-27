@@ -131,10 +131,10 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         #Data Prep for CATEGORY 4
         testcharttitle = "BasicColumnChartExample"
         testcategories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        testdatadict = {"Tokyo":[49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+        testdatadict = {"Tokyo":[0, 0, 0, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
                         "New York":[83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
                         "London":[48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2],
-                        "Berlin":[42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]}
+                        "Berlin":[0, 0, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 0, 0]}
         testlabel = "Rainfall [mm]"
         labelformat = [-45, 'right', 13, 'Verdana, sans-serif']
         testunits = "mm"        
@@ -266,7 +266,6 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         assetdata = self.module.getAssetsWithIdentifier(identifier, assetcol=allassetdata)
         return assetdata
 
-
     def plotCorrel(self):
         """Plots a scatter plot showing the correlation of two of the selected attributes at the Block Level
         :return:
@@ -284,7 +283,6 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
 
         self.htmlscriptCorrel = ubhighcharts.scatter_plot(self.options_root, x_name+" vs. "+y_name, x_name, y_name, 3, "", "", datadict)
         self.ui.correl_webView.setHtml(self.htmlscriptCorrel)
-
 
     def populateCorrelationList(self):
         """Updates the list widgets on both sides with the relevant numerical block attributes.
@@ -332,7 +330,6 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
     def plotWD(self):
         """Plots the water demand stack chart based on the combo box's settings"""
         self.current_active_plotdata = None #Reset
-        timeaxis = "['0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']"
 
         #Determine Units
         if self.ui.wd_unitslps.isChecked():
@@ -340,15 +337,26 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         else:
             plotunits = "kL"
 
-        axes = ["Time HH:MM", "Water Demand ["+str(plotunits)+"]"]
+
 
         if self.ui.wd_comboSelect.currentIndex() == 0:
             return True #Do nothing
         elif self.ui.wd_comboSelect.currentIndex() == 1:
             #Summary Demand Plot
+            charttitle = "Summary of Average Water Demands for End Uses"
+            categories = ["Private End Uses", "Public End Uses"]
+            label = plotunits
+
+            #Data  = {"Kitchen":[], "Shower":[], "Toilet":[], "Laundry":[], "Garden": [], "Commercial":[], "Industrial":[], "
+
+
+
+
             pass
         elif self.ui.wd_comboSelect.currentIndex() == 2:
             #24 hour Pattern Plot
+            axes = ["Time HH:MM", "Water Demand ["+str(plotunits)+"]"]
+            timeaxis = "['0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']"
             if self.ui.wd_comboScope.currentIndex() == 1:
                 #Block Data
                 blockdata = self.module.getAssetWithName(str(self.ui.wd_listwidget.currentItem().text()))
