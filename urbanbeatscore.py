@@ -49,6 +49,7 @@ class UrbanBeatsSim(threading.Thread):
         #Observer, Status and Filename
         self.__observers = []         #Observers of the current simulation
         self.__simulation_has_completed = 0
+        self.__runtimemethod = 0    #0 = full run, 1 = perf only, 2 = do not run
         self.__filename= ""                 #Filename of the simulation
         self.__tabs = 1
         self.__moduleactivity = [0,0,0]     #["techplacement", "techimplement", "perfassess"]
@@ -547,6 +548,17 @@ class UrbanBeatsSim(threading.Thread):
             self.__moduleactivity[2] = setstate
         return True
 
+    def changeSimulationStatus(self, status):
+        if status == "fullreset":
+            self.__runtimemethod = 0
+        elif status == "perfonly":
+            self.__runtimemethod = 1
+        elif status == "nosim":
+            self.__runtimemethod = 2
+
+    def getSimulationStatus(self):
+        return self.__runtimemethod
+
     ### ----------- SIMULATION DATA TYPE MANIPULATION ------------------------
     def addAsset(self, name, asset):
         """Adds a new asset to the asset dictionary with the key 'name'"""
@@ -612,6 +624,13 @@ class UrbanBeatsSim(threading.Thread):
         except KeyError:
             return 0
 
+    def restoreAssetsFromCollection(self, cycle, tabindex):
+        self.__assets = self.retrieveAssetsFromCollection(cycle, tabindex)
+        if self.__assets == 0:
+            return False
+        else:
+            return True
+
     def transferCurrentAssetsToCollection(self, cycle):
         """Transfers the current Assets in self.__assets to the asset collection
         to be used later in viewing results, etc."""
@@ -625,6 +644,15 @@ class UrbanBeatsSim(threading.Thread):
         return True
 
     def run(self):
+        print "run time: ", self.__runtimemethod
+        if self.__runtimemethod == 0:
+            self.runFullSimulation()
+        elif self.__runtimemethod == 1:
+            self.runPerfOnly()
+        elif self.__runtimemethod == 2:
+            return True
+
+    def runFullSimulation(self):
         if self.getParameter("simtype") == "D":
             totaltime = self.getParameter("dyn_totyears")
             numbreaks = self.getParameter("dyn_breaks")
@@ -844,4 +872,11 @@ class UrbanBeatsSim(threading.Thread):
         #----------------- BASIC SIMULATION STRUCTURE ENS HERE ------------------
         self.updateObservers("End of Simulation")
         self.updateObservers("PROGRESSUPDATE||100")
+        self.changeSimulationStatus("nosim")
         #END OF SIMULATION
+
+    def runPerfOnly(self):
+        print "Performance Only"
+        #END OF SIMULATION
+        self.changeSimulationStatus("nosim")
+        return True

@@ -982,6 +982,8 @@ class MainWindow(QtGui.QMainWindow):
     def resetSimulationPartial(self):
         """Only reintializes the thread, but does not reset the assets"""
         active_simulation = self.getActiveSimulationObject()
+        if active_simulation.getSimulationStatus() != 0:
+            active_simulation.changeSimulationStatus("perfonly")
         active_simulation.reinitializeThread()
         active_simulation.updateSimulationCompletion(False)
         self.printc("----> Partial Reset Performed!")
@@ -998,6 +1000,7 @@ class MainWindow(QtGui.QMainWindow):
         active_simulation.resetAssets()
         active_simulation.resetAssetCollection()
         active_simulation.updateSimulationCompletion(False)
+        active_simulation.changeSimulationStatus("fullreset")
         self.printc("----> Complete Simulation Assets Reset Performed!")
         self.printc("")
         return True
@@ -1086,7 +1089,7 @@ class MainWindow(QtGui.QMainWindow):
         with certain post-planning analyses.
         """
         active_simulation = self.getActiveSimulationObject()
-        active_simulation.resetSimulationPartial()
+        self.resetSimulationPartial()
         try:
             self.updateProgressBar(0)
             active_simulation.start()
