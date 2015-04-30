@@ -27,7 +27,9 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import PyQt4
 
-import sys, random, numpy, math, os, scipy
+import sys, random, numpy, math, os, scipy, Polygon
+import scipy.spatial as sps
+from osgeo import ogr, osr
 import pymusic, ubmusicwrite, ubepanet
 
 from urbanbeatsmodule import *
@@ -447,7 +449,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.notify("Total Basins: "+str(totalbasins))
         self.notify("Total Strategies: "+str(strats))
 
-        #Part 1 - Demand Downscaling Data
+        #(1) - Demand Downscaling Data
         enduses = ["kitchen", "shower", "toilet", "laundry", "irrigation", "com", "ind", "publicirri"]
         for i in enduses:
             if eval("self."+i+"pat") == "SDD":
@@ -459,15 +461,15 @@ class PerformanceAssess(UBModule):      #UBCORE
             else:
                 map_attr.addAttribute("wdp_"+i, eval("self.cp_"+i))
 
-        #Part 2 - EPANET Link
+        #(2) - EPANET Link
         #Check for valid EPANET file, if not valid, do not run
+        self.notify("Performing EPANET Link...")
         if not os.path.isfile(self.epanet_inpfname):
             self.notify("Warning, no valid EPANET simulation file found, skipping assessment")
             return True
 
         base_inpfile = ubepanet.readInpFile(self.epanet_inpfname)   #Load file data
-        node_list = ubepanet.getNodeCoordinates(base_inpfile)   #Get the nodes
-        print node_list
+        node_list = ubepanet.getDataFromInpFile(base_inpfile, "[COORDINATES]", "array")   #Get the nodes
 
         #Run the corresponding integration, which will return a dictionary of the node-block relationship
         if self.epanetintmethod == "VD":
@@ -479,7 +481,10 @@ class PerformanceAssess(UBModule):      #UBCORE
         elif self.epanetintmethod == "NN":
             nbrelation = self.analyseNearestNeigh(node_list)
 
-        #Use the node block list to work out the new demands and rewrite the epanet file
+        #Rewrite Node List Section of the EPANET File
+
+
+        #Use the node block list to work out the new demands and rewrite the EPANET file
         if self.runBaseInp:
             self.rewriteEPANETbase(base_inpfile)
 
@@ -504,6 +509,7 @@ class PerformanceAssess(UBModule):      #UBCORE
     #EPANET Integration SUBFUNCTIONS                       #
     ########################################################
     def analyseVoronoi(self, node_list):
+        self.notify("Creating and intersecting blocks with Voronoi Diagram")
         nbrelation = {}  #Node ID: [[blockID, weight],...]
 
         #Create Numpylist
@@ -513,7 +519,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         numPtList = numpy.array(ptList)        #Scipy's spatial library deals with numpy arrays
 
         #Run scipy.spatial Voronoi
-        vor = scipy.spatial.Voronoi(numPtList)    #Perform the Voronoi search
+        vor = sps.Voronoi(numPtList)    #Perform the Voronoi search
 
         if vor.points.shape[1] != 2: #Checks if the shape is 2D
             raise ValueError("Need a 2D input!")
@@ -582,23 +588,116 @@ class PerformanceAssess(UBModule):      #UBCORE
             # finish
             new_regions.append(new_reg.tolist())
 
+        #Craete the Polygon list to do the intersection
+        voronoipoly = {}        #Holds all the data of the voronoi polygons based on node ID
+        counter = 0
+        for reg in new_regions:
+            polycoor = []
+            for vindex in reg:
+                polycoor.append(new_vertices[vindex])
+            voronoipoly[node_list[counter][0]] = Polygon.Polygon(polycoor)
+            counter += 1
+
         #Get block layer, transform into proper coordinate system
         block_data = self.activesim.getAssetsWithIdentifier("BlockID")
         map_data = self.activesim.getAssetWithName("MapAttributes")
         offsets = [map_data.getAttribute("xllcorner"), map_data.getAttribute("yllcorner")]
 
-        
+        #Create block geometry list
+        blocksgeom = {}     #Holds all the data of the block polygons based on BlockID
+        for i in range(len(block_data)):
+            curblock = block_data[i]
+            if curblock.getAttribute("Status") == 0:
+                continue
+            nl = curblock.getCoordinates()  #returns [(x, y, z), (x, y, z), etc.]
+            blockpts = []
+            for j in range(len(nl)):
+                blockpts.append([nl[j][0]+offsets[0], nl[j][1]+offsets[1]])
+            blocksgeom[curblock.getAttribute("BlockID")] = Polygon.Polygon(blockpts)
 
         #Intersect layers, calculate areas
+        for i in voronoipoly.keys():
+            for j in blocksgeom.keys():
+                polysect = voronoipoly[i]&blocksgeom[j]
+                if polysect.nPoints() == 0:
+                    continue
+                poly = ogr.Geometry(ogr.wkbPolygon)
+                ring = ogr.Geometry(ogr.wkbLinearRing)
+                for point in range(len(polysect[0])):
+                    ring.AddPoint(polysect[0][point][0], polysect[0][point][1])
+                ring.AddPoint(polysect[0][0][0], polysect[0][0][1])
+                poly.AddGeometry(ring)
+                area = poly.GetArea()
+                print area
 
+                #Key: NodeID-BlockID, attributes [NodeID, BlockID, wkbPolygon, Area]
+                nbrelation[str(i)+"-"+str(j)] = [i, j, poly, area]
 
         #Write the dictionary, export the intersected shapefile
-
-
+        if self.epanet_exportshp:
+            self.exportEPANETshape(nbrelation, "voronoi")
 
         return nbrelation
 
+    def exportEPANETshape(self, nbrelation, intmethod):
+        gisoptions = self.activesim.getGISExportDetails()
+        fname = gisoptions["Filename"]+"_"+intmethod+"_"+str(self.tabindex)
+        if gisoptions["ProjUser"] == True:
+            proj = gisoptions["Proj4"]
+        else:
+            proj = gisoptions["Projection"]
 
+        os.chdir(str(self.activesim.getActiveProjectPath()))
+
+        spatialRef = osr.SpatialReference()
+        spatialRef.ImportFromProj4(proj)
+
+        drv = ogr.GetDriverByName('ESRI Shapefile')
+        if os.path.exists(str(fname)+".shp"): os.remove(str(fname)+".shp")
+        shapefile = drv.CreateDataSource(str(fname)+".shp")
+
+        self.notify("Exporting Voronoi Intersect as Shapefile to file: "+str(fname))
+
+        if intmethod in ["voronoi", "delaunay"]:
+            layer = shapefile.CreateLayer('layer1', spatialRef, ogr.wkbPolygon)
+        else:
+            layer = shapefile.CreateLayer('layer1', spatialRef, ogr.wkbLineString)
+
+        layerDefn = layer.GetLayerDefn()
+
+        #Define Attributes
+        fielddefmatrix = []
+        fielddefmatrix.append(ogr.FieldDefn("NodeID", ogr.OFTString))
+        fielddefmatrix.append(ogr.FieldDefn("BlockID", ogr.OFTInteger))
+
+        if intmethod in ["voronoi", "delaunay"]:
+            fielddefmatrix.append(ogr.FieldDefn("Area_sqm", ogr.OFTReal))
+        else:
+            fielddefmatrix.append(ogr.FieldDefn("Dist_m", ogr.OFTReal)) #Will figure out in future
+
+        for field in fielddefmatrix:
+            layer.CreateField(field)
+            layer.GetLayerDefn()
+
+        #Run through nbrelation and create all geometries
+        for i in nbrelation.keys():
+            curgeom = nbrelation[i]
+            feature = ogr.Feature(layerDefn)
+            feature.SetGeometry(curgeom[2])
+            feature.SetFID(0)
+
+            #Add Attributes
+            feature.SetField("NodeID", str(curgeom[0]))
+            feature.SetField("BlockID", int(curgeom[1]))
+
+            if intmethod in ["voronoi", "delaunay"]:
+                feature.SetField("Area_sqm", float(curgeom[3]))
+            else:
+                feature.SetField("Dist_m", float(curgeom[3]))   #Will figure out in future
+
+            layer.CreateFeature(feature)
+
+        shapefile.Destroy()
 
 
     def analyseDelaunay(self, node_list):

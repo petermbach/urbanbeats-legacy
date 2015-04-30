@@ -45,19 +45,23 @@ def returnHeaderBlock(headername):
 
     return
 
-def getNodeCoordinates(inpfile):
-    """Scans the .inp file data for the node coordinates and writes these to an array of (x,y) points
-    for further analysis.
-    :param inpfile: variable containing the EPANET .inp file data
-    :return: coordinates array ["node-name", "x", "y"]
+def getDataFromInpFile(inpfile, tag, format):
+    """Scans the .inp file data for information under [TAG] and writes these to either an "array" or
+    "dict" format depending on the format input argument, returns this variable for further analysis
+    :param  inpfile: variable containing the EPANET .inp file data,
+            tag: EPANET tag  in [] brackets,
+            format: "array" or "dict"
+    :return: array either as [data[0], data[1], data[2], ...] or {"data[0]": [data[1], data[2], ....]}
     """
     i, found = 0, 0
     while found == 0:
-        if "[COORDINATES]" not in inpfile[i]:
+        if tag not in inpfile[i]:
             i += 1
         else:
             found = 1
-    coordinates = []
+
+    if format == "array": inpdata = []
+    elif format == "dict": inpdata = {}
 
     while True:
         i += 1
@@ -67,9 +71,13 @@ def getNodeCoordinates(inpfile):
             continue    #If a comment or an empty line, skip
         elif inpfile[i].strip()[0] == "[":
             break       #If program detects an open square brace, this denotes a new section
-        print inpfile[i]
-        coordinates.append(inpfile[i].strip().split())
-    return coordinates
+        # print inpfile[i]
+        dataline = inpfile[i].strip().split()
+        if format == "array":
+            inpdata.append(dataline)
+        elif format == "dict":
+            inpdata[dataline[0]] = dataline[1:]
+    return inpdata
 
 
 def getPipeProperties():

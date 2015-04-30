@@ -167,6 +167,8 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.ui.epanet_scanradius.setEnabled(self.ui.epanet_intrscan.isChecked())
         self.ui.epanet_scanradius.setValue(float(self.module.getParameter("epanet_scanradius")))
 
+        self.ui.epanet_exportvisual.setChecked(self.module.getParameter("epanet_exportshp"))
+
         self.ui.epanet_line.setText(str(self.module.getParameter("epanet_inpfname")))
         self.ui.epanet_basesim_check.setChecked(int(self.module.getParameter("runBaseInp")))
 
