@@ -27,7 +27,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import PyQt4
 
-import sys, random, numpy, math
+import sys, random, numpy, math, os, scipy
 import pymusic, ubmusicwrite, ubepanet
 
 from urbanbeatsmodule import *
@@ -460,8 +460,13 @@ class PerformanceAssess(UBModule):      #UBCORE
                 map_attr.addAttribute("wdp_"+i, eval("self.cp_"+i))
 
         #Part 2 - EPANET Link
-        base_inpfile = ubepanet.readInpFile(self.epanet_inpfname)
-        node_list = ubepanet.getNodeCoordinates(base_inpfile)
+        #Check for valid EPANET file, if not valid, do not run
+        if not os.path.isfile(self.epanet_inpfname):
+            self.notify("Warning, no valid EPANET simulation file found, skipping assessment")
+            return True
+
+        base_inpfile = ubepanet.readInpFile(self.epanet_inpfname)   #Load file data
+        node_list = ubepanet.getNodeCoordinates(base_inpfile)   #Get the nodes
         print node_list
 
         #Run the corresponding integration, which will return a dictionary of the node-block relationship
@@ -502,14 +507,87 @@ class PerformanceAssess(UBModule):      #UBCORE
         nbrelation = {}  #Node ID: [[blockID, weight],...]
 
         #Create Numpylist
+        ptList = []
+        for i in range(len(node_list)):
+            ptList.append([node_list[i][1], node_list[i][2]])
+        numPtList = numpy.array(ptList)        #Scipy's spatial library deals with numpy arrays
 
         #Run scipy.spatial Voronoi
+        vor = scipy.spatial.Voronoi(numPtList)    #Perform the Voronoi search
+
+        if vor.points.shape[1] != 2: #Checks if the shape is 2D
+            raise ValueError("Need a 2D input!")
+
+        new_regions = []
+        new_vertices = vor.vertices.tolist()    #Converts the ndarray to a nested python list
+
+        #Get some geometric details so that we can set the bounds
+        center = vor.points.mean(axis=0)    #Computes the mean value of all coordinates around the center axis
+        radius = vor.points.ptp(axis=0).max()    #Gets the largest peak to peak value using ndarray.ptp()
+
+        #Collect all ridges
+        all_ridges = {}
+
+        #Map each point onto each ridge
+        for (pt1, pt2), (vt1,vt2) in zip(vor.ridge_points, vor.ridge_vertices):
+            #zip() aggregates elements from each iterable
+
+            #We essentially assign the vertices to pt1 and pt2 in the dictionary
+            #   the mapping tells us that pt1 has vertices vt1 and vt2, which are shared
+            #   with pt2 and vice versa
+            all_ridges.setdefault(pt1, []).append((pt2,vt1,vt2))
+            all_ridges.setdefault(pt2, []).append((pt1, vt1, vt2))
 
         #Deal with infinite edges, create the data of polygons
+        for p1, region in enumerate(vor.point_region):
+        #    print p1, region
+            vert = vor.regions[region]
+            if -1 not in vert:
+                new_regions.append(vert)
+                continue
 
+            #If -1 is found, reconstruct a non-infinite region based on the radius
+            ridges = all_ridges[p1]
+            new_reg = [v for v in vert if v >= 0]    #Define a new region, add to it all non-infinite vertices
+
+            for p2, v1, v2 in ridges:
+                if v2 < 0:
+                    v1, v2 = v2, v1 #if it's v2 that's -1 then swap them around
+                if v1 >= 0:
+                    #finite ridge: already in the region variable, skip
+                    continue
+
+                #Compute the missing endpoint of an infinite ridge
+                t = vor.points[p2] - vor.points[p1]
+                t /= numpy.linalg.norm(t)
+
+                # Compute the missing endpoint of an infinite ridge
+                t = vor.points[p2] - vor.points[p1] # tangent
+                t /= numpy.linalg.norm(t)
+                n = numpy.array([-t[1], t[0]])  # normal
+
+                midpoint = vor.points[[p1, p2]].mean(axis=0)
+                direction = numpy.sign(numpy.dot(midpoint - center, n)) * n
+                far_point = vor.vertices[v2] + direction * radius
+
+                new_reg.append(len(new_vertices))
+                new_vertices.append(far_point.tolist())
+
+            # sort region counterclockwise
+            vs = numpy.asarray([new_vertices[v] for v in new_reg])
+            c = vs.mean(axis=0)
+            angles = numpy.arctan2(vs[:,1] - c[1], vs[:,0] - c[0])
+            new_reg = numpy.array(new_reg)[numpy.argsort(angles)]
+
+            # finish
+            new_regions.append(new_reg.tolist())
 
         #Get block layer, transform into proper coordinate system
+        block_data = self.activesim.getAssetsWithIdentifier("BlockID")
+        map_data = self.activesim.getAssetWithName("MapAttributes")
+        offsets = [map_data.getAttribute("xllcorner"), map_data.getAttribute("yllcorner")]
 
+        
 
         #Intersect layers, calculate areas
 
@@ -519,6 +597,9 @@ class PerformanceAssess(UBModule):      #UBCORE
 
 
         return nbrelation
+
+
+
 
     def analyseDelaunay(self, node_list):
         nbrelation = {}  #Node ID: [[blockID, weight],...]
