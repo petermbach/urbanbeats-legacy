@@ -236,11 +236,13 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.ui.wd_unitskl.setChecked(1)
         self.connect(self.ui.resultTabs, QtCore.SIGNAL("activated()"), self.plotWD)
         self.connect(self.ui.wd_comboScope, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateWDList)
+        self.connect(self.ui.wd_comboSelect, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateWDCategory)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.plotWD)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.updateWDQuickInfo)
         self.connect(self.ui.wd_exportResults, QtCore.SIGNAL("clicked()"), self.export_wd_results)
         self.connect(self.ui.wd_unitskl, QtCore.SIGNAL("clicked()"), self.plotWD)
         self.connect(self.ui.wd_unitslps, QtCore.SIGNAL("clicked()"), self.plotWD)
+
 
         #WSUD PLANNING RESULTS
 
@@ -492,6 +494,36 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         """Water Demand Tab: Updates the list widget with either a list of blocks or basin IDs to choose from"""
         cat_types = ['none', 'block', 'basin', 'casestudy']
         self.addCategoriesToList(self.ui.wd_listwidget, cat_types[self.ui.wd_comboScope.currentIndex()])
+
+    def plotDemandCalibration(self):
+        """Plots the EPANET file vs. actual demand values in the current plot window"""
+        rawdata = self.module.getAssetWithName("NodeDemands").getAllAttributes()
+        print rawdata
+        xname = "Input File Node Demands [L/sec]"
+        yname = "UrbanBEATS Node Demands [L/sec]"
+        datadict = {"inp vs. mod.": []}
+        for i in rawdata.keys():
+            datadict["inp vs. mod."].append([float(rawdata[i][0]), float(rawdata[i][1])])
+
+        self.htmlscriptDemandCheck = ubhighcharts.scatter_plot(self.options_root, "Water Supply Junction Demand Comparison", xname, yname, 3, "L/sec", "L/sec",datadict)
+        self.ui.wd_WebView.setHtml(self.htmlscriptDemandCheck)
+
+    def updateWDCategory(self):
+        """Checks if the the user wants to view the calibration of water demands or anything else"""
+        if self.ui.wd_comboSelect.currentIndex() == 5:
+            self.ui.wd_comboScope.setEnabled(0)
+            self.ui.wd_comboScope.setCurrentIndex(0)
+            self.ui.wd_listwidget.setEnabled(0)
+            self.ui.wd_listwidget.clear()
+            self.ui.wd_summarybox.setEnabled(0)
+            self.ui.wd_units_widget.setEnabled(0)
+            self.plotDemandCalibration()
+        else:
+            self.ui.wd_WebView.setHtml("")
+            self.ui.wd_comboScope.setEnabled(1)
+            self.ui.wd_listwidget.setEnabled(1)
+            self.ui.wd_summarybox.setEnabled(1)
+            self.ui.wd_units_widget.setEnabled(1)
 
     def addCategoriesToList(self, listobject, cat_type):
         listobject.clear()

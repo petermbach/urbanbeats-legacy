@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatsresultsgui.ui'
 #
-# Created: Mon Apr 20 13:00:28 2015
+# Created: Thu Apr 30 20:00:57 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -256,6 +256,7 @@ class Ui_ResultsBrowseDialog(object):
         self.wd_comboSelect.setMinimumSize(QtCore.QSize(200, 20))
         self.wd_comboSelect.setMaximumSize(QtCore.QSize(200, 20))
         self.wd_comboSelect.setObjectName(_fromUtf8("wd_comboSelect"))
+        self.wd_comboSelect.addItem(_fromUtf8(""))
         self.wd_comboSelect.addItem(_fromUtf8(""))
         self.wd_comboSelect.addItem(_fromUtf8(""))
         self.wd_comboSelect.addItem(_fromUtf8(""))
@@ -659,7 +660,7 @@ class Ui_ResultsBrowseDialog(object):
         self.verticalLayout.addWidget(self.footer)
 
         self.retranslateUi(ResultsBrowseDialog)
-        self.resultTabs.setCurrentIndex(6)
+        self.resultTabs.setCurrentIndex(3)
         QtCore.QObject.connect(self.closeButton, QtCore.SIGNAL(_fromUtf8("clicked()")), ResultsBrowseDialog.close)
         QtCore.QMetaObject.connectSlotsByName(ResultsBrowseDialog)
 
@@ -695,6 +696,7 @@ class Ui_ResultsBrowseDialog(object):
         self.wd_comboSelect.setItemText(2, _translate("ResultsBrowseDialog", "24h Water Demand Breakdown ", None))
         self.wd_comboSelect.setItemText(3, _translate("ResultsBrowseDialog", "Extended Period Demand", None))
         self.wd_comboSelect.setItemText(4, _translate("ResultsBrowseDialog", "Recycled Water Usage", None))
+        self.wd_comboSelect.setItemText(5, _translate("ResultsBrowseDialog", "Modelled vs. Inp File Demands", None))
         self.wd_comboScope.setItemText(0, _translate("ResultsBrowseDialog", "<select scope>", None))
         self.wd_comboScope.setItemText(1, _translate("ResultsBrowseDialog", "Block Level", None))
         self.wd_comboScope.setItemText(2, _translate("ResultsBrowseDialog", "Basin Level", None))

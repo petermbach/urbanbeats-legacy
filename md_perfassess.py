@@ -485,14 +485,12 @@ class PerformanceAssess(UBModule):      #UBCORE
         #Options List
         opt_list = []
 
-
         #Rewrite Node List Section of the EPANET File
         node_props = ubepanet.getDataFromInpFile(base_inpfile, "[JUNCTIONS]", "dict")
         node_props = self.adjustEPANETjunctions(node_props, nbrelation)
 
         #Write the pattern and full demand profile depending on the type of simulation
         dem_list = []
-
 
         #Use the node block list to work out the new demands and rewrite the EPANET file
         if self.runBaseInp:
@@ -502,7 +500,6 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         #Run the EPANET Simulations
         self.runEPANETsim()
-
         return True
 
     def adjustEPANETjunctions(self, node_props, nbrelation):
@@ -523,6 +520,7 @@ class PerformanceAssess(UBModule):      #UBCORE
             nbfilter = [nbrelation.keys()[j] for j in range(len(nbrelation.keys())) if str(i) in nbrelation.keys()[j]]
             if len(nbfilter) == 0:
                 new_node_data[i] = nodedata
+                node_dem.addAttribute("NodeID_"+str(i), [nodedata[1], nodedata[1]])
                 continue
 
             #for all others grab block demand data and tally up
@@ -538,8 +536,6 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         self.activesim.addAsset("NodeDemands", node_dem)    #For graphing later on
         return new_node_data
-
-
 
 
     def runIWCM(self):

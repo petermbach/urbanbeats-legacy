@@ -1083,7 +1083,7 @@ def scatter_plot(options_root, charttitle, xlabel, ylabel, markersize, valueunit
                     },
                     tooltip: {
                         headerFormat: '<b>{series.name}</b><br>',
-                        pointFormat: '{point.x} """+str(valueunitsX)+""", {point.y} """+str(valueunitsY)+"""kg'
+                        pointFormat: '{point.x} """+str(valueunitsX)+""", {point.y} """+str(valueunitsY)+"""'
                     }
                 }
             }, """+str(datastrings)+"""

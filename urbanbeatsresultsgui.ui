@@ -595,6 +595,11 @@
                  <string>Recycled Water Usage</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>Modelled vs. Inp File Demands</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item>
