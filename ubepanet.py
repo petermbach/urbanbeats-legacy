@@ -40,10 +40,6 @@ def readInpFile(filename):
     f.close()
     return lines
 
-def returnHeaderBlock(headername):
-
-
-    return
 
 def getDataFromInpFile(inpfile, tag, format):
     """Scans the .inp file data for information under [TAG] and writes these to either an "array" or
@@ -57,6 +53,9 @@ def getDataFromInpFile(inpfile, tag, format):
     while found == 0:
         if tag not in inpfile[i]:
             i += 1
+            if i == len(inpfile):
+                print "Data not found"
+                return False
         else:
             found = 1
 

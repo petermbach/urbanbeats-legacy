@@ -31,6 +31,7 @@ import sys, random, numpy, math, os, scipy, Polygon
 import scipy.spatial as sps
 from osgeo import ogr, osr
 import pymusic, ubmusicwrite, ubepanet
+import urbanbeatsdatatypes as ubdata
 
 from urbanbeatsmodule import *
 
@@ -481,19 +482,64 @@ class PerformanceAssess(UBModule):      #UBCORE
         elif self.epanetintmethod == "NN":
             nbrelation = self.analyseNearestNeigh(node_list)
 
+        #Options List
+        opt_list = []
+
+
         #Rewrite Node List Section of the EPANET File
+        node_props = ubepanet.getDataFromInpFile(base_inpfile, "[JUNCTIONS]", "dict")
+        node_props = self.adjustEPANETjunctions(node_props, nbrelation)
+
+        #Write the pattern and full demand profile depending on the type of simulation
+        dem_list = []
 
 
         #Use the node block list to work out the new demands and rewrite the EPANET file
         if self.runBaseInp:
             self.rewriteEPANETbase(base_inpfile)
 
-        self.writeUB_EPANETfile(base_inpfile, node_list, nbrelation)
+        self.writeUB_EPANETfile(base_inpfile, node_list, opt_list, node_props, dem_list)
 
         #Run the EPANET Simulations
         self.runEPANETsim()
 
         return True
+
+    def adjustEPANETjunctions(self, node_props, nbrelation):
+        """Rewrites the node properties list with the new demands depending on simulation type
+        :param node_props: the Node properties list obtained by retrieving the [JUNCTIONS] data
+        :param nbrelation: relationship between blocks and nodes
+        :return: a revised node props dictionary that can be transferred back into the inp file under [JUNCTIONS]
+        """
+        new_node_data = {}
+        node_dem = ubdata.UBComponent()
+        #Techplacement writes the total demand values as kl/yr
+        cf = float(1000.0/(365.0*24.0*3600.0)) #To get to L/sec
+        for i in node_props.keys():
+            nodedata = node_props[i]
+            nodedemand = 0
+
+            #Grab all the data for the single node id
+            nbfilter = [nbrelation.keys()[j] for j in range(len(nbrelation.keys())) if str(i) in nbrelation.keys()[j]]
+            if len(nbfilter) == 0:
+                new_node_data[i] = nodedata
+                continue
+
+            #for all others grab block demand data and tally up
+            for j in range(len(nbfilter)):
+                bID = nbrelation[nbfilter[j]][1]
+                bdata = self.activesim.getAssetWithName("BlockID"+str(bID))
+                prop = nbrelation[nbfilter[j]][4]
+                nodedemand += float(bdata.getAttribute("Blk_WD") * cf * prop)
+
+            node_dem.addAttribute("NodeID_"+str(i), [nodedata[1], nodedemand])
+
+            new_node_data[i] = [nodedata[0], nodedemand,';']
+
+        self.activesim.addAsset("NodeDemands", node_dem)    #For graphing later on
+        return new_node_data
+
+
 
 
     def runIWCM(self):
@@ -511,11 +557,12 @@ class PerformanceAssess(UBModule):      #UBCORE
     def analyseVoronoi(self, node_list):
         self.notify("Creating and intersecting blocks with Voronoi Diagram")
         nbrelation = {}  #Node ID: [[blockID, weight],...]
+        blocksize = float(self.activesim.getAssetWithName("MapAttributes").getAttribute("BlockSize"))
 
         #Create Numpylist
         ptList = []
         for i in range(len(node_list)):
-            ptList.append([node_list[i][1], node_list[i][2]])
+            ptList.append([float(node_list[i][1]), float(node_list[i][2])])
         numPtList = numpy.array(ptList)        #Scipy's spatial library deals with numpy arrays
 
         #Run scipy.spatial Voronoi
@@ -631,7 +678,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 print area
 
                 #Key: NodeID-BlockID, attributes [NodeID, BlockID, wkbPolygon, Area]
-                nbrelation[str(i)+"-"+str(j)] = [i, j, poly, area]
+                nbrelation[str(i)+"-"+str(j)] = [i, j, poly, area, float(area/(blocksize*blocksize))]
 
         #Write the dictionary, export the intersected shapefile
         if self.epanet_exportshp:
@@ -719,8 +766,35 @@ class PerformanceAssess(UBModule):      #UBCORE
         print "Re-run the base input file"
         return True
 
-    def writeUB_EPANETfile(self, basedata, node_list, nbrelation):
-        print "write the UB-EPANET combo file"
+    def writeUB_EPANETfile(self, basedata, node_list, opt_list, node_props, dem_list):
+        f = open("epanettest.inp", 'w')
+        line = 0
+        while line != len(basedata):
+            if "[JUNCTIONS]" in basedata[line]:
+                f.write("[JUNCTION]\n")
+                line += 1
+                f.write(";ID \t Elev \t Demand \t Pattern \t\n")
+                for nID in node_props.keys():
+                    nIDd = node_props[nID]  #nodeIDdata
+                    f.write(str(nID)+"\t"+str(nIDd[0])+"\t"+str(nIDd[1])+"\t"+str(nIDd[2])+"\t\n")
+                f.write("\n")   #empty line
+
+                #Move the line variable forward to the next
+                while basedata[line][0] != "[":
+                    line += 1
+
+            if "[PATTERNS]" in basedata[line]:
+                pass #write new patterns
+            if "[OPTIONS]" in basedata[line]:
+                pass #write new options
+            if "[DEMANDS]" in basedata[line]:
+                pass #write new demands
+
+            f.write(basedata[line])
+
+            line += 1
+
+        f.close()
         return True
 
     def runEPANETsim(self):
