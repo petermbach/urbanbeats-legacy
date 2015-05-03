@@ -1937,7 +1937,7 @@ p, li { white-space: pre-wrap; }
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
+               <y>-818</y>
                <width>463</width>
                <height>1096</height>
               </rect>
@@ -2646,7 +2646,7 @@ p, li { white-space: pre-wrap; }
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>300</height>
+                  <height>280</height>
                  </size>
                 </property>
                 <widget class="QLabel" name="epanet_lbl2">
@@ -2896,6 +2896,27 @@ p, li { white-space: pre-wrap; }
                   <string>Simulation Type:</string>
                  </property>
                 </widget>
+                <zorder>epanet_lbl2</zorder>
+                <zorder>epanet_intdelaunay</zorder>
+                <zorder>epanet_intvoronoi</zorder>
+                <zorder>epanet_lbl1</zorder>
+                <zorder>epanet_intrscan</zorder>
+                <zorder>epanet_intnn</zorder>
+                <zorder>epanet_lbl2_2</zorder>
+                <zorder>epanet_scanradius</zorder>
+                <zorder>epanet_exportvisual</zorder>
+                <zorder>epanet_ignorezero</zorder>
+                <zorder>epanet_line</zorder>
+                <zorder>epanet_lbl</zorder>
+                <zorder>epanet_browse</zorder>
+                <zorder>epanet_simtypecombo</zorder>
+                <zorder>epanet_lbl3</zorder>
+                <zorder>epanet_basesim_check</zorder>
+                <zorder>epanet_lbl4</zorder>
+                <zorder>wsnetwork_config_widget_2</zorder>
+                <zorder>wsnetwork_config_widget_2</zorder>
+                <zorder>wsnetwork_config_widget_2</zorder>
+                <zorder>wsnetwork_config_widget_2</zorder>
                </widget>
               </item>
               <item>
@@ -2929,7 +2950,7 @@ p, li { white-space: pre-wrap; }
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>200</height>
+                  <height>220</height>
                  </size>
                 </property>
                 <widget class="QLabel" name="dagg_dp_noonpic_4">
@@ -3028,51 +3049,20 @@ p, li { white-space: pre-wrap; }
                   <pixmap>night-small.png</pixmap>
                  </property>
                 </widget>
-                <widget class="QLabel" name="dagg_dp_eveningpic_4">
-                 <property name="geometry">
-                  <rect>
-                   <x>255</x>
-                   <y>175</y>
-                   <width>41</width>
-                   <height>41</height>
-                  </rect>
-                 </property>
-                 <property name="toolTip">
-                  <string>approx. 6am to 12pm</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select the minimum water quality requirement to source from when meeting demand.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;PO = Potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;NP = Non-potable Water&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;RW = Rainwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;SW = Stormwater&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;GW = Greywater&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="pixmap">
-                  <pixmap>evening-small.png</pixmap>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="epanet_lbl_4">
+                <widget class="QLabel" name="epanetsim_title">
                  <property name="geometry">
                   <rect>
                    <x>10</x>
                    <y>10</y>
-                   <width>151</width>
+                   <width>171</width>
                    <height>16</height>
                   </rect>
                  </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;EPANET Defaults:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;EPANET Simulation Settings&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
-                <widget class="QLabel" name="epanet_lbl_5">
+                <widget class="QLabel" name="epanetsim_units_lbl">
                  <property name="geometry">
                   <rect>
                    <x>20</x>
@@ -3085,7 +3075,7 @@ p, li { white-space: pre-wrap; }
                   <string>Units</string>
                  </property>
                 </widget>
-                <widget class="QLabel" name="epanet_lbl_6">
+                <widget class="QLabel" name="epanetsim_hl_lbl">
                  <property name="geometry">
                   <rect>
                    <x>20</x>
@@ -3098,11 +3088,80 @@ p, li { white-space: pre-wrap; }
                   <string>Headloss:</string>
                  </property>
                 </widget>
-                <widget class="QLabel" name="epanet_lbl_7">
+                <widget class="QLabel" name="epanetsim_trials_lbl">
                  <property name="geometry">
                   <rect>
-                   <x>200</x>
-                   <y>30</y>
+                   <x>240</x>
+                   <y>140</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Trials:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epaentsim_visc_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>140</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Viscosity:</string>
+                 </property>
+                </widget>
+                <widget class="QComboBox" name="epanetsim_units_combo">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>35</y>
+                   <width>71</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>LPS</string>
+                  </property>
+                 </item>
+                </widget>
+                <widget class="QComboBox" name="epanetsim_hl_combo">
+                 <property name="geometry">
+                  <rect>
+                   <x>100</x>
+                   <y>60</y>
+                   <width>111</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Darcy-Weisbach</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Hazen-Williams</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Chezy-Manning</string>
+                  </property>
+                 </item>
+                </widget>
+                <widget class="QLabel" name="epanetsim_specg_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>165</y>
                    <width>91</width>
                    <height>16</height>
                   </rect>
@@ -3111,17 +3170,198 @@ p, li { white-space: pre-wrap; }
                   <string>Specific Gravity:</string>
                  </property>
                 </widget>
-                <widget class="QLabel" name="epanet_lbl_8">
+                <widget class="QLabel" name="epanetsim_emit_lbl">
                  <property name="geometry">
                   <rect>
-                   <x>200</x>
-                   <y>60</y>
+                   <x>20</x>
+                   <y>190</y>
                    <width>91</width>
                    <height>16</height>
                   </rect>
                  </property>
                  <property name="text">
-                  <string>Viscosity:</string>
+                  <string>Emitter Exponent</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanetsim_acc_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>240</x>
+                   <y>165</y>
+                   <width>91</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Accuracy:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanetsim_demmult_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>240</x>
+                   <y>190</y>
+                   <width>111</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Demand Multiplier:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanetsim_hlc_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>85</y>
+                   <width>121</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Roughness:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanetsim_hts_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>240</x>
+                   <y>35</y>
+                   <width>121</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Hydraulic Time Step:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanetsim_qts_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>240</x>
+                   <y>60</y>
+                   <width>121</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Quality Time Step:</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="epanetsim_hlc_check">
+                 <property name="geometry">
+                  <rect>
+                   <x>240</x>
+                   <y>85</y>
+                   <width>141</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Re-assign to all pipes</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanetsim_title2">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>115</y>
+                   <width>171</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;EPANET Global Default Values&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="epanetsim_hlc_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>85</y>
+                   <width>71</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="epanetsim_visc_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>140</y>
+                   <width>71</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="epanetsim_specg_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>165</y>
+                   <width>71</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="epanetsim_emit_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>190</y>
+                   <width>71</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="epanetsim_trials_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>350</x>
+                   <y>140</y>
+                   <width>71</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="epanetsim_acc_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>350</x>
+                   <y>165</y>
+                   <width>71</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="epanetsim_demmult_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>350</x>
+                   <y>190</y>
+                   <width>71</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="epanetsim_hts_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>350</x>
+                   <y>35</y>
+                   <width>71</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="epanetsim_qts_box">
+                 <property name="geometry">
+                  <rect>
+                   <x>350</x>
+                   <y>60</y>
+                   <width>71</width>
+                   <height>20</height>
+                  </rect>
                  </property>
                 </widget>
                </widget>

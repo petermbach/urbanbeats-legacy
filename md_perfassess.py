@@ -156,7 +156,6 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.oht = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.0,3.0,2.5,2.0,1.5,1.0,0.5,0.0,0.0,0.0,0.0]
         self.ahc = [2.0,2.0,2.0,2.0,2.0,2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2.0,2.0,2.0,2.0,2.0,2.0]
 
-
         #Custom pattern variables if needed
         self.cp_kitchen = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
         self.cp_shower = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
@@ -186,6 +185,28 @@ class PerformanceAssess(UBModule):      #UBCORE
         #STS = static sim, 24H = 24-hour, EPS = extended period sim (72hrs), LTS = long-term sim
         self.epanet_simtype = "STS"
 
+        self.createParameter("epanetsim_hl", STRING, "")
+        self.createParameter("epanetsim_hlc", DOUBLE, "")
+        self.createParameter("epanetsim_hlc_reassign", BOOL, "")
+        self.createParameter("epanetsim_hts", STRING, "")
+        self.createParameter("epanetsim_qts", STRING, "")
+        self.createParameter("epanetsim_visc", DOUBLE, "")
+        self.createParameter("epanetsim_specg", DOUBLE, "")
+        self.createParameter("epanetsim_emit", DOUBLE, "")
+        self.createParameter("epanetsim_trials", DOUBLE, "")
+        self.createParameter("epanetsim_accuracy", DOUBLE, "")
+        self.createParameter("epanetsim_demmult", DOUBLE, "")
+        self.epanetsim_hl = "D-W"   #D-W, H-W, C-M
+        self.epanetsim_hlc = 0.01
+        self.epanetsim_hlc_reassign = 1
+        self.epanetsim_hts = "1:00"
+        self.epanetsim_qts = "0:05"
+        self.epanetsim_visc = 1.0
+        self.epanetsim_specg = 1.0
+        self.epanetsim_emit = 0.5
+        self.epanetsim_trials = 40
+        self.epanetsim_accuracy = 0.001
+        self.epanetsim_demmult = 1.0
 
         #INTEGRATED WATER CYCLE MODEL
 
@@ -481,18 +502,25 @@ class PerformanceAssess(UBModule):      #UBCORE
         #Scan node list and create final list that follow two conditions:
         # (1) keep only nodes in the junction list,
         # (2) remove zero demand nodes if necessary
+        rev_node_list = []
+        for i in node_list:
+            if i[0] in node_props.keys():   #(1) check if node in junction list
+                if self.epanet_excludezeros and float(node_props[i[0]][1]) == 0:
+                    #If the node is a Junction, check if its demand is zero, if yes, skip
+                    continue
+                rev_node_list.append(i) #add the current node to the revised list if it passes (1) and (2)
 
-
+        self.notify("Found " + str(len(rev_node_list)) + " out of "+ str(len(node_list)) + " relevant nodes.")
 
         #Run the corresponding integration, which will return a dictionary of the node-block relationship
         if self.epanetintmethod == "VD":
-            nbrelation = self.analyseVoronoi(node_list)
+            nbrelation = self.analyseVoronoi(rev_node_list)
         elif self.epanetintmethod == "DT":
-            nbrelation = self.analyseDelaunay(node_list)
+            nbrelation = self.analyseDelaunay(rev_node_list)
         elif self.epanetintmethod == "RS":
-            nbrelation = self.analyseRadialScan(node_list)
+            nbrelation = self.analyseRadialScan(rev_node_list)
         elif self.epanetintmethod == "NN":
-            nbrelation = self.analyseNearestNeigh(node_list)
+            nbrelation = self.analyseNearestNeigh(rev_node_list)
 
         #[OPTIONS] List
         opt_list = []

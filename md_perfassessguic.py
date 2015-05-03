@@ -167,6 +167,7 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.ui.epanet_scanradius.setEnabled(self.ui.epanet_intrscan.isChecked())
         self.ui.epanet_scanradius.setValue(float(self.module.getParameter("epanet_scanradius")))
 
+        self.ui.epanet_ignorezero.setChecked(self.module.getParameter("epanet_excludezeros"))
         self.ui.epanet_exportvisual.setChecked(self.module.getParameter("epanet_exportshp"))
 
         self.ui.epanet_line.setText(str(self.module.getParameter("epanet_inpfname")))
@@ -180,6 +181,21 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.epanet_intdelaunay, QtCore.SIGNAL("clicked()"), self.rscan_boxchange)
         QtCore.QObject.connect(self.ui.epanet_intvoronoi, QtCore.SIGNAL("clicked()"), self.rscan_boxchange)
         QtCore.QObject.connect(self.ui.epanet_browse, QtCore.SIGNAL("clicked()"), self.getEpanetInpName)
+
+        self.hleq = ["D-W", "H-W", "C-M"]
+        self.ui.epanetsim_hl_combo.setCurrentIndex(self.hleq.index(self.module.getParameter("epanetsim_hl")))
+        self.ui.epanetsim_hlc_box.setText(str(self.module.getParameter("epanetsim_hlc")))
+        self.ui.epanetsim_hts_box.setText(str(self.module.getParameter("epanetsim_hts")))
+        self.ui.epanetsim_qts_box.setText(str(self.module.getParameter("epanetsim_qts")))
+        self.ui.epanetsim_hlc_check.setChecked(int(self.module.getParameter("epanetsim_hlc_reassign")))
+        self.ui.epanetsim_visc_box.setText(str(self.module.getParameter("epanetsim_visc")))
+        self.ui.epanetsim_specg_box.setText(str(self.module.getParameter("epanetsim_specg")))
+        self.ui.epanetsim_emit_box.setText(str(self.module.getParameter("epanetsim_emit")))
+        self.ui.epanetsim_trials_box.setText(str(self.module.getParameter("epanetsim_trials")))
+        self.ui.epanetsim_acc_box.setText(str(self.module.getParameter("epanetsim_accuracy")))
+        self.ui.epanetsim_demmult_box.setText(str(self.module.getParameter("epanetsim_demmult")))
+
+
 
         #----------------------------------------------------------------------#
         #-------- INTEGRATED WATER CYCLE MODEL  -------------------------------#
@@ -355,11 +371,24 @@ class PerfAssessGUILaunch(QtGui.QDialog):
             self.module.setParameter("epanetintmethod", "VD")
 
         self.module.setParameter("epanet_scanradius", float(self.ui.epanet_scanradius.value()))
+        self.module.setParameter("epanet_excludezeros", int(self.ui.epanet_ignorezero.isChecked()))
         self.module.setParameter("epanet_exportshp", int(self.ui.epanet_exportvisual.isChecked()))
         self.module.setParameter("epanet_inpfname", str(self.ui.epanet_line.text()))
         self.module.setParameter("runBaseInp", int(self.ui.epanet_basesim_check.isChecked()))
         self.module.setParameter("epanet_simtype", self.epanet_simtypes[self.ui.epanet_simtypecombo.currentIndex()])
 
+        self.hleq = ["D-W", "H-W", "C-M"]
+        self.module.setParameter("epanetsim_hl", self.hleq[self.ui.epanetsim_hl_combo.currentIndex()])
+        self.module.setParameter("epanetsim_hlc", float(self.ui.epanetsim_hlc_box.text()))
+        self.module.setParameter("epanetsim_hts", self.ui.epanetsim_hts_box.text())
+        self.module.setParameter("epanetsim_qts", self.ui.epanetsim_qts_box.text())
+        self.module.setParameter("epanetsim_hlc_reassign", int(self.ui.epanetsim_hlc_check.isChecked()))
+        self.module.setParameter("epanetsim_visc", float(self.ui.epanetsim_visc_box.text()))
+        self.module.setParameter("epanetsim_specg", float(self.ui.epanetsim_specg_box.text()))
+        self.module.setParameter("epanetsim_emit", float(self.ui.epanetsim_emit_box.text()))
+        self.module.setParameter("epanetsim_trials", float(self.ui.epanetsim_trials_box.text()))
+        self.module.setParameter("epanetsim_accuracy", float(self.ui.epanetsim_acc_box.text()))
+        self.module.setParameter("epanetsim_demmult", float(self.ui.epanetsim_demmult_box.text()))
 
         #----------------------------------------------------------------------#
         #-------- INTEGRATED WATER CYCLE MODEL  -------------------------------#
