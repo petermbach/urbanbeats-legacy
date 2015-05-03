@@ -1549,25 +1549,25 @@ class Techplacement(UBModule):
             occup = currentAttList.getAttribute("HouseOccup")
             houses = currentAttList.getAttribute("ResHouses")
             kitchendem, showerdem, toiletdem, laundrydem = self.getResIndoorDemands(occup, resflows, flowratesVary)
-            totalHouseIndoor = (kitchendem + showerdem + toiletdem + laundrydem)/1000 #[kL/hh/day]
+            totalHouseIndoor = (kitchendem + showerdem + toiletdem + laundrydem)/1000.0 #[kL/hh/day]
             totalIndoorAnn = totalHouseIndoor*365*houses
-            waterDemandDict["RESkitchen"] = round(kitchendem*houses/1000,2)  #[kL/day]
+            waterDemandDict["RESkitchen"] = round(float(kitchendem*houses/1000.0),2)  #[kL/day]
             blockKitchen += waterDemandDict["RESkitchen"]
-            waterDemandDict["RESshower"] = round(showerdem*houses/1000,2)
+            waterDemandDict["RESshower"] = round(float(showerdem*houses/1000.0),2)
             blockShower += waterDemandDict["RESshower"]
-            waterDemandDict["REStoilet"] = round(toiletdem*houses/1000,2)
+            waterDemandDict["REStoilet"] = round(float(toiletdem*houses/1000.0),2)
             blockToilet += waterDemandDict["REStoilet"]
-            waterDemandDict["RESlaundry"] = round(laundrydem*houses/1000,2)
+            waterDemandDict["RESlaundry"] = round(float(laundrydem*houses/1000.0),2)
             blockLaundry += waterDemandDict["RESlaundry"]
 
             #Irrigation demand
             gardenSpace = currentAttList.getAttribute("ResGarden")
             allots = currentAttList.getAttribute("ResAllots")
-            irrigationDem = (self.priv_irr_vol * gardenSpace/10000) * 1000/365 * allots  #[kL/day]
+            irrigationDem = (self.priv_irr_vol * gardenSpace/10000.0) * 1000.0/365.0 * allots  #[kL/day]
             waterDemandDict["RESirrigation"] = round(irrigationDem,2)
             blockIrrigation += waterDemandDict["RESirrigation"]
 
-            totalOutdoorAnn = irrigationDem*365*allots  #[kL/year]
+            totalOutdoorAnn = irrigationDem*365     #[kL/year]
             waterDemandDict["REStotalIN"] = round(totalIndoorAnn,2)
             waterDemandDict["REStotalOUT"] = round(totalOutdoorAnn,2)
             totalRES = totalIndoorAnn + totalOutdoorAnn     #[kL/yr]

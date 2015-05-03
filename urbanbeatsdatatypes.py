@@ -646,6 +646,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
             feature.SetField("Blk_Shower", currentAttList.getAttribute("Blk_shower"))
             feature.SetField("Blk_Toilet", currentAttList.getAttribute("Blk_toilet"))
             feature.SetField("Blk_Laund", currentAttList.getAttribute("Blk_laundry"))
+            feature.SetField("Blk_Garden", currentAttList.getAttribute("Blk_irrigation"))
             feature.SetField("Blk_Com", currentAttList.getAttribute("Blk_com"))
             feature.SetField("Blk_Ind", currentAttList.getAttribute("Blk_ind"))
             feature.SetField("Blk_PubIrr", currentAttList.getAttribute("Blk_publicirri"))
