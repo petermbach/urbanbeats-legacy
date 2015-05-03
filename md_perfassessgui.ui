@@ -1937,9 +1937,9 @@ p, li { white-space: pre-wrap; }
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-469</y>
+               <y>0</y>
                <width>463</width>
-               <height>996</height>
+               <height>1096</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_19">
@@ -1974,7 +1974,7 @@ p, li { white-space: pre-wrap; }
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>400</height>
+                  <height>500</height>
                  </size>
                 </property>
                 <widget class="QLabel" name="dagg_dp_noonpic_2">
@@ -2094,7 +2094,12 @@ p, li { white-space: pre-wrap; }
                  </item>
                  <item>
                   <property name="text">
-                   <string>After-hours Constant 6pm-6am</string>
+                   <string>Office Hours Trapezoid (7am-7pm)</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>After-hours Constant (6pm-6am)</string>
                   </property>
                  </item>
                  <item>
@@ -2189,7 +2194,12 @@ p, li { white-space: pre-wrap; }
                  </item>
                  <item>
                   <property name="text">
-                   <string>After-hours Constant 6pm-6am</string>
+                   <string>Office Hours Trapezoid (7am-7pm)</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>After-hours Constant (6pm-6am)</string>
                   </property>
                  </item>
                  <item>
@@ -2219,7 +2229,12 @@ p, li { white-space: pre-wrap; }
                  </item>
                  <item>
                   <property name="text">
-                   <string>After-hours Constant 6pm-6am</string>
+                   <string>Office Hours Trapezoid (7am-7pm)</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>After-hours Constant (6pm-6am)</string>
                   </property>
                  </item>
                  <item>
@@ -2249,7 +2264,12 @@ p, li { white-space: pre-wrap; }
                  </item>
                  <item>
                   <property name="text">
-                   <string>After-hours Constant 6pm-6am</string>
+                   <string>Office Hours Trapezoid (7am-7pm)</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>After-hours Constant (6pm-6am)</string>
                   </property>
                  </item>
                  <item>
@@ -2292,7 +2312,12 @@ p, li { white-space: pre-wrap; }
                  </item>
                  <item>
                   <property name="text">
-                   <string>After-hours Constant 6pm-6am</string>
+                   <string>Office Hours Trapezoid (7am-7pm)</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>After-hours Constant (6pm-6am)</string>
                   </property>
                  </item>
                  <item>
@@ -2335,7 +2360,12 @@ p, li { white-space: pre-wrap; }
                  </item>
                  <item>
                   <property name="text">
-                   <string>After-hours Constant 6pm-6am</string>
+                   <string>Office Hours Trapezoid (7am-7pm)</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>After-hours Constant (6pm-6am)</string>
                   </property>
                  </item>
                  <item>
@@ -2378,7 +2408,12 @@ p, li { white-space: pre-wrap; }
                  </item>
                  <item>
                   <property name="text">
-                   <string>After-hours Constant 6pm-6am</string>
+                   <string>Office Hours Trapezoid (7am-7pm)</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>After-hours Constant (6pm-6am)</string>
                   </property>
                  </item>
                  <item>
@@ -2512,7 +2547,12 @@ p, li { white-space: pre-wrap; }
                  </item>
                  <item>
                   <property name="text">
-                   <string>After-hours Constant 6pm-6am</string>
+                   <string>Office Hours Trapezoid (7am-7pm)</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>After-hours Constant (6pm-6am)</string>
                   </property>
                  </item>
                  <item>
@@ -2564,7 +2604,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>10</x>
-                   <y>360</y>
+                   <y>400</y>
                    <width>261</width>
                    <height>16</height>
                   </rect>
@@ -2609,24 +2649,153 @@ p, li { white-space: pre-wrap; }
                   <height>300</height>
                  </size>
                 </property>
-                <widget class="QPushButton" name="epanet_browse">
+                <widget class="QLabel" name="epanet_lbl2">
                  <property name="geometry">
                   <rect>
-                   <x>350</x>
-                   <y>180</y>
-                   <width>75</width>
-                   <height>23</height>
+                   <x>20</x>
+                   <y>145</y>
+                   <width>121</width>
+                   <height>16</height>
                   </rect>
                  </property>
                  <property name="text">
-                  <string>Browse...</string>
+                  <string>Integration Method:</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="epanet_intdelaunay">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>170</y>
+                   <width>131</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Delaunay Triangulation</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="epanet_intvoronoi">
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>170</y>
+                   <width>121</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Voronoi Diagram</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl1">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>120</y>
+                   <width>411</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Model Coupling&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="epanet_intrscan">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>145</y>
+                   <width>121</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Radial Scan</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="epanet_intnn">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>145</y>
+                   <width>121</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Nearest Neighbour</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="epanet_lbl2_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>200</y>
+                   <width>301</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Set Search Radius [scalar of Block width] (radial scan only):</string>
+                 </property>
+                </widget>
+                <widget class="QDoubleSpinBox" name="epanet_scanradius">
+                 <property name="geometry">
+                  <rect>
+                   <x>320</x>
+                   <y>200</y>
+                   <width>51</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                 <property name="minimum">
+                  <double>0.500000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>5.000000000000000</double>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="epanet_exportvisual">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>250</y>
+                   <width>401</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Export spatial integration results as a shapefile for post-analysis</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="epanet_ignorezero">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>225</y>
+                   <width>401</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Ignore all nodes with zero demands</string>
                  </property>
                 </widget>
                 <widget class="QLineEdit" name="epanet_line">
                  <property name="geometry">
                   <rect>
                    <x>130</x>
-                   <y>180</y>
+                   <y>35</y>
                    <width>211</width>
                    <height>20</height>
                   </rect>
@@ -2636,7 +2805,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>20</x>
-                   <y>180</y>
+                   <y>35</y>
                    <width>91</width>
                    <height>16</height>
                   </rect>
@@ -2645,50 +2814,24 @@ p, li { white-space: pre-wrap; }
                   <string>EPANET .inp File:</string>
                  </property>
                 </widget>
-                <widget class="QCheckBox" name="epanet_basesim_check">
+                <widget class="QPushButton" name="epanet_browse">
                  <property name="geometry">
                   <rect>
-                   <x>130</x>
-                   <y>205</y>
-                   <width>291</width>
-                   <height>17</height>
+                   <x>350</x>
+                   <y>35</y>
+                   <width>75</width>
+                   <height>23</height>
                   </rect>
                  </property>
                  <property name="text">
-                  <string>Rebuild .inp File and run a Base Simulation</string>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="epanet_lbl3">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>155</y>
-                   <width>411</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Simulation Configuration&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="epanet_lbl4">
-                 <property name="geometry">
-                  <rect>
-                   <x>20</x>
-                   <y>235</y>
-                   <width>111</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Simulation Type:</string>
+                  <string>Browse...</string>
                  </property>
                 </widget>
                 <widget class="QComboBox" name="epanet_simtypecombo">
                  <property name="geometry">
                   <rect>
                    <x>130</x>
-                   <y>235</y>
+                   <y>90</y>
                    <width>211</width>
                    <height>21</height>
                   </rect>
@@ -2714,49 +2857,7 @@ p, li { white-space: pre-wrap; }
                   </property>
                  </item>
                 </widget>
-                <widget class="QLabel" name="epanet_lbl2">
-                 <property name="geometry">
-                  <rect>
-                   <x>20</x>
-                   <y>35</y>
-                   <width>121</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Integration Method:</string>
-                 </property>
-                </widget>
-                <widget class="QRadioButton" name="epanet_intdelaunay">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                 <property name="geometry">
-                  <rect>
-                   <x>140</x>
-                   <y>60</y>
-                   <width>131</width>
-                   <height>17</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Delaunay Triangulation</string>
-                 </property>
-                </widget>
-                <widget class="QRadioButton" name="epanet_intvoronoi">
-                 <property name="geometry">
-                  <rect>
-                   <x>290</x>
-                   <y>60</y>
-                   <width>121</width>
-                   <height>17</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Voronoi Diagram</string>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="epanet_lbl1">
+                <widget class="QLabel" name="epanet_lbl3">
                  <property name="geometry">
                   <rect>
                    <x>10</x>
@@ -2766,81 +2867,33 @@ p, li { white-space: pre-wrap; }
                   </rect>
                  </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Data Coupling&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Simulation Configuration&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
-                <widget class="QRadioButton" name="epanet_intrscan">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
+                <widget class="QCheckBox" name="epanet_basesim_check">
                  <property name="geometry">
                   <rect>
-                   <x>290</x>
-                   <y>35</y>
-                   <width>121</width>
+                   <x>130</x>
+                   <y>60</y>
+                   <width>291</width>
                    <height>17</height>
                   </rect>
                  </property>
                  <property name="text">
-                  <string>Radial Scan</string>
+                  <string>Rebuild .inp File and run a Base Simulation</string>
                  </property>
                 </widget>
-                <widget class="QRadioButton" name="epanet_intnn">
-                 <property name="geometry">
-                  <rect>
-                   <x>140</x>
-                   <y>35</y>
-                   <width>121</width>
-                   <height>17</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Nearest Neighbour</string>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="epanet_lbl2_2">
+                <widget class="QLabel" name="epanet_lbl4">
                  <property name="geometry">
                   <rect>
                    <x>20</x>
                    <y>90</y>
-                   <width>301</width>
+                   <width>111</width>
                    <height>16</height>
                   </rect>
                  </property>
                  <property name="text">
-                  <string>Set Search Radius [scalar of Block width] (radial scan only):</string>
-                 </property>
-                </widget>
-                <widget class="QDoubleSpinBox" name="epanet_scanradius">
-                 <property name="geometry">
-                  <rect>
-                   <x>320</x>
-                   <y>90</y>
-                   <width>51</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="decimals">
-                  <number>1</number>
-                 </property>
-                 <property name="minimum">
-                  <double>0.500000000000000</double>
-                 </property>
-                 <property name="maximum">
-                  <double>5.000000000000000</double>
-                 </property>
-                </widget>
-                <widget class="QCheckBox" name="epanet_exportvisual">
-                 <property name="geometry">
-                  <rect>
-                   <x>20</x>
-                   <y>120</y>
-                   <width>401</width>
-                   <height>17</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Export spatial analysis results as a shapefile for post-analysis</string>
+                  <string>Simulation Type:</string>
                  </property>
                 </widget>
                </widget>

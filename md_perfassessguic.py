@@ -117,7 +117,7 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #----------------------------------------------------------------------#
         #-------- EPANET ------------------------------------------------------#
         #----------------------------------------------------------------------#
-        self.patterncomboindex = ["SDD", "CDP", "AHC", "UDP"]
+        self.patterncomboindex = ["SDD", "CDP", "OHT", "AHC", "UDP"]
 
         self.ui.dp_kitchen_combo.setCurrentIndex(self.patterncomboindex.index(self.module.getParameter("kitchenpat")))
         self.ui.dp_shower_combo.setCurrentIndex(self.patterncomboindex.index(self.module.getParameter("showerpat")))

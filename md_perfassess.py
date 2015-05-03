@@ -132,7 +132,7 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         #WATER SUPPLY
         #Pattern names include: SDD - standard daily diurnal, CDP - constant daily pattern,
-        #                       AHC - after-hours constant, OHC - office hours constant
+        #                       AHC - after-hours constant, OHT - office hours trapezoid
         #                       UDP - user-defined pattern
         self.createParameter("kitchenpat", STRING, "")
         self.createParameter("showerpat", STRING, "")
@@ -153,8 +153,9 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         self.sdd = [0.3,0.3,0.3,0.3,0.5,1.0,1.5,1.5,1.3,1.0,1.0,1.5,1.5,1.2,1.0,1.0,1.0,1.3,1.3,0.8,0.8,0.5,0.5,0.5]
         self.cdp = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        self.oht = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.0,3.0,2.5,2.0,1.5,1.0,0.5,0.0,0.0,0.0,0.0]
         self.ahc = [2.0,2.0,2.0,2.0,2.0,2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2.0,2.0,2.0,2.0,2.0,2.0]
-        self.ohc = []
+
 
         #Custom pattern variables if needed
         self.cp_kitchen = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
@@ -169,6 +170,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         #EPANET integration variables
         self.createParameter("epanetintmethod", STRING, "")
         self.createParameter("epanet_scanradius", DOUBLE, "")
+        self.createParameter("epanet_excludezeros", BOOL, "")
         self.createParameter("epanet_exportshp", BOOL, "")
         self.createParameter("epanet_inpfname", STRING, "")
         self.createParameter("runBaseInp", BOOL, "")
@@ -177,6 +179,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         #VD = voronoi diagram, DT = delaunay triangulation, RS = radial scan, NN = nearest neighbour
         self.epanetintmethod = "VD"
         self.epanet_scanradius = 0.5  #only for radial scan method
+        self.epanet_excludezeros = 1    #exclude all nodes with zero demand?
         self.epanet_exportshp = 1   #export a visual illustration of the spatial integration between blocks and network
         self.epanet_inpfname = ""   #input filename
         self.runBaseInp = 0         #run the base simulation? will rebuild the .inp file
@@ -457,6 +460,8 @@ class PerformanceAssess(UBModule):      #UBCORE
                 map_attr.addAttribute("wdp_"+i, self.sdd)
             elif eval("self."+i+"pat") == "CDP":
                 map_attr.addAttribute("wdp_"+i, self.cdp)
+            elif eval("self."+i+"pat") == "OHT":
+                map_attr.addAttribute("wdp_"+i, self.oht)
             elif eval("self."+i+"pat") == "AHC":
                 map_attr.addAttribute("wdp_"+i, self.ahc)
             else:
@@ -471,6 +476,13 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         base_inpfile = ubepanet.readInpFile(self.epanet_inpfname)   #Load file data
         node_list = ubepanet.getDataFromInpFile(base_inpfile, "[COORDINATES]", "array")   #Get the nodes
+        node_props = ubepanet.getDataFromInpFile(base_inpfile, "[JUNCTIONS]", "dict")       #Get the list of Junctinos
+
+        #Scan node list and create final list that follow two conditions:
+        # (1) keep only nodes in the junction list,
+        # (2) remove zero demand nodes if necessary
+
+
 
         #Run the corresponding integration, which will return a dictionary of the node-block relationship
         if self.epanetintmethod == "VD":
@@ -482,14 +494,13 @@ class PerformanceAssess(UBModule):      #UBCORE
         elif self.epanetintmethod == "NN":
             nbrelation = self.analyseNearestNeigh(node_list)
 
-        #Options List
+        #[OPTIONS] List
         opt_list = []
 
-        #Rewrite Node List Section of the EPANET File
-        node_props = ubepanet.getDataFromInpFile(base_inpfile, "[JUNCTIONS]", "dict")
+        #Rewrite [JUNCTIONS] list Section of the EPANET File
         node_props = self.adjustEPANETjunctions(node_props, nbrelation)
 
-        #Write the pattern and full demand profile depending on the type of simulation
+        #Write the [PATTERN] and full demand profile depending on the type of simulation
         dem_list = []
 
         #Use the node block list to work out the new demands and rewrite the EPANET file
