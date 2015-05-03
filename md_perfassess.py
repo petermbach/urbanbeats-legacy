@@ -559,7 +559,8 @@ class PerformanceAssess(UBModule):      #UBCORE
             dem_list = []
         else:
             #Populate Pattern List
-            pat_list = {"PKitch" : self.createPatternString(map_attr.getAttribute("wdp_kitchen")),
+            pat_list = {"1" : self.createPatternString(self.cdp),
+                        "PKitch" : self.createPatternString(map_attr.getAttribute("wdp_kitchen")),
                         "PShower": self.createPatternString(map_attr.getAttribute("wdp_shower")),
                         "PToilet": self.createPatternString(map_attr.getAttribute("wdp_toilet")),
                         "PLaundry": self.createPatternString(map_attr.getAttribute("wdp_laundry")),
@@ -568,7 +569,8 @@ class PerformanceAssess(UBModule):      #UBCORE
                         "PInd": self.createPatternString(map_attr.getAttribute("wdp_ind")),
                         "PPubIrr": self.createPatternString(map_attr.getAttribute("wdp_publicirri"))}
 
-            dem_list = {}
+            dem_list = self.adjustEPANETdemands(rev_node_list, nbrelation)
+            print dem_list
 
         #Use the node block list to work out the new demands and rewrite the EPANET file
         if self.runBaseInp:
@@ -603,11 +605,9 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.notify("Readjusting Junction Demands...")
         new_node_data = {}
         node_dem = ubdata.UBComponent()
-        #Techplacement writes the total demand values as kl/yr
-        cf = float(1000.0/(365.0*24.0*3600.0)) #To get to L/sec
+
         for i in node_props.keys():
             nodedata = node_props[i]
-            nodedemand = 0
 
             #Grab all the data for the single node id
             nbfilter = [nbrelation.keys()[j] for j in range(len(nbrelation.keys())) if str(i) in nbrelation.keys()[j]]
@@ -617,11 +617,13 @@ class PerformanceAssess(UBModule):      #UBCORE
                 continue
 
             #for all others grab block demand data and tally up
-            for j in range(len(nbfilter)):
-                bID = nbrelation[nbfilter[j]][1]
-                bdata = self.activesim.getAssetWithName("BlockID"+str(bID))
-                prop = nbrelation[nbfilter[j]][4]
-                nodedemand += float(bdata.getAttribute("Blk_WD") * cf * prop)
+            nodedemand = self.calculateWeightedNodeDemand(nbrelation, nbfilter, "Blk_WD")
+            # nodedemand = 0
+            # for j in range(len(nbfilter)):
+            #     bID = nbrelation[nbfilter[j]][1]
+            #     bdata = self.activesim.getAssetWithName("BlockID"+str(bID))
+            #     prop = nbrelation[nbfilter[j]][4]
+            #     nodedemand += float(bdata.getAttribute("Blk_WD") * cf * prop)
 
             node_dem.addAttribute("NodeID_"+str(i), [nodedata[1], nodedemand])
 
@@ -630,8 +632,57 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.activesim.addAsset("NodeDemands", node_dem)    #For graphing later on
         return new_node_data
 
+    def adjustEPANETdemands(self, rev_node_list, nbrelation):
+        """Calculates the individual end uses and writes them into a new data array that
+        adds to [DEMANDS] in the EPANET .inp file
+        :param rev_node_list: the node list that is
+        :param nbrelation:
+        :return:
+        """
+        self.notify("Layering Junction Demand Patterns...")
+        enduse_atts = ["Blk_kitchen", "Blk_shower", "Blk_toilet", "Blk_laundry", "Blk_irrigation",
+                        "Blk_com", "Blk_ind","Blk_publicirri"]
+        pattern_names = ["PKitch", "PShower", "PToilet", "PLaundry", "PGarden",
+                         "PCom", "PInd", "PPubIrr"]
+
+        new_demand_data = []
+
+        for i in rev_node_list:
+            curID = i[0]
+            print curID
+            nbfilter = [nbrelation.keys()[j] for j in range(len(nbrelation.keys())) if str(curID) in nbrelation.keys()[j]]
+            if len(nbfilter) == 0:
+                continue
+
+            for k in range(len(enduse_atts)):
+                nodedemand = self.calculateWeightedNodeDemand(nbrelation, nbfilter, enduse_atts[k])
+                if nodedemand != 0:
+                    new_demand_data.append([curID, nodedemand, pattern_names[k], ";"+str(enduse_atts[k])])
+
+        return new_demand_data
 
 
+    def calculateWeightedNodeDemand(self, nbrelation, nbfilter, enduse):
+        """Calculates a weighted average of a demand for a particular node based on a specified
+        attribute. The function uses results from the integration method (nbrelation) to determine
+        the final value.
+        :param nbrelation:
+        :param nbfilter:
+        :return:
+        """
+        if enduse in ["Blk_WD"]:
+            cf = float(1000.0/(365.0*24.0*3600.0)) #kL/yr into L/sec
+        elif enduse in ["Blk_kitchen", "Blk_shower", "Blk_toilet", "Blk_laundry", "Blk_irrigation",
+                        "Blk_com", "Blk_ind", "Blk_publicirri"]:
+            cf = float(1000.0/(24.0*3600.0))     #kL/day into L/sec
+
+        nodedemand = 0
+        for j in range(len(nbfilter)):
+            bID = nbrelation[nbfilter[j]][1]
+            bdata = self.activesim.getAssetWithName("BlockID"+str(bID))
+            prop = nbrelation[nbfilter[j]][4]
+            nodedemand += float(bdata.getAttribute(enduse) * cf * prop)
+        return nodedemand
 
     def runIWCM(self):
         """ Creates a simulation file and calls the CityDrain3 Modelling Platform to undertake
@@ -909,7 +960,17 @@ class PerformanceAssess(UBModule):      #UBCORE
                     line += 1
 
             if "[DEMANDS]" in basedata[line]:
-                pass #write new demands
+                #write new demands matrix = [ [id, demand, pattern, comment], ...]
+                f.write("[DEMANDS]\n")
+                line += 1
+                for dID in range(len(dem_list)):
+                    demdata = dem_list[dID]
+                    f.write(str(demdata[0])+"\t"+str(demdata[1])+"\t"+str(demdata[2])+"\t"+str(demdata[3])+"\n")
+                f.write("\n")
+
+                #Move the line variable forward to the next
+                while basedata[line][0] != "[":
+                    line += 1
 
             f.write(basedata[line])
 
