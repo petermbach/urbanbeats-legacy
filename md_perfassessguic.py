@@ -220,14 +220,14 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         return True
 
     def dp_combo_customise(self):
-        self.ui.dp_kitchen_custom.setEnabled(self.ui.dp_kitchen_combo.currentIndex()==3)
-        self.ui.dp_shower_custom.setEnabled(self.ui.dp_shower_combo.currentIndex()==3)
-        self.ui.dp_toilet_custom.setEnabled(self.ui.dp_toilet_combo.currentIndex()==3)
-        self.ui.dp_laundry_custom.setEnabled(self.ui.dp_laundry_combo.currentIndex()==3)
-        self.ui.dp_irrigate_custom.setEnabled(self.ui.dp_irrigate_combo.currentIndex()==3)
-        self.ui.dp_com_custom.setEnabled(self.ui.dp_com_combo.currentIndex()==3)
-        self.ui.dp_ind_custom.setEnabled(self.ui.dp_ind_combo.currentIndex()==3)
-        self.ui.dp_pubirr_custom.setEnabled(self.ui.dp_pubirr_combo.currentIndex()==3)
+        self.ui.dp_kitchen_custom.setEnabled(self.ui.dp_kitchen_combo.currentIndex()==4)
+        self.ui.dp_shower_custom.setEnabled(self.ui.dp_shower_combo.currentIndex()==4)
+        self.ui.dp_toilet_custom.setEnabled(self.ui.dp_toilet_combo.currentIndex()==4)
+        self.ui.dp_laundry_custom.setEnabled(self.ui.dp_laundry_combo.currentIndex()==4)
+        self.ui.dp_irrigate_custom.setEnabled(self.ui.dp_irrigate_combo.currentIndex()==4)
+        self.ui.dp_com_custom.setEnabled(self.ui.dp_com_combo.currentIndex()==4)
+        self.ui.dp_ind_custom.setEnabled(self.ui.dp_ind_combo.currentIndex()==4)
+        self.ui.dp_pubirr_custom.setEnabled(self.ui.dp_pubirr_combo.currentIndex()==4)
 
     def ed_catchment(self):
         self.ui.musicRR_soil_box.setEnabled(self.ui.include_pervious.isChecked())

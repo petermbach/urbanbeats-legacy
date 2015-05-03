@@ -71,7 +71,12 @@ def getDataFromInpFile(inpfile, tag, format):
         elif inpfile[i].strip()[0] == "[":
             break       #If program detects an open square brace, this denotes a new section
         # print inpfile[i]
-        dataline = inpfile[i].strip().split()
+
+        # if tag in ["[OPTIONS]", "[TIMES]"]:
+        dataline = inpfile[i].strip().split("\t")   #to account for the double word variables
+        for j in range(len(dataline)):
+            dataline[j] = dataline[j].rstrip()
+
         if format == "array":
             inpdata.append(dataline)
         elif format == "dict":

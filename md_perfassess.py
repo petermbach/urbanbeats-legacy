@@ -479,6 +479,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         for i in enduses:
             if eval("self."+i+"pat") == "SDD":
                 map_attr.addAttribute("wdp_"+i, self.sdd)
+
             elif eval("self."+i+"pat") == "CDP":
                 map_attr.addAttribute("wdp_"+i, self.cdp)
             elif eval("self."+i+"pat") == "OHT":
@@ -498,7 +499,8 @@ class PerformanceAssess(UBModule):      #UBCORE
         base_inpfile = ubepanet.readInpFile(self.epanet_inpfname)   #Load file data
         node_list = ubepanet.getDataFromInpFile(base_inpfile, "[COORDINATES]", "array")   #Get the nodes
         node_props = ubepanet.getDataFromInpFile(base_inpfile, "[JUNCTIONS]", "dict")       #Get the list of Junctinos
-
+        print node_list
+        print node_props
         #Scan node list and create final list that follow two conditions:
         # (1) keep only nodes in the junction list,
         # (2) remove zero demand nodes if necessary
@@ -522,24 +524,75 @@ class PerformanceAssess(UBModule):      #UBCORE
         elif self.epanetintmethod == "NN":
             nbrelation = self.analyseNearestNeigh(rev_node_list)
 
-        #[OPTIONS] List
-        opt_list = []
+        #[OPTIONS] & [TIMES] lists
+        opt_list = ubepanet.getDataFromInpFile(base_inpfile, "[OPTIONS]", "dict")
+        times_list = ubepanet.getDataFromInpFile(base_inpfile, "[TIMES]", "dict")
+
+            #Set the Times List
+        if self.epanet_simtype == "STS": #STS = static sim, 24H = 24-hour, EPS = extended period sim (72hrs), LTS = long-term sim
+            times_list["Duration"] = ['0:00']
+        elif self.epanet_simtype == "24H":
+            times_list["Duration"] = ['24:00']
+        elif self.epanet_simtype == "EPS":
+            times_list["Duration"] = ['72:00']
+        elif self.epanet_simtype == "LTS":
+            times_list["Duration"] = ['24:00']
+
+        times_list["Hydraulic Timestep"] = [self.epanetsim_hts]
+        times_list["Quality Timestep"] = [self.epanetsim_qts]
+
+            #Set the Options List
+        opt_list["Headloss"] = [self.epanetsim_hl]
+        opt_list["Specific Gravity"] = [self.epanetsim_specg]
+        opt_list["Viscosity"] = [self.epanetsim_visc]
+        opt_list["Trials"] = [self.epanetsim_trials]
+        opt_list["Accuracy"] = [self.epanetsim_accuracy]
+        opt_list["Emitter Exponent"] = [self.epanetsim_emit]
+        opt_list["Demand Multiplier"] = [self.epanetsim_demmult]
 
         #Rewrite [JUNCTIONS] list Section of the EPANET File
         node_props = self.adjustEPANETjunctions(node_props, nbrelation)
 
         #Write the [PATTERN] and full demand profile depending on the type of simulation
-        dem_list = []
+        if self.epanet_simtype == "STS":
+            pat_list = []
+            dem_list = []
+        else:
+            #Populate Pattern List
+            pat_list = {"PKitch" : self.createPatternString(map_attr.getAttribute("wdp_kitchen")),
+                        "PShower": self.createPatternString(map_attr.getAttribute("wdp_shower")),
+                        "PToilet": self.createPatternString(map_attr.getAttribute("wdp_toilet")),
+                        "PLaundry": self.createPatternString(map_attr.getAttribute("wdp_laundry")),
+                        "PGarden": self.createPatternString(map_attr.getAttribute("wdp_irrigation")),
+                        "PCom": self.createPatternString(map_attr.getAttribute("wdp_com")),
+                        "PInd": self.createPatternString(map_attr.getAttribute("wdp_ind")),
+                        "PPubIrr": self.createPatternString(map_attr.getAttribute("wdp_publicirri"))}
+
+            dem_list = {}
 
         #Use the node block list to work out the new demands and rewrite the EPANET file
         if self.runBaseInp:
             self.rewriteEPANETbase(base_inpfile)
 
-        self.writeUB_EPANETfile(base_inpfile, node_list, opt_list, node_props, dem_list)
+        self.writeUB_EPANETfile(base_inpfile, node_list, opt_list, times_list,
+                                node_props, dem_list, pat_list)
 
         #Run the EPANET Simulations
         self.runEPANETsim()
         return True
+
+    def createPatternString(self, pattern):
+        """Creates a string that represents the demand pattern of a particular end use (patname)
+        returns a tab-delimited string of patterns
+        :param pattern: the variable containing the pattern name
+        :return: patstring, the tab-delimited string
+        """
+        patstring = ""
+        for i in range(len(pattern)):
+            patstring += str(pattern[i]) + "\t"
+        patstring.rstrip("\t")
+        patstring += "\n"
+        return patstring
 
     def adjustEPANETjunctions(self, node_props, nbrelation):
         """Rewrites the node properties list with the new demands depending on simulation type
@@ -547,6 +600,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         :param nbrelation: relationship between blocks and nodes
         :return: a revised node props dictionary that can be transferred back into the inp file under [JUNCTIONS]
         """
+        self.notify("Readjusting Junction Demands...")
         new_node_data = {}
         node_dem = ubdata.UBComponent()
         #Techplacement writes the total demand values as kl/yr
@@ -575,6 +629,8 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         self.activesim.addAsset("NodeDemands", node_dem)    #For graphing later on
         return new_node_data
+
+
 
 
     def runIWCM(self):
@@ -801,7 +857,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         print "Re-run the base input file"
         return True
 
-    def writeUB_EPANETfile(self, basedata, node_list, opt_list, node_props, dem_list):
+    def writeUB_EPANETfile(self, basedata, node_list, opt_list, times_list, node_props, dem_list, pat_list):
         f = open("epanettest.inp", 'w')
         line = 0
         while line != len(basedata):
@@ -811,17 +867,47 @@ class PerformanceAssess(UBModule):      #UBCORE
                 f.write(";ID \t Elev \t Demand \t Pattern \t\n")
                 for nID in node_props.keys():
                     nIDd = node_props[nID]  #nodeIDdata
-                    f.write(str(nID)+"\t"+str(nIDd[0])+"\t"+str(nIDd[1])+"\t"+str(nIDd[2])+"\t\n")
+                    f.write(str(nID)+"\t"+str(nIDd[0])+"\t"+str(nIDd[1])+"\t"+str(nIDd[2])+"\t"+"\n")
                 f.write("\n")   #empty line
 
                 #Move the line variable forward to the next
                 while basedata[line][0] != "[":
                     line += 1
 
-            if "[PATTERNS]" in basedata[line]:
-                pass #write new patterns
+            if "[PATTERNS]" in basedata[line] and self.epanet_simtype != "STS":
+                f.write("[PATTERNS]\n")
+                line += 1
+                f.write(";ID \t Multipliers \t\n")
+                for pID in pat_list.keys():
+                    f.write(str(pID)+"\t"+str(pat_list[pID]))
+                f.write("\n")
+
+                #Move the line variable forward to the next
+                while basedata[line][0] != "[":
+                    line += 1
+
             if "[OPTIONS]" in basedata[line]:
-                pass #write new options
+                f.write("[OPTIONS]\n")
+                line += 1
+                for oID in opt_list.keys():
+                   f.write(str(oID)+"\t"+str(opt_list[oID][0])+"\n")
+                f.write("\n")
+
+                #Move the line variable forward to the next
+                while basedata[line][0] != "[":
+                    line += 1
+
+            if "[TIMES]" in basedata[line]:
+                f.write("[TIMES]\n")
+                line += 1
+                for oID in times_list.keys():
+                    f.write(str(oID)+"\t"+str(times_list[oID][0])+"\n")
+                f.write("\n")
+
+                #Move the line variable forward to the next
+                while basedata[line][0] != "[":
+                    line += 1
+
             if "[DEMANDS]" in basedata[line]:
                 pass #write new demands
 
