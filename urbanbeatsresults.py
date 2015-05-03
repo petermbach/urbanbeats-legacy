@@ -385,6 +385,19 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
             - File header: Time, End use values [units], ... , ... , ... , ...
         :return:
         """
+        if self.ui.wd_comboSelect.currentIndex() == 5:  #DEMAND CALIBRATION
+            f = open(self.project_path+"/Output-DemandCalibration.csv", 'w')
+            f.write("Base Model, UrbanBEATS Modelled \n")
+            plotdata = self.current_active_plotdata["inp vs. mod."]
+            print plotdata
+            for i in range(len(plotdata)):
+                f.write(str(plotdata[i][0])+","+str(plotdata[i][1])+"\n")
+
+            f.close()
+            QtGui.QMessageBox.warning(self, "Export Complete", "Results for current graph successfully \n exported to project path!", QtGui.QMessageBox.Ok)
+            return True
+
+
         graphnames = ["none", "AvgEnduses", "24hUse", "EPUse", "Recycled"]  #Based on plotting categories
         curgraph = graphnames[self.ui.wd_comboSelect.currentIndex()]
 
@@ -502,10 +515,14 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         xname = "Input File Node Demands [L/sec]"
         yname = "UrbanBEATS Node Demands [L/sec]"
         datadict = {"inp vs. mod.": []}
+        datadictplot = {"inp vs. mod.": []}
         for i in rawdata.keys():
             datadict["inp vs. mod."].append([float(rawdata[i][0]), float(rawdata[i][1])])
+            datadictplot["inp vs. mod."].append([float(rawdata[i][0]), float(rawdata[i][1])])
 
-        self.htmlscriptDemandCheck = ubhighcharts.scatter_plot(self.options_root, "Water Supply Junction Demand Comparison", xname, yname, 3, "L/sec", "L/sec",datadict)
+        self.current_active_plotdata = datadict
+
+        self.htmlscriptDemandCheck = ubhighcharts.scatter_plot(self.options_root, "Water Supply Junction Demand Comparison", xname, yname, 3, "L/sec", "L/sec", datadictplot)
         self.ui.wd_WebView.setHtml(self.htmlscriptDemandCheck)
 
     def updateWDCategory(self):
