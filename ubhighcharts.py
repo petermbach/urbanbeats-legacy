@@ -347,7 +347,7 @@ def stacked_chart(options_root, charttitle, categories, axislabel, valueunits, d
     </head>
     <body>
         <script src=\""""+str(options_root.replace('\\\\', '/'))+"""/ancillary/highcharts/js/highcharts.js"></script>
-        <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+        <div id="container" style="min-width: 400px; min-height: 400px; margin: 0 auto"></div>
     </body>
     </html>"""
     return htmlscript

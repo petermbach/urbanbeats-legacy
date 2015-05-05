@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1024</width>
-    <height>681</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -327,7 +327,7 @@
         </widget>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
-          <string>Urban Environment</string>
+          <string>Urban Metrics</string>
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
@@ -544,7 +544,7 @@
         </widget>
         <widget class="QWidget" name="tab_6">
          <attribute name="title">
-          <string>Water Consumption</string>
+          <string>Water Use</string>
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
@@ -838,7 +838,7 @@ p, li { white-space: pre-wrap; }
         </widget>
         <widget class="QWidget" name="tab_3">
          <attribute name="title">
-          <string>Water Infrastructure</string>
+          <string>Infrastructure</string>
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
@@ -1057,11 +1057,17 @@ p, li { white-space: pre-wrap; }
         </widget>
         <widget class="QWidget" name="tab_4">
          <attribute name="title">
-          <string>System Performance</string>
+          <string>KPIs</string>
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
            <widget class="QWidget" name="sp_sidebarWidget" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_13">
              <item>
               <widget class="QTreeWidget" name="sp_categoryTree">
@@ -1085,6 +1091,41 @@ p, li { white-space: pre-wrap; }
                  <string>Categories</string>
                 </property>
                </column>
+               <item>
+                <property name="text">
+                 <string>Life Cycle Costs</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Microclimate</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Runoff Volumes</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Storage-Behaviour of AWS</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Stormwater Quality</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Water Balance</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>WSUD Treatment Performance</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item>
@@ -1120,11 +1161,23 @@ p, li { white-space: pre-wrap; }
           </item>
           <item>
            <widget class="QWidget" name="sp_MainViewWidget" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_12">
              <item>
               <widget class="QWebView" name="sp_WebView">
                <property name="enabled">
                 <bool>false</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
                <property name="url">
                 <url>
@@ -1206,7 +1259,7 @@ p, li { white-space: pre-wrap; }
         </widget>
         <widget class="QWidget" name="tab_7">
          <attribute name="title">
-          <string>Correlation Explorer</string>
+          <string>Correlations</string>
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_15">
           <item>
@@ -1462,6 +1515,221 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_8">
+         <attribute name="title">
+          <string>Network Map</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_22">
+          <item>
+           <widget class="QWidget" name="net_customiseWidget" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_17">
+             <item>
+              <widget class="QLabel" name="net_lbl1">
+               <property name="text">
+                <string>Select Network:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="net_comboSelect">
+               <property name="minimumSize">
+                <size>
+                 <width>150</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Flow Path Network</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Water Supply Network</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Expanding</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="net_lbl2">
+               <property name="text">
+                <string>Nodes: </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="net_NodeScope">
+               <property name="minimumSize">
+                <size>
+                 <width>150</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="net_lbl3">
+               <property name="text">
+                <string>Links:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="net_LinkScope">
+               <property name="minimumSize">
+                <size>
+                 <width>150</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Expanding</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="net_lbl4">
+               <property name="text">
+                <string>Time Period:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="net_Play">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="toolbaricons/guitoolbaricons.qrc">
+                 <normaloff>:/guitoolbaricons/Play-icon.png</normaloff>:/guitoolbaricons/Play-icon.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="net_Timespin">
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="suffix">
+                <string>:00</string>
+               </property>
+               <property name="maximum">
+                <number>23</number>
+               </property>
+               <property name="value">
+                <number>21</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGraphicsView" name="net_graphicsView"/>
+          </item>
+          <item>
+           <widget class="QWidget" name="net_controlSimWidget" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_18">
+             <item>
+              <widget class="QLabel" name="net_Sim_lbl">
+               <property name="text">
+                <string>Simulation #</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QScrollBar" name="net_ScrollBar">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>350</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>10</number>
+               </property>
+               <property name="value">
+                <number>0</number>
+               </property>
+               <property name="tracking">
+                <bool>true</bool>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="net_Sim_box">
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>60</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Milestone1</string>
+               </property>
               </widget>
              </item>
             </layout>
