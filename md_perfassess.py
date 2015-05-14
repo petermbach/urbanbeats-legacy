@@ -313,7 +313,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     #       Street/Neigh: x 1
                     if self.include_pervious:
                         catchment_parameter_list = [1, self.musicRR_soil, self.musicRR_field, 80,200, 1, 10, self.musicRR_rcr, self.musicRR_bfr, self.musicRR_dsr]
-                        total_catch_area = (blocks_size * blocks_size) / 10000      #[ha]
+                        total_catch_area = (blocks_size * blocks_size) * currentAttList.getAttribute("Active") / 10000      #[ha]
                         total_catch_imparea = currentAttList.getAttribute("Blk_EIA")/10000
                         total_catch_EIF = (total_catch_imparea / total_catch_area)
                     else:
