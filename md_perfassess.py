@@ -909,7 +909,10 @@ class PerformanceAssess(UBModule):      #UBCORE
         return True
 
     def writeUB_EPANETfile(self, basedata, node_list, opt_list, times_list, node_props, dem_list, pat_list):
-        f = open("epanettest.inp", 'w')
+        epanetpath = self.activesim.getActiveProjectPath()
+        epanetfname = self.activesim.getGISExportDetails()["Filename"]+"_epanet.inp"
+        
+        f = open(epanetpath+"/"+epanetfname, 'w')
         line = 0
         while line != len(basedata):
             if "[JUNCTIONS]" in basedata[line]:

@@ -238,7 +238,6 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.connect(self.ui.wd_comboScope, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateWDList)
         self.connect(self.ui.wd_comboSelect, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateWDCategory)
         self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.plotWD)
-        self.connect(self.ui.wd_listwidget, QtCore.SIGNAL("itemSelectionChanged()"), self.updateWDQuickInfo)
         self.connect(self.ui.wd_exportResults, QtCore.SIGNAL("clicked()"), self.export_wd_results)
         self.connect(self.ui.wd_unitskl, QtCore.SIGNAL("clicked()"), self.plotWD)
         self.connect(self.ui.wd_unitslps, QtCore.SIGNAL("clicked()"), self.plotWD)
