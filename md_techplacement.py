@@ -3169,19 +3169,23 @@ class Techplacement(UBModule):
         #WORKING IN [kL/yr] for single values and [kL/day] for timeseries
         
         #Use the FFP matrix to determine total demands and suitable end uses
+
         wqlevel = self.ffplevels[wqtype]    #get the level and determine the suitable end uses
         if lottype == "RES":    #Demands based on a single house
-            lotdemands = {"Kitchen":currentAttList.getAttribute("wd_RES_K")*365/1000,
-                      "Shower":currentAttList.getAttribute("wd_RES_S")*365/1000,
-                      "Toilet":currentAttList.getAttribute("wd_RES_T")*365/1000,
-                      "Laundry":currentAttList.getAttribute("wd_RES_L")*365/1000,
-                      "Irrigation":currentAttList.getAttribute("wd_RES_I") }
+            reshouses = float(currentAttList.getAttribute("ResHouses"))
+            resallots = float(currentAttList.getAttribute("ResAllots"))
+            lotdemands = {"Kitchen":currentAttList.getAttribute("wd_RES_K")*365.0/reshouses,
+                      "Shower":currentAttList.getAttribute("wd_RES_S")*365.0/reshouses,
+                      "Toilet":currentAttList.getAttribute("wd_RES_T")*365.0/reshouses,
+                      "Laundry":currentAttList.getAttribute("wd_RES_L")*365.0/reshouses,
+                      "Irrigation":currentAttList.getAttribute("wd_RES_I")*365.0/resallots }
         elif lottype == "HDR": #Demands based on entire apartment sharing a single roof
-            lotdemands = {"Kitchen":currentAttList.getAttribute("wd_HDR_K")*365/1000,
-                      "Shower":currentAttList.getAttribute("wd_HDR_S")*365/1000,
-                      "Toilet":currentAttList.getAttribute("wd_HDR_T")*365/1000,
-                      "Laundry":currentAttList.getAttribute("wd_HDR_L")*365/1000,
-                      "Irrigation":currentAttList.getAttribute("wd_HDR_I") }
+            hdrflats = float(currentAttList.getAttribute("HDRFlats"))
+            lotdemands = {"Kitchen":currentAttList.getAttribute("wd_HDR_K")*365.0/hdrflats,
+                      "Shower":currentAttList.getAttribute("wd_HDR_S")*365.0/hdrflats,
+                      "Toilet":currentAttList.getAttribute("wd_HDR_T")*365.0/hdrflats,
+                      "Laundry":currentAttList.getAttribute("wd_HDR_L")*365.0/hdrflats,
+                      "Irrigation":currentAttList.getAttribute("wd_HDR_I")*365.0 }
         totalhhdemand = sum(lotdemands.values())    #Total House demand, [kL/yr]
         
         enduses = {}        #Tracks all the different types of end uses
@@ -3386,14 +3390,12 @@ class Techplacement(UBModule):
         for i in enduse:    #Get Indoor demands first
             if i == "PI" or i == "I":
                 continue    #Skip the public irrigation
-            demand += currentAttList.getAttribute("wd_RES_"+str(i))*365/1000 * \
-                currentAttList.getAttribute("ResHouses")
-            demand += currentAttList.getAttribute("wd_HDR_"+str(i))*365/1000 * \
-                currentAttList.getAttribute("HDRFlats")
+            demand += currentAttList.getAttribute("wd_RES_"+str(i))*365.0
+            demand += currentAttList.getAttribute("wd_HDR_"+str(i))*365.0
         #Add irrigation of public open space
         if "I" in enduse:
-            demand += currentAttList.getAttribute("wd_RES_I")
-            demand += currentAttList.getAttribute("wd_HDR_I") #Add all HDR irrigation
+            demand += currentAttList.getAttribute("wd_RES_I")*365.0
+            demand += currentAttList.getAttribute("wd_HDR_I")*365.0 #Add all HDR irrigation
         if "PI" in enduse:
             demand += currentAttList.getAttribute("wd_PubOUT")
         return demand
