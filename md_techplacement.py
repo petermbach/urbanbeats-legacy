@@ -686,9 +686,11 @@ class Techplacement(UBModule):
         self.createParameter("ranktype", STRING,"")
         self.createParameter("topranklimit", DOUBLE,"")
         self.createParameter("conf_int", DOUBLE,"")
+        self.createParameter("pickingmethod", STRING, "")
         self.ranktype = "RK"            #CI = Confidence Interval, RK = ranking
         self.topranklimit = 10.0
         self.conf_int = 95.0
+        self.pickingmethod = "TOP"  #TOP = score-based, RND = random sampling
         
         ########################################################################
         #---ADVANCED PARAMETERS & VARIABLES

@@ -910,6 +910,11 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.ui.iao_influence_spin.setValue(int(self.module.getParameter("iao_influence")))
 
         #-------- RANKING OF STRATEGIES ---------------------------------------#
+        if self.module.getParameter("pickingmethod") == "TOP":
+            self.ui.strat_select_combo.setCurrentIndex(0)
+        elif self.module.getParameter("pickingmethod") == "RND":
+            self.ui.strat_select_combo.setCurrentIndex(1)
+
         if self.module.getParameter("ranktype") == "RK":
             self.ui.top_score_combo.setCurrentIndex(0)
             self.ui.top_rank_spin.setEnabled(1)
@@ -1596,7 +1601,11 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("ingroup_scoring", ingroup_scoring)
 
         #-------- RANKING OF STRATEGIES ---------------------------------------#
+        pick_method = ["TOP", "RND"]
+        self.module.setParameter("pickingmethod", pick_method[self.ui.strat_select_combo.currentIndex()])
+
         rank_method_matrix = ["RK", "CI"]
         self.module.setParameter("ranktype", rank_method_matrix[self.ui.top_score_combo.currentIndex()])
         self.module.setParameter("topranklimit", float(self.ui.top_rank_spin.value()))
         self.module.setParameter("conf_int", float(self.ui.top_CI_spin.value()))
+
