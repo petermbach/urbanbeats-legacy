@@ -53,7 +53,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
+       <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="tech_subheading">
@@ -1505,7 +1505,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/techdesigncrit.png</pixmap>
+             <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/techdesigncrit.png</pixmap>
             </property>
            </widget>
           </item>
@@ -1546,7 +1546,7 @@ p, li { white-space: pre-wrap; }
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>279</width>
+               <width>465</width>
                <height>598</height>
               </rect>
              </property>
@@ -2406,7 +2406,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech-retrofit.png</pixmap>
+             <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech-retrofit.png</pixmap>
             </property>
            </widget>
           </item>
@@ -2447,7 +2447,7 @@ p, li { white-space: pre-wrap; }
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>387</width>
+               <width>465</width>
                <height>1236</height>
               </rect>
              </property>
@@ -4103,7 +4103,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/swhc.png</pixmap>
+                  <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/swhc.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QRadioButton" name="radio_hsdown">
@@ -4138,7 +4138,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/swhb.png</pixmap>
+                  <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/swhb.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QLabel" name="hs_select_lbl">
@@ -4173,7 +4173,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/swha.png</pixmap>
+                  <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/swha.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QRadioButton" name="radio_hsall">
@@ -4435,7 +4435,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/D4Wrecycle.png</pixmap>
+             <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/D4Wrecycle.png</pixmap>
             </property>
            </widget>
           </item>
@@ -4500,8 +4500,8 @@ p, li { white-space: pre-wrap; }
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>81</width>
-               <height>413</height>
+               <width>464</width>
+               <height>415</height>
               </rect>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -4958,7 +4958,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/Wsud.png</pixmap>
+             <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/Wsud.png</pixmap>
             </property>
            </widget>
           </item>
@@ -4970,7 +4970,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Check boxes to consider technology in simulation. You can set technology levels that represent priority rules for their implementation or group these technologies to experiment with different strategies. Then select &amp;quot;customize technology&amp;quot; to specify design, scales of implementation and types of applications.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
@@ -5155,7 +5155,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap>../../../tech_aquaculture.png</pixmap>
+               <pixmap>../../tech_aquaculture.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -5195,7 +5195,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_aquaculture.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_aquaculture.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -5235,7 +5235,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_asr.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_asr.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -5333,7 +5333,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_biofilter.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_biofilter.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="BFscales_lbl">
@@ -5739,7 +5739,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_greenroof.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_greenroof.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -5859,7 +5859,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_greywater.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_greywater.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="label_57">
@@ -6024,7 +6024,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_gpt.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_gpt.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="label_60">
@@ -6203,7 +6203,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_infil.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_infil.png</pixmap>
               </property>
              </widget>
              <widget class="QCheckBox" name="ISpollute_check">
@@ -6559,7 +6559,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_packplant.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_packplant.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -6699,7 +6699,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_pond.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_pond.png</pixmap>
               </property>
              </widget>
              <widget class="QToolButton" name="PBdesigncurve_browse">
@@ -7016,7 +7016,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_porouspavement.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_porouspavement.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -7127,7 +7127,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_raintank.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_raintank.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="RTscale_lbl">
@@ -7460,7 +7460,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_sandfilter.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_sandfilter.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="label_42">
@@ -7545,7 +7545,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_subirrigate.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_subirrigate.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -7649,7 +7649,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_reedbed.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_reedbed.png</pixmap>
               </property>
              </widget>
              <widget class="QCheckBox" name="checkBox_110">
@@ -7808,7 +7808,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_wetlands.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_wetlands.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="WSURscales_lbl">
@@ -8227,7 +8227,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_swale.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_swale.png</pixmap>
               </property>
              </widget>
              <widget class="QLabel" name="SWscales_lbl">
@@ -8603,7 +8603,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_ustoilets.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_ustoilets.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -8643,7 +8643,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_wwrecycle.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_wwrecycle.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -8683,7 +8683,7 @@ p, li { white-space: pre-wrap; }
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_composttoilet.png</pixmap>
+               <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/tech_composttoilet.png</pixmap>
               </property>
              </widget>
             </widget>
@@ -8847,7 +8847,7 @@ p, li { white-space: pre-wrap; }
                <x>0</x>
                <y>0</y>
                <width>465</width>
-               <height>547</height>
+               <height>597</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -9431,20 +9431,20 @@ p, li { white-space: pre-wrap; }
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>100</height>
+                  <height>150</height>
                  </size>
                 </property>
                 <widget class="QLabel" name="top_options_lbl">
                  <property name="geometry">
                   <rect>
                    <x>10</x>
-                   <y>15</y>
+                   <y>40</y>
                    <width>191</width>
                    <height>16</height>
                   </rect>
                  </property>
                  <property name="whatsThis">
-                  <string>Scoring method choice influences how the points are added up and weighted against each other and how each option's final score is evaluated. Default method will be the AHP.</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="text">
                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -9458,7 +9458,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>320</x>
-                   <y>45</y>
+                   <y>75</y>
                    <width>51</width>
                    <height>16</height>
                   </rect>
@@ -9477,7 +9477,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>200</x>
-                   <y>15</y>
+                   <y>40</y>
                    <width>211</width>
                    <height>22</height>
                   </rect>
@@ -9497,13 +9497,13 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>70</x>
-                   <y>45</y>
+                   <y>75</y>
                    <width>241</width>
                    <height>20</height>
                   </rect>
                  </property>
                  <property name="whatsThis">
-                  <string>Scoring method choice influences how the points are added up and weighted against each other and how each option's final score is evaluated. Default method will be the AHP.</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="text">
                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -9517,13 +9517,13 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>50</x>
-                   <y>70</y>
+                   <y>100</y>
                    <width>261</width>
                    <height>20</height>
                   </rect>
                  </property>
                  <property name="whatsThis">
-                  <string>Scoring method choice influences how the points are added up and weighted against each other and how each option's final score is evaluated. Default method will be the AHP.</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="text">
                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -9537,7 +9537,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>320</x>
-                   <y>70</y>
+                   <y>100</y>
                    <width>51</width>
                    <height>16</height>
                   </rect>
@@ -9557,6 +9557,46 @@ p, li { white-space: pre-wrap; }
                  <property name="value">
                   <number>95</number>
                  </property>
+                </widget>
+                <widget class="QLabel" name="strat_select_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>15</y>
+                   <width>191</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="whatsThis">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Method for selecting final strategies:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QComboBox" name="strat_select_combo">
+                 <property name="geometry">
+                  <rect>
+                   <x>200</x>
+                   <y>10</y>
+                   <width>211</width>
+                   <height>22</height>
+                  </rect>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Top Scoring Strategies</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Random (weighted probabilities)</string>
+                  </property>
+                 </item>
                 </widget>
                </widget>
               </item>
@@ -9606,7 +9646,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/techevalcrit.png</pixmap>
+             <pixmap resource="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc">:/techplacement/techevalcrit.png</pixmap>
             </property>
            </widget>
           </item>
@@ -9971,8 +10011,9 @@ p, li { white-space: pre-wrap; }
   <tabstop>top_CI_spin</tabstop>
  </tabstops>
  <resources>
-  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
+  <include location="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc"/>
   <include location="toolbaricons/guitoolbaricons.qrc"/>
+  <include location="C:/UrbanBEATSv1Dev/ub_modules/resources/dialogimg.qrc"/>
  </resources>
  <connections>
   <connection>
