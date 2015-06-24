@@ -1233,21 +1233,28 @@ class Techplacement(UBModule):
                 acceptable_options = acceptable_options[0:acceptableN]
 
             topcount = len(acceptable_options)
-            acceptable_options.sort(key=lambda score: score[2])
+            acceptable_options.sort(key=lambda score: score[2], reverse=True)
             self.notify(acceptable_options)
 
             #Choose final option
             numselect = min(topcount, self.num_output_strats)   #Determines how many options out of the matrix it should select
             final_selection = []
-            for j in range(int(numselect)):
-                score_matrix = []       #Create the score matrix
-                for opt in acceptable_options:
-                    score_matrix.append(opt[2])
-                selection_cdf = self.createCDF(score_matrix)    #Creat the CDF
-                choice = self.samplefromCDF(selection_cdf)
-                final_selection.append(acceptable_options[choice][3])   #Add ONLY the strategy_object
-                acceptable_options.pop(choice)  #Pop the option at the selected index from the matrix
-                #Repeat for as many options as requested
+            if self.pickingmethod == "TOP":
+                checkvar = []
+                for j in range(int(numselect)):
+                    checkvar.append(acceptable_options[j])
+                    final_selection.append(acceptable_options[j][3])
+                print checkvar
+            elif self.pickingmethod == "RND":
+                for j in range(int(numselect)):
+                    score_matrix = []       #Create the score matrix
+                    for opt in acceptable_options:
+                        score_matrix.append(opt[2])
+                    selection_cdf = self.createCDF(score_matrix)    #Creat the CDF
+                    choice = self.samplefromCDF(selection_cdf)
+                    final_selection.append(acceptable_options[choice][3])   #Add ONLY the strategy_object
+                    acceptable_options.pop(choice)  #Pop the option at the selected index from the matrix
+                    #Repeat for as many options as requested
 
             #Write WSUD strategy attributes to output vector for that block
             self.notify(final_selection)
