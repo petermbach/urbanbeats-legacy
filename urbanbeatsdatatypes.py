@@ -890,6 +890,7 @@ def exportPlannedWSUD(filename, assets, miscoptions, map_attr, kmlbool):
         #DEFINE ATTRIBUTES
         fielddefmatrix = []
         fielddefmatrix.append(ogr.FieldDefn("StrategyID", ogr.OFTInteger))
+        fielddefmatrix.append(ogr.FieldDefn("MCAscore", ogr.OFTReal))
         fielddefmatrix.append(ogr.FieldDefn("posX", ogr.OFTReal))
         fielddefmatrix.append(ogr.FieldDefn("posY", ogr.OFTReal))
         fielddefmatrix.append(ogr.FieldDefn("BasinID", ogr.OFTInteger))
@@ -929,6 +930,7 @@ def exportPlannedWSUD(filename, assets, miscoptions, map_attr, kmlbool):
 
             #Add Attributes
             feature.SetField("StrategyID", int(currentAttList.getAttribute("StrategyID")))
+            feature.SetField("MCAscore", currentAttList.getAttribute("MCAscore"))
             feature.SetField("posX", currentAttList.getAttribute("posX"))
             feature.SetField("posY", currentAttList.getAttribute("posY"))
             feature.SetField("BasinID", int(currentAttList.getAttribute("BasinID")))

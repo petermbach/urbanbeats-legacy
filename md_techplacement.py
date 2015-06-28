@@ -1243,7 +1243,7 @@ class Techplacement(UBModule):
                 checkvar = []
                 for j in range(int(numselect)):
                     checkvar.append(acceptable_options[j])
-                    final_selection.append(acceptable_options[j][3])
+                    final_selection.append([acceptable_options[j][3],acceptable_options[j][2]]) #[strategy object, score]
                 print checkvar
             elif self.pickingmethod == "RND":
                 for j in range(int(numselect)):
@@ -1252,21 +1252,21 @@ class Techplacement(UBModule):
                         score_matrix.append(opt[2])
                     selection_cdf = self.createCDF(score_matrix)    #Creat the CDF
                     choice = self.samplefromCDF(selection_cdf)
-                    final_selection.append(acceptable_options[choice][3])   #Add ONLY the strategy_object
+                    final_selection.append([acceptable_options[choice][3],acceptable_options[j][2]])   #[strategy object , score]
                     acceptable_options.pop(choice)  #Pop the option at the selected index from the matrix
                     #Repeat for as many options as requested
 
             #Write WSUD strategy attributes to output vector for that block
             self.notify(final_selection)
             if len(final_selection) == 0:
-                self.transferExistingSystemsToOutput(1)
+                self.transferExistingSystemsToOutput(1, 0)
                 #If there are no additional plans, just tranfer systems across, only one output as StrategyID1
 
             for j in range(len(final_selection)):       #Otherwise it'll loop
                 cur_strat = final_selection[j]
                 stratID = j+1
                 self.writeStrategyView(stratID, currentBasinID, basinBlockIDs, cur_strat)
-                self.transferExistingSystemsToOutput(stratID)
+                self.transferExistingSystemsToOutput(stratID, cur_strat[1])
 
             #Clear the array and garbage collect
             basin_strategies = []
@@ -4266,10 +4266,13 @@ class Techplacement(UBModule):
     ####################################
     #--- TRANSFER OF DATA TO OUTPUT ---#
     ####################################
-    def writeStrategyView(self, id, basinID, basinBlockIDs, strategyobject):
+    def writeStrategyView(self, id, basinID, basinBlockIDs, strategydata):
         """Writes the output view of the selected WSUD strategy and saves it to the 
         self.wsudAttr View.
         """
+        strat_object = strategydata[0]
+        strat_score = strategydata[1]
+
         for i in range(len(basinBlockIDs)):
             currentID = basinBlockIDs[i]
             #currentAttList = self.getBlockUUID(currentID, city)
@@ -4277,7 +4280,7 @@ class Techplacement(UBModule):
             centreX = currentAttList.getAttribute("CentreX")
             centreY = currentAttList.getAttribute("CentreY")
             #Grab the strategy objects
-            inblock_strat = strategyobject.getIndividualTechStrat(currentID, "b")
+            inblock_strat = strat_object.getIndividualTechStrat(currentID, "b")
             
             if inblock_strat == None:
                 inblock_systems = [0,0,0,0,0,0,0]
@@ -4314,6 +4317,7 @@ class Techplacement(UBModule):
                 loc = ubdata.UBComponent()
                 #loc = city.addNode(coordinates[0], coordinates[1], 0, self.wsudAttr)
                 loc.addAttribute("StrategyID", id)
+                loc.addAttribute("MCAscore", strat_score)
                 loc.addAttribute("posX", coordinates[0])
                 loc.addAttribute("posY", coordinates[1])
                 loc.addAttribute("BasinID", basinID)
@@ -4346,7 +4350,7 @@ class Techplacement(UBModule):
                 sysID = len(self.activesim.getAssetsWithIdentifier("SysID"))+1
                 self.activesim.addAsset("SysID"+str(sysID), loc)
 
-            outblock_strat = strategyobject.getIndividualTechStrat(currentID, "s")
+            outblock_strat = strat_object.getIndividualTechStrat(currentID, "s")
             if outblock_strat != None:
                 scale = "B"
                 coordinates = offsets_matrix[7]
@@ -4355,6 +4359,7 @@ class Techplacement(UBModule):
                 loc = ubdata.UBComponent()
                 #loc = city.addNode(coordinates[0], coordinates[1], 0, self.wsudAttr)
                 loc.addAttribute("StrategyID", id)
+                loc.addAttribute("MCAscore", strat_score)
                 loc.addAttribute("posX", coordinates[0])
                 loc.addAttribute("posY", coordinates[1])
                 loc.addAttribute("BasinID", basinID)
@@ -4388,7 +4393,7 @@ class Techplacement(UBModule):
                 self.activesim.addAsset("SysID"+str(sysID), loc)
         return True
     
-    def transferExistingSystemsToOutput(self, stratID):
+    def transferExistingSystemsToOutput(self, stratID, score):
         """Writes all existing systems to the new output view under a new strategyID as they
         will accompany all newly planned systems under a future alternative"""
         #existSys = city.getUUIDsOfComponentsInView(self.sysAttr)
@@ -4400,6 +4405,7 @@ class Techplacement(UBModule):
                 continue        #RemoveComponent only removes the components, not the UUID, must therefore catch this
             loc = ubdata.UBComponent()   #Create a new placeholder for a component object, save it to self.wsudAttr View
             loc.addAttribute("StrategyID", stratID)
+            loc.addAttribute("MCAscore", score)
             loc.addAttribute("posX", curSys.getAttribute("posX"))
             loc.addAttribute("posY", curSys.getAttribute("posY"))
             loc.addAttribute("BasinID", int(curSys.getAttribute("BasinID")))
