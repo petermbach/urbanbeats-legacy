@@ -157,13 +157,21 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.ahc = [2.0,2.0,2.0,2.0,2.0,2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2.0,2.0,2.0,2.0,2.0,2.0]
 
         #Custom pattern variables if needed
+        #self.createParameter("cp_kitchen", )
         self.cp_kitchen = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        #self.createParameter("cp_shower", )
         self.cp_shower = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        #self.createParameter("cp_toilet", )
         self.cp_toilet = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        #self.createParameter("cp_laundry", )
         self.cp_laundry = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        #self.createParameter("cp_irrigation", )
         self.cp_irrigation = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        #self.createParameter("cp_com", )
         self.cp_com = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        #self.createParameter("cp_ind", )
         self.cp_ind = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        #self.createParameter("cp_publicirri", )
         self.cp_publicirri = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
 
         #EPANET integration variables
@@ -911,7 +919,7 @@ class PerformanceAssess(UBModule):      #UBCORE
     def writeUB_EPANETfile(self, basedata, node_list, opt_list, times_list, node_props, dem_list, pat_list):
         epanetpath = self.activesim.getActiveProjectPath()
         epanetfname = self.activesim.getGISExportDetails()["Filename"]+"_epanet.inp"
-        
+
         f = open(epanetpath+"/"+epanetfname, 'w')
         line = 0
         while line != len(basedata):
