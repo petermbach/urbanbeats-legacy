@@ -157,21 +157,21 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.ahc = [2.0,2.0,2.0,2.0,2.0,2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2.0,2.0,2.0,2.0,2.0,2.0]
 
         #Custom pattern variables if needed
-        #self.createParameter("cp_kitchen", )
+        self.createParameter("cp_kitchen", LISTDOUBLE, "")
         self.cp_kitchen = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
-        #self.createParameter("cp_shower", )
+        self.createParameter("cp_shower",  LISTDOUBLE, "")
         self.cp_shower = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
-        #self.createParameter("cp_toilet", )
+        self.createParameter("cp_toilet",  LISTDOUBLE, "")
         self.cp_toilet = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
-        #self.createParameter("cp_laundry", )
+        self.createParameter("cp_laundry",  LISTDOUBLE, "")
         self.cp_laundry = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
-        #self.createParameter("cp_irrigation", )
+        self.createParameter("cp_irrigation",  LISTDOUBLE, "")
         self.cp_irrigation = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
-        #self.createParameter("cp_com", )
+        self.createParameter("cp_com",  LISTDOUBLE, "")
         self.cp_com = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
-        #self.createParameter("cp_ind", )
+        self.createParameter("cp_ind",  LISTDOUBLE, "")
         self.cp_ind = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
-        #self.createParameter("cp_publicirri", )
+        self.createParameter("cp_publicirri",  LISTDOUBLE, "")
         self.cp_publicirri = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
 
         #EPANET integration variables

@@ -297,11 +297,20 @@ def loadSimFile(activesim, filename, projectpath):
                 data = lines.split("*||*")
                 moduledata[data[0]] = data[1]
             for keys in moduledata.keys():
-                print keys, (moduledata[keys]), type(curmodule.getParameter(keys))
+                print keys, (moduledata[keys]), type(curmodule.getParameter(keys)), curmodule.getParameterType(keys)
                 if curmodule.getParameterType(keys) == 'BOOL':
                     curmodule.setParameter(keys, type(curmodule.getParameter(keys))(int(float(moduledata[keys]))))
                 elif curmodule.getParameterType(keys) == 'STRING':
                     curmodule.setParameter(keys, type(curmodule.getParameter(keys))(moduledata[keys]))
+                elif curmodule.getParameterType(keys) == 'LISTDOUBLE':
+                    #Decompose list
+                    tosetdata = moduledata[keys]
+                    tosetdata = tosetdata.strip('[')
+                    tosetdata = tosetdata.strip(']')
+                    tosetdata = tosetdata.split(',')
+                    for e in range(len(tosetdata)):
+                        tosetdata[e] = float(tosetdata[e])
+                    curmodule.setParameter(keys, tosetdata)
                 else:
                     curmodule.setParameter(keys, type(curmodule.getParameter(keys))(float(moduledata[keys])))
             f.close()
