@@ -2,7 +2,7 @@
 """
 @file
 @author  Peter M Bach <peterbach@gmail.com>
-@version 0.5
+@version 1.0
 @section LICENSE
 
 This file is part of VIBe2
@@ -71,7 +71,8 @@ class UBModule(object):
     def getModuleParameterList(self):
         return self.__parameters
 
-#KEYWORDS FOR VARIABLES (THIS IS HERE TO MAINTAIN COMPATIBILITY WITH DYNAMIND SYNTAX)
+#KEYWORDS FOR VARIABLES (THIS IS RELEVANT FOR SAVING AND LOADING DATA)
 DOUBLE = 'DOUBLE'
 BOOL = 'BOOL'
 STRING = 'STRING'
+LISTDOUBLE = 'LISTDOUBLE'

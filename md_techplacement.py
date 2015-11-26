@@ -1343,7 +1343,7 @@ class Techplacement(UBModule):
         """
         mca_scoringmatrix, mca_tech, mca_env, mca_ecn, mca_soc = [], [], [] ,[] ,[]
         if self.scoringmatrix_default:
-            mca_fname = self.ubeatsdir+"/resources/mcadefault.csv"  #uses UBEATS default matrix
+            mca_fname = self.ubeatsdir+"/ancillary/mcadefault.csv"  #uses UBEATS default matrix
             #Do something to retrieve UrbanBEATS default matrix, specify default path            
         else:
             mca_fname = self.scoringmatrix_path #loads file

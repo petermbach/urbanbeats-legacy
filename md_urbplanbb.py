@@ -1365,7 +1365,7 @@ class Urbplanbb(UBModule):
         Ablock = map_attr.getAttribute("BlockSize")*map_attr.getAttribute("BlockSize")
         Apg = pPG * pactive * Ablock * float(int(self.park_OSR))
         
-        #Step 4a: Work out Building Footself.notify( using OSR
+        #Step 4a: Work out Building Footprint using OSR
         Aoutdoor = max(Aos - 0.5*AextraIndoor - Apg, 0)     #if indoor space is much greater, Aoutdoor becomes negative
         if Aoutdoor == 0:   #if there is no outdoor space, then ls and rs spaces on-site are zero
             Als_site = 0
@@ -1403,7 +1403,7 @@ class Urbplanbb(UBModule):
             pass
             #self.notify( "Exceeded floors, executing 2nd method" )
         
-        #Step 4b: Work out Building Footself.notify( using LSR
+        #Step 4b: Work out Building Footprint using LSR
         Aoutdoor = max(Als - Apg, 0)
         if Aoutdoor == 0:
             Als_site = 0 #on-site
