@@ -267,6 +267,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
     fielddefmatrix.append(ogr.FieldDefn("DemPublicI", ogr.OFTReal))
 
     fielddefmatrix.append(ogr.FieldDefn("HouseOccup", ogr.OFTReal))
+    fielddefmatrix.append(ogr.FieldDefn("ResFrontT", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("avSt_RES", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("WResNstrip", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("ResAllots", ogr.OFTReal))
@@ -515,6 +516,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         feature.SetField("DemPublicI", currentAttList.getAttribute("DemPublicI"))
 
         feature.SetField("HouseOccup", currentAttList.getAttribute("HouseOccup"))
+        feature.SetField("ResFrontT", currentAttList.getAttribute("ResFrontT"))
         feature.SetField("avSt_RES", currentAttList.getAttribute("avSt_RES"))
         feature.SetField("WResNstrip", currentAttList.getAttribute("WResNstrip"))
         feature.SetField("ResAllots", currentAttList.getAttribute("ResAllots"))

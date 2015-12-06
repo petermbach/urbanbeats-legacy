@@ -758,106 +758,9 @@ class Techplacement(UBModule):
         self.penaltyFa = 2.0
         self.penaltyFb = 1.2
 
-        #########################################################################
-        #
-        ##Views
-        #self.blocks = View("Block", FACE,WRITE)
-        #self.blocks.getAttribute("Status")
-        #self.blocks.getAttribute("UpstrIDs")
-        #self.blocks.getAttribute("DownstrIDs")
-        #self.blocks.addAttribute("wd_Rating")
-        #self.blocks.addAttribute("wd_RES_K")
-        #self.blocks.addAttribute("wd_RES_S")
-        #self.blocks.addAttribute("wd_RES_T")
-        #self.blocks.addAttribute("wd_RES_L")
-        #self.blocks.addAttribute("wd_RES_IN")
-        #self.blocks.addAttribute("wd_RES_OUT")
-        #self.blocks.addAttribute("wd_HDR_K")
-        #self.blocks.addAttribute("wd_HDR_S")
-        #self.blocks.addAttribute("wd_HDR_T")
-        #self.blocks.addAttribute("wd_HDR_L")
-        #self.blocks.addAttribute("wd_HDR_IN")
-        #self.blocks.addAttribute("wd_HDR_OUT")
-        #self.blocks.addAttribute("wd_PrivIN")
-        #self.blocks.addAttribute("wd_PrivOUT")
-        #self.blocks.addAttribute("wd_LI")
-        #self.blocks.addAttribute("wd_HI")
-        #self.blocks.addAttribute("wd_COM")
-        #self.blocks.addAttribute("wd_ORC")
-        #self.blocks.addAttribute("wd_Nres_IN")
-        #self.blocks.addAttribute("Apub_irr")
-        #self.blocks.addAttribute("wd_PubOUT")
-        #self.blocks.addAttribute("Blk_WD")
-        #self.blocks.addAttribute("Blk_WD_OUT")
-        #self.blocks.addAttribute("Manage_EIA")
-        #
-        #self.mapattributes = View("GlobalMapAttributes", COMPONENT, WRITE)
-        #self.mapattributes.getAttribute("NumBlocks")
-        #self.mapattributes.addAttribute("OutputStrats")
-        #
-        #self.sysGlobal = View("SystemGlobal", COMPONENT, READ)
-        #self.sysGlobal.getAttribute("TotalSystems")
-        #
-        #self.sysAttr = View("SystemAttribute", COMPONENT, READ)
-        #self.sysAttr.getAttribute("StrategyID")
-        #self.sysAttr.getAttribute("posX")
-        #self.sysAttr.getAttribute("posY")
-        #self.sysAttr.getAttribute("BasinID")
-        #self.sysAttr.getAttribute("Location")
-        #self.sysAttr.getAttribute("Scale")
-        #self.sysAttr.getAttribute("Type")
-        #self.sysAttr.getAttribute("Qty")
-        #self.sysAttr.getAttribute("GoalQty")
-        #self.sysAttr.getAttribute("SysArea")
-        #self.sysAttr.getAttribute("Status")
-        #self.sysAttr.getAttribute("Year")
-        #self.sysAttr.getAttribute("EAFact")
-        #self.sysAttr.getAttribute("ImpT")
-        #self.sysAttr.getAttribute("CurImpT")
-        #self.sysAttr.getAttribute("Upgrades")
-        #self.sysAttr.getAttribute("WDepth")
-        #self.sysAttr.getAttribute("FDepth")
-        #self.sysAttr.getAttribute("Exfil")
-        #
-        #self.wsudAttr = View("WsudAttr", COMPONENT, WRITE)
-        #self.wsudAttr.addAttribute("StrategyID")
-        #self.wsudAttr.addAttribute("posX")
-        #self.wsudAttr.addAttribute("posY")
-        #self.wsudAttr.addAttribute("BasinID")
-        #self.wsudAttr.addAttribute("Location")
-        #self.wsudAttr.addAttribute("Scale")
-        #self.wsudAttr.addAttribute("Type")
-        #self.wsudAttr.addAttribute("Qty")
-        #self.wsudAttr.addAttribute("GoalQty")
-        #self.wsudAttr.addAttribute("SysArea")
-        #self.wsudAttr.addAttribute("Status")
-        #self.wsudAttr.addAttribute("Year")
-        #self.wsudAttr.addAttribute("EAFact")
-        #self.wsudAttr.addAttribute("ImpT")
-        #self.wsudAttr.addAttribute("CurImpT")
-        #self.wsudAttr.addAttribute("Upgrades")
-        #self.wsudAttr.addAttribute("WDepth")
-        #self.wsudAttr.addAttribute("FDepth")
-        #self.wsudAttr.addAttribute("Exfil")
-        #
-        ##Datastream
-        #datastream = []
-        #datastream.append(self.mapattributes)
-        #datastream.append(self.blocks)
-        #datastream.append(self.sysGlobal)
-        #datastream.append(self.sysAttr)
-        #datastream.append(self.wsudAttr)
-        #
-        #self.addData("City", datastream)
-        #
-        #self.BLOCKIDtoUUID = {}
-
+        
     def run(self):
         #self.notify(self.ubeatsdir)
-        #city = self.getData("City")
-        #self.initBLOCKIDtoUUID(city)
-        #strvec = city.getUUIDsOfComponentsInView(self.mapattributes)
-        #map_attr = city.getComponent(strvec[0])
         map_attr = self.activesim.getAssetWithName("MapAttributes")
         self.curscalepref = self.scalingprefmatrix[int(self.scalepref)-1]
 
@@ -2291,13 +2194,13 @@ class Techplacement(UBModule):
         ksat = currentAttList.getAttribute("Soil_k")
         sysexfil = sys_descr.getAttribute("Exfil")
         Asyseff = sys_descr.getAttribute("SysArea")/sys_descr.getAttribute("EAFact")
-        type = sys_descr.getAttribute("Type")
+        wtype = sys_descr.getAttribute("Type")
         #need to be using the effective area, not the planning area
         
         #self.notify("Type: "+str(type)+" AsysEffective: "+str(Asyseff)+"ksat: "+str(ksat))
         
         ### EXCEPTION FOR SWALES AT THE MOMENT WHILE THERE ARE NO DESIGN CURVE FILES ###
-        if type == "SW":
+        if wtype == "SW":
             return 0
         ### END OF EXCEPTION - CHANGE WHEN DESIGN CURVES ARE AVAILABLE ###
         
@@ -2310,10 +2213,10 @@ class Techplacement(UBModule):
 
         #Depending on the type of system and classification, will need to retrieve design in different
         #ways
-        if type in ["BF", "SW", "WSUR", "PB", "IS"]:    #DESIGN by DCV Systems
-            sys_perc = dcv.retrieveDesign(self.getDCVPath(type), type, min(ksat, sysexfil), self.targetsvector)
+        if wtype in ["BF", "SW", "WSUR", "PB", "IS"]:    #DESIGN by DCV Systems
+            sys_perc = dcv.retrieveDesign(self.getDCVPath(wtype), wtype, min(ksat, sysexfil), self.targetsvector)
             #self.notify("Sys Percentage: "+str(sys_perc))
-        elif type in ["RT", "PP", "ASHP", "GW"]:        #DESIGN by EQN or SIM Systems
+        elif wtype in ["RT", "PP", "ASHP", "GW"]:        #DESIGN by EQN or SIM Systems
             #Other stuff
             sys_perc = np.inf #deq.retrieveDesign(...)
         
@@ -2334,13 +2237,13 @@ class Techplacement(UBModule):
         return imptreatedbysystem
 
 
-    def findDCVpath(self, type, sys_descr):
+    def findDCVpath(self, wtype, sys_descr):
         #Finds the correct pathname of the design curve file based on system type and specs
-        if type in ["IS", "BF"]: #then file = BF-EDDx.xm-FDx.xm.dcv
+        if wtype in ["IS", "BF"]: #then file = BF-EDDx.xm-FDx.xm.dcv
             pathname = 0
-        elif type in ["WSUR"]: #then file = WSUR-EDDx.xm.dcv
+        elif wtype in ["WSUR"]: #then file = WSUR-EDDx.xm.dcv
             pathname = 0
-        elif type in ["PB"]: #then file = PB-MDx.xm.dcv
+        elif wtype in ["PB"]: #then file = PB-MDx.xm.dcv
             pathname = 0
         return pathname
         
@@ -4429,28 +4332,6 @@ class Techplacement(UBModule):
             self.activesim.addAsset("SysID"+str(sysID), loc)
         return True
     
-    ############################
-    #--- DYNAMIND FUNCTIONS ---#
-    ############################
-    #def createInputDialog(self):
-    #    form = activatetechplacementGUI(self, QApplication.activeWindow())
-    #    form.exec_()
-    #    return True
-    #
-    #def getBlockUUID(self, blockid,city):
-    #    try:
-    #        key = self.BLOCKIDtoUUID[blockid]
-    #    except KeyError:
-    #        key = ""
-    #    return city.getFace(key)
-    #
-    #def initBLOCKIDtoUUID(self, city):
-    #    blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
-    #    for blockuuid in blockuuids:
-    #        block = city.getFace(blockuuid)
-    #        ID = int(round(block.getAttribute("BlockID")))
-    #        self.BLOCKIDtoUUID[ID] = blockuuid
-    #    return True
     
     def debugPlanning(self, basin_strategies_matrix, basinID):
         f = open((self.ubeatsdir)+"/temp/"+"MCRSum-"+str(self.tabindex)+"-BasinID"+str(basinID)+".csv", 'w')
