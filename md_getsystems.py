@@ -61,42 +61,11 @@ class GetSystems(UBModule):
         self.ongoing_sim = 0 #Is this module part of an ongoing simulation?
         #self.path_name = homeDir + '/Documents/UrbanBEATS/UrbanBeatsModules/data/0_screek-500msys-1970impl_points.shp'
         self.path_name = "D:\\Screek500m_PlannedWSUD1.shp" #specify C-drive as default value
-
-        #Views
-        #self.sysGlobal = View("SystemGlobal",COMPONENT,WRITE)
-        #self.sysGlobal.addAttribute("TotalSystems")
-
-        #self.sysAttr = View("SystemAttribute",COMPONENT,WRITE)
-        #self.sysAttr.addAttribute("StrategyID")
-        #self.sysAttr.addAttribute("posX")
-        #self.sysAttr.addAttribute("posY")
-        #self.sysAttr.addAttribute("BasinID")
-        #self.sysAttr.addAttribute("Location")
-        #self.sysAttr.addAttribute("Scale")
-        #self.sysAttr.addAttribute("Type")
-        #self.sysAttr.addAttribute("Qty")
-        #self.sysAttr.addAttribute("GoalQty")
-        #self.sysAttr.addAttribute("SysArea")
-        #self.sysAttr.addAttribute("Status")
-        #self.sysAttr.addAttribute("Year")
-        #self.sysAttr.addAttribute("EAFact")
-        #self.sysAttr.addAttribute("ImpT")
-        #self.sysAttr.addAttribute("CurImpT")
-        #self.sysAttr.addAttribute("Upgrades")
-        #self.sysAttr.addAttribute("WDepth")
-        #self.sysAttr.addAttribute("FDepth")
-        #self.sysAttr.addAttribute("Exfil")
-	
-        #datastream = []
-        #datastream.append(self.sysGlobal)
-        #datastream.append(self.sysAttr)
-        #self.addData("City", datastream)
         
     def run(self):
         self.notify("Start GetSystems Module")
-        #city = self.getData("City")
         sys_global = ubdata.UBComponent() #write all general attributes in here
-        #city.addComponent(sys_global, self.sysGlobal)
+
         #Get the correct driver (we are working with ESRI Shapefiles)
         driver = ogr.GetDriverByName('ESRI Shapefile')
         

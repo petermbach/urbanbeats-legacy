@@ -921,8 +921,6 @@ class Techplacement(UBModule):
 
         self.notify("Total Systems in Map: "+str(totsystems))
 
-        #sysuuids = city.getUUIDsOfComponentsInView(self.sysAttr)
-        #self.notify(sysuuids)
         sysIDs = self.activesim.getAssetsWithIdentifier("SysPrevID")
         #Grab the list of systems and sort them based on location into a dictionary
         system_list = {}        #Dictionary
@@ -2078,7 +2076,6 @@ class Techplacement(UBModule):
                         inblock_imp_treated += 0 #quite self-explanatory but is added here for clarity
                         currentAttList.addAttribute("Has"+str(luc_code)+"Sys", 1)
                         sys_implement.remove(sys_descr)
-                        #city.removeComponent(sys_descr.getUUID())
                         self.activesim.removeAssetByName("SysPrevID"+str(sys_descr.getAttribute("SysID")))
                     else: #otherwise it'll fit, transfer new information
                         self.notify("New System Upgrades fit, transferring this information to output")
@@ -4327,7 +4324,6 @@ class Techplacement(UBModule):
             loc.addAttribute("WDepth", curSys.getAttribute("WDepth"))
             loc.addAttribute("FDepth", curSys.getAttribute("FDepth"))
             loc.addAttribute("Exfil", curSys.getAttribute("Exfil"))
-            #city.addComponent(loc, self.wsudAttr)
             sysID = len(self.activesim.getAssetsWithIdentifier("SysID"))+1
             self.activesim.addAsset("SysID"+str(sysID), loc)
         return True

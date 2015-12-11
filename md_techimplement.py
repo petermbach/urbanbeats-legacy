@@ -151,10 +151,8 @@ class Techimplement(UBModule):
         #Begin looping across blocks
         for i in range(int(blocks_num)):
             currentID = i + 1
-            #currentAttList = self.getBlockUUID(currentID,city) #attribute list of current block structure
             currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-            #masterplanAttList = self.getPrevBlockUUID(currentID, city)
-            
+
             #-----------------------------------------------------------------#
             # DETERMINE WHETHER TO IMPLEMENT IN CURRENT BLOCK AT ALL #
             #-----------------------------------------------------------------#
