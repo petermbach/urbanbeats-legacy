@@ -179,22 +179,22 @@ class Techimplement(UBModule):
             for sys in sysList[currentID]:
                 if sys.getAttribute("Scale") in ["L_RES"]:
                     qty, curImpT, year = self.implementLotSystem(currentAttList, masterplanAttList, sys)
-                    if qty != 0:
+                    if qty != 0 or year != self.currentyear:
                         self.writeSystemAttributesToOutput(sys, year, qty, curImpT, currentAttList, blocks_size)
                     
                 elif sys.getAttribute("Scale") in ["L_COM", "L_HDR", "L_LI", "L_HI"]:
                     qty, curImpT, year = self.implementLotSystem(currentAttList, masterplanAttList, sys)
-                    if qty != 0:
+                    if qty != 0 or year != self.currentyear:
                         self.writeSystemAttributesToOutput(sys, year, qty, curImpT, currentAttList, blocks_size)
                     
                 elif sys.getAttribute("Scale") in ["S", "N"]:
                     curImpT, year = self.implementStreetNeighSystem(currentAttList, masterplanAttList, sys)
-                    if curImpT != 0:
+                    if curImpT != 0 or year != self.currentyear:
                         self.writeSystemAttributesToOutput(sys, year, 1, curImpT, currentAttList, blocks_size)
                     
                 elif sys.getAttribute("Scale") in ["B"]:
                     curImpT, year = self.implementBasinSystem(currentAttList, masterplanAttList, sys)
-                    if curImpT != 0:
+                    if curImpT != 0 or year != self.currentyear:
                         self.writeSystemAttributesToOutput(sys, year, 1, curImpT, currentAttList, blocks_size)
             
             #BLOCK FOR LOOP END (Repeat for next BlockID)
@@ -423,6 +423,7 @@ class Techimplement(UBModule):
             #Transfer attributes as is
             curImpT = sys.getAttribute("CurImpT")
             year = int(sys.getAttribute("Year"))
+            self.notify("This system already is implemented")
             return curImpT, year
         #If status == 0, then buildyear is also 9999
         
