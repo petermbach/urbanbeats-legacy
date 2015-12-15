@@ -1963,23 +1963,24 @@ class Delinblocks(UBModule):      #UBCORE
                         self.notify("Found a single block basin at Block: "+str(currentID))
                         basinID += 1   #transfer currentID to all blocks
                         currentAttList.addAttribute("BasinID", basinID)
+                        currentAttList.addAttribute("DownStrIDs", "")
                         currentAttList.addAttribute("Outlet", 1)
-                continue
-            
-            upstreamIDs = [currentID]
-            for id in upstreamIDs:
-                for j in range(len(hash_table[1])):
-                    if id == hash_table[1][j]:
-                        if hash_table[0][j] not in upstreamIDs:
-                            upstreamIDs.append(hash_table[0][j])
-            
-            upstreamIDs.remove(currentID)
-            #print "BlockID", currentID, "Upstream: ", upstreamIDs
-            self.notify("BlockID"+str(currentID)+" Upstream: "+str(upstreamIDs))
-            outputstring = ""
-            for j in upstreamIDs:
-                outputstring += str(j)+","
-            currentAttList.addAttribute("UpstrIDs", outputstring)
+                        continue
+            else:
+                upstreamIDs = [currentID]
+                for id in upstreamIDs:
+                    for j in range(len(hash_table[1])):
+                        if id == hash_table[1][j]:
+                            if hash_table[0][j] not in upstreamIDs:
+                                upstreamIDs.append(hash_table[0][j])
+
+                upstreamIDs.remove(currentID)
+                #print "BlockID", currentID, "Upstream: ", upstreamIDs
+                self.notify("BlockID"+str(currentID)+" Upstream: "+str(upstreamIDs))
+                outputstring = ""
+                for j in upstreamIDs:
+                    outputstring += str(j)+","
+                currentAttList.addAttribute("UpstrIDs", outputstring)
 
             downstreamIDs = [currentID]
             for id in downstreamIDs:
