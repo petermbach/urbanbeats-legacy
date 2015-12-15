@@ -1011,7 +1011,7 @@ class Techplacement(UBModule):
             lot_techCOM = [0]
             street_tech = [0]
             neigh_tech = [0]
-            subbas_tech = [0]
+            subbas_tech = {}    #initialised as empty
 
 
             #Assess Opportunities and Calculate SWH Benefits
@@ -3820,7 +3820,6 @@ class Techplacement(UBModule):
         #Loop across partakeID blocks (i.e. all blocks, which have a precinct tech)
         for i in range(len(partakeIDs)):
             currentBlockID = partakeIDs[i]      #DENOTES CURRENT POSITION IN THE MAP
-            #currentAttList = self.getBlockUUID(currentBlockID, city)
             currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentBlockID))
             #self.notify("Currently on BlockID: "+str(currentBlockID))
             
@@ -3859,7 +3858,7 @@ class Techplacement(UBModule):
             dp, totalAimpWQ, sv, cp = self.calculateRemainingService("WQ", upstreamIDs)
             
             #self.notify("Total Quantity Aimp: "+str(totalAimpQTY))
-            #self.notify("Total Water Quality Aimp: "+str(totalAimpWQ))
+            self.notify("Total Water Quality Aimp: "+str(totalAimpWQ))
 
             if self.hs_strategy == "ud":
                 dP, totalDemREC, sv,cp = self.calculateRemainingService("REC", downstreamIDs)
@@ -3884,21 +3883,20 @@ class Techplacement(UBModule):
             remainAimp_subbasinQTY = max(totalAimpQTY - subbas_treatedAimpQTY, 0)
             if bool(int(self.ration_runoff)) and totalAimpQTY != 0:
                 max_deg_matrix.append(remainAimp_subbasinQTY / totalAimpQTY)
-            #else:
-                #max_deg_matrix.append(0)
+            else:
+                max_deg_matrix.append(0)
 
             remainAimp_subbasinWQ = max(totalAimpWQ - subbas_treatedAimpWQ, 0)
             if bool(int(self.ration_pollute)) and totalAimpWQ != 0:
                 max_deg_matrix.append(remainAimp_subbasinWQ / totalAimpWQ)
-            #else:
-                #max_deg_matrix.append(0)
+            else:
+                max_deg_matrix.append(0)
 
             if self.hs_strategy == 'ud':
                 totSupply = 0
                 downstreamIDs = []      #the complete matrix of all downstream IDs from all upstream sbIDs
                 for sbID in subbasinIDs:
                     totSupply += subbasID_treatedREC[sbID]      #Get total supply of all combined upstream systems
-                    #downIDs = self.retrieveStreamBlockIDs(self.getBlockUUID(sbID, city), "downstream")
                     downIDs = self.retrieveStreamBlockIDs(self.activesim.getAssetWithName("BlockID"+str(sbID)), "downstream")
                     downIDs.append(sbID)
                     for dID in downIDs:
@@ -3920,8 +3918,8 @@ class Techplacement(UBModule):
             
             if bool(int(self.ration_harvest)) and totalDemREC != 0:
                 max_deg_matrix.append(remainDem_subbasinRec / totalDemREC)
-            #else:
-                #max_deg_matrix.append(0)
+            else:
+                max_deg_matrix.append(0)
 
             # print "Max_deg_matrix", max_deg_matrix
             #self.notify("Max Degre matrix: "+str(max_deg_matrix)
