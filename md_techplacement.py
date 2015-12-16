@@ -3747,7 +3747,7 @@ class Techplacement(UBModule):
     
     
     def calculateRemainingService(self, servtype, basinBlockIDs):
-        """Assesses the alread treated area/demand for the current basin and returns
+        """Assesses the already treated area/demand for the current basin and returns
         the remaining area/demand to be treated with a strategy.
             - Type: refers to the type of objective "QTY" = quantity, WQ = quality, 
                     REC = recycling
@@ -3952,9 +3952,7 @@ class Techplacement(UBModule):
                     continue                            #then skip to next one, no point otherwise
                 
                 max_deg_matrix = [1]
-                #block_Aimp = self.getBlockUUID(rbID, city).getAttribute("Manage_EIA")
                 block_Aimp = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Manage_EIA")
-                #block_Dem = self.getBlockUUID(rbID, city).getAttribute("Blk_WD") - self.getBlockUUID(rbID, city).getAttribute("wd_Nres_IN")
                 block_Dem = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Blk_WD") - self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("wd_Nres_IN")
                 #self.notify("Block details: "+str(block_Aimp)+" "+str(block_Dem))
                 if block_Aimp == 0:     #Impervious governs pretty much everything, if it is zero, don't even bother
