@@ -3802,7 +3802,41 @@ class Techplacement(UBModule):
         options arrays. Returns an updated current_bstrategy object completed with all details.
         """
         partakeIDs = current_bstrategy.getSubbasPartakeIDs()    #returned in order upstream-->downstream
-        
+
+        if len(partakeIDs) == 0:
+
+
+            #No sub-basin systems, the only populate with in-block technologies using entire basinBlockID list as a guide
+            for rbID in basinBlockIDs:
+                if rbID not in inblocks_chosenIDs:        #If the Block ID hasn't been chosen,
+                    #self.notify("rbID not in inblocks_chosenIDs")
+                    continue                            #then skip to next one, no point otherwise
+
+                max_degree = 1      #If only in-block options, then max-degree always = 1
+                block_Aimp = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Manage_EIA")
+                block_Dem = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Blk_WD") - self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("wd_Nres_IN")
+                #self.notify("Block details: "+str(block_Aimp)+" "+str(block_Dem))
+                if block_Aimp == 0:     #Impervious governs pretty much everything, if it is zero, don't even bother
+                    continue
+                if block_Dem == 0 and bool(int(self.ration_harvest)):   #If demand is zero and we are planning for recycling, skip
+                    continue
+
+                deg, obj, treatedQTY, treatedWQ, treatedREC, iaoqty, iaowq = self.pickOption(rbID,max_degree,inblock_options, [block_Aimp*bool(int(self.ration_runoff)), block_Aimp*bool(int(self.ration_pollute)), block_Dem*bool(int(self.ration_harvest))], "BS")
+                #self.notify("Option Treats: "+str([treatedQTY, treatedWQ, treatedREC]))
+                #self.notify(obj)
+
+                subbas_treatedAimpQTY += treatedQTY + iaoqty
+                subbas_treatedAimpWQ += treatedWQ + iaowq
+                subbas_treatedDemREC += treatedREC
+                remainAimp_subbasinQTY = max(remainAimp_subbasinQTY - treatedQTY, 0)
+                remainAimp_subbasinWQ = max(remainAimp_subbasinWQ - treatedWQ, 0)
+                remainDem_subbasinRec = max(remainDem_subbasinRec - treatedREC, 0)
+                #self.notify("Remaining: "+str([remainAimp_subbasinQTY, remainAimp_subbasinWQ, remainDem_subbasinRec]))
+                if deg != 0 and obj != 0:
+                    current_bstrategy.appendTechnology(rbID, deg, obj, "b")
+
+
+
         #Make a copy of partakeIDs to track blocks
         partakeIDsTracker = []
         for id in partakeIDs:
