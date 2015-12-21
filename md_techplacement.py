@@ -3818,20 +3818,27 @@ class Techplacement(UBModule):
                     #self.notify("rbID not in inblocks_chosenIDs")
                     continue                            #then skip to next one, no point otherwise
 
+
+                #Calculate max-degree (1 or less)
+                max_deg_matrix = []
+
                 block_Aimp = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Manage_EIA")
                 block_Dem = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Blk_WD") - self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("wd_Nres_IN")
 
                 #self.notify("Block details: "+str(block_Aimp)+" "+str(block_Dem))
-                if block_Aimp == 0:     #Impervious governs pretty much everything, if it is zero, don't even bother
+                if block_Aimp == 0: #Impervious governs pretty much everything, if it is zero, don't even bother
                     continue
-                if block_Dem == 0 and bool(int(self.ration_harvest)):   #If demand is zero and we are planning for recycling, skip
-                    continue
-
-                #Calculate max-degree (1 or less)
-                max_deg_matrix = []
-                max_deg_matrix.append(float(remainAimp_subbasinQTY)/float(block_Aimp))
-                max_deg_matrix.append(float(remainAimp_subbasinWQ)/float(block_Aimp))
-                max_deg_matrix.append(float(remainDem_subbasinRec)/float(block_Dem))
+                if bool(int(self.ration_runoff)):
+                    max_deg_matrix.append(float(remainAimp_subbasinQTY)/float(block_Aimp))
+                if bool(int(self.ration_pollute)):
+                    max_deg_matrix.append(float(remainAimp_subbasinWQ)/float(block_Aimp))
+                if bool(int(self.ration_harvest)):      #If and only if we are harvesting, we do something to max_deg re block_Dem, otherwise...
+                    if block_Dem == 0:
+                        continue
+                    else:
+                        max_deg_matrix.append(float(remainDem_subbasinRec)/float(block_Dem))
+                if len(max_deg_matrix) == 0:
+                    continue    #If all three cases are not valid then the matrix remains empty
 
                 max_degree = min(min(max_deg_matrix)+float(self.service_redundancy/100.0), 1.0)  #choose the minimum, bring in allowance using redundancy parameter
 
@@ -3930,14 +3937,10 @@ class Techplacement(UBModule):
             remainAimp_subbasinQTY = max(totalAimpQTY - subbas_treatedAimpQTY, 0)
             if bool(int(self.ration_runoff)) and totalAimpQTY != 0:
                 max_deg_matrix.append(remainAimp_subbasinQTY / totalAimpQTY)
-            else:
-                max_deg_matrix.append(0)
 
             remainAimp_subbasinWQ = max(totalAimpWQ - subbas_treatedAimpWQ, 0)
             if bool(int(self.ration_pollute)) and totalAimpWQ != 0:
                 max_deg_matrix.append(remainAimp_subbasinWQ / totalAimpWQ)
-            else:
-                max_deg_matrix.append(0)
 
             if self.hs_strategy == 'ud':
                 totSupply = 0
@@ -3965,11 +3968,12 @@ class Techplacement(UBModule):
             
             if bool(int(self.ration_harvest)) and totalDemREC != 0:
                 max_deg_matrix.append(remainDem_subbasinRec / totalDemREC)
-            else:
-                max_deg_matrix.append(0)
 
             # print "Max_deg_matrix", max_deg_matrix
             #self.notify("Max Degre matrix: "+str(max_deg_matrix)
+            if len(max_deg_matrix) == 0:
+                continue
+
             max_degree = min(max_deg_matrix)+float(self.service_redundancy/100.0)  #choose the minimum, bring in allowance using redundancy parameter
             
             current_bstrategy.addSubBasinInfo(currentBlockID, upstreamIDs, subbasinIDs, [totalAimpQTY,totalAimpWQ,totalDemREC])
