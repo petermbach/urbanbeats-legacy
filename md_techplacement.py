@@ -3802,9 +3802,15 @@ class Techplacement(UBModule):
         options arrays. Returns an updated current_bstrategy object completed with all details.
         """
         partakeIDs = current_bstrategy.getSubbasPartakeIDs()    #returned in order upstream-->downstream
+        basintotals = current_bstrategy.getBasinTotalValues()
 
         if len(partakeIDs) == 0:
-
+            subbas_treatedAimpQTY = 0  #Sum of already treated imp area in upstream sub-basins and the now planned treatment
+            subbas_treatedAimpWQ = 0
+            subbas_treatedDemREC = 0
+            remainAimp_subbasinQTY = max(basintotals[0] - subbas_treatedAimpQTY, 0)
+            remainAimp_subbasinWQ = max(basintotals[1] - subbas_treatedAimpWQ, 0)
+            remainDem_subbasinRec = max(basintotals[2] - subbas_treatedDemREC, 0)
 
             #No sub-basin systems, the only populate with in-block technologies using entire basinBlockID list as a guide
             for rbID in basinBlockIDs:
@@ -3812,14 +3818,22 @@ class Techplacement(UBModule):
                     #self.notify("rbID not in inblocks_chosenIDs")
                     continue                            #then skip to next one, no point otherwise
 
-                max_degree = 1      #If only in-block options, then max-degree always = 1
                 block_Aimp = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Manage_EIA")
                 block_Dem = self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("Blk_WD") - self.activesim.getAssetWithName("BlockID"+str(rbID)).getAttribute("wd_Nres_IN")
+
                 #self.notify("Block details: "+str(block_Aimp)+" "+str(block_Dem))
                 if block_Aimp == 0:     #Impervious governs pretty much everything, if it is zero, don't even bother
                     continue
                 if block_Dem == 0 and bool(int(self.ration_harvest)):   #If demand is zero and we are planning for recycling, skip
                     continue
+
+                #Calculate max-degree (1 or less)
+                max_deg_matrix = []
+                max_deg_matrix.append(float(remainAimp_subbasinQTY)/float(block_Aimp))
+                max_deg_matrix.append(float(remainAimp_subbasinWQ)/float(block_Aimp))
+                max_deg_matrix.append(float(remainDem_subbasinRec)/float(block_Dem))
+
+                max_degree = min(min(max_deg_matrix)+float(self.service_redundancy/100.0), 1.0)  #choose the minimum, bring in allowance using redundancy parameter
 
                 deg, obj, treatedQTY, treatedWQ, treatedREC, iaoqty, iaowq = self.pickOption(rbID,max_degree,inblock_options, [block_Aimp*bool(int(self.ration_runoff)), block_Aimp*bool(int(self.ration_pollute)), block_Dem*bool(int(self.ration_harvest))], "BS")
                 #self.notify("Option Treats: "+str([treatedQTY, treatedWQ, treatedREC]))
@@ -3835,7 +3849,7 @@ class Techplacement(UBModule):
                 if deg != 0 and obj != 0:
                     current_bstrategy.appendTechnology(rbID, deg, obj, "b")
 
-
+            return True     #Exit the function after in-block placement
 
         #Make a copy of partakeIDs to track blocks
         partakeIDsTracker = []
@@ -3876,10 +3890,9 @@ class Techplacement(UBModule):
                                                     #that they are not doubled up
             for id in subbasinIDs:
                 remainIDs.remove(id)            #remove the sub-basin ID's ID from remainIDs
-                #upstrIDs = self.retrieveStreamBlockIDs(self.getBlockUUID(id, city), "upstream")
                 upstrIDs = self.retrieveStreamBlockIDs(self.activesim.getAssetWithName("BlockID"+str(id)), "upstream")
-                for upID in upstrIDs:   #Also remove all sub-basinID's upstream block IDs from
-                    remainIDs.remove(upID)   #remain IDs, leaving ONLY Blocks local to currentBlockID
+                for upID in upstrIDs:           #Also remove all sub-basinID's upstream block IDs from
+                    remainIDs.remove(upID)      #remain IDs, leaving ONLY Blocks local to currentBlockID
             #self.notify("Blocks local to current location: "+str(remainIDs))
             
             #(2) Obtain highest allowable degree of treatment (Max_Degree)
