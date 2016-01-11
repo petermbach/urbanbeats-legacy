@@ -1331,11 +1331,11 @@ class Techplacement(UBModule):
 
         if method == "SLP":
             a = 1.0
-            bstrategy.setTotalMCAscore(max(0, bstrategy.getTotalMCAscore() - a* sum(dSQty, dSWQ, dSRec) * bstrategy.getTotalMCAscore()))
+            bstrategy.setTotalMCAscore(max(0, bstrategy.getTotalMCAscore() - a* sum([dSQty, dSWQ, dSRec]) * bstrategy.getTotalMCAscore()))
         elif method == "SPP":
             a = self.penaltyFa
             b = self.penaltyFb
-            bstrategy.setTotalMCAscore(max(0, bstrategy.getTotalMCAscore() - a* pow(sum(dSQty, dSWQ, dSRec),b)))
+            bstrategy.setTotalMCAscore(max(0, bstrategy.getTotalMCAscore() - a* pow(sum([dSQty, dSWQ, dSRec]),b)))
         return True
 
 
@@ -3912,7 +3912,7 @@ class Techplacement(UBModule):
             dp, totalAimpWQ, sv, cp = self.calculateRemainingService("WQ", upstreamIDs)
             
             #self.notify("Total Quantity Aimp: "+str(totalAimpQTY))
-            self.notify("Total Water Quality Aimp: "+str(totalAimpWQ))
+            #self.notify("Total Water Quality Aimp: "+str(totalAimpWQ))
 
             if self.hs_strategy == "ud":
                 dP, totalDemREC, sv,cp = self.calculateRemainingService("REC", downstreamIDs)
