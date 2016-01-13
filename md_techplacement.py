@@ -717,8 +717,12 @@ class Techplacement(UBModule):
 
         self.scaleabbr = ["lot", "street", "neigh", "prec"]
         self.ffplevels = {"PO":1, "NP":2, "RW":3, "SW":4, "GW":5}  #Used to determine when a system is cleaner than the other
-        self.sqlDB = 0  #Global variable to hold the sqlite database
-        self.dbcurs = 0 #cursor to execute sqlcommands for the sqlite database
+
+        #DEBUG - Database writing option of tech planning information, enable if wanting a dump of info from module outputs
+        #self.sqlDB = 0  #Global variable to hold the sqlite database
+        #self.dbcurs = 0 #cursor to execute sqlcommands for the sqlite database
+
+
         self.lot_incr = []
         self.street_incr = []
         self.neigh_incr = []
@@ -964,21 +968,23 @@ class Techplacement(UBModule):
 
         #INITIALIZE THE DATABASE
         #INITIALIZE THE DATABASE ---- COMMENT FROM HERE TO REMOVE DATABASE WRITING
-        ubdbpath = self.ubeatsdir+"/temp/ubeatsdb1.db"
-        if os.path.isfile(ubdbpath):
-            try:
-                os.remove(ubdbpath)     #Attempts to remove the file, if it fails, it creates another with an incremented
-            except:                     #index.
-                ubdbpath = self.ubeatsdir+"/temp/ubeatsdb"+str(int(ubdbpath[len(ubdbpath)-4])+1)+".db"
-
-        self.sqlDB = sqlite3.connect(ubdbpath)
-        self.dbcurs = self.sqlDB.cursor()
-
-        #Create Table for Individual Systems
-        self.dbcurs.execute("CREATE TABLE watertechs(BlockID,Type,Size,Scale,Aimpdesign,Service,Areafactor,Landuse,Designdegree,Recycled,Integrated,Storetype,Storesize,qtyIAO,wqIAO)")
-        self.dbcurs.execute("CREATE TABLE blockstrats(BlockID,Bin,RESType,RESQty,RESservice,HDRType,HDRQty,HDRService,LIType,LIQty,LIService,HIType,HIQty,HIService,COMType,COMQty,COMService,StreetType,StreetQty,StreetService,NeighType,NeighQty,NeighService,TotService,MCATech,MCAEnv,MCAEcn,MCASoc,MCATotal,ImpTotal)")
-        self.dbcurs.execute("CREATE TABLE blockstratstop(BlockID,Bin,RESType,RESQty,RESservice,HDRType,HDRQty,HDRService,LIType,LIQty,LIService,HIType,HIQty,HIService,COMType,COMQty,COMService,StreetType,StreetQty,StreetService,NeighType,NeighQty,NeighService,TotService,MCATech,MCAEnv,MCAEcn,MCASoc,MCATotal,ImpTotal)")
-        #END OF DATABASE STUFF ------ COMMENT OUT UNTIL HERE TO REMOVE DATABASE WRITING
+        #
+        #DEBUG - Database path
+        # ubdbpath = self.ubeatsdir+"/temp/ubeatsdb1.db"
+        # if os.path.isfile(ubdbpath):
+        #     try:
+        #         os.remove(ubdbpath)     #Attempts to remove the file, if it fails, it creates another with an incremented
+        #     except:                     #index.
+        #         ubdbpath = self.ubeatsdir+"/temp/ubeatsdb"+str(int(ubdbpath[len(ubdbpath)-4])+1)+".db"
+        #
+        # self.sqlDB = sqlite3.connect(ubdbpath)
+        # self.dbcurs = self.sqlDB.cursor()
+        #
+        # #Create Table for Individual Systems
+        # self.dbcurs.execute("CREATE TABLE watertechs(BlockID,Type,Size,Scale,Aimpdesign,Service,Areafactor,Landuse,Designdegree,Recycled,Integrated,Storetype,Storesize,qtyIAO,wqIAO)")
+        # self.dbcurs.execute("CREATE TABLE blockstrats(BlockID,Bin,RESType,RESQty,RESservice,HDRType,HDRQty,HDRService,LIType,LIQty,LIService,HIType,HIQty,HIService,COMType,COMQty,COMService,StreetType,StreetQty,StreetService,NeighType,NeighQty,NeighService,TotService,MCATech,MCAEnv,MCAEcn,MCASoc,MCATotal,ImpTotal)")
+        # self.dbcurs.execute("CREATE TABLE blockstratstop(BlockID,Bin,RESType,RESQty,RESservice,HDRType,HDRQty,HDRService,LIType,LIQty,LIService,HIType,HIQty,HIService,COMType,COMQty,COMService,StreetType,StreetQty,StreetService,NeighType,NeighQty,NeighService,TotService,MCATech,MCAEnv,MCAEcn,MCASoc,MCATotal,ImpTotal)")
+        # #END OF DATABASE STUFF ------ COMMENT OUT UNTIL HERE TO REMOVE DATABASE WRITING
 
         inblock_options = {}
         subbas_options = {}
@@ -1058,13 +1064,18 @@ class Techplacement(UBModule):
             #--- THIRD LOOP - CONSTRUCT IN-BLOCK OPTIONS
             inblock_options["BlockID"+str(currentID)] = self.constructInBlockOptions(currentAttList, lot_techRES, lot_techHDR, lot_techLI, lot_techHI, lot_techCOM, street_tech, neigh_tech)
 
-        self.sqlDB.commit()     #DATABASE WRITING ----- COMMENT OUT TO REMOVE DATABASE WRITING FUNCTIONALITY
-        
+        #DEBUG - COMMIT THE SQL DATABSE
+        #self.sqlDB.commit()     #DATABASE WRITING ----- COMMENT OUT TO REMOVE DATABASE WRITING FUNCTIONALITY
+        # DEBUG END
+
         ###-------------------------------------------------------------------###
         #  FOURTH LOOP - MONTE CARLO (ACROSS BASINS)                            #
         ###-------------------------------------------------------------------###
         gc.collect()
-#        self.dbcurs.execute('''CREATE TABLE basinbrainstorm(BasinID, )''')
+
+        #DEBUG - Database execute
+        #self.dbcurs.execute('''CREATE TABLE basinbrainstorm(BasinID, )''')
+        #DEBUG END
 
         for i in range(int(basins)):
             currentBasinID = i+1
@@ -1198,8 +1209,10 @@ class Techplacement(UBModule):
 #        output_log_file.write("End of Basin Strategies Log \n\n")
 #        output_log_file.close()
 
-        self.sqlDB.close()      #Close the database
-        
+        #DEBUG - CLOSE THE SQL DATABASE
+        #self.sqlDB.close()      #Close the database
+        #DEBUG END
+
         #END OF MODULE
         
     ########################################################
@@ -2895,11 +2908,14 @@ class Techplacement(UBModule):
                 servicematrix[1] = Adesign_imp
             if Asystem["Rec"][0] != None:
                 servicematrix[2] = design_Dem
-            servicematrixstring = tt.convertArrayToDBString(servicematrix)
-            self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
-                                str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+
-                                str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+
-                                str(incr)+",'N',"+str(0)+",'"+str('None')+"',"+str(0)+","+str(0)+","+str(0)+")")
+
+            #DEBUG - Database writing
+            # servicematrixstring = tt.convertArrayToDBString(servicematrix)
+            # self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
+            #                     str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+
+            #                     str(servicematrixstring)+"',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+
+            #                     str(incr)+",'N',"+str(0)+",'"+str('None')+"',"+str(0)+","+str(0)+","+str(0)+")")
+            #DEBUG END
 
             sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
             sys_object.setDesignIncrement(incr)
@@ -2987,7 +3003,10 @@ class Techplacement(UBModule):
                     servicematrix[1] = Adesign_imp
                 if AsystemRecQty[0] != None:
                     servicematrix[2] = design_Dem
-                servicematrixstring = tt.convertArrayToDBString(servicematrix)
+
+                # DEBUG - CONVERT TO DATABSE STRING
+                # servicematrixstring = tt.convertArrayToDBString(servicematrix)
+
                 sys_object = tt.WaterTech(techabbr, Asystem["Size"][0], curscale, servicematrix, Asystem["Size"][1], landuse, currentID)
                 sys_object.addRecycledStoreToTech(curstore[0], curstore[2], curstore[3], curstore[4])     #If analysis showed that system can accommodate store, add the store object
                 sys_object.setDesignIncrement(incr)
@@ -3000,11 +3019,12 @@ class Techplacement(UBModule):
                         dcv.treatWQbenefits(sys_object, self.swh_unitrunoff, self.targetsvector[1:4], Adesign_imp, self.swhbenefitstable)   #only the three pollution targets
                     # print sys_object.getIAO("all")
 
-                self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
-                                    str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+str(servicematrixstring)+
-                                    "',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'Y',"+str(curstore[4])+",'"+
-                                    str(curstore[3])+"',"+str(curstore[0].getSize())+","+str(sys_object.getIAO("Qty"))+
-                                    ","+str(sys_object.getIAO("WQ"))+")")
+                #DEBUG INSERT DATA INTO THE SQLITE Database
+                # self.dbcurs.execute("INSERT INTO watertechs VALUES ("+str(currentID)+",'"+str(techabbr)+"',"+
+                #                     str(Asystem["Size"][0])+",'"+curscale+"',"+str(Adesign_imp)+",'"+str(servicematrixstring)+
+                #                     "',"+str(Asystem["Size"][1])+",'"+str(landuse)+"',"+str(incr)+",'Y',"+str(curstore[4])+",'"+
+                #                     str(curstore[3])+"',"+str(curstore[0].getSize())+","+str(sys_object.getIAO("Qty"))+
+                #                     ","+str(sys_object.getIAO("WQ"))+")")
 
                 sys_objects_array.append(sys_object)
         return sys_objects_array    #if no systems are design, returns an empty array
@@ -3569,9 +3589,9 @@ class Techplacement(UBModule):
                         
                         tt.CalculateMCAStratScore(blockstrat, [self.bottomlines_tech_w, self.bottomlines_env_w, \
                                                                self.bottomlines_ecn_w, self.bottomlines_soc_w])
-                        #Write to DB file
-                        dbs = tt.createDataBaseString(blockstrat, AblockEIA)
-                        self.dbcurs.execute("INSERT INTO blockstrats VALUES ("+str(dbs)+")")
+                        #DEBUG - Write to DB file
+                        #dbs = tt.createDataBaseString(blockstrat, AblockEIA)
+                        #self.dbcurs.execute("INSERT INTO blockstrats VALUES ("+str(dbs)+")")
                         
                     if len(allInBlockOptions[servicebin]) < 10:         #If there are less than ten options in each bin...
                         allInBlockOptions[servicebin].append(blockstrat)        #append the current strategy to the list of that bin
@@ -3588,11 +3608,11 @@ class Techplacement(UBModule):
                         else:
                             blockstrat = 0      #set null reference
         
-        #Transfer all to database table
-        for key in allInBlockOptions.keys():
-            for i in range(len(allInBlockOptions[key])):
-                dbs = tt.createDataBaseString(allInBlockOptions[key][i], AblockEIA)
-                self.dbcurs.execute("INSERT INTO blockstratstop VALUES ("+str(dbs)+")")
+        #DEBUG - Transfer all to database table
+        # for key in allInBlockOptions.keys():
+        #     for i in range(len(allInBlockOptions[key])):
+        #         dbs = tt.createDataBaseString(allInBlockOptions[key][i], AblockEIA)
+        #         self.dbcurs.execute("INSERT INTO blockstratstop VALUES ("+str(dbs)+")")
         return allInBlockOptions
     
     def getServiceBinLowestScore(self, binlist):
