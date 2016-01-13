@@ -1109,7 +1109,8 @@ class TechplacementGUILaunch(QtGui.QDialog):
         for i in rainfiledatanames:
             self.ui.rec_rainfile_combo.addItem(str(os.path.basename(i)))
             #Adds all rainfall file names to the combo box
-            self.ui.rec_rainfile_combo.setCurrentIndex(comboindex)
+
+        self.ui.rec_rainfile_combo.setCurrentIndex(comboindex)
 
     def setupPETfileCombo(self, evapfiledatanames):
         if self.module.getParameter("evapfile") in evapfiledatanames:
@@ -1126,7 +1127,8 @@ class TechplacementGUILaunch(QtGui.QDialog):
         for i in evapfiledatanames:
             self.ui.rec_petfile_combo.addItem(str(os.path.basename(i)))
             #Adds all rainfall file names to the combo box
-            self.ui.rec_petfile_combo.setCurrentIndex(comboindex)
+
+        self.ui.rec_petfile_combo.setCurrentIndex(comboindex)
 
 
 
