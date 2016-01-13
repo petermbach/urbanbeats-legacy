@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perfassessgui.ui'
 #
-# Created: Wed Jan 13 11:20:17 2016
+# Created: Wed Jan 13 15:28:54 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -346,12 +346,6 @@ class Ui_Perfconfig_Dialog(object):
         self.clim_sep1 = QtGui.QLabel(self.clim_scale_widget)
         self.clim_sep1.setGeometry(QtCore.QRect(170, 90, 31, 16))
         self.clim_sep1.setObjectName(_fromUtf8("clim_sep1"))
-        self.clim_avg1 = QtGui.QLabel(self.clim_scale_widget)
-        self.clim_avg1.setGeometry(QtCore.QRect(310, 110, 61, 16))
-        self.clim_avg1.setObjectName(_fromUtf8("clim_avg1"))
-        self.clim_rainavg_box = QtGui.QLineEdit(self.clim_scale_widget)
-        self.clim_rainavg_box.setGeometry(QtCore.QRect(370, 110, 61, 20))
-        self.clim_rainavg_box.setObjectName(_fromUtf8("clim_rainavg_box"))
         self.clim_rain_feb = QtGui.QDoubleSpinBox(self.clim_scale_widget)
         self.clim_rain_feb.setGeometry(QtCore.QRect(80, 65, 62, 16))
         self.clim_rain_feb.setMinimum(-5.0)
@@ -446,9 +440,6 @@ class Ui_Perfconfig_Dialog(object):
         self.clim_evapscale_check = QtGui.QCheckBox(self.clim_scale_widget)
         self.clim_evapscale_check.setGeometry(QtCore.QRect(10, 195, 391, 17))
         self.clim_evapscale_check.setObjectName(_fromUtf8("clim_evapscale_check"))
-        self.clim_evapavg_box = QtGui.QLineEdit(self.clim_scale_widget)
-        self.clim_evapavg_box.setGeometry(QtCore.QRect(370, 295, 61, 20))
-        self.clim_evapavg_box.setObjectName(_fromUtf8("clim_evapavg_box"))
         self.clim_jul2 = QtGui.QLabel(self.clim_scale_widget)
         self.clim_jul2.setGeometry(QtCore.QRect(170, 225, 31, 16))
         self.clim_jul2.setObjectName(_fromUtf8("clim_jul2"))
@@ -479,9 +470,6 @@ class Ui_Perfconfig_Dialog(object):
         self.clim_evap_may.setSingleStep(0.01)
         self.clim_evap_may.setProperty("value", 1.0)
         self.clim_evap_may.setObjectName(_fromUtf8("clim_evap_may"))
-        self.clim_avg2 = QtGui.QLabel(self.clim_scale_widget)
-        self.clim_avg2.setGeometry(QtCore.QRect(310, 295, 61, 16))
-        self.clim_avg2.setObjectName(_fromUtf8("clim_avg2"))
         self.clim_aug2 = QtGui.QLabel(self.clim_scale_widget)
         self.clim_aug2.setGeometry(QtCore.QRect(170, 250, 31, 16))
         self.clim_aug2.setObjectName(_fromUtf8("clim_aug2"))
@@ -1707,12 +1695,10 @@ class Ui_Perfconfig_Dialog(object):
         self.clim_aug1.setText(_translate("Perfconfig_Dialog", "Aug", None))
         self.clim_dec1.setText(_translate("Perfconfig_Dialog", "Dec", None))
         self.clim_sep1.setText(_translate("Perfconfig_Dialog", "Sep", None))
-        self.clim_avg1.setText(_translate("Perfconfig_Dialog", "Average:", None))
         self.clim_evapscale_check.setText(_translate("Perfconfig_Dialog", "Perform Evapotranspiration Data Scaling (enter monthly factors)", None))
         self.clim_jul2.setText(_translate("Perfconfig_Dialog", "Jul", None))
         self.clim_may2.setText(_translate("Perfconfig_Dialog", "May", None))
         self.clim_apr2.setText(_translate("Perfconfig_Dialog", "Apr", None))
-        self.clim_avg2.setText(_translate("Perfconfig_Dialog", "Average:", None))
         self.clim_aug2.setText(_translate("Perfconfig_Dialog", "Aug", None))
         self.clim_sep2.setText(_translate("Perfconfig_Dialog", "Sep", None))
         self.clim_mar2.setText(_translate("Perfconfig_Dialog", "Mar", None))

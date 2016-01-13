@@ -34,6 +34,9 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.ui = Ui_Perfconfig_Dialog()
         self.ui.setupUi(self)
         self.module = activesim.getModulePerfAssess(tabindex)
+        self.activesim = activesim
+
+        self.months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
 
         #Set all default parameters contained in the module file into the GUI's fields
 
@@ -62,6 +65,36 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         # QtCore.QObject.connect(self.ui.perf_Microclimate, QtCore.SIGNAL("clicked()"), self.ed_Microclimate)
         QtCore.QObject.connect(self.ui.perf_EPANET, QtCore.SIGNAL("clicked()"), self.ed_EPANET)
         # QtCore.QObject.connect(self.ui.perf_CD3, QtCore.SIGNAL("clicked()"), self.ed_CD3)
+
+        #----------------------------------------------------------------------#
+        #-------- CLIMATE -----------------------------------------------------#
+        #----------------------------------------------------------------------#
+        #Rain and evap file combo boxes
+        self.timestepoptions = [6.0, 60.0, 1440.0]
+
+        self.setupRainfileCombo(self.activesim.showDataArchive()["Rainfall"])
+        self.setupPETfileCombo(self.activesim.showDataArchive()["Evapotranspiration"])
+
+        self.ui.clim_rainyears_spin.setValue(int(self.module.getParameter("rainyears")))
+        self.ui.clim_dt_combo.setCurrentIndex(self.timestepoptions.index(self.module.getParameter("analysis_dt")))
+
+        self.ui.clim_rainscale_check.setChecked(int(self.module.getParameter("rainscale")))
+        self.ui.clim_evapscale_check.setChecked(int(self.module.getParameter("evapscale")))
+        self.rainscalar_checks()
+        self.evapscalar_checks()
+
+        for i in range(len(self.months)):
+            eval("self.ui.clim_rain_"+str(self.months[i])+".setValue(self.module.getParameter(\"rainscalars\")[i])")
+
+        for i in range(len(self.months)):
+            eval("self.ui.clim_evap_"+str(self.months[i])+".setValue(self.module.getParameter(\"evapscalars\")[i])")
+
+        QtCore.QObject.connect(self.ui.clim_rainconstant_button, QtCore.SIGNAL("clicked()"), self.changeRainscalars)
+        QtCore.QObject.connect(self.ui.clim_evapconstant_button, QtCore.SIGNAL("clicked()"), self.changeEvapscalars)
+        QtCore.QObject.connect(self.ui.clim_rainscale_check, QtCore.SIGNAL("clicked()"), self.rainscalar_checks)
+        QtCore.QObject.connect(self.ui.clim_evapscale_check, QtCore.SIGNAL("clicked()"), self.evapscalar_checks)
+        QtCore.QObject.connect(self.ui.clim_rainreset_button, QtCore.SIGNAL("clicked()"), self.resetRainScalars)
+        QtCore.QObject.connect(self.ui.clim_evapreset_button, QtCore.SIGNAL("clicked()"), self.resetEvapScalars)
 
         #----------------------------------------------------------------------#
         #-------- MUSIC -------------------------------------------------------#
@@ -204,6 +237,94 @@ class PerfAssessGUILaunch(QtGui.QDialog):
 
         QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
 
+    def changeRainscalars(self):
+        if int(self.module.getParameter("rainscaleconstant")) == 1:
+            self.module.setParameter("rainscaleconstant", 0)
+        else:
+            self.module.setParameter("rainscaleconstant", 1)
+
+        if int(self.module.getParameter("rainscaleconstant")) == 1:
+            self.ui.clim_rainconstant_button.setText("Variable Factors")
+        else:
+            self.ui.clim_rainconstant_button.setText("Constant Factor")
+        self.rainscalar_checks()
+
+    def changeEvapscalars(self):
+        if int(self.module.getParameter("evapscaleconstant")) == 1:
+            self.module.setParameter("evapscaleconstant", 0)
+        else:
+            self.module.setParameter("evapscaleconstant", 1)
+        if int(self.module.getParameter("rainscaleconstant")) == 1:
+            self.ui.clim_evapconstant_button.setText("Variable Factors")
+        else:
+            self.ui.clim_evapconstant_button.setText("Constant Factor")
+        self.evapscalar_checks()
+
+
+    def setupRainfileCombo(self, rainfiledatanames):
+        if self.module.getParameter("rainfile") in rainfiledatanames:
+            comboindex = rainfiledatanames.index(self.module.getParameter("rainfile"))
+        else:
+            comboindex = 0
+
+        if len(rainfiledatanames) > 0:
+            self.ui.clim_raindata_combo.clear()
+        else:
+            self.ui.clim_raindata_combo.addItem("<none>")
+            self.ui.clim_raindata_combo.setCurrentIndex(0)
+
+        for i in rainfiledatanames:
+            self.ui.clim_raindata_combo.addItem(str(os.path.basename(i)))
+
+        self.ui.clim_raindata_combo.setCurrentIndex(comboindex)
+
+    def setupPETfileCombo(self, evapfiledatanames):
+        if self.module.getParameter("evapfile") in evapfiledatanames:
+            comboindex = evapfiledatanames.index(self.module.getParameter("evapfile"))
+        else:
+            comboindex = 0
+
+        if len(evapfiledatanames) > 0:
+            self.ui.clim_pet_combo.clear()
+        else:
+            self.ui.clim_pet_combo.addItem("<none>")
+            self.ui.clim_pet_combo.setCurrentIndex(0)
+
+        for i in evapfiledatanames:
+            self.ui.clim_pet_combo.addItem(str(os.path.basename(i)))
+
+        self.ui.clim_pet_combo.setCurrentIndex(comboindex)
+
+    def rainscalar_checks(self):
+        if self.ui.clim_rainscale_check.isChecked():
+            for i in range(len(self.months)):
+                if int(self.module.getParameter("rainscaleconstant")) == 1 and i != 0:
+                    eval("self.ui.clim_rain_"+str(self.months[i])+".setEnabled(0)")
+                    continue
+                eval("self.ui.clim_rain_"+str(self.months[i])+".setEnabled(1)")
+        else:
+            for i in range(len(self.months)):
+                eval("self.ui.clim_rain_"+str(self.months[i])+".setEnabled(0)")
+
+    def evapscalar_checks(self):
+        if self.ui.clim_evapscale_check.isChecked():
+            for i in range(len(self.months)):
+                if int(self.module.getParameter("evapscaleconstant")) and i != 0:
+                    eval("self.ui.clim_evap_"+str(self.months[i])+".setEnabled(0)")
+                    continue
+                eval("self.ui.clim_evap_"+str(self.months[i])+".setEnabled(1)")
+        else:
+            for i in range(len(self.months)):
+                eval("self.ui.clim_evap_"+str(self.months[i])+".setEnabled(0)")
+
+    def resetRainScalars(self):
+        for i in range(len(self.months)):
+            eval("self.ui.clim_rain_"+str(self.months[i])+".setValue(1.00)")
+
+    def resetEvapScalars(self):
+        for i in range(len(self.months)):
+            eval("self.ui.clim_evap_"+str(self.months[i])+".setValue(1.00)")
+
     def rscan_boxchange(self):
         self.ui.epanet_scanradius.setEnabled(self.ui.epanet_intrscan.isChecked())
         return True
@@ -305,6 +426,37 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.module.setParameter("perf_Microclimate", int(self.ui.perf_Microclimate.isChecked()))
         self.module.setParameter("perf_EPANET", int(self.ui.perf_EPANET.isChecked()))
         self.module.setParameter("perf_CD3", int(self.ui.perf_CD3.isChecked()))
+
+        #----------------------------------------------------------------------#
+        #-------- CLIMATE -----------------------------------------------------#
+        #----------------------------------------------------------------------#
+        #Rain and evap file combo boxes
+        rainfallfiles = self.activesim.showDataArchive()["Rainfall"]
+        if len(rainfallfiles) != 0:
+            filename = rainfallfiles[self.ui.clim_raindata_combo.currentIndex()]
+        else:
+            filename = "<none>"
+        self.module.setParameter("rainfile", str(filename))
+
+        evapfiles = self.activesim.showDataArchive()["Evapotranspiration"]
+        if len(evapfiles) != 0:
+            filename = evapfiles[self.ui.clim_pet_combo.currentIndex()]
+        else:
+            filename = "<none>"
+        self.module.setParameter("evapfile", str(filename))
+
+        self.module.setParameter("rainyears", self.ui.clim_rainyears_spin.value())
+        self.module.setParameter("analysis_dt", self.timestepoptions[self.ui.clim_dt_combo.currentIndex()])
+        self.module.setParameter("rainscale", int(self.ui.clim_rainscale_check.isChecked()))
+        self.module.setParameter("evapscale", int(self.ui.clim_evapscale_check.isChecked()))
+
+        rainscalars = []
+        evapscalars = []
+        for i in range(len(self.months)):
+            rainscalars.append(float(eval("self.ui.clim_rain_"+str(self.months[i])+".value()")))
+            evapscalars.append(float(eval("self.ui.clim_evap_"+str(self.months[i])+".value()")))
+        self.module.setParameter("rainscalars", rainscalars)
+        self.module.setParameter("evapscalars", evapscalars)
 
         #----------------------------------------------------------------------#
         #-------- MUSIC -------------------------------------------------------#

@@ -1047,29 +1047,6 @@ p, li { white-space: pre-wrap; }
                   <string>Sep</string>
                  </property>
                 </widget>
-                <widget class="QLabel" name="clim_avg1">
-                 <property name="geometry">
-                  <rect>
-                   <x>310</x>
-                   <y>110</y>
-                   <width>61</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Average:</string>
-                 </property>
-                </widget>
-                <widget class="QLineEdit" name="clim_rainavg_box">
-                 <property name="geometry">
-                  <rect>
-                   <x>370</x>
-                   <y>110</y>
-                   <width>61</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                </widget>
                 <widget class="QDoubleSpinBox" name="clim_rain_feb">
                  <property name="geometry">
                   <rect>
@@ -1369,16 +1346,6 @@ p, li { white-space: pre-wrap; }
                   <string>Perform Evapotranspiration Data Scaling (enter monthly factors)</string>
                  </property>
                 </widget>
-                <widget class="QLineEdit" name="clim_evapavg_box">
-                 <property name="geometry">
-                  <rect>
-                   <x>370</x>
-                   <y>295</y>
-                   <width>61</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                </widget>
                 <widget class="QLabel" name="clim_jul2">
                  <property name="geometry">
                   <rect>
@@ -1482,19 +1449,6 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="value">
                   <double>1.000000000000000</double>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="clim_avg2">
-                 <property name="geometry">
-                  <rect>
-                   <x>310</x>
-                   <y>295</y>
-                   <width>61</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Average:</string>
                  </property>
                 </widget>
                 <widget class="QLabel" name="clim_aug2">

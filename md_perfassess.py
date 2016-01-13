@@ -70,6 +70,33 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.perf_EPANET = 0
         self.perf_CD3 = 0
 
+        #CLIMATE TAB
+        self.createParameter("rainfile", STRING, "Rainfall filepath")
+        self.createParameter("evapfile", STRING, "Evapotranspiration filepath")
+        self.createParameter("analysis_dt", DOUBLE, "Analysis time step [mins]")
+        self.createParameter("rainyears", DOUBLE, "Number of years of rainfall to use")
+        self.rainfile = "<none>"
+        self.evapfile = "<none>"
+        self.analysis_dt = 6.0
+        self.rainyears = 2
+
+        self.createParameter("rainscale", BOOL, "Scale rainfall data?")
+        self.createParameter("evapscale", BOOL, "Scale evapotranspiration data?")
+        self.createParameter("rainscalars", LISTDOUBLE, "Monthly scaling factors for rain")
+        self.createParameter("evapscalars", LISTDOUBLE, "Monthly scaling factors for evapotranspiration")
+        self.rainscale = 0
+        self.evapscale = 0
+        self.rainscalars = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+        self.evapscalars = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+
+        self.createParameter("rainscaleconstant", BOOL, "Use one single scalar?")
+        self.createParameter("evapscaleconstant", BOOL, "Use a single evapo scalar?")
+        self.rainscaleconstant = 0
+        self.evapscaleconstant = 0
+
+
+        self.defaultscalars = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+
         #MUSIC TAB
         self.createParameter("musicversion", STRING, "Active MUSIC Version for file writing")
         self.createParameter("musicclimatefile", STRING, "Path to the .mlb climate file")
