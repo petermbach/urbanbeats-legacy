@@ -35,6 +35,7 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.ui = Ui_TechPlace_Dialog()
         self.ui.setupUi(self)
         self.module = activesim.getModuleTechplacement(tabindex)
+        self.activesim = activesim
         #Assign Default Values & Connect Signal/Slots
 
         #######################################
@@ -423,6 +424,10 @@ class TechplacementGUILaunch(QtGui.QDialog):
 
         self.sbmethod = ["Eqn", "Sim"]
         self.ui.rec_assessment_combo.setCurrentIndex(self.sbmethod.index(self.module.getParameter("sb_method")))
+
+        #Climate file combo boxes
+        self.setupRainfileCombo(self.activesim.showDataArchive()["Rainfall"])
+        self.setupPETfileCombo(self.activesim.showDataArchive()["Evapotranspiration"])
 
         self.ui.rec_rainfall_spin.setValue(int(self.module.getParameter("rain_length")))
 
@@ -1089,6 +1094,44 @@ class TechplacementGUILaunch(QtGui.QDialog):
             self.ui.rec_unitrunoff_auto.setEnabled(0)
             self.ui.rec_unitrunoff_box.setEnabled(0)
 
+    def setupRainfileCombo(self, rainfiledatanames):
+        if self.module.getParameter("rainfile") in rainfiledatanames:
+            comboindex = rainfiledatanames.index(self.module.getParameter("rainfile"))
+        else:
+            comboindex = 0
+
+        if len(rainfiledatanames) > 0:
+            self.ui.rec_rainfile_combo.clear()
+        else:
+            self.ui.rec_rainfile_combo.addItem("<none>")
+            self.ui.rec_rainfile_combo.setCurrentIndex(0)
+
+        for i in rainfiledatanames:
+            self.ui.rec_rainfile_combo.addItem(str(os.path.basename(i)))
+            #Adds all rainfall file names to the combo box
+            self.ui.rec_rainfile_combo.setCurrentIndex(comboindex)
+
+    def setupPETfileCombo(self, evapfiledatanames):
+        if self.module.getParameter("evapfile") in evapfiledatanames:
+            comboindex = evapfiledatanames.index(self.module.getParameter("evapfile"))
+        else:
+            comboindex = 0
+
+        if len(evapfiledatanames) > 0:
+            self.ui.rec_petfile_combo.clear()
+        else:
+            self.ui.rec_petfile_combo.addItem("<none>")
+            self.ui.rec_petfile_combo.setCurrentIndex(0)
+
+        for i in evapfiledatanames:
+            self.ui.rec_petfile_combo.addItem(str(os.path.basename(i)))
+            #Adds all rainfall file names to the combo box
+            self.ui.rec_petfile_combo.setCurrentIndex(comboindex)
+
+
+
+
+
     ### TECHNOLOGIES TABS ###
 
     #BIOFILTRATION SYSTEMS SIGNAL-SLOT FUNCTIONS
@@ -1334,6 +1377,21 @@ class TechplacementGUILaunch(QtGui.QDialog):
         elif self.ui.radio_hsall.isChecked() == 1:
             hs_strategy = "ua"
         self.module.setParameter("hs_strategy", str(hs_strategy))
+
+        #Rain and Evapfile Comboboxes
+        rainfallfiles = self.activesim.showDataArchive()["Rainfall"]
+        if len(rainfallfiles) != 0:
+            filename = rainfallfiles[self.ui.rec_rainfile_combo.currentIndex()]
+        else:
+            filename = "<none>"
+        self.module.setParameter("rainfile", str(filename))
+
+        evapfiles = self.activesim.showDataArchive()["Evapotranspiration"]
+        if len(evapfiles) != 0:
+            filename = evapfiles[self.ui.rec_petfile_combo.currentIndex()]
+        else:
+            filename = "<none>"
+        self.module.setParameter("evapfile", str(filename))
 
         self.module.setParameter("sb_method", str(self.sbmethod[self.ui.rec_assessment_combo.currentIndex()]))
         self.module.setParameter("rain_length", float(self.ui.rec_rainfall_spin.value()))

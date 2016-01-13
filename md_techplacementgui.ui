@@ -91,7 +91,7 @@ p, li { white-space: pre-wrap; }
    <item>
     <widget class="QTabWidget" name="techplace_input">
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="DesignCriteria">
       <attribute name="title">
@@ -2446,9 +2446,9 @@ p, li { white-space: pre-wrap; }
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-856</y>
+               <y>0</y>
                <width>465</width>
-               <height>1271</height>
+               <height>1291</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -4261,7 +4261,7 @@ p, li { white-space: pre-wrap; }
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>160</height>
+                  <height>180</height>
                  </size>
                 </property>
                 <widget class="QLabel" name="rec_assessment_lbl">
@@ -4301,7 +4301,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>10</x>
-                   <y>75</y>
+                   <y>105</y>
                    <width>311</width>
                    <height>16</height>
                   </rect>
@@ -4314,7 +4314,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>320</x>
-                   <y>75</y>
+                   <y>105</y>
                    <width>71</width>
                    <height>16</height>
                   </rect>
@@ -4336,7 +4336,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>10</x>
-                   <y>105</y>
+                   <y>130</y>
                    <width>421</width>
                    <height>17</height>
                   </rect>
@@ -4349,7 +4349,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>30</x>
-                   <y>130</y>
+                   <y>155</y>
                    <width>211</width>
                    <height>16</height>
                   </rect>
@@ -4365,7 +4365,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>250</x>
-                   <y>130</y>
+                   <y>155</y>
                    <width>51</width>
                    <height>20</height>
                   </rect>
@@ -4378,7 +4378,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>320</x>
-                   <y>130</y>
+                   <y>155</y>
                    <width>101</width>
                    <height>17</height>
                   </rect>
@@ -4387,7 +4387,7 @@ p, li { white-space: pre-wrap; }
                   <string>Auto determine</string>
                  </property>
                 </widget>
-                <widget class="QLabel" name="music_version_2">
+                <widget class="QLabel" name="rec_rainfile_lbl">
                  <property name="geometry">
                   <rect>
                    <x>10</x>
@@ -4404,11 +4404,43 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Choose Rainfall File:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
-                <widget class="QComboBox" name="comboBox">
+                <widget class="QComboBox" name="rec_rainfile_combo">
                  <property name="geometry">
                   <rect>
                    <x>140</x>
                    <y>40</y>
+                   <width>291</width>
+                   <height>22</height>
+                  </rect>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>&lt;none&gt;</string>
+                  </property>
+                 </item>
+                </widget>
+                <widget class="QLabel" name="rec_petfile_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>70</y>
+                   <width>111</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Choose PET File:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QComboBox" name="rec_petfile_combo">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>70</y>
                    <width>291</width>
                    <height>22</height>
                   </rect>
@@ -5152,7 +5184,7 @@ p, li { white-space: pre-wrap; }
        <item row="0" column="1">
         <widget class="QStackedWidget" name="techlist_stack">
          <property name="currentIndex">
-          <number>3</number>
+          <number>21</number>
          </property>
          <widget class="QWidget" name="page">
           <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -10045,7 +10077,7 @@ p, li { white-space: pre-wrap; }
  <resources>
   <include location="toolbaricons/guitoolbaricons.qrc"/>
   <include location="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/resources/dialogimg.qrc"/>
-  <include location="../../My Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS Core Dev/ub_modules/resources/dialogimg.qrc"/>
+  <include location="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/dialogimg.qrc"/>
  </resources>
  <connections>
   <connection>

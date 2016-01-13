@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_techplacementgui.ui'
 #
-# Created: Wed Jun 24 11:49:30 2015
+# Created: Tue Jan 12 10:57:52 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -687,7 +687,7 @@ class Ui_TechPlace_Dialog(object):
         self.design_crit_inputs_3.setWidgetResizable(True)
         self.design_crit_inputs_3.setObjectName(_fromUtf8("design_crit_inputs_3"))
         self.design_crit_inputs_widget_3 = QtGui.QWidget()
-        self.design_crit_inputs_widget_3.setGeometry(QtCore.QRect(0, 0, 465, 1236))
+        self.design_crit_inputs_widget_3.setGeometry(QtCore.QRect(0, 0, 465, 1291))
         self.design_crit_inputs_widget_3.setObjectName(_fromUtf8("design_crit_inputs_widget_3"))
         self.verticalLayout_9 = QtGui.QVBoxLayout(self.design_crit_inputs_widget_3)
         self.verticalLayout_9.setObjectName(_fromUtf8("verticalLayout_9"))
@@ -1125,7 +1125,7 @@ class Ui_TechPlace_Dialog(object):
         self.recycle_lbl2.setObjectName(_fromUtf8("recycle_lbl2"))
         self.verticalLayout_9.addWidget(self.recycle_lbl2)
         self.recycle_widget2 = QtGui.QWidget(self.design_crit_inputs_widget_3)
-        self.recycle_widget2.setMinimumSize(QtCore.QSize(0, 125))
+        self.recycle_widget2.setMinimumSize(QtCore.QSize(0, 180))
         self.recycle_widget2.setObjectName(_fromUtf8("recycle_widget2"))
         self.rec_assessment_lbl = QtGui.QLabel(self.recycle_widget2)
         self.rec_assessment_lbl.setGeometry(QtCore.QRect(10, 10, 131, 16))
@@ -1136,27 +1136,41 @@ class Ui_TechPlace_Dialog(object):
         self.rec_assessment_combo.addItem(_fromUtf8(""))
         self.rec_assessment_combo.addItem(_fromUtf8(""))
         self.rec_rainfall_lbl = QtGui.QLabel(self.recycle_widget2)
-        self.rec_rainfall_lbl.setGeometry(QtCore.QRect(10, 40, 311, 16))
+        self.rec_rainfall_lbl.setGeometry(QtCore.QRect(10, 105, 311, 16))
         self.rec_rainfall_lbl.setObjectName(_fromUtf8("rec_rainfall_lbl"))
         self.rec_rainfall_spin = QtGui.QSpinBox(self.recycle_widget2)
-        self.rec_rainfall_spin.setGeometry(QtCore.QRect(320, 40, 71, 16))
+        self.rec_rainfall_spin.setGeometry(QtCore.QRect(320, 105, 71, 16))
         self.rec_rainfall_spin.setMinimum(1)
         self.rec_rainfall_spin.setMaximum(10)
         self.rec_rainfall_spin.setProperty("value", 10)
         self.rec_rainfall_spin.setObjectName(_fromUtf8("rec_rainfall_spin"))
         self.swh_benefits_check = QtGui.QCheckBox(self.recycle_widget2)
-        self.swh_benefits_check.setGeometry(QtCore.QRect(10, 70, 421, 17))
+        self.swh_benefits_check.setGeometry(QtCore.QRect(10, 130, 421, 17))
         self.swh_benefits_check.setObjectName(_fromUtf8("swh_benefits_check"))
         self.rec_unitrunoff_lbl = QtGui.QLabel(self.recycle_widget2)
-        self.rec_unitrunoff_lbl.setGeometry(QtCore.QRect(30, 95, 211, 16))
+        self.rec_unitrunoff_lbl.setGeometry(QtCore.QRect(30, 155, 211, 16))
         self.rec_unitrunoff_lbl.setObjectName(_fromUtf8("rec_unitrunoff_lbl"))
         self.rec_unitrunoff_box = QtGui.QLineEdit(self.recycle_widget2)
-        self.rec_unitrunoff_box.setGeometry(QtCore.QRect(250, 95, 51, 20))
+        self.rec_unitrunoff_box.setGeometry(QtCore.QRect(250, 155, 51, 20))
         self.rec_unitrunoff_box.setText(_fromUtf8(""))
         self.rec_unitrunoff_box.setObjectName(_fromUtf8("rec_unitrunoff_box"))
         self.rec_unitrunoff_auto = QtGui.QCheckBox(self.recycle_widget2)
-        self.rec_unitrunoff_auto.setGeometry(QtCore.QRect(320, 95, 101, 17))
+        self.rec_unitrunoff_auto.setGeometry(QtCore.QRect(320, 155, 101, 17))
         self.rec_unitrunoff_auto.setObjectName(_fromUtf8("rec_unitrunoff_auto"))
+        self.rec_rainfile_lbl = QtGui.QLabel(self.recycle_widget2)
+        self.rec_rainfile_lbl.setGeometry(QtCore.QRect(10, 40, 111, 20))
+        self.rec_rainfile_lbl.setObjectName(_fromUtf8("rec_rainfile_lbl"))
+        self.rec_rainfile_combo = QtGui.QComboBox(self.recycle_widget2)
+        self.rec_rainfile_combo.setGeometry(QtCore.QRect(140, 40, 291, 22))
+        self.rec_rainfile_combo.setObjectName(_fromUtf8("rec_rainfile_combo"))
+        self.rec_rainfile_combo.addItem(_fromUtf8(""))
+        self.rec_petfile_lbl = QtGui.QLabel(self.recycle_widget2)
+        self.rec_petfile_lbl.setGeometry(QtCore.QRect(10, 70, 111, 20))
+        self.rec_petfile_lbl.setObjectName(_fromUtf8("rec_petfile_lbl"))
+        self.rec_petfile_combo = QtGui.QComboBox(self.recycle_widget2)
+        self.rec_petfile_combo.setGeometry(QtCore.QRect(140, 70, 291, 22))
+        self.rec_petfile_combo.setObjectName(_fromUtf8("rec_petfile_combo"))
+        self.rec_petfile_combo.addItem(_fromUtf8(""))
         self.verticalLayout_9.addWidget(self.recycle_widget2)
         self.design_crit_inputs_3.setWidget(self.design_crit_inputs_widget_3)
         self.gridLayout_25.addWidget(self.design_crit_inputs_3, 0, 0, 1, 1)
@@ -3439,8 +3453,8 @@ class Ui_TechPlace_Dialog(object):
         self.recycle_lbl2.setText(_translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Additional Information</span></p></body></html>", None))
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Climate &amp; Analysis Information</span></p></body></html>", None))
         self.rec_assessment_lbl.setText(_translate("TechPlace_Dialog", "Method of Assessment:", None))
         self.rec_assessment_combo.setItemText(0, _translate("TechPlace_Dialog", "Storage-Size Equation (fast, less accurate)", None))
         self.rec_assessment_combo.setItemText(1, _translate("TechPlace_Dialog", "Storage-Behaviour Optimisation (slow, more accurate)", None))
@@ -3450,6 +3464,18 @@ class Ui_TechPlace_Dialog(object):
         self.rec_unitrunoff_lbl.setWhatsThis(_translate("TechPlace_Dialog", "The average annual runoff volume in the catchment expressed in terms of impervious catchment. This can be obtained by simulating rainfall runoff processes in the catchment and dividing total runoff volume by catchment impervious area.", None))
         self.rec_unitrunoff_lbl.setText(_translate("TechPlace_Dialog", "Unit Runoff Rate [kL/sqm impervious area]:", None))
         self.rec_unitrunoff_auto.setText(_translate("TechPlace_Dialog", "Auto determine", None))
+        self.rec_rainfile_lbl.setText(_translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Choose Rainfall File:</p></body></html>", None))
+        self.rec_rainfile_combo.setItemText(0, _translate("TechPlace_Dialog", "<none>", None))
+        self.rec_petfile_lbl.setText(_translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Choose PET File:</p></body></html>", None))
+        self.rec_petfile_combo.setItemText(0, _translate("TechPlace_Dialog", "<none>", None))
         self.design_crit_sidebar_descr_3.setHtml(_translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -3951,5 +3977,5 @@ class Ui_TechPlace_Dialog(object):
         self.pushButton.setWhatsThis(_translate("TechPlace_Dialog", "Are you serious?", None))
         self.pushButton.setText(_translate("TechPlace_Dialog", "Help", None))
 
-import dialogimg_rc
 import guitoolbaricons_rc
+import dialogimg_rc
