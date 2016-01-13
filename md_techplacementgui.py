@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_techplacementgui.ui'
 #
-# Created: Tue Jan 12 10:57:52 2016
+# Created: Wed Jan 13 15:50:37 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -2491,41 +2491,41 @@ class Ui_TechPlace_Dialog(object):
         self.bottomlines_weight_lbl_2.setObjectName(_fromUtf8("bottomlines_weight_lbl_2"))
         self.bottomlines_techN_spin = QtGui.QSpinBox(self.eval_widget)
         self.bottomlines_techN_spin.setGeometry(QtCore.QRect(110, 120, 42, 16))
-        self.bottomlines_techN_spin.setMaximum(10)
+        self.bottomlines_techN_spin.setMaximum(20)
         self.bottomlines_techN_spin.setObjectName(_fromUtf8("bottomlines_techN_spin"))
         self.bottomlines_metrics_lbl = QtGui.QLabel(self.eval_widget)
         self.bottomlines_metrics_lbl.setGeometry(QtCore.QRect(20, 120, 61, 16))
         self.bottomlines_metrics_lbl.setObjectName(_fromUtf8("bottomlines_metrics_lbl"))
         self.bottomlines_envN_spin = QtGui.QSpinBox(self.eval_widget)
         self.bottomlines_envN_spin.setGeometry(QtCore.QRect(200, 120, 42, 16))
-        self.bottomlines_envN_spin.setMaximum(10)
+        self.bottomlines_envN_spin.setMaximum(20)
         self.bottomlines_envN_spin.setObjectName(_fromUtf8("bottomlines_envN_spin"))
         self.bottomlines_ecnN_spin = QtGui.QSpinBox(self.eval_widget)
         self.bottomlines_ecnN_spin.setGeometry(QtCore.QRect(295, 120, 42, 16))
-        self.bottomlines_ecnN_spin.setMaximum(10)
+        self.bottomlines_ecnN_spin.setMaximum(20)
         self.bottomlines_ecnN_spin.setObjectName(_fromUtf8("bottomlines_ecnN_spin"))
         self.bottomlines_socN_spin = QtGui.QSpinBox(self.eval_widget)
         self.bottomlines_socN_spin.setGeometry(QtCore.QRect(380, 120, 42, 16))
-        self.bottomlines_socN_spin.setMaximum(10)
+        self.bottomlines_socN_spin.setMaximum(20)
         self.bottomlines_socN_spin.setObjectName(_fromUtf8("bottomlines_socN_spin"))
         self.bottomlines_lbl = QtGui.QLabel(self.eval_widget)
         self.bottomlines_lbl.setGeometry(QtCore.QRect(10, 60, 201, 16))
         self.bottomlines_lbl.setObjectName(_fromUtf8("bottomlines_lbl"))
         self.bottomlines_socW_spin = QtGui.QSpinBox(self.eval_widget)
         self.bottomlines_socW_spin.setGeometry(QtCore.QRect(380, 150, 42, 16))
-        self.bottomlines_socW_spin.setMaximum(10)
+        self.bottomlines_socW_spin.setMaximum(100)
         self.bottomlines_socW_spin.setObjectName(_fromUtf8("bottomlines_socW_spin"))
         self.bottomlines_ecnW_spin = QtGui.QSpinBox(self.eval_widget)
         self.bottomlines_ecnW_spin.setGeometry(QtCore.QRect(295, 150, 42, 16))
-        self.bottomlines_ecnW_spin.setMaximum(10)
+        self.bottomlines_ecnW_spin.setMaximum(100)
         self.bottomlines_ecnW_spin.setObjectName(_fromUtf8("bottomlines_ecnW_spin"))
         self.bottomlines_techW_spin = QtGui.QSpinBox(self.eval_widget)
         self.bottomlines_techW_spin.setGeometry(QtCore.QRect(110, 150, 42, 16))
-        self.bottomlines_techW_spin.setMaximum(10)
+        self.bottomlines_techW_spin.setMaximum(100)
         self.bottomlines_techW_spin.setObjectName(_fromUtf8("bottomlines_techW_spin"))
         self.bottomlines_envW_spin = QtGui.QSpinBox(self.eval_widget)
         self.bottomlines_envW_spin.setGeometry(QtCore.QRect(200, 150, 42, 16))
-        self.bottomlines_envW_spin.setMaximum(10)
+        self.bottomlines_envW_spin.setMaximum(100)
         self.bottomlines_envW_spin.setObjectName(_fromUtf8("bottomlines_envW_spin"))
         self.bottomlines_mode_lbl = QtGui.QLabel(self.eval_widget)
         self.bottomlines_mode_lbl.setGeometry(QtCore.QRect(20, 150, 81, 16))
@@ -3886,8 +3886,8 @@ class Ui_TechPlace_Dialog(object):
         self.bottomlines_mode_lbl.setText(_translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Weights (1-10)</span></p></body></html>", None))
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Weights (1-100)</p></body></html>", None))
         self.strat_scoring_lbl.setText(_translate("TechPlace_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

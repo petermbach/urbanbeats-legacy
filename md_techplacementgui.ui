@@ -9081,7 +9081,7 @@ p, li { white-space: pre-wrap; }
                   </rect>
                  </property>
                  <property name="maximum">
-                  <number>10</number>
+                  <number>20</number>
                  </property>
                 </widget>
                 <widget class="QLabel" name="bottomlines_metrics_lbl">
@@ -9114,7 +9114,7 @@ p, li { white-space: pre-wrap; }
                   </rect>
                  </property>
                  <property name="maximum">
-                  <number>10</number>
+                  <number>20</number>
                  </property>
                 </widget>
                 <widget class="QSpinBox" name="bottomlines_ecnN_spin">
@@ -9127,7 +9127,7 @@ p, li { white-space: pre-wrap; }
                   </rect>
                  </property>
                  <property name="maximum">
-                  <number>10</number>
+                  <number>20</number>
                  </property>
                 </widget>
                 <widget class="QSpinBox" name="bottomlines_socN_spin">
@@ -9140,7 +9140,7 @@ p, li { white-space: pre-wrap; }
                   </rect>
                  </property>
                  <property name="maximum">
-                  <number>10</number>
+                  <number>20</number>
                  </property>
                 </widget>
                 <widget class="QLabel" name="bottomlines_lbl">
@@ -9170,7 +9170,7 @@ p, li { white-space: pre-wrap; }
                   </rect>
                  </property>
                  <property name="maximum">
-                  <number>10</number>
+                  <number>100</number>
                  </property>
                 </widget>
                 <widget class="QSpinBox" name="bottomlines_ecnW_spin">
@@ -9183,7 +9183,7 @@ p, li { white-space: pre-wrap; }
                   </rect>
                  </property>
                  <property name="maximum">
-                  <number>10</number>
+                  <number>100</number>
                  </property>
                 </widget>
                 <widget class="QSpinBox" name="bottomlines_techW_spin">
@@ -9196,7 +9196,7 @@ p, li { white-space: pre-wrap; }
                   </rect>
                  </property>
                  <property name="maximum">
-                  <number>10</number>
+                  <number>100</number>
                  </property>
                 </widget>
                 <widget class="QSpinBox" name="bottomlines_envW_spin">
@@ -9209,7 +9209,7 @@ p, li { white-space: pre-wrap; }
                   </rect>
                  </property>
                  <property name="maximum">
-                  <number>10</number>
+                  <number>100</number>
                  </property>
                 </widget>
                 <widget class="QLabel" name="bottomlines_mode_lbl">
@@ -9228,8 +9228,8 @@ p, li { white-space: pre-wrap; }
                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Weights (1-10)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Weights (1-100)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
                </widget>
