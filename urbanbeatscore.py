@@ -345,8 +345,8 @@ class UrbanBeatsSim(threading.Thread):
         #print datatype
         self.__data_archive_fnames[datatype].append(str(fname))
         self.__basename_archive[os.path.basename(str(fname))] = str(fname)
-        print fname
-        print os.path.basename(fname)
+        #print fname
+        #print os.path.basename(fname)
         return True
 
     def removeDataFromArchive(self, datatype, fname):
@@ -362,7 +362,7 @@ class UrbanBeatsSim(threading.Thread):
             if fname in self.__data_archive_fnames["Employment"]:
                 datatype = "Employment"
         try:
-            fpath = self.__basename_archive[fname]
+            fpath = self.__basename_archive[str(fname)]
             self.__data_archive_fnames[datatype].remove(str(fpath))
             self.__basename_archive.pop(str(fname))
         except KeyError:
