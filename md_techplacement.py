@@ -84,6 +84,7 @@ class Techplacement(UBModule):
         self.cycletype = "pc"       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
         self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
         self.activesim = activesim      #UBCORE
+        self.datalib = activesim.showDataArchive()  #UBCORE: entire data library
         print self.ubeatsdir
         ##########################################################################
         #---DESIGN CRITERIA INPUTS                                               
@@ -296,7 +297,21 @@ class Techplacement(UBModule):
         self.swh_benefits = 1   #execute function to calculate SWH benefits? (1 by default, but perhaps treat as mutually exclusive)
         self.swh_unitrunoff = 0.545  #Unit runoff rate [kL/sqm impervious]
         self.swh_unitrunoff_auto = 0
-        
+
+        #SWH Harvesting algorithms
+        self.createParameter("rainfile", STRING, "")    #Rainfall file for SWH
+        self.rainfile = "<none>"
+        #self.rainfile = self.ubeatsdir+"/ancillary/MelbourneRain1998-2007-6min.csv"
+        self.createParameter("rain_dt", DOUBLE, "")
+        self.rain_dt = 6        #[mins]
+        self.createParameter("evapfile", STRING, "")
+        self.evapfile = "<none>"
+        #self.evapfile = self.ubeatsdir+"/ancillary/MelbourneEvap1998-2007-Day.csv"
+        self.createParameter("evap_dt", DOUBLE, "")
+        self.evap_dt = 1440     #[mins]
+
+
+
         ##########################################################################
         #---RETROFIT CONDITIONS INPUTS                                           
         ##########################################################################
@@ -719,15 +734,6 @@ class Techplacement(UBModule):
         self.prevyear = 1960
         self.currentyear = 1980
         
-        #SWH Harvesting algorithms
-        self.createParameter("rainfile", STRING, "")    #Rainfall file for SWH
-        self.rainfile = self.ubeatsdir+"/ancillary/MelbourneRain1998-2007-6min.csv"
-        self.createParameter("rain_dt", DOUBLE, "")
-        self.rain_dt = 6        #[mins]
-        self.createParameter("evapfile", STRING, "")
-        self.evapfile = self.ubeatsdir+"/ancillary/MelbourneEvap1998-2007-Day.csv"
-        self.createParameter("evap_dt", DOUBLE, "")
-        self.evap_dt = 1440     #[mins]
         self.lot_raintanksizes = [1,2,3,4,5,7.5,10,15,20]       #[kL]
         self.raindata = []      #Globals to contain the data time series
         self.evapdata = []
@@ -989,10 +995,17 @@ class Techplacement(UBModule):
             #Initialize meteorological data vectors: Load rainfile and evaporation files,
             #create the scaling factors for evap data
             self.notify("Loading Climate Data... ")
-            self.raindata = ubseries.loadClimateFile(self.rainfile, "csv", self.rain_dt, 1440, self.rain_length)
-            self.evapdata = ubseries.loadClimateFile(self.evapfile, "csv", self.evap_dt, 1440, self.rain_length)
-            self.evapscale = ubseries.convertVectorToScalingFactors(self.evapdata)
-            self.raindata = ubseries.removeDateStampFromSeries(self.raindata)             #Remove the date stamps
+            self.raindata = ubseries.loadClimate(self.rainfile, 1440, self.rain_length)
+            self.evapdata = ubseries.loadClimate(self.evapfile, 1440, self.rain_length)
+
+            #self.raindata = ubseries.loadClimateFile(self.rainfile, "csv", self.rain_dt, 1440, self.rain_length)
+            #self.evapdata = ubseries.loadClimateFile(self.evapfile, "csv", self.evap_dt, 1440, self.rain_length)
+
+            self.evapscale = ubseries.convertClimateToScalars(self.evapdata)
+
+            #self.evapscale = ubseries.convertVectorToScalingFactors(self.evapdata)
+            #self.raindata = ubseries.removeDateStampFromSeries(self.raindata, 2)             #Remove the date stamps
+            self.raindata = ubseries.removeDateStampFromSeries(self.raindata, 1)            #Removes the date stamps
 
         for i in range(int(blocks_num)):
             currentID = i+1
