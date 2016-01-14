@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'md_urbplanbbgui.ui'
 #
-# Created: Wed Jul 23 20:01:00 2014
-#      by: PyQt4 UI code generator 4.8.6
+# Created: Thu Jan 14 10:19:27 2016
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,13 +12,21 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_BuildingBlockDialog(object):
     def setupUi(self, BuildingBlockDialog):
         BuildingBlockDialog.setObjectName(_fromUtf8("BuildingBlockDialog"))
         BuildingBlockDialog.resize(646, 522)
-        BuildingBlockDialog.setWindowTitle(QtGui.QApplication.translate("BuildingBlockDialog", "Urban Planning Customisation", None, QtGui.QApplication.UnicodeUTF8))
         self.gridLayout = QtGui.QGridLayout(BuildingBlockDialog)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.bbwidget = QtGui.QWidget(BuildingBlockDialog)
@@ -61,11 +69,6 @@ class Ui_BuildingBlockDialog(object):
         sizePolicy.setHeightForWidth(self.genrules_explain.sizePolicy().hasHeightForWidth())
         self.genrules_explain.setSizePolicy(sizePolicy)
         self.genrules_explain.setMaximumSize(QtCore.QSize(141, 16777215))
-        self.genrules_explain.setHtml(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Set general urban planning constraints in this window. This includes limitations to how much can be built on-site. Note: decisions made here will influence outcomes for all land uses.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.genrules_explain.setObjectName(_fromUtf8("genrules_explain"))
         self.gridLayout_4.addWidget(self.genrules_explain, 1, 1, 1, 1)
         self.genrules_pic = QtGui.QLabel(self.gr_sidebar)
@@ -100,7 +103,6 @@ class Ui_BuildingBlockDialog(object):
         font.setBold(True)
         font.setWeight(75)
         self.genrules_title.setFont(font)
-        self.genrules_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "General Planning Metrics, Rules and Constraints", None, QtGui.QApplication.UnicodeUTF8))
         self.genrules_title.setObjectName(_fromUtf8("genrules_title"))
         self.genrules_separator = QtGui.QFrame(self.gr_heading)
         self.genrules_separator.setGeometry(QtCore.QRect(0, 20, 442, 3))
@@ -130,11 +132,6 @@ class Ui_BuildingBlockDialog(object):
         self.label_63.setSizePolicy(sizePolicy)
         self.label_63.setMinimumSize(QtCore.QSize(0, 13))
         self.label_63.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.label_63.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">General City Structure</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.label_63.setObjectName(_fromUtf8("label_63"))
         self.verticalLayout_10.addWidget(self.label_63)
         self.widget = QtGui.QWidget(self.gr_scrollAreaWidgetContents)
@@ -142,7 +139,6 @@ class Ui_BuildingBlockDialog(object):
         self.widget.setObjectName(_fromUtf8("widget"))
         self.citysprawl_spin = QtGui.QDoubleSpinBox(self.widget)
         self.citysprawl_spin.setGeometry(QtCore.QRect(190, 35, 71, 16))
-        self.citysprawl_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", " km", None, QtGui.QApplication.UnicodeUTF8))
         self.citysprawl_spin.setDecimals(1)
         self.citysprawl_spin.setMinimum(0.5)
         self.citysprawl_spin.setMaximum(200.0)
@@ -151,47 +147,21 @@ class Ui_BuildingBlockDialog(object):
         self.citysprawl_spin.setObjectName(_fromUtf8("citysprawl_spin"))
         self.citypoly_radio = QtGui.QRadioButton(self.widget)
         self.citypoly_radio.setGeometry(QtCore.QRect(220, 10, 101, 17))
-        self.citypoly_radio.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Poly-Centric", None, QtGui.QApplication.UnicodeUTF8))
         self.citypoly_radio.setObjectName(_fromUtf8("citypoly_radio"))
         self.citysprawl_lbl2 = QtGui.QLabel(self.widget)
         self.citysprawl_lbl2.setGeometry(QtCore.QRect(270, 35, 91, 20))
-        self.citysprawl_lbl2.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Site cover refers to building footprint. Any area that is occupied by a structure that covers an open space with a roof. (Typical restriction: 60%)</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.citysprawl_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "(from main CBD)", None, QtGui.QApplication.UnicodeUTF8))
         self.citysprawl_lbl2.setObjectName(_fromUtf8("citysprawl_lbl2"))
         self.cityarchetype_lbl = QtGui.QLabel(self.widget)
         self.cityarchetype_lbl.setGeometry(QtCore.QRect(10, 10, 101, 20))
-        self.cityarchetype_lbl.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Site cover refers to building footprint. Any area that is occupied by a structure that covers an open space with a roof. (Typical restriction: 60%)</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.cityarchetype_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "City Archetype:", None, QtGui.QApplication.UnicodeUTF8))
         self.cityarchetype_lbl.setObjectName(_fromUtf8("cityarchetype_lbl"))
         self.citysprawl_lbl = QtGui.QLabel(self.widget)
         self.citysprawl_lbl.setGeometry(QtCore.QRect(10, 35, 181, 20))
-        self.citysprawl_lbl.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Site cover refers to building footprint. Any area that is occupied by a structure that covers an open space with a roof. (Typical restriction: 60%)</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.citysprawl_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Approximate Urban Sprawl Radius:", None, QtGui.QApplication.UnicodeUTF8))
         self.citysprawl_lbl.setObjectName(_fromUtf8("citysprawl_lbl"))
         self.mun_localmap_check = QtGui.QCheckBox(self.widget)
         self.mun_localmap_check.setGeometry(QtCore.QRect(10, 65, 341, 17))
-        self.mun_localmap_check.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Check this box if information on the facilities is available on the locality map provided to the model. If no locality map has been given, you may choose to customise the rules for each of the facilities. If no locality map is given or facility is checked and not indicated on the map, radius of influence methodology will be used.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.mun_localmap_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Municipal and Transport Facilities available on locality map", None, QtGui.QApplication.UnicodeUTF8))
         self.mun_localmap_check.setObjectName(_fromUtf8("mun_localmap_check"))
         self.citymono_radio = QtGui.QRadioButton(self.widget)
         self.citymono_radio.setGeometry(QtCore.QRect(110, 10, 91, 17))
-        self.citymono_radio.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Mono-Centric", None, QtGui.QApplication.UnicodeUTF8))
         self.citymono_radio.setObjectName(_fromUtf8("citymono_radio"))
         self.verticalLayout_10.addWidget(self.widget)
         self.label_78 = QtGui.QLabel(self.gr_scrollAreaWidgetContents)
@@ -202,11 +172,6 @@ class Ui_BuildingBlockDialog(object):
         self.label_78.setSizePolicy(sizePolicy)
         self.label_78.setMinimumSize(QtCore.QSize(0, 13))
         self.label_78.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.label_78.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Decision Variables for Development Dynamics</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.label_78.setObjectName(_fromUtf8("label_78"))
         self.verticalLayout_10.addWidget(self.label_78)
         self.gr_paramfield2 = QtGui.QWidget(self.gr_scrollAreaWidgetContents)
@@ -220,37 +185,30 @@ class Ui_BuildingBlockDialog(object):
         self.gr_paramfield2.setObjectName(_fromUtf8("gr_paramfield2"))
         self.lucredevelop_lbl = QtGui.QLabel(self.gr_paramfield2)
         self.lucredevelop_lbl.setGeometry(QtCore.QRect(200, 30, 121, 20))
-        self.lucredevelop_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Tolerance Threshold", None, QtGui.QApplication.UnicodeUTF8))
         self.lucredevelop_lbl.setObjectName(_fromUtf8("lucredevelop_lbl"))
         self.lucredevelop_check = QtGui.QCheckBox(self.gr_paramfield2)
         self.lucredevelop_check.setEnabled(True)
         self.lucredevelop_check.setGeometry(QtCore.QRect(10, 10, 351, 17))
-        self.lucredevelop_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Redevelop Block if Land Classes differ by a significant amount?", None, QtGui.QApplication.UnicodeUTF8))
         self.lucredevelop_check.setObjectName(_fromUtf8("lucredevelop_check"))
         self.popredevelop_check = QtGui.QCheckBox(self.gr_paramfield2)
         self.popredevelop_check.setEnabled(True)
         self.popredevelop_check.setGeometry(QtCore.QRect(10, 50, 351, 17))
-        self.popredevelop_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Redevelop Block if Population differs by a significant amount?", None, QtGui.QApplication.UnicodeUTF8))
         self.popredevelop_check.setObjectName(_fromUtf8("popredevelop_check"))
         self.popredevelop_lbl = QtGui.QLabel(self.gr_paramfield2)
         self.popredevelop_lbl.setGeometry(QtCore.QRect(200, 70, 121, 20))
-        self.popredevelop_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Tolerance Threshold", None, QtGui.QApplication.UnicodeUTF8))
         self.popredevelop_lbl.setObjectName(_fromUtf8("popredevelop_lbl"))
         self.noredevelop_check = QtGui.QCheckBox(self.gr_paramfield2)
         self.noredevelop_check.setEnabled(True)
         self.noredevelop_check.setGeometry(QtCore.QRect(10, 90, 351, 17))
-        self.noredevelop_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Do not Redevelop Blocks regardless of changes", None, QtGui.QApplication.UnicodeUTF8))
         self.noredevelop_check.setObjectName(_fromUtf8("noredevelop_check"))
         self.lucredevelop_spin = QtGui.QSpinBox(self.gr_paramfield2)
         self.lucredevelop_spin.setGeometry(QtCore.QRect(310, 30, 51, 16))
-        self.lucredevelop_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.lucredevelop_spin.setPrefix(_fromUtf8(""))
         self.lucredevelop_spin.setMaximum(100)
         self.lucredevelop_spin.setProperty("value", 100)
         self.lucredevelop_spin.setObjectName(_fromUtf8("lucredevelop_spin"))
         self.popredevelop_spin = QtGui.QSpinBox(self.gr_paramfield2)
         self.popredevelop_spin.setGeometry(QtCore.QRect(310, 70, 51, 16))
-        self.popredevelop_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.popredevelop_spin.setPrefix(_fromUtf8(""))
         self.popredevelop_spin.setMaximum(100)
         self.popredevelop_spin.setProperty("value", 100)
@@ -285,7 +243,6 @@ class Ui_BuildingBlockDialog(object):
         font.setBold(True)
         font.setWeight(75)
         self.genrules_title_2.setFont(font)
-        self.genrules_title_2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Residential Dwelling Information", None, QtGui.QApplication.UnicodeUTF8))
         self.genrules_title_2.setObjectName(_fromUtf8("genrules_title_2"))
         self.genrules_separator_2 = QtGui.QFrame(self.res_heading)
         self.genrules_separator_2.setGeometry(QtCore.QRect(0, 20, 442, 3))
@@ -318,32 +275,25 @@ class Ui_BuildingBlockDialog(object):
         self.res_paramfield6.setObjectName(_fromUtf8("res_paramfield6"))
         self.roof_connected_radiovary = QtGui.QRadioButton(self.res_paramfield6)
         self.roof_connected_radiovary.setGeometry(QtCore.QRect(20, 70, 301, 17))
-        self.roof_connected_radiovary.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Variable (adjust likelihood of roof disconnection)", None, QtGui.QApplication.UnicodeUTF8))
         self.roof_connected_radiovary.setObjectName(_fromUtf8("roof_connected_radiovary"))
         self.roof_connected_lbl = QtGui.QLabel(self.res_paramfield6)
         self.roof_connected_lbl.setGeometry(QtCore.QRect(10, 7, 351, 17))
-        self.roof_connected_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Configure roof drainage connection (affects effective imperviousness)?", None, QtGui.QApplication.UnicodeUTF8))
         self.roof_connected_lbl.setObjectName(_fromUtf8("roof_connected_lbl"))
         self.roof_connected_radiodisc = QtGui.QRadioButton(self.res_paramfield6)
         self.roof_connected_radiodisc.setGeometry(QtCore.QRect(20, 50, 351, 17))
-        self.roof_connected_radiodisc.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Disconnect all downpipes in all houses (unless a raintank is present)", None, QtGui.QApplication.UnicodeUTF8))
         self.roof_connected_radiodisc.setObjectName(_fromUtf8("roof_connected_radiodisc"))
         self.roof_connected_radiodirect = QtGui.QRadioButton(self.res_paramfield6)
         self.roof_connected_radiodirect.setGeometry(QtCore.QRect(20, 30, 301, 17))
-        self.roof_connected_radiodirect.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Directly connected downpipe in all houses", None, QtGui.QApplication.UnicodeUTF8))
         self.roof_connected_radiodirect.setObjectName(_fromUtf8("roof_connected_radiodirect"))
         self.imperv_prop_dced_lbl = QtGui.QLabel(self.res_paramfield6)
         self.imperv_prop_dced_lbl.setGeometry(QtCore.QRect(10, 95, 271, 17))
-        self.imperv_prop_dced_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Average % of Ground Imperviousness Disconnected:", None, QtGui.QApplication.UnicodeUTF8))
         self.imperv_prop_dced_lbl.setObjectName(_fromUtf8("imperv_prop_dced_lbl"))
         self.avg_imp_dced_spin = QtGui.QSpinBox(self.res_paramfield6)
         self.avg_imp_dced_spin.setGeometry(QtCore.QRect(280, 95, 51, 16))
-        self.avg_imp_dced_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.avg_imp_dced_spin.setMaximum(100)
         self.avg_imp_dced_spin.setObjectName(_fromUtf8("avg_imp_dced_spin"))
         self.roofdced_vary_spin = QtGui.QSpinBox(self.res_paramfield6)
         self.roofdced_vary_spin.setGeometry(QtCore.QRect(280, 70, 51, 16))
-        self.roofdced_vary_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.roofdced_vary_spin.setMaximum(100)
         self.roofdced_vary_spin.setObjectName(_fromUtf8("roofdced_vary_spin"))
         self.gridLayout_15.addWidget(self.res_paramfield6, 8, 0, 1, 1)
@@ -362,15 +312,12 @@ class Ui_BuildingBlockDialog(object):
         self.setback_s_max_box.setObjectName(_fromUtf8("setback_s_max_box"))
         self.setback_f_to = QtGui.QLabel(self.res_paramfield2)
         self.setback_f_to.setGeometry(QtCore.QRect(200, 4, 10, 20))
-        self.setback_f_to.setText(QtGui.QApplication.translate("BuildingBlockDialog", "to", None, QtGui.QApplication.UnicodeUTF8))
         self.setback_f_to.setObjectName(_fromUtf8("setback_f_to"))
         self.lineEdit_7 = QtGui.QLineEdit(self.res_paramfield2)
         self.lineEdit_7.setGeometry(QtCore.QRect(146, 56, 31, 20))
-        self.lineEdit_7.setText(QtGui.QApplication.translate("BuildingBlockDialog", "2", None, QtGui.QApplication.UnicodeUTF8))
         self.lineEdit_7.setObjectName(_fromUtf8("lineEdit_7"))
         self.setback_f_lbl = QtGui.QLabel(self.res_paramfield2)
         self.setback_f_lbl.setGeometry(QtCore.QRect(10, 4, 140, 20))
-        self.setback_f_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Front Setback Range [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.setback_f_lbl.setObjectName(_fromUtf8("setback_f_lbl"))
         self.setback_f_max_box = QtGui.QLineEdit(self.res_paramfield2)
         self.setback_f_max_box.setGeometry(QtCore.QRect(215, 4, 41, 20))
@@ -382,7 +329,6 @@ class Ui_BuildingBlockDialog(object):
         self.setback_f_min_box.setObjectName(_fromUtf8("setback_f_min_box"))
         self.label_16 = QtGui.QLabel(self.res_paramfield2)
         self.label_16.setGeometry(QtCore.QRect(0, 56, 140, 20))
-        self.label_16.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Minimum Rear Setback [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.label_16.setObjectName(_fromUtf8("label_16"))
         self.setback_s_min_box = QtGui.QLineEdit(self.res_paramfield2)
         self.setback_s_min_box.setGeometry(QtCore.QRect(155, 30, 41, 20))
@@ -390,19 +336,15 @@ class Ui_BuildingBlockDialog(object):
         self.setback_s_min_box.setObjectName(_fromUtf8("setback_s_min_box"))
         self.setback_s_to = QtGui.QLabel(self.res_paramfield2)
         self.setback_s_to.setGeometry(QtCore.QRect(200, 30, 10, 20))
-        self.setback_s_to.setText(QtGui.QApplication.translate("BuildingBlockDialog", "to", None, QtGui.QApplication.UnicodeUTF8))
         self.setback_s_to.setObjectName(_fromUtf8("setback_s_to"))
         self.setback_s_lbl = QtGui.QLabel(self.res_paramfield2)
         self.setback_s_lbl.setGeometry(QtCore.QRect(10, 30, 140, 20))
-        self.setback_s_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Side Setback Range [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.setback_s_lbl.setObjectName(_fromUtf8("setback_s_lbl"))
         self.fsetbackmed_check = QtGui.QCheckBox(self.res_paramfield2)
         self.fsetbackmed_check.setGeometry(QtCore.QRect(270, 5, 111, 17))
-        self.fsetbackmed_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Use median", None, QtGui.QApplication.UnicodeUTF8))
         self.fsetbackmed_check.setObjectName(_fromUtf8("fsetbackmed_check"))
         self.ssetbackmed_check = QtGui.QCheckBox(self.res_paramfield2)
         self.ssetbackmed_check.setGeometry(QtCore.QRect(270, 30, 111, 17))
-        self.ssetbackmed_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Use median", None, QtGui.QApplication.UnicodeUTF8))
         self.ssetbackmed_check.setObjectName(_fromUtf8("ssetbackmed_check"))
         self.gridLayout_15.addWidget(self.res_paramfield2, 2, 0, 1, 1)
         self.label_14 = QtGui.QLabel(self.res_scrollAreaWidgetContents)
@@ -413,11 +355,6 @@ class Ui_BuildingBlockDialog(object):
         self.label_14.setSizePolicy(sizePolicy)
         self.label_14.setMinimumSize(QtCore.QSize(0, 13))
         self.label_14.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.label_14.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Single/Detached/Semi-Detached Dwelling Information</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.label_14.setObjectName(_fromUtf8("label_14"))
         self.gridLayout_15.addWidget(self.label_14, 0, 0, 1, 1)
         self.label_18 = QtGui.QLabel(self.res_scrollAreaWidgetContents)
@@ -428,11 +365,6 @@ class Ui_BuildingBlockDialog(object):
         self.label_18.setSizePolicy(sizePolicy)
         self.label_18.setMinimumSize(QtCore.QSize(0, 13))
         self.label_18.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.label_18.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">High-Density Residential Housing</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.label_18.setObjectName(_fromUtf8("label_18"))
         self.gridLayout_15.addWidget(self.label_18, 5, 0, 1, 1)
         self.res_paramfield3 = QtGui.QWidget(self.res_scrollAreaWidgetContents)
@@ -446,11 +378,9 @@ class Ui_BuildingBlockDialog(object):
         self.res_paramfield3.setObjectName(_fromUtf8("res_paramfield3"))
         self.w_driveway_min_lbl = QtGui.QLabel(self.res_paramfield3)
         self.w_driveway_min_lbl.setGeometry(QtCore.QRect(10, 30, 140, 20))
-        self.w_driveway_min_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Minimum Driveway Width [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.w_driveway_min_lbl.setObjectName(_fromUtf8("w_driveway_min_lbl"))
         self.carports_max_lbl = QtGui.QLabel(self.res_paramfield3)
         self.carports_max_lbl.setGeometry(QtCore.QRect(10, 4, 140, 20))
-        self.carports_max_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Max. No. of Car Ports", None, QtGui.QApplication.UnicodeUTF8))
         self.carports_max_lbl.setObjectName(_fromUtf8("carports_max_lbl"))
         self.carports_max_box = QtGui.QLineEdit(self.res_paramfield3)
         self.carports_max_box.setGeometry(QtCore.QRect(155, 4, 41, 20))
@@ -458,7 +388,6 @@ class Ui_BuildingBlockDialog(object):
         self.carports_max_box.setObjectName(_fromUtf8("carports_max_box"))
         self.garage_incl_box = QtGui.QCheckBox(self.res_paramfield3)
         self.garage_incl_box.setGeometry(QtCore.QRect(210, 5, 167, 17))
-        self.garage_incl_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Include Garage?", None, QtGui.QApplication.UnicodeUTF8))
         self.garage_incl_box.setObjectName(_fromUtf8("garage_incl_box"))
         self.w_driveway_min_box = QtGui.QLineEdit(self.res_paramfield3)
         self.w_driveway_min_box.setGeometry(QtCore.QRect(155, 30, 41, 20))
@@ -480,11 +409,9 @@ class Ui_BuildingBlockDialog(object):
         self.occup_max_box.setObjectName(_fromUtf8("occup_max_box"))
         self.person_space_lbl = QtGui.QLabel(self.res_paramfield1)
         self.person_space_lbl.setGeometry(QtCore.QRect(10, 28, 140, 20))
-        self.person_space_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Personal Space [sqm/person]", None, QtGui.QApplication.UnicodeUTF8))
         self.person_space_lbl.setObjectName(_fromUtf8("person_space_lbl"))
         self.occup_avg_lbl = QtGui.QLabel(self.res_paramfield1)
         self.occup_avg_lbl.setGeometry(QtCore.QRect(10, 2, 140, 20))
-        self.occup_avg_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Avg. Occupancy [pax]", None, QtGui.QApplication.UnicodeUTF8))
         self.occup_avg_lbl.setObjectName(_fromUtf8("occup_avg_lbl"))
         self.extra_comm_area_box = QtGui.QLineEdit(self.res_paramfield1)
         self.extra_comm_area_box.setGeometry(QtCore.QRect(335, 30, 41, 20))
@@ -496,7 +423,6 @@ class Ui_BuildingBlockDialog(object):
         self.occup_avg_box.setObjectName(_fromUtf8("occup_avg_box"))
         self.extra_comm_area_lbl = QtGui.QLabel(self.res_paramfield1)
         self.extra_comm_area_lbl.setGeometry(QtCore.QRect(205, 28, 131, 20))
-        self.extra_comm_area_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Extra Communal Area [%]", None, QtGui.QApplication.UnicodeUTF8))
         self.extra_comm_area_lbl.setObjectName(_fromUtf8("extra_comm_area_lbl"))
         self.person_space_box = QtGui.QLineEdit(self.res_paramfield1)
         self.person_space_box.setGeometry(QtCore.QRect(155, 28, 41, 20))
@@ -504,7 +430,6 @@ class Ui_BuildingBlockDialog(object):
         self.person_space_box.setObjectName(_fromUtf8("person_space_box"))
         self.occup_max_lbl = QtGui.QLabel(self.res_paramfield1)
         self.occup_max_lbl.setGeometry(QtCore.QRect(205, 2, 131, 20))
-        self.occup_max_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Max. Occupancy [persons]", None, QtGui.QApplication.UnicodeUTF8))
         self.occup_max_lbl.setObjectName(_fromUtf8("occup_max_lbl"))
         self.gridLayout_15.addWidget(self.res_paramfield1, 1, 0, 1, 1)
         self.res_paramfield4 = QtGui.QWidget(self.res_scrollAreaWidgetContents)
@@ -518,7 +443,6 @@ class Ui_BuildingBlockDialog(object):
         self.res_paramfield4.setObjectName(_fromUtf8("res_paramfield4"))
         self.patio_area_max_lbl = QtGui.QLabel(self.res_paramfield4)
         self.patio_area_max_lbl.setGeometry(QtCore.QRect(10, 4, 140, 20))
-        self.patio_area_max_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Maximum Patio Area [sqm]", None, QtGui.QApplication.UnicodeUTF8))
         self.patio_area_max_lbl.setObjectName(_fromUtf8("patio_area_max_lbl"))
         self.patio_area_max_box = QtGui.QLineEdit(self.res_paramfield4)
         self.patio_area_max_box.setGeometry(QtCore.QRect(155, 4, 41, 20))
@@ -526,11 +450,9 @@ class Ui_BuildingBlockDialog(object):
         self.patio_area_max_box.setObjectName(_fromUtf8("patio_area_max_box"))
         self.patio_covered_box = QtGui.QCheckBox(self.res_paramfield4)
         self.patio_covered_box.setGeometry(QtCore.QRect(210, 5, 167, 17))
-        self.patio_covered_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Patio is covered?", None, QtGui.QApplication.UnicodeUTF8))
         self.patio_covered_box.setObjectName(_fromUtf8("patio_covered_box"))
         self.floor_num_max_lbl = QtGui.QLabel(self.res_paramfield4)
         self.floor_num_max_lbl.setGeometry(QtCore.QRect(10, 30, 140, 20))
-        self.floor_num_max_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Maximum No. Floors [floors]", None, QtGui.QApplication.UnicodeUTF8))
         self.floor_num_max_lbl.setObjectName(_fromUtf8("floor_num_max_lbl"))
         self.house_floors = QtGui.QSpinBox(self.res_paramfield4)
         self.house_floors.setGeometry(QtCore.QRect(155, 30, 41, 16))
@@ -550,7 +472,6 @@ class Ui_BuildingBlockDialog(object):
         self.res_paramfield5.setObjectName(_fromUtf8("res_paramfield5"))
         self.occup_flat_avg_lbl = QtGui.QLabel(self.res_paramfield5)
         self.occup_flat_avg_lbl.setGeometry(QtCore.QRect(12, 5, 140, 20))
-        self.occup_flat_avg_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Avg. Flat Occupancy [pax]", None, QtGui.QApplication.UnicodeUTF8))
         self.occup_flat_avg_lbl.setObjectName(_fromUtf8("occup_flat_avg_lbl"))
         self.occup_flat_avg_box = QtGui.QLineEdit(self.res_paramfield5)
         self.occup_flat_avg_box.setGeometry(QtCore.QRect(155, 4, 41, 20))
@@ -562,15 +483,12 @@ class Ui_BuildingBlockDialog(object):
         self.flat_area_max_box.setObjectName(_fromUtf8("flat_area_max_box"))
         self.flat_area_max_lbl = QtGui.QLabel(self.res_paramfield5)
         self.flat_area_max_lbl.setGeometry(QtCore.QRect(12, 30, 140, 20))
-        self.flat_area_max_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Avg. Apartment Size [sqm]", None, QtGui.QApplication.UnicodeUTF8))
         self.flat_area_max_lbl.setObjectName(_fromUtf8("flat_area_max_lbl"))
         self.commspace_indoor_lbl = QtGui.QLabel(self.res_paramfield5)
         self.commspace_indoor_lbl.setGeometry(QtCore.QRect(205, 4, 111, 20))
-        self.commspace_indoor_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Indoor Communal Area", None, QtGui.QApplication.UnicodeUTF8))
         self.commspace_indoor_lbl.setObjectName(_fromUtf8("commspace_indoor_lbl"))
         self.commspace_outdoor_lbl = QtGui.QLabel(self.res_paramfield5)
         self.commspace_outdoor_lbl.setGeometry(QtCore.QRect(205, 29, 151, 20))
-        self.commspace_outdoor_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Outdoor Communal Area", None, QtGui.QApplication.UnicodeUTF8))
         self.commspace_outdoor_lbl.setObjectName(_fromUtf8("commspace_outdoor_lbl"))
         self.setback_HDR_avg_box = QtGui.QLineEdit(self.res_paramfield5)
         self.setback_HDR_avg_box.setGeometry(QtCore.QRect(155, 52, 41, 20))
@@ -578,50 +496,39 @@ class Ui_BuildingBlockDialog(object):
         self.setback_HDR_avg_box.setObjectName(_fromUtf8("setback_HDR_avg_box"))
         self.setback_HDR_avg_lbl = QtGui.QLabel(self.res_paramfield5)
         self.setback_HDR_avg_lbl.setGeometry(QtCore.QRect(12, 55, 140, 20))
-        self.setback_HDR_avg_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Avg. Site Setback [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.setback_HDR_avg_lbl.setObjectName(_fromUtf8("setback_HDR_avg_lbl"))
         self.OSR_parks_include = QtGui.QCheckBox(self.res_paramfield5)
         self.OSR_parks_include.setGeometry(QtCore.QRect(10, 130, 351, 17))
-        self.OSR_parks_include.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Leverage nearby parks to fulfill Outdoor Open Space Requirements?", None, QtGui.QApplication.UnicodeUTF8))
         self.OSR_parks_include.setObjectName(_fromUtf8("OSR_parks_include"))
         self.setback_HDR_avg_lbl_2 = QtGui.QLabel(self.res_paramfield5)
         self.setback_HDR_avg_lbl_2.setGeometry(QtCore.QRect(10, 105, 121, 20))
-        self.setback_HDR_avg_lbl_2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Parking Arrangement:", None, QtGui.QApplication.UnicodeUTF8))
         self.setback_HDR_avg_lbl_2.setObjectName(_fromUtf8("setback_HDR_avg_lbl_2"))
         self.parking_on = QtGui.QRadioButton(self.res_paramfield5)
         self.parking_on.setGeometry(QtCore.QRect(130, 105, 61, 17))
-        self.parking_on.setText(QtGui.QApplication.translate("BuildingBlockDialog", "On-site", None, QtGui.QApplication.UnicodeUTF8))
         self.parking_on.setObjectName(_fromUtf8("parking_on"))
         self.parking_none = QtGui.QRadioButton(self.res_paramfield5)
         self.parking_none.setGeometry(QtCore.QRect(320, 105, 51, 17))
-        self.parking_none.setText(QtGui.QApplication.translate("BuildingBlockDialog", "None", None, QtGui.QApplication.UnicodeUTF8))
         self.parking_none.setObjectName(_fromUtf8("parking_none"))
         self.parking_off = QtGui.QRadioButton(self.res_paramfield5)
         self.parking_off.setGeometry(QtCore.QRect(200, 105, 84, 17))
-        self.parking_off.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Off-site", None, QtGui.QApplication.UnicodeUTF8))
         self.parking_off.setObjectName(_fromUtf8("parking_off"))
         self.indoor_com_spin = QtGui.QSpinBox(self.res_paramfield5)
         self.indoor_com_spin.setGeometry(QtCore.QRect(324, 5, 51, 16))
-        self.indoor_com_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.indoor_com_spin.setMaximum(100)
         self.indoor_com_spin.setObjectName(_fromUtf8("indoor_com_spin"))
         self.outdoor_com_spin = QtGui.QSpinBox(self.res_paramfield5)
         self.outdoor_com_spin.setGeometry(QtCore.QRect(325, 30, 51, 16))
-        self.outdoor_com_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.outdoor_com_spin.setMaximum(100)
         self.outdoor_com_spin.setProperty("value", 0)
         self.outdoor_com_spin.setObjectName(_fromUtf8("outdoor_com_spin"))
         self.comspace_lbl = QtGui.QLabel(self.res_paramfield5)
         self.comspace_lbl.setGeometry(QtCore.QRect(260, 50, 121, 20))
-        self.comspace_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "(% of total floor space)", None, QtGui.QApplication.UnicodeUTF8))
         self.comspace_lbl.setObjectName(_fromUtf8("comspace_lbl"))
         self.parking_vary = QtGui.QRadioButton(self.res_paramfield5)
         self.parking_vary.setGeometry(QtCore.QRect(270, 105, 51, 17))
-        self.parking_vary.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Vary", None, QtGui.QApplication.UnicodeUTF8))
         self.parking_vary.setObjectName(_fromUtf8("parking_vary"))
         self.floor_num_max_lbl_2 = QtGui.QLabel(self.res_paramfield5)
         self.floor_num_max_lbl_2.setGeometry(QtCore.QRect(12, 80, 140, 20))
-        self.floor_num_max_lbl_2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Maximum No. Floors [floors]", None, QtGui.QApplication.UnicodeUTF8))
         self.floor_num_max_lbl_2.setObjectName(_fromUtf8("floor_num_max_lbl_2"))
         self.aptbldg_floors = QtGui.QSpinBox(self.res_paramfield5)
         self.aptbldg_floors.setGeometry(QtCore.QRect(155, 80, 41, 16))
@@ -638,11 +545,6 @@ class Ui_BuildingBlockDialog(object):
         self.label_19.setSizePolicy(sizePolicy)
         self.label_19.setMinimumSize(QtCore.QSize(0, 13))
         self.label_19.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.label_19.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Drainage Properties for Residential Lots</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.label_19.setObjectName(_fromUtf8("label_19"))
         self.gridLayout_15.addWidget(self.label_19, 7, 0, 1, 1)
         self.res_parameters.setWidget(self.res_scrollAreaWidgetContents)
@@ -677,11 +579,6 @@ class Ui_BuildingBlockDialog(object):
         sizePolicy.setHeightForWidth(self.residential_explain.sizePolicy().hasHeightForWidth())
         self.residential_explain.setSizePolicy(sizePolicy)
         self.residential_explain.setMaximumSize(QtCore.QSize(141, 16777215))
-        self.residential_explain.setHtml(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define demographics, geometry and water characteristics for planning residential districts. Model uses this and other information to distinguish between houses and apartments within the city.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.residential_explain.setObjectName(_fromUtf8("residential_explain"))
         self.gridLayout_5.addWidget(self.residential_explain, 1, 0, 1, 1)
         self.gridLayout_6.addWidget(self.res_sidebar, 0, 1, 1, 1)
@@ -718,11 +615,6 @@ class Ui_BuildingBlockDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.nonres_explain.sizePolicy().hasHeightForWidth())
         self.nonres_explain.setSizePolicy(sizePolicy)
-        self.nonres_explain.setHtml(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define geometry and basic planning details for non-residential land uses. This includes commercial sites, industrial sites and municipal facilities. Details about individual municipal facilities are set at a later stage.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.nonres_explain.setObjectName(_fromUtf8("nonres_explain"))
         self.gridLayout_7.addWidget(self.nonres_explain, 1, 0, 1, 1)
         self.gridLayout_8.addWidget(self.nr_sidebar, 0, 2, 1, 1)
@@ -747,7 +639,6 @@ class Ui_BuildingBlockDialog(object):
         font.setBold(True)
         font.setWeight(75)
         self.genrules_title_3.setFont(font)
-        self.genrules_title_3.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Industrial, Commercial & Municipal Planning Information", None, QtGui.QApplication.UnicodeUTF8))
         self.genrules_title_3.setObjectName(_fromUtf8("genrules_title_3"))
         self.genrules_separator_3 = QtGui.QFrame(self.nr_heading)
         self.genrules_separator_3.setGeometry(QtCore.QRect(0, 20, 442, 3))
@@ -777,11 +668,6 @@ class Ui_BuildingBlockDialog(object):
         self.ComInd_title.setSizePolicy(sizePolicy)
         self.ComInd_title.setMinimumSize(QtCore.QSize(0, 13))
         self.ComInd_title.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.ComInd_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Industrial and Commercial Zones</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.ComInd_title.setObjectName(_fromUtf8("ComInd_title"))
         self.verticalLayout_5.addWidget(self.ComInd_title)
         self.widget_39 = QtGui.QWidget(self.nr_scrollAreaWidgetContents)
@@ -795,49 +681,24 @@ class Ui_BuildingBlockDialog(object):
         self.widget_39.setObjectName(_fromUtf8("widget_39"))
         self.nres_setback_lbl = QtGui.QLabel(self.widget_39)
         self.nres_setback_lbl.setGeometry(QtCore.QRect(20, 330, 141, 20))
-        self.nres_setback_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Minimum Front Setback [m]</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.nres_setback_lbl.setObjectName(_fromUtf8("nres_setback_lbl"))
         self.jobs_direct_radio = QtGui.QRadioButton(self.widget_39)
         self.jobs_direct_radio.setGeometry(QtCore.QRect(120, 25, 91, 17))
-        self.jobs_direct_radio.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "Employment is defined by the employment map input data. The model will use this information to determine the number of jobs in each block of the map.", None, QtGui.QApplication.UnicodeUTF8))
-        self.jobs_direct_radio.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Spatial Input", None, QtGui.QApplication.UnicodeUTF8))
         self.jobs_direct_radio.setObjectName(_fromUtf8("jobs_direct_radio"))
         self.jobs_total_radio = QtGui.QRadioButton(self.widget_39)
         self.jobs_total_radio.setGeometry(QtCore.QRect(290, 25, 81, 17))
-        self.jobs_total_radio.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "Using a single value of employment for the entire simulation region, the model determines the possible distribution of jobs. Use this option only if spatially explicit data is unavailable and statuatory regulations are difficult to determine or generalize across the simulation region and only a single value is known.", None, QtGui.QApplication.UnicodeUTF8))
-        self.jobs_total_radio.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Single Value", None, QtGui.QApplication.UnicodeUTF8))
         self.jobs_total_radio.setObjectName(_fromUtf8("jobs_total_radio"))
         self.nres_setback_auto = QtGui.QCheckBox(self.widget_39)
         self.nres_setback_auto.setGeometry(QtCore.QRect(220, 330, 141, 17))
-        self.nres_setback_auto.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Determine automatically", None, QtGui.QApplication.UnicodeUTF8))
         self.nres_setback_auto.setObjectName(_fromUtf8("nres_setback_auto"))
         self.jobs_lbl = QtGui.QLabel(self.widget_39)
         self.jobs_lbl.setGeometry(QtCore.QRect(20, 25, 101, 20))
-        self.jobs_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define employment:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.jobs_lbl.setObjectName(_fromUtf8("jobs_lbl"))
         self.jobs_title = QtGui.QLabel(self.widget_39)
         self.jobs_title.setGeometry(QtCore.QRect(10, 5, 301, 20))
-        self.jobs_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Employment</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.jobs_title.setObjectName(_fromUtf8("jobs_title"))
         self.site_title = QtGui.QLabel(self.widget_39)
         self.site_title.setGeometry(QtCore.QRect(10, 210, 301, 20))
-        self.site_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Land Subdivision and Site Layout</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.site_title.setObjectName(_fromUtf8("site_title"))
         self.nres_maxfloors_spin = QtGui.QSpinBox(self.widget_39)
         self.nres_maxfloors_spin.setGeometry(QtCore.QRect(220, 360, 42, 16))
@@ -845,60 +706,33 @@ class Ui_BuildingBlockDialog(object):
         self.nres_maxfloors_spin.setObjectName(_fromUtf8("nres_maxfloors_spin"))
         self.nres_maxfloors_lbl = QtGui.QLabel(self.widget_39)
         self.nres_maxfloors_lbl.setGeometry(QtCore.QRect(20, 360, 191, 20))
-        self.nres_maxfloors_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Max. Allowable Floors above Ground:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.nres_maxfloors_lbl.setObjectName(_fromUtf8("nres_maxfloors_lbl"))
         self.nres_setback_box = QtGui.QLineEdit(self.widget_39)
         self.nres_setback_box.setGeometry(QtCore.QRect(170, 330, 41, 20))
         self.nres_setback_box.setObjectName(_fromUtf8("nres_setback_box"))
         self.lscape_hsbalance_soft = QtGui.QLabel(self.widget_39)
         self.lscape_hsbalance_soft.setGeometry(QtCore.QRect(330, 745, 21, 20))
-        self.lscape_hsbalance_soft.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Soft", None, QtGui.QApplication.UnicodeUTF8))
         self.lscape_hsbalance_soft.setObjectName(_fromUtf8("lscape_hsbalance_soft"))
         self.lscape_hsbalance_lbl = QtGui.QLabel(self.widget_39)
         self.lscape_hsbalance_lbl.setGeometry(QtCore.QRect(20, 725, 221, 20))
-        self.lscape_hsbalance_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Balance of Hard and Soft Landscaping</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.lscape_hsbalance_lbl.setObjectName(_fromUtf8("lscape_hsbalance_lbl"))
         self.carpark_dimD_box = QtGui.QLineEdit(self.widget_39)
         self.carpark_dimD_box.setGeometry(QtCore.QRect(285, 525, 41, 20))
         self.carpark_dimD_box.setObjectName(_fromUtf8("carpark_dimD_box"))
         self.lscape_hsbalance_hard = QtGui.QLabel(self.widget_39)
         self.lscape_hsbalance_hard.setGeometry(QtCore.QRect(214, 745, 31, 20))
-        self.lscape_hsbalance_hard.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Hard", None, QtGui.QApplication.UnicodeUTF8))
         self.lscape_hsbalance_hard.setObjectName(_fromUtf8("lscape_hsbalance_hard"))
         self.carpark_dimW_box = QtGui.QLineEdit(self.widget_39)
         self.carpark_dimW_box.setGeometry(QtCore.QRect(215, 525, 41, 20))
         self.carpark_dimW_box.setObjectName(_fromUtf8("carpark_dimW_box"))
         self.carpark_dim_lbl = QtGui.QLabel(self.widget_39)
         self.carpark_dim_lbl.setGeometry(QtCore.QRect(20, 525, 181, 20))
-        self.carpark_dim_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Minimum Parking Lot Dimensions [m]</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.carpark_dim_lbl.setObjectName(_fromUtf8("carpark_dim_lbl"))
         self.carpark_dimW_lbl = QtGui.QLabel(self.widget_39)
         self.carpark_dimW_lbl.setGeometry(QtCore.QRect(260, 525, 21, 20))
-        self.carpark_dimW_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">W</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.carpark_dimW_lbl.setObjectName(_fromUtf8("carpark_dimW_lbl"))
         self.parking_title = QtGui.QLabel(self.widget_39)
         self.parking_title.setGeometry(QtCore.QRect(10, 500, 201, 20))
-        self.parking_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Car Parking and Loading Bay</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.parking_title.setObjectName(_fromUtf8("parking_title"))
         self.lscape_hsbalance_slide = QtGui.QSlider(self.widget_39)
         self.lscape_hsbalance_slide.setGeometry(QtCore.QRect(218, 725, 126, 19))
@@ -913,42 +747,23 @@ class Ui_BuildingBlockDialog(object):
         self.lscape_hsbalance_slide.setObjectName(_fromUtf8("lscape_hsbalance_slide"))
         self.carpark_dimD_lbl = QtGui.QLabel(self.widget_39)
         self.carpark_dimD_lbl.setGeometry(QtCore.QRect(330, 525, 21, 20))
-        self.carpark_dimD_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">D</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.carpark_dimD_lbl.setObjectName(_fromUtf8("carpark_dimD_lbl"))
         self.carpark_imp_lbl = QtGui.QLabel(self.widget_39)
         self.carpark_imp_lbl.setGeometry(QtCore.QRect(20, 555, 191, 20))
-        self.carpark_imp_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Avg. Imperviousness of Parking Area</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.carpark_imp_lbl.setObjectName(_fromUtf8("carpark_imp_lbl"))
         self.lscape_title = QtGui.QLabel(self.widget_39)
         self.lscape_title.setGeometry(QtCore.QRect(10, 700, 151, 20))
-        self.lscape_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Landscaping and Drainage</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.lscape_title.setObjectName(_fromUtf8("lscape_title"))
         self.carpark_imp_spin = QtGui.QDoubleSpinBox(self.widget_39)
         self.carpark_imp_spin.setGeometry(QtCore.QRect(220, 555, 71, 16))
-        self.carpark_imp_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.carpark_imp_spin.setDecimals(1)
         self.carpark_imp_spin.setProperty("value", 100.0)
         self.carpark_imp_spin.setObjectName(_fromUtf8("carpark_imp_spin"))
         self.lscape_impdced_lbl = QtGui.QLabel(self.widget_39)
         self.lscape_impdced_lbl.setGeometry(QtCore.QRect(20, 770, 231, 17))
-        self.lscape_impdced_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Average % of Imperviousness Disconnected", None, QtGui.QApplication.UnicodeUTF8))
         self.lscape_impdced_lbl.setObjectName(_fromUtf8("lscape_impdced_lbl"))
         self.jobs_dist_radio = QtGui.QRadioButton(self.widget_39)
         self.jobs_dist_radio.setGeometry(QtCore.QRect(210, 25, 81, 17))
-        self.jobs_dist_radio.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "Employment is defined as a ratio of employees per net developable hectare. User specifies a range of ratios for industrial and commercial areas. The model uses this to compute the total employment for the area and plan out the urban form appropriately. (Use this if employment data is unavailable but statuatory planning regulations are fairly consistent across the simulation region).", None, QtGui.QApplication.UnicodeUTF8))
-        self.jobs_dist_radio.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Distribution", None, QtGui.QApplication.UnicodeUTF8))
         self.jobs_dist_radio.setObjectName(_fromUtf8("jobs_dist_radio"))
         self.jobs_define_stack = QtGui.QStackedWidget(self.widget_39)
         self.jobs_define_stack.setGeometry(QtCore.QRect(10, 50, 361, 151))
@@ -958,15 +773,9 @@ class Ui_BuildingBlockDialog(object):
         self.verticalLayout_9 = QtGui.QVBoxLayout(self.page)
         self.verticalLayout_9.setObjectName(_fromUtf8("verticalLayout_9"))
         self.groupBox = QtGui.QGroupBox(self.page)
-        self.groupBox.setTitle(QtGui.QApplication.translate("BuildingBlockDialog", "Spatial Input", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.jobs_direct_lbl = QtGui.QLabel(self.groupBox)
         self.jobs_direct_lbl.setGeometry(QtCore.QRect(90, 40, 201, 20))
-        self.jobs_direct_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">no further input required here...</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.jobs_direct_lbl.setObjectName(_fromUtf8("jobs_direct_lbl"))
         self.verticalLayout_9.addWidget(self.groupBox)
         self.jobs_define_stack.addWidget(self.page)
@@ -975,39 +784,18 @@ class Ui_BuildingBlockDialog(object):
         self.verticalLayout_11 = QtGui.QVBoxLayout(self.page_2)
         self.verticalLayout_11.setObjectName(_fromUtf8("verticalLayout_11"))
         self.groupBox_2 = QtGui.QGroupBox(self.page_2)
-        self.groupBox_2.setTitle(QtGui.QApplication.translate("BuildingBlockDialog", "Distribution of Employment", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.dist_ind_units = QtGui.QLabel(self.groupBox_2)
         self.dist_ind_units.setGeometry(QtCore.QRect(200, 25, 101, 20))
-        self.dist_ind_units.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">employees/ha</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dist_ind_units.setObjectName(_fromUtf8("dist_ind_units"))
         self.dist_ind_lbl = QtGui.QLabel(self.groupBox_2)
         self.dist_ind_lbl.setGeometry(QtCore.QRect(20, 25, 91, 20))
-        self.dist_ind_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Industrial Zones</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dist_ind_lbl.setObjectName(_fromUtf8("dist_ind_lbl"))
         self.dist_com_lbl = QtGui.QLabel(self.groupBox_2)
         self.dist_com_lbl.setGeometry(QtCore.QRect(20, 50, 91, 20))
-        self.dist_com_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Commercial Zones</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dist_com_lbl.setObjectName(_fromUtf8("dist_com_lbl"))
         self.dist_com_units = QtGui.QLabel(self.groupBox_2)
         self.dist_com_units.setGeometry(QtCore.QRect(200, 50, 101, 20))
-        self.dist_com_units.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">employees/ha</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dist_com_units.setObjectName(_fromUtf8("dist_com_units"))
         self.dist_ind_spin = QtGui.QSpinBox(self.groupBox_2)
         self.dist_ind_spin.setGeometry(QtCore.QRect(131, 25, 51, 16))
@@ -1019,27 +807,12 @@ class Ui_BuildingBlockDialog(object):
         self.dist_com_spin.setObjectName(_fromUtf8("dist_com_spin"))
         self.dist_explain = QtGui.QLabel(self.groupBox_2)
         self.dist_explain.setGeometry(QtCore.QRect(20, 100, 321, 20))
-        self.dist_explain.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">(indicate typical employment density on net developable area)</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dist_explain.setObjectName(_fromUtf8("dist_explain"))
         self.dist_orc_lbl = QtGui.QLabel(self.groupBox_2)
         self.dist_orc_lbl.setGeometry(QtCore.QRect(20, 75, 91, 20))
-        self.dist_orc_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Offices</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dist_orc_lbl.setObjectName(_fromUtf8("dist_orc_lbl"))
         self.dist_orc_units = QtGui.QLabel(self.groupBox_2)
         self.dist_orc_units.setGeometry(QtCore.QRect(200, 75, 101, 20))
-        self.dist_orc_units.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">employees/ha</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.dist_orc_units.setObjectName(_fromUtf8("dist_orc_units"))
         self.dist_orc_spin = QtGui.QSpinBox(self.groupBox_2)
         self.dist_orc_spin.setGeometry(QtCore.QRect(131, 75, 51, 16))
@@ -1052,72 +825,35 @@ class Ui_BuildingBlockDialog(object):
         self.verticalLayout_12 = QtGui.QVBoxLayout(self.page_3)
         self.verticalLayout_12.setObjectName(_fromUtf8("verticalLayout_12"))
         self.jobs_define_box = QtGui.QGroupBox(self.page_3)
-        self.jobs_define_box.setTitle(QtGui.QApplication.translate("BuildingBlockDialog", "Single Value of Employment", None, QtGui.QApplication.UnicodeUTF8))
         self.jobs_define_box.setObjectName(_fromUtf8("jobs_define_box"))
         self.totjobs_lbl = QtGui.QLabel(self.jobs_define_box)
         self.totjobs_lbl.setGeometry(QtCore.QRect(20, 30, 211, 20))
-        self.totjobs_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Total jobs in simulation area [thousands]:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.totjobs_lbl.setObjectName(_fromUtf8("totjobs_lbl"))
         self.totjobs_box = QtGui.QLineEdit(self.jobs_define_box)
         self.totjobs_box.setGeometry(QtCore.QRect(230, 30, 51, 20))
         self.totjobs_box.setObjectName(_fromUtf8("totjobs_box"))
         self.totjobs_explain = QtGui.QLabel(self.jobs_define_box)
         self.totjobs_explain.setGeometry(QtCore.QRect(20, 60, 301, 20))
-        self.totjobs_explain.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">(enter a rough estimate for the total region, the model will</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.totjobs_explain.setObjectName(_fromUtf8("totjobs_explain"))
         self.totjobs_explain_2 = QtGui.QLabel(self.jobs_define_box)
         self.totjobs_explain_2.setGeometry(QtCore.QRect(20, 80, 311, 20))
-        self.totjobs_explain_2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">attempt to rescale it according to the proportions of different</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.totjobs_explain_2.setObjectName(_fromUtf8("totjobs_explain_2"))
         self.totjobs_explain_3 = QtGui.QLabel(self.jobs_define_box)
         self.totjobs_explain_3.setGeometry(QtCore.QRect(20, 100, 311, 20))
-        self.totjobs_explain_3.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">non-residential areas within the map)</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.totjobs_explain_3.setObjectName(_fromUtf8("totjobs_explain_3"))
         self.verticalLayout_12.addWidget(self.jobs_define_box)
         self.jobs_define_stack.addWidget(self.page_3)
         self.nres_maxfloors_nolimit = QtGui.QCheckBox(self.widget_39)
         self.nres_maxfloors_nolimit.setGeometry(QtCore.QRect(280, 360, 71, 17))
-        self.nres_maxfloors_nolimit.setText(QtGui.QApplication.translate("BuildingBlockDialog", "No Limit", None, QtGui.QApplication.UnicodeUTF8))
         self.nres_maxfloors_nolimit.setObjectName(_fromUtf8("nres_maxfloors_nolimit"))
         self.plotratio_lbl = QtGui.QLabel(self.widget_39)
         self.plotratio_lbl.setGeometry(QtCore.QRect(20, 390, 141, 20))
-        self.plotratio_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Maximum Plot Ratios:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.plotratio_lbl.setObjectName(_fromUtf8("plotratio_lbl"))
         self.plotratio_ind_lbl = QtGui.QLabel(self.widget_39)
         self.plotratio_ind_lbl.setGeometry(QtCore.QRect(30, 420, 101, 20))
-        self.plotratio_ind_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Industrial Estates</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.plotratio_ind_lbl.setObjectName(_fromUtf8("plotratio_ind_lbl"))
         self.plotratio_com_lbl = QtGui.QLabel(self.widget_39)
         self.plotratio_com_lbl.setGeometry(QtCore.QRect(30, 465, 101, 20))
-        self.plotratio_com_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Commercial Estates</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.plotratio_com_lbl.setObjectName(_fromUtf8("plotratio_com_lbl"))
         self.plotratio_ind_slider = QtGui.QSlider(self.widget_39)
         self.plotratio_ind_slider.setGeometry(QtCore.QRect(140, 420, 160, 19))
@@ -1143,35 +879,18 @@ class Ui_BuildingBlockDialog(object):
         self.plotratio_com_box.setObjectName(_fromUtf8("plotratio_com_box"))
         self.carpark_allocate_lbl = QtGui.QLabel(self.widget_39)
         self.carpark_allocate_lbl.setGeometry(QtCore.QRect(20, 585, 241, 20))
-        self.carpark_allocate_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Parking Requirements</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.carpark_allocate_lbl.setObjectName(_fromUtf8("carpark_allocate_lbl"))
         self.carpark_ind_lbl = QtGui.QLabel(self.widget_39)
         self.carpark_ind_lbl.setGeometry(QtCore.QRect(30, 610, 91, 20))
-        self.carpark_ind_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Industrial Estates</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.carpark_ind_lbl.setObjectName(_fromUtf8("carpark_ind_lbl"))
         self.carparking_com_lbl = QtGui.QLabel(self.widget_39)
         self.carparking_com_lbl.setGeometry(QtCore.QRect(30, 640, 101, 20))
-        self.carparking_com_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Commercial Estates</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.carparking_com_lbl.setObjectName(_fromUtf8("carparking_com_lbl"))
         self.carpark_com_units = QtGui.QLabel(self.widget_39)
         self.carpark_com_units.setGeometry(QtCore.QRect(210, 640, 141, 16))
-        self.carpark_com_units.setText(QtGui.QApplication.translate("BuildingBlockDialog", "[bays/100sqm floor area]", None, QtGui.QApplication.UnicodeUTF8))
         self.carpark_com_units.setObjectName(_fromUtf8("carpark_com_units"))
         self.carpark_ind_units = QtGui.QLabel(self.widget_39)
         self.carpark_ind_units.setGeometry(QtCore.QRect(210, 610, 141, 16))
-        self.carpark_ind_units.setText(QtGui.QApplication.translate("BuildingBlockDialog", "[bays/employee]", None, QtGui.QApplication.UnicodeUTF8))
         self.carpark_ind_units.setObjectName(_fromUtf8("carpark_ind_units"))
         self.carpark_ind_box = QtGui.QLineEdit(self.widget_39)
         self.carpark_ind_box.setGeometry(QtCore.QRect(140, 610, 51, 20))
@@ -1181,76 +900,34 @@ class Ui_BuildingBlockDialog(object):
         self.carpark_com_box.setObjectName(_fromUtf8("carpark_com_box"))
         self.loadingbay_lbl = QtGui.QLabel(self.widget_39)
         self.loadingbay_lbl.setGeometry(QtCore.QRect(20, 670, 271, 20))
-        self.loadingbay_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Area allocation for Loading Bay [sqm/100sqm floor area]</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.loadingbay_lbl.setObjectName(_fromUtf8("loadingbay_lbl"))
         self.loadingbay_box = QtGui.QLineEdit(self.widget_39)
         self.loadingbay_box.setGeometry(QtCore.QRect(300, 670, 51, 20))
         self.loadingbay_box.setObjectName(_fromUtf8("loadingbay_box"))
         self.lscape_impdced_spin = QtGui.QSpinBox(self.widget_39)
         self.lscape_impdced_spin.setGeometry(QtCore.QRect(250, 767, 51, 16))
-        self.lscape_impdced_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.lscape_impdced_spin.setMaximum(100)
         self.lscape_impdced_spin.setObjectName(_fromUtf8("lscape_impdced_spin"))
         self.plotratio_ind_minlbl = QtGui.QLabel(self.widget_39)
         self.plotratio_ind_minlbl.setGeometry(QtCore.QRect(135, 405, 21, 20))
-        self.plotratio_ind_minlbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">0.1</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.plotratio_ind_minlbl.setObjectName(_fromUtf8("plotratio_ind_minlbl"))
         self.plotratio_ind_maxlbl = QtGui.QLabel(self.widget_39)
         self.plotratio_ind_maxlbl.setGeometry(QtCore.QRect(290, 405, 21, 20))
-        self.plotratio_ind_maxlbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">1.0</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.plotratio_ind_maxlbl.setObjectName(_fromUtf8("plotratio_ind_maxlbl"))
         self.plotratio_com_minlbl = QtGui.QLabel(self.widget_39)
         self.plotratio_com_minlbl.setGeometry(QtCore.QRect(135, 450, 21, 20))
-        self.plotratio_com_minlbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">0.1</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.plotratio_com_minlbl.setObjectName(_fromUtf8("plotratio_com_minlbl"))
         self.plotratio_com_maxlbl = QtGui.QLabel(self.widget_39)
         self.plotratio_com_maxlbl.setGeometry(QtCore.QRect(290, 450, 21, 20))
-        self.plotratio_com_maxlbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">1.0</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.plotratio_com_maxlbl.setObjectName(_fromUtf8("plotratio_com_maxlbl"))
         self.landsubd_title = QtGui.QLabel(self.widget_39)
         self.landsubd_title.setGeometry(QtCore.QRect(20, 235, 271, 20))
-        self.landsubd_title.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "An area threshold, which the model uses to subdivide the land into separate land districts  within the block. These districts are bounded by local streets. This information is independent of patch data as subdivision on individual patches may occur since their size exceeds the threshold. ", None, QtGui.QApplication.UnicodeUTF8))
-        self.landsubd_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Land Parcel Subdivision Thresholds (specify range)</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.landsubd_title.setObjectName(_fromUtf8("landsubd_title"))
         self.com_subd_lbl = QtGui.QLabel(self.widget_39)
         self.com_subd_lbl.setGeometry(QtCore.QRect(40, 300, 141, 20))
-        self.com_subd_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Commercial Land [ha/parcel]</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.com_subd_lbl.setObjectName(_fromUtf8("com_subd_lbl"))
         self.ind_subd_lbl = QtGui.QLabel(self.widget_39)
         self.ind_subd_lbl.setGeometry(QtCore.QRect(40, 270, 151, 20))
-        self.ind_subd_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Industrial Land [ha/parcel]</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.ind_subd_lbl.setObjectName(_fromUtf8("ind_subd_lbl"))
         self.ind_subd_min = QtGui.QLineEdit(self.widget_39)
         self.ind_subd_min.setGeometry(QtCore.QRect(190, 270, 41, 20))
@@ -1260,19 +937,9 @@ class Ui_BuildingBlockDialog(object):
         self.com_subd_min.setObjectName(_fromUtf8("com_subd_min"))
         self.ind_subd_lbl2 = QtGui.QLabel(self.widget_39)
         self.ind_subd_lbl2.setGeometry(QtCore.QRect(240, 270, 21, 20))
-        self.ind_subd_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">to</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.ind_subd_lbl2.setObjectName(_fromUtf8("ind_subd_lbl2"))
         self.com_subd_lbl2 = QtGui.QLabel(self.widget_39)
         self.com_subd_lbl2.setGeometry(QtCore.QRect(240, 300, 21, 20))
-        self.com_subd_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">to</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.com_subd_lbl2.setObjectName(_fromUtf8("com_subd_lbl2"))
         self.com_subd_max = QtGui.QLineEdit(self.widget_39)
         self.com_subd_max.setGeometry(QtCore.QRect(260, 300, 41, 20))
@@ -1289,11 +956,6 @@ class Ui_BuildingBlockDialog(object):
         self.civ_title.setSizePolicy(sizePolicy)
         self.civ_title.setMinimumSize(QtCore.QSize(0, 13))
         self.civ_title.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.civ_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Civic Facilities</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_title.setObjectName(_fromUtf8("civ_title"))
         self.verticalLayout_5.addWidget(self.civ_title)
         self.widget_43 = QtGui.QWidget(self.nr_scrollAreaWidgetContents)
@@ -1307,90 +969,65 @@ class Ui_BuildingBlockDialog(object):
         self.widget_43.setObjectName(_fromUtf8("widget_43"))
         self.civ_clinic_box = QtGui.QCheckBox(self.widget_43)
         self.civ_clinic_box.setGeometry(QtCore.QRect(20, 175, 111, 17))
-        self.civ_clinic_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Health Clinic", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_clinic_box.setObjectName(_fromUtf8("civ_clinic_box"))
         self.civ_fire_box = QtGui.QCheckBox(self.widget_43)
         self.civ_fire_box.setGeometry(QtCore.QRect(20, 215, 111, 17))
-        self.civ_fire_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Fire Station", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_fire_box.setObjectName(_fromUtf8("civ_fire_box"))
         self.civ_race_box = QtGui.QCheckBox(self.widget_43)
         self.civ_race_box.setGeometry(QtCore.QRect(140, 235, 111, 17))
-        self.civ_race_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Racing Track", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_race_box.setObjectName(_fromUtf8("civ_race_box"))
         self.civ_leisure_box = QtGui.QCheckBox(self.widget_43)
         self.civ_leisure_box.setGeometry(QtCore.QRect(140, 155, 181, 17))
-        self.civ_leisure_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Community/Leisure Centre", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_leisure_box.setObjectName(_fromUtf8("civ_leisure_box"))
         self.civ_religion_box = QtGui.QCheckBox(self.widget_43)
         self.civ_religion_box.setGeometry(QtCore.QRect(20, 255, 111, 17))
-        self.civ_religion_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Places of Worship", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_religion_box.setObjectName(_fromUtf8("civ_religion_box"))
         self.edu_uni_box = QtGui.QCheckBox(self.widget_43)
         self.edu_uni_box.setGeometry(QtCore.QRect(20, 85, 121, 17))
-        self.edu_uni_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "University Campus", None, QtGui.QApplication.UnicodeUTF8))
         self.edu_uni_box.setObjectName(_fromUtf8("edu_uni_box"))
         self.civ_jail_box = QtGui.QCheckBox(self.widget_43)
         self.civ_jail_box.setGeometry(QtCore.QRect(20, 235, 111, 17))
-        self.civ_jail_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "City Jail", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_jail_box.setObjectName(_fromUtf8("civ_jail_box"))
         self.edu_school_box = QtGui.QCheckBox(self.widget_43)
         self.edu_school_box.setGeometry(QtCore.QRect(20, 65, 221, 17))
-        self.edu_school_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "School (Pre-/Primary-/Secondary-)", None, QtGui.QApplication.UnicodeUTF8))
         self.edu_school_box.setObjectName(_fromUtf8("edu_school_box"))
         self.civ_dead_box = QtGui.QCheckBox(self.widget_43)
         self.civ_dead_box.setGeometry(QtCore.QRect(140, 255, 111, 17))
-        self.civ_dead_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Cemetery", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_dead_box.setObjectName(_fromUtf8("civ_dead_box"))
         self.civ_police_box = QtGui.QCheckBox(self.widget_43)
         self.civ_police_box.setGeometry(QtCore.QRect(20, 195, 111, 17))
-        self.civ_police_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Police Station", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_police_box.setObjectName(_fromUtf8("civ_police_box"))
         self.civ_sports_box = QtGui.QCheckBox(self.widget_43)
         self.civ_sports_box.setGeometry(QtCore.QRect(140, 215, 111, 17))
-        self.civ_sports_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Sports Stadium", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_sports_box.setObjectName(_fromUtf8("civ_sports_box"))
         self.civ_hospital_box = QtGui.QCheckBox(self.widget_43)
         self.civ_hospital_box.setGeometry(QtCore.QRect(20, 155, 111, 17))
-        self.civ_hospital_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Hospital", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_hospital_box.setObjectName(_fromUtf8("civ_hospital_box"))
         self.edu_customise = QtGui.QPushButton(self.widget_43)
         self.edu_customise.setEnabled(False)
         self.edu_customise.setGeometry(QtCore.QRect(250, 40, 81, 21))
-        self.edu_customise.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Customise...", None, QtGui.QApplication.UnicodeUTF8))
         self.edu_customise.setObjectName(_fromUtf8("edu_customise"))
         self.edu_lib_box = QtGui.QCheckBox(self.widget_43)
         self.edu_lib_box.setGeometry(QtCore.QRect(20, 105, 111, 17))
-        self.edu_lib_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Public Library", None, QtGui.QApplication.UnicodeUTF8))
         self.edu_lib_box.setObjectName(_fromUtf8("edu_lib_box"))
         self.mun_customise = QtGui.QPushButton(self.widget_43)
         self.mun_customise.setEnabled(False)
         self.mun_customise.setGeometry(QtCore.QRect(250, 130, 81, 21))
-        self.mun_customise.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Customise...", None, QtGui.QApplication.UnicodeUTF8))
         self.mun_customise.setObjectName(_fromUtf8("mun_customise"))
         self.civ_museum_box = QtGui.QCheckBox(self.widget_43)
         self.civ_museum_box.setGeometry(QtCore.QRect(140, 175, 111, 17))
-        self.civ_museum_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Museum", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_museum_box.setObjectName(_fromUtf8("civ_museum_box"))
         self.edu_facilities_lbl = QtGui.QLabel(self.widget_43)
         self.edu_facilities_lbl.setGeometry(QtCore.QRect(10, 40, 241, 20))
-        self.edu_facilities_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Education Facilities within simulation bounds", None, QtGui.QApplication.UnicodeUTF8))
         self.edu_facilities_lbl.setObjectName(_fromUtf8("edu_facilities_lbl"))
         self.civ_zoo_box = QtGui.QCheckBox(self.widget_43)
         self.civ_zoo_box.setGeometry(QtCore.QRect(140, 195, 111, 17))
-        self.civ_zoo_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Public Zoo", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_zoo_box.setObjectName(_fromUtf8("civ_zoo_box"))
         self.mun_facilities_lbl = QtGui.QLabel(self.widget_43)
         self.mun_facilities_lbl.setGeometry(QtCore.QRect(10, 130, 201, 20))
-        self.mun_facilities_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Municipal Facilities within simulation bounds", None, QtGui.QApplication.UnicodeUTF8))
         self.mun_facilities_lbl.setObjectName(_fromUtf8("mun_facilities_lbl"))
         self.civ_consider_check = QtGui.QCheckBox(self.widget_43)
         self.civ_consider_check.setGeometry(QtCore.QRect(20, 10, 211, 17))
-        self.civ_consider_check.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">If detailed consideration of these facilities is to be included in the model, check this box to enable further options. Otherwise this land use will simply be treated as commercial/industrial land use.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.civ_consider_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Consider Civic Facilities explicitly", None, QtGui.QApplication.UnicodeUTF8))
         self.civ_consider_check.setObjectName(_fromUtf8("civ_consider_check"))
         self.verticalLayout_5.addWidget(self.widget_43)
         self.nr_parameters.setWidget(self.nr_scrollAreaWidgetContents)
@@ -1430,11 +1067,6 @@ class Ui_BuildingBlockDialog(object):
         sizePolicy.setHeightForWidth(self.transprot_explain.sizePolicy().hasHeightForWidth())
         self.transprot_explain.setSizePolicy(sizePolicy)
         self.transprot_explain.setMaximumSize(QtCore.QSize(141, 16777215))
-        self.transprot_explain.setHtml(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define planning geometry for city\'s transport infrastructure. This includes roads and the more generalised transport facilities. Note that these details only influence large arterials and highways, not local collectors within neighbourhoods.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.transprot_explain.setObjectName(_fromUtf8("transprot_explain"))
         self.gridLayout_9.addWidget(self.transprot_explain, 1, 0, 1, 1)
         self.gridLayout_10.addWidget(self.tra_sidebar, 0, 2, 1, 1)
@@ -1459,7 +1091,6 @@ class Ui_BuildingBlockDialog(object):
         font.setBold(True)
         font.setWeight(75)
         self.genrules_title_4.setFont(font)
-        self.genrules_title_4.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Transport Infrastructure", None, QtGui.QApplication.UnicodeUTF8))
         self.genrules_title_4.setObjectName(_fromUtf8("genrules_title_4"))
         self.genrules_separator_4 = QtGui.QFrame(self.tra_heading)
         self.genrules_separator_4.setGeometry(QtCore.QRect(0, 20, 442, 3))
@@ -1489,11 +1120,6 @@ class Ui_BuildingBlockDialog(object):
         self.frontage_info_lbl.setSizePolicy(sizePolicy)
         self.frontage_info_lbl.setMinimumSize(QtCore.QSize(0, 13))
         self.frontage_info_lbl.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.frontage_info_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Frontage &amp; Pedestrian Information</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.frontage_info_lbl.setObjectName(_fromUtf8("frontage_info_lbl"))
         self.verticalLayout_7.addWidget(self.frontage_info_lbl)
         self.frontage_info_wdg = QtGui.QWidget(self.tra_scrollAreaWidgetContents)
@@ -1511,11 +1137,9 @@ class Ui_BuildingBlockDialog(object):
         self.w_resfootpath_max_box.setObjectName(_fromUtf8("w_resfootpath_max_box"))
         self.w_resnaturestrip_lbl = QtGui.QLabel(self.frontage_info_wdg)
         self.w_resnaturestrip_lbl.setGeometry(QtCore.QRect(20, 54, 151, 20))
-        self.w_resnaturestrip_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Nature strip width (range) [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.w_resnaturestrip_lbl.setObjectName(_fromUtf8("w_resnaturestrip_lbl"))
         self.w_resfootpath_lbl = QtGui.QLabel(self.frontage_info_wdg)
         self.w_resfootpath_lbl.setGeometry(QtCore.QRect(20, 28, 140, 20))
-        self.w_resfootpath_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Footpath width  (range) [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.w_resfootpath_lbl.setObjectName(_fromUtf8("w_resfootpath_lbl"))
         self.w_resnaturestrip_max_box = QtGui.QLineEdit(self.frontage_info_wdg)
         self.w_resnaturestrip_max_box.setGeometry(QtCore.QRect(220, 54, 31, 20))
@@ -1527,7 +1151,6 @@ class Ui_BuildingBlockDialog(object):
         self.w_resfootpath_min_box.setObjectName(_fromUtf8("w_resfootpath_min_box"))
         self.w_resnaturestrip_lbl2 = QtGui.QLabel(self.frontage_info_wdg)
         self.w_resnaturestrip_lbl2.setGeometry(QtCore.QRect(205, 54, 16, 20))
-        self.w_resnaturestrip_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "to", None, QtGui.QApplication.UnicodeUTF8))
         self.w_resnaturestrip_lbl2.setObjectName(_fromUtf8("w_resnaturestrip_lbl2"))
         self.w_resnaturestrip_min_box = QtGui.QLineEdit(self.frontage_info_wdg)
         self.w_resnaturestrip_min_box.setGeometry(QtCore.QRect(170, 54, 31, 20))
@@ -1535,43 +1158,27 @@ class Ui_BuildingBlockDialog(object):
         self.w_resnaturestrip_min_box.setObjectName(_fromUtf8("w_resnaturestrip_min_box"))
         self.w_resfootpath_lbl2 = QtGui.QLabel(self.frontage_info_wdg)
         self.w_resfootpath_lbl2.setGeometry(QtCore.QRect(205, 28, 21, 20))
-        self.w_resfootpath_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "to", None, QtGui.QApplication.UnicodeUTF8))
         self.w_resfootpath_lbl2.setObjectName(_fromUtf8("w_resfootpath_lbl2"))
         self.w_resfootpath_med_check = QtGui.QCheckBox(self.frontage_info_wdg)
         self.w_resfootpath_med_check.setGeometry(QtCore.QRect(260, 30, 111, 17))
-        self.w_resfootpath_med_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Use median", None, QtGui.QApplication.UnicodeUTF8))
         self.w_resfootpath_med_check.setObjectName(_fromUtf8("w_resfootpath_med_check"))
         self.w_resnaturestrip_med_check = QtGui.QCheckBox(self.frontage_info_wdg)
         self.w_resnaturestrip_med_check.setGeometry(QtCore.QRect(260, 56, 111, 17))
-        self.w_resnaturestrip_med_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Use median", None, QtGui.QApplication.UnicodeUTF8))
         self.w_resnaturestrip_med_check.setObjectName(_fromUtf8("w_resnaturestrip_med_check"))
         self.w_resfrontage_lbl = QtGui.QLabel(self.frontage_info_wdg)
         self.w_resfrontage_lbl.setGeometry(QtCore.QRect(10, 4, 140, 20))
-        self.w_resfrontage_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Residential Districts</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.w_resfrontage_lbl.setObjectName(_fromUtf8("w_resfrontage_lbl"))
         self.w_comfootpath_lbl = QtGui.QLabel(self.frontage_info_wdg)
         self.w_comfootpath_lbl.setGeometry(QtCore.QRect(20, 112, 140, 20))
-        self.w_comfootpath_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Footpath width  (range) [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.w_comfootpath_lbl.setObjectName(_fromUtf8("w_comfootpath_lbl"))
         self.w_comfrontage_lbl = QtGui.QLabel(self.frontage_info_wdg)
         self.w_comfrontage_lbl.setGeometry(QtCore.QRect(10, 88, 171, 20))
-        self.w_comfrontage_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Non-Residential Districts</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.w_comfrontage_lbl.setObjectName(_fromUtf8("w_comfrontage_lbl"))
         self.w_comnaturestrip_lbl = QtGui.QLabel(self.frontage_info_wdg)
         self.w_comnaturestrip_lbl.setGeometry(QtCore.QRect(20, 138, 151, 20))
-        self.w_comnaturestrip_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Nature strip width (range) [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.w_comnaturestrip_lbl.setObjectName(_fromUtf8("w_comnaturestrip_lbl"))
         self.w_comnaturestrip_med_check = QtGui.QCheckBox(self.frontage_info_wdg)
         self.w_comnaturestrip_med_check.setGeometry(QtCore.QRect(260, 140, 111, 17))
-        self.w_comnaturestrip_med_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Use median", None, QtGui.QApplication.UnicodeUTF8))
         self.w_comnaturestrip_med_check.setObjectName(_fromUtf8("w_comnaturestrip_med_check"))
         self.w_comfootpath_max_box = QtGui.QLineEdit(self.frontage_info_wdg)
         self.w_comfootpath_max_box.setGeometry(QtCore.QRect(220, 112, 31, 20))
@@ -1579,7 +1186,6 @@ class Ui_BuildingBlockDialog(object):
         self.w_comfootpath_max_box.setObjectName(_fromUtf8("w_comfootpath_max_box"))
         self.w_comnaturestrip_lbl2 = QtGui.QLabel(self.frontage_info_wdg)
         self.w_comnaturestrip_lbl2.setGeometry(QtCore.QRect(205, 138, 16, 20))
-        self.w_comnaturestrip_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "to", None, QtGui.QApplication.UnicodeUTF8))
         self.w_comnaturestrip_lbl2.setObjectName(_fromUtf8("w_comnaturestrip_lbl2"))
         self.w_comfootpath_min_box = QtGui.QLineEdit(self.frontage_info_wdg)
         self.w_comfootpath_min_box.setGeometry(QtCore.QRect(170, 112, 31, 20))
@@ -1587,7 +1193,6 @@ class Ui_BuildingBlockDialog(object):
         self.w_comfootpath_min_box.setObjectName(_fromUtf8("w_comfootpath_min_box"))
         self.w_comfootpath_lbl2 = QtGui.QLabel(self.frontage_info_wdg)
         self.w_comfootpath_lbl2.setGeometry(QtCore.QRect(205, 112, 21, 20))
-        self.w_comfootpath_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "to", None, QtGui.QApplication.UnicodeUTF8))
         self.w_comfootpath_lbl2.setObjectName(_fromUtf8("w_comfootpath_lbl2"))
         self.w_comnaturestrip_min_box = QtGui.QLineEdit(self.frontage_info_wdg)
         self.w_comnaturestrip_min_box.setGeometry(QtCore.QRect(170, 138, 31, 20))
@@ -1599,7 +1204,6 @@ class Ui_BuildingBlockDialog(object):
         self.w_comnaturestrip_max_box.setObjectName(_fromUtf8("w_comnaturestrip_max_box"))
         self.w_comfootpath_med_check = QtGui.QCheckBox(self.frontage_info_wdg)
         self.w_comfootpath_med_check.setGeometry(QtCore.QRect(260, 114, 111, 17))
-        self.w_comfootpath_med_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Use median", None, QtGui.QApplication.UnicodeUTF8))
         self.w_comfootpath_med_check.setObjectName(_fromUtf8("w_comfootpath_med_check"))
         self.verticalLayout_7.addWidget(self.frontage_info_wdg)
         self.collector_info_lbl = QtGui.QLabel(self.tra_scrollAreaWidgetContents)
@@ -1610,11 +1214,6 @@ class Ui_BuildingBlockDialog(object):
         self.collector_info_lbl.setSizePolicy(sizePolicy)
         self.collector_info_lbl.setMinimumSize(QtCore.QSize(0, 13))
         self.collector_info_lbl.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.collector_info_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Local Access/Service/Collector Roads</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.collector_info_lbl.setObjectName(_fromUtf8("collector_info_lbl"))
         self.verticalLayout_7.addWidget(self.collector_info_lbl)
         self.collector_info_wdg = QtGui.QWidget(self.tra_scrollAreaWidgetContents)
@@ -1628,7 +1227,6 @@ class Ui_BuildingBlockDialog(object):
         self.collector_info_wdg.setObjectName(_fromUtf8("collector_info_wdg"))
         self.w_collectlane_lbl = QtGui.QLabel(self.collector_info_wdg)
         self.w_collectlane_lbl.setGeometry(QtCore.QRect(20, 4, 140, 20))
-        self.w_collectlane_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Lane width (range) [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.w_collectlane_lbl.setObjectName(_fromUtf8("w_collectlane_lbl"))
         self.w_collectlane_min_box = QtGui.QLineEdit(self.collector_info_wdg)
         self.w_collectlane_min_box.setGeometry(QtCore.QRect(170, 4, 31, 20))
@@ -1636,7 +1234,6 @@ class Ui_BuildingBlockDialog(object):
         self.w_collectlane_min_box.setObjectName(_fromUtf8("w_collectlane_min_box"))
         self.w_collectlane_med_check = QtGui.QCheckBox(self.collector_info_wdg)
         self.w_collectlane_med_check.setGeometry(QtCore.QRect(260, 6, 101, 17))
-        self.w_collectlane_med_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Use median", None, QtGui.QApplication.UnicodeUTF8))
         self.w_collectlane_med_check.setObjectName(_fromUtf8("w_collectlane_med_check"))
         self.w_collectlane_max_box = QtGui.QLineEdit(self.collector_info_wdg)
         self.w_collectlane_max_box.setGeometry(QtCore.QRect(220, 4, 31, 20))
@@ -1644,11 +1241,9 @@ class Ui_BuildingBlockDialog(object):
         self.w_collectlane_max_box.setObjectName(_fromUtf8("w_collectlane_max_box"))
         self.w_collectlane_lbl2 = QtGui.QLabel(self.collector_info_wdg)
         self.w_collectlane_lbl2.setGeometry(QtCore.QRect(205, 4, 21, 20))
-        self.w_collectlane_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "to", None, QtGui.QApplication.UnicodeUTF8))
         self.w_collectlane_lbl2.setObjectName(_fromUtf8("w_collectlane_lbl2"))
         self.collect_crossfall_lbl = QtGui.QLabel(self.collector_info_wdg)
         self.collect_crossfall_lbl.setGeometry(QtCore.QRect(20, 30, 140, 20))
-        self.collect_crossfall_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Average crossfall [%]", None, QtGui.QApplication.UnicodeUTF8))
         self.collect_crossfall_lbl.setObjectName(_fromUtf8("collect_crossfall_lbl"))
         self.collect_crossfall_box = QtGui.QLineEdit(self.collector_info_wdg)
         self.collect_crossfall_box.setGeometry(QtCore.QRect(170, 30, 31, 20))
@@ -1663,11 +1258,6 @@ class Ui_BuildingBlockDialog(object):
         self.arterial_info_lbl.setSizePolicy(sizePolicy)
         self.arterial_info_lbl.setMinimumSize(QtCore.QSize(0, 13))
         self.arterial_info_lbl.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.arterial_info_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Major Arterials &amp; Highways</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.arterial_info_lbl.setObjectName(_fromUtf8("arterial_info_lbl"))
         self.verticalLayout_7.addWidget(self.arterial_info_lbl)
         self.arterial_info_wdg = QtGui.QWidget(self.tra_scrollAreaWidgetContents)
@@ -1681,7 +1271,6 @@ class Ui_BuildingBlockDialog(object):
         self.arterial_info_wdg.setObjectName(_fromUtf8("arterial_info_wdg"))
         self.w_arterial_lbl2 = QtGui.QLabel(self.arterial_info_wdg)
         self.w_arterial_lbl2.setGeometry(QtCore.QRect(205, 4, 21, 20))
-        self.w_arterial_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "to", None, QtGui.QApplication.UnicodeUTF8))
         self.w_arterial_lbl2.setObjectName(_fromUtf8("w_arterial_lbl2"))
         self.w_arterial_max_box = QtGui.QLineEdit(self.arterial_info_wdg)
         self.w_arterial_max_box.setGeometry(QtCore.QRect(220, 4, 31, 20))
@@ -1689,11 +1278,9 @@ class Ui_BuildingBlockDialog(object):
         self.w_arterial_max_box.setObjectName(_fromUtf8("w_arterial_max_box"))
         self.w_arterial_lbl = QtGui.QLabel(self.arterial_info_wdg)
         self.w_arterial_lbl.setGeometry(QtCore.QRect(20, 4, 140, 20))
-        self.w_arterial_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Lane width (range) [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.w_arterial_lbl.setObjectName(_fromUtf8("w_arterial_lbl"))
         self.arterial_crossfall_lbl = QtGui.QLabel(self.arterial_info_wdg)
         self.arterial_crossfall_lbl.setGeometry(QtCore.QRect(20, 80, 140, 20))
-        self.arterial_crossfall_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Average crossfall [%]", None, QtGui.QApplication.UnicodeUTF8))
         self.arterial_crossfall_lbl.setObjectName(_fromUtf8("arterial_crossfall_lbl"))
         self.w_arterial_min_box = QtGui.QLineEdit(self.arterial_info_wdg)
         self.w_arterial_min_box.setGeometry(QtCore.QRect(170, 4, 31, 20))
@@ -1701,7 +1288,6 @@ class Ui_BuildingBlockDialog(object):
         self.w_arterial_min_box.setObjectName(_fromUtf8("w_arterial_min_box"))
         self.w_arterial_med_check = QtGui.QCheckBox(self.arterial_info_wdg)
         self.w_arterial_med_check.setGeometry(QtCore.QRect(260, 6, 101, 17))
-        self.w_arterial_med_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Use median", None, QtGui.QApplication.UnicodeUTF8))
         self.w_arterial_med_check.setObjectName(_fromUtf8("w_arterial_med_check"))
         self.arterial_crossfall_box = QtGui.QLineEdit(self.arterial_info_wdg)
         self.arterial_crossfall_box.setGeometry(QtCore.QRect(170, 80, 31, 20))
@@ -1709,7 +1295,6 @@ class Ui_BuildingBlockDialog(object):
         self.arterial_crossfall_box.setObjectName(_fromUtf8("arterial_crossfall_box"))
         self.w_arterialmed_lbl = QtGui.QLabel(self.arterial_info_wdg)
         self.w_arterialmed_lbl.setGeometry(QtCore.QRect(20, 30, 151, 20))
-        self.w_arterialmed_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Median Width (range) [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.w_arterialmed_lbl.setObjectName(_fromUtf8("w_arterialmed_lbl"))
         self.w_arterialmed_minbox = QtGui.QLineEdit(self.arterial_info_wdg)
         self.w_arterialmed_minbox.setGeometry(QtCore.QRect(170, 30, 31, 20))
@@ -1717,17 +1302,12 @@ class Ui_BuildingBlockDialog(object):
         self.w_arterialmed_minbox.setObjectName(_fromUtf8("w_arterialmed_minbox"))
         self.w_arterialmed_nodev_check = QtGui.QCheckBox(self.arterial_info_wdg)
         self.w_arterialmed_nodev_check.setGeometry(QtCore.QRect(20, 105, 321, 17))
-        self.w_arterialmed_nodev_check.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "If the median area cannot be developed at all, check this box to restrict any activity on this part of the infrastructure.", None, QtGui.QApplication.UnicodeUTF8))
-        self.w_arterialmed_nodev_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Median Area reserved for future road widening", None, QtGui.QApplication.UnicodeUTF8))
         self.w_arterialmed_nodev_check.setObjectName(_fromUtf8("w_arterialmed_nodev_check"))
         self.highway_buffer_check = QtGui.QCheckBox(self.arterial_info_wdg)
         self.highway_buffer_check.setGeometry(QtCore.QRect(20, 125, 321, 17))
-        self.highway_buffer_check.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "Check this box to influence the likelihood of parks and highways in the neighbourhood being arranged alongside each other (results in higher likelihood of linear parks that run along highways, typical of Melbourne).", None, QtGui.QApplication.UnicodeUTF8))
-        self.highway_buffer_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Incorporate Open Spaces as road buffers if nearby", None, QtGui.QApplication.UnicodeUTF8))
         self.highway_buffer_check.setObjectName(_fromUtf8("highway_buffer_check"))
         self.w_arterialmed_lbl2 = QtGui.QLabel(self.arterial_info_wdg)
         self.w_arterialmed_lbl2.setGeometry(QtCore.QRect(205, 30, 21, 20))
-        self.w_arterialmed_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "to", None, QtGui.QApplication.UnicodeUTF8))
         self.w_arterialmed_lbl2.setObjectName(_fromUtf8("w_arterialmed_lbl2"))
         self.w_arterialmed_maxbox = QtGui.QLineEdit(self.arterial_info_wdg)
         self.w_arterialmed_maxbox.setGeometry(QtCore.QRect(220, 30, 31, 20))
@@ -1735,11 +1315,9 @@ class Ui_BuildingBlockDialog(object):
         self.w_arterialmed_maxbox.setObjectName(_fromUtf8("w_arterialmed_maxbox"))
         self.w_arterialmed_med_check = QtGui.QCheckBox(self.arterial_info_wdg)
         self.w_arterialmed_med_check.setGeometry(QtCore.QRect(260, 30, 101, 17))
-        self.w_arterialmed_med_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Use median", None, QtGui.QApplication.UnicodeUTF8))
         self.w_arterialmed_med_check.setObjectName(_fromUtf8("w_arterialmed_med_check"))
         self.w_arterialsh_lbl_2 = QtGui.QLabel(self.arterial_info_wdg)
         self.w_arterialsh_lbl_2.setGeometry(QtCore.QRect(20, 55, 151, 20))
-        self.w_arterialsh_lbl_2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Buffer Width (range) [m]", None, QtGui.QApplication.UnicodeUTF8))
         self.w_arterialsh_lbl_2.setObjectName(_fromUtf8("w_arterialsh_lbl_2"))
         self.w_arterialsh_maxbox = QtGui.QLineEdit(self.arterial_info_wdg)
         self.w_arterialsh_maxbox.setGeometry(QtCore.QRect(220, 55, 31, 20))
@@ -1747,11 +1325,9 @@ class Ui_BuildingBlockDialog(object):
         self.w_arterialsh_maxbox.setObjectName(_fromUtf8("w_arterialsh_maxbox"))
         self.w_arterialsh_lbl2 = QtGui.QLabel(self.arterial_info_wdg)
         self.w_arterialsh_lbl2.setGeometry(QtCore.QRect(205, 55, 21, 20))
-        self.w_arterialsh_lbl2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "to", None, QtGui.QApplication.UnicodeUTF8))
         self.w_arterialsh_lbl2.setObjectName(_fromUtf8("w_arterialsh_lbl2"))
         self.w_arterialsh_med_check = QtGui.QCheckBox(self.arterial_info_wdg)
         self.w_arterialsh_med_check.setGeometry(QtCore.QRect(260, 55, 101, 17))
-        self.w_arterialsh_med_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Use median", None, QtGui.QApplication.UnicodeUTF8))
         self.w_arterialsh_med_check.setObjectName(_fromUtf8("w_arterialsh_med_check"))
         self.w_arterialsh_minbox = QtGui.QLineEdit(self.arterial_info_wdg)
         self.w_arterialsh_minbox.setGeometry(QtCore.QRect(170, 55, 31, 20))
@@ -1766,11 +1342,6 @@ class Ui_BuildingBlockDialog(object):
         self.othertrans_info_lbl.setSizePolicy(sizePolicy)
         self.othertrans_info_lbl.setMinimumSize(QtCore.QSize(0, 13))
         self.othertrans_info_lbl.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.othertrans_info_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Other Transportation</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.othertrans_info_lbl.setObjectName(_fromUtf8("othertrans_info_lbl"))
         self.verticalLayout_7.addWidget(self.othertrans_info_lbl)
         self.othertrans_info_wdg = QtGui.QWidget(self.tra_scrollAreaWidgetContents)
@@ -1784,33 +1355,25 @@ class Ui_BuildingBlockDialog(object):
         self.othertrans_info_wdg.setObjectName(_fromUtf8("othertrans_info_wdg"))
         self.trans_facilities_lbl = QtGui.QLabel(self.othertrans_info_wdg)
         self.trans_facilities_lbl.setGeometry(QtCore.QRect(10, 35, 231, 20))
-        self.trans_facilities_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Transport Facilities within simulation boundary", None, QtGui.QApplication.UnicodeUTF8))
         self.trans_facilities_lbl.setObjectName(_fromUtf8("trans_facilities_lbl"))
         self.trans_airport_box = QtGui.QCheckBox(self.othertrans_info_wdg)
         self.trans_airport_box.setGeometry(QtCore.QRect(20, 60, 70, 17))
-        self.trans_airport_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Airport", None, QtGui.QApplication.UnicodeUTF8))
         self.trans_airport_box.setObjectName(_fromUtf8("trans_airport_box"))
         self.trans_seaport_box = QtGui.QCheckBox(self.othertrans_info_wdg)
         self.trans_seaport_box.setGeometry(QtCore.QRect(20, 80, 121, 17))
-        self.trans_seaport_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Seaport", None, QtGui.QApplication.UnicodeUTF8))
         self.trans_seaport_box.setObjectName(_fromUtf8("trans_seaport_box"))
         self.trans_busdepot_box = QtGui.QCheckBox(self.othertrans_info_wdg)
         self.trans_busdepot_box.setGeometry(QtCore.QRect(150, 60, 121, 17))
-        self.trans_busdepot_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Bus Depot", None, QtGui.QApplication.UnicodeUTF8))
         self.trans_busdepot_box.setObjectName(_fromUtf8("trans_busdepot_box"))
         self.trans_rail_box = QtGui.QCheckBox(self.othertrans_info_wdg)
         self.trans_rail_box.setGeometry(QtCore.QRect(150, 80, 121, 17))
-        self.trans_rail_box.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Major Rail Terminal", None, QtGui.QApplication.UnicodeUTF8))
         self.trans_rail_box.setObjectName(_fromUtf8("trans_rail_box"))
         self.trans_customise = QtGui.QPushButton(self.othertrans_info_wdg)
         self.trans_customise.setEnabled(False)
         self.trans_customise.setGeometry(QtCore.QRect(250, 35, 81, 21))
-        self.trans_customise.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Customise...", None, QtGui.QApplication.UnicodeUTF8))
         self.trans_customise.setObjectName(_fromUtf8("trans_customise"))
         self.trans_on_off_check = QtGui.QCheckBox(self.othertrans_info_wdg)
         self.trans_on_off_check.setGeometry(QtCore.QRect(20, 10, 301, 17))
-        self.trans_on_off_check.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "If detailed consideration of these facilities is to be included in the model, check this box to enable further options. Otherwise this land use will simply be treated as commercial/industrial land use.", None, QtGui.QApplication.UnicodeUTF8))
-        self.trans_on_off_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Consider Other Transportation Facilities explicitly", None, QtGui.QApplication.UnicodeUTF8))
         self.trans_on_off_check.setObjectName(_fromUtf8("trans_on_off_check"))
         self.verticalLayout_7.addWidget(self.othertrans_info_wdg)
         self.tra_parameters.setWidget(self.tra_scrollAreaWidgetContents)
@@ -1850,11 +1413,6 @@ class Ui_BuildingBlockDialog(object):
         sizePolicy.setHeightForWidth(self.openspace_explain.sizePolicy().hasHeightForWidth())
         self.openspace_explain.setSizePolicy(sizePolicy)
         self.openspace_explain.setMaximumSize(QtCore.QSize(141, 16777215))
-        self.openspace_explain.setHtml(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define geometry and characteristics of open spaces. This includes parks, gardens, reserves and floodways within the city. </span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.openspace_explain.setObjectName(_fromUtf8("openspace_explain"))
         self.gridLayout_11.addWidget(self.openspace_explain, 1, 0, 1, 1)
         self.gridLayout_12.addWidget(self.opsp_sidebar, 0, 2, 1, 1)
@@ -1879,7 +1437,6 @@ class Ui_BuildingBlockDialog(object):
         font.setBold(True)
         font.setWeight(75)
         self.genrules_title_5.setFont(font)
-        self.genrules_title_5.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Open Space Design", None, QtGui.QApplication.UnicodeUTF8))
         self.genrules_title_5.setObjectName(_fromUtf8("genrules_title_5"))
         self.genrules_separator_5 = QtGui.QFrame(self.opsp_heading)
         self.genrules_separator_5.setGeometry(QtCore.QRect(0, 20, 442, 3))
@@ -1909,11 +1466,6 @@ class Ui_BuildingBlockDialog(object):
         self.park_title.setSizePolicy(sizePolicy)
         self.park_title.setMinimumSize(QtCore.QSize(0, 13))
         self.park_title.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.park_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Parks, Squares &amp; Gardens</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.park_title.setObjectName(_fromUtf8("park_title"))
         self.verticalLayout_8.addWidget(self.park_title)
         self.pg_params = QtGui.QWidget(self.opsp_scrollAreaWidgetContents)
@@ -1927,7 +1479,6 @@ class Ui_BuildingBlockDialog(object):
         self.pg_params.setObjectName(_fromUtf8("pg_params"))
         self.pg_ggratio_lbl = QtGui.QLabel(self.pg_params)
         self.pg_ggratio_lbl.setGeometry(QtCore.QRect(20, 20, 161, 20))
-        self.pg_ggratio_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Ratio of green to grey spaces", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_ggratio_lbl.setObjectName(_fromUtf8("pg_ggratio_lbl"))
         self.pg_ggratio_slide = QtGui.QSlider(self.pg_params)
         self.pg_ggratio_slide.setGeometry(QtCore.QRect(178, 20, 126, 19))
@@ -1946,49 +1497,38 @@ class Ui_BuildingBlockDialog(object):
         self.pg_ggratio_box.setObjectName(_fromUtf8("pg_ggratio_box"))
         self.pg_clustering_low_lbl = QtGui.QLabel(self.pg_params)
         self.pg_clustering_low_lbl.setGeometry(QtCore.QRect(176, 0, 21, 20))
-        self.pg_clustering_low_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Low", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_clustering_low_lbl.setObjectName(_fromUtf8("pg_clustering_low_lbl"))
         self.pg_clustering_high_lbl = QtGui.QLabel(self.pg_params)
         self.pg_clustering_high_lbl.setGeometry(QtCore.QRect(290, 0, 21, 20))
-        self.pg_clustering_high_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "High", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_clustering_high_lbl.setObjectName(_fromUtf8("pg_clustering_high_lbl"))
         self.pg_clustering_med_lbl = QtGui.QLabel(self.pg_params)
         self.pg_clustering_med_lbl.setGeometry(QtCore.QRect(224, 0, 41, 20))
-        self.pg_clustering_med_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Medium", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_clustering_med_lbl.setObjectName(_fromUtf8("pg_clustering_med_lbl"))
         self.pg_clustering_low_lbl_2 = QtGui.QLabel(self.pg_params)
         self.pg_clustering_low_lbl_2.setGeometry(QtCore.QRect(174, 40, 31, 20))
-        self.pg_clustering_low_lbl_2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Grey", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_clustering_low_lbl_2.setObjectName(_fromUtf8("pg_clustering_low_lbl_2"))
         self.pg_clustering_low_lbl_3 = QtGui.QLabel(self.pg_params)
         self.pg_clustering_low_lbl_3.setGeometry(QtCore.QRect(281, 40, 31, 20))
-        self.pg_clustering_low_lbl_3.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Green", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_clustering_low_lbl_3.setObjectName(_fromUtf8("pg_clustering_low_lbl_3"))
         self.pg_usable_lbl = QtGui.QLabel(self.pg_params)
         self.pg_usable_lbl.setGeometry(QtCore.QRect(20, 120, 251, 20))
-        self.pg_usable_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Average % of unused space in Parks & Gardens", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_usable_lbl.setObjectName(_fromUtf8("pg_usable_lbl"))
         self.pg_usable_spin = QtGui.QSpinBox(self.pg_params)
         self.pg_usable_spin.setGeometry(QtCore.QRect(290, 120, 51, 16))
-        self.pg_usable_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_usable_spin.setMaximum(100)
         self.pg_usable_spin.setProperty("value", 0)
         self.pg_usable_spin.setObjectName(_fromUtf8("pg_usable_spin"))
         self.pg_usable_prohibit = QtGui.QCheckBox(self.pg_params)
         self.pg_usable_prohibit.setGeometry(QtCore.QRect(30, 145, 241, 17))
-        self.pg_usable_prohibit.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Restrict Park Space Usage for Technologies", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_usable_prohibit.setObjectName(_fromUtf8("pg_usable_prohibit"))
         self.pg_dist_lbl = QtGui.QLabel(self.pg_params)
         self.pg_dist_lbl.setGeometry(QtCore.QRect(20, 70, 201, 20))
-        self.pg_dist_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Distribution of squares and green space:", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_dist_lbl.setObjectName(_fromUtf8("pg_dist_lbl"))
         self.pg_dist_mix_radio = QtGui.QRadioButton(self.pg_params)
         self.pg_dist_mix_radio.setGeometry(QtCore.QRect(230, 70, 111, 17))
-        self.pg_dist_mix_radio.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Combined/Mixed", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_dist_mix_radio.setObjectName(_fromUtf8("pg_dist_mix_radio"))
         self.pg_dist_sep_radio = QtGui.QRadioButton(self.pg_params)
         self.pg_dist_sep_radio.setGeometry(QtCore.QRect(230, 90, 111, 17))
-        self.pg_dist_sep_radio.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Separate/Distinct", None, QtGui.QApplication.UnicodeUTF8))
         self.pg_dist_sep_radio.setObjectName(_fromUtf8("pg_dist_sep_radio"))
         self.verticalLayout_8.addWidget(self.pg_params)
         self.rfw_svu_title = QtGui.QLabel(self.opsp_scrollAreaWidgetContents)
@@ -1999,11 +1539,6 @@ class Ui_BuildingBlockDialog(object):
         self.rfw_svu_title.setSizePolicy(sizePolicy)
         self.rfw_svu_title.setMinimumSize(QtCore.QSize(0, 13))
         self.rfw_svu_title.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.rfw_svu_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Reserves, Floodways &amp; Land for Services &amp; Utilities</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.rfw_svu_title.setObjectName(_fromUtf8("rfw_svu_title"))
         self.verticalLayout_8.addWidget(self.rfw_svu_title)
         self.ref_svu_params = QtGui.QWidget(self.opsp_scrollAreaWidgetContents)
@@ -2017,69 +1552,48 @@ class Ui_BuildingBlockDialog(object):
         self.ref_svu_params.setObjectName(_fromUtf8("ref_svu_params"))
         self.ref_usable_check = QtGui.QCheckBox(self.ref_svu_params)
         self.ref_usable_check.setGeometry(QtCore.QRect(30, 35, 211, 17))
-        self.ref_usable_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Usable area in Reserves/Floodways:", None, QtGui.QApplication.UnicodeUTF8))
         self.ref_usable_check.setObjectName(_fromUtf8("ref_usable_check"))
         self.ref_usable_spin = QtGui.QSpinBox(self.ref_svu_params)
         self.ref_usable_spin.setGeometry(QtCore.QRect(240, 35, 51, 16))
-        self.ref_usable_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.ref_usable_spin.setMaximum(100)
         self.ref_usable_spin.setObjectName(_fromUtf8("ref_usable_spin"))
         self.ref_usable_lbl = QtGui.QLabel(self.ref_svu_params)
         self.ref_usable_lbl.setGeometry(QtCore.QRect(300, 35, 81, 20))
-        self.ref_usable_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "of total area", None, QtGui.QApplication.UnicodeUTF8))
         self.ref_usable_lbl.setObjectName(_fromUtf8("ref_usable_lbl"))
         self.ref_lbl = QtGui.QLabel(self.ref_svu_params)
         self.ref_lbl.setGeometry(QtCore.QRect(10, 10, 191, 20))
-        self.ref_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Reserves &amp; Floodways</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.ref_lbl.setObjectName(_fromUtf8("ref_lbl"))
         self.svu_supply_check = QtGui.QCheckBox(self.ref_svu_params)
         self.svu_supply_check.setGeometry(QtCore.QRect(40, 220, 121, 17))
-        self.svu_supply_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Water Supply Utilities", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_supply_check.setObjectName(_fromUtf8("svu_supply_check"))
         self.svu_waste_check = QtGui.QCheckBox(self.ref_svu_params)
         self.svu_waste_check.setGeometry(QtCore.QRect(40, 245, 121, 17))
-        self.svu_waste_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Wastewater Utilities", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_waste_check.setObjectName(_fromUtf8("svu_waste_check"))
         self.svu_storm_check = QtGui.QCheckBox(self.ref_svu_params)
         self.svu_storm_check.setGeometry(QtCore.QRect(40, 270, 121, 17))
-        self.svu_storm_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Stormwater Drainage", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_storm_check.setObjectName(_fromUtf8("svu_storm_check"))
         self.svu_lbl = QtGui.QLabel(self.ref_svu_params)
         self.svu_lbl.setGeometry(QtCore.QRect(10, 90, 191, 20))
-        self.svu_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Services &amp; Utilities Land Use</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_lbl.setObjectName(_fromUtf8("svu_lbl"))
         self.ref_limit_check = QtGui.QCheckBox(self.ref_svu_params)
         self.ref_limit_check.setGeometry(QtCore.QRect(30, 60, 321, 17))
-        self.ref_limit_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Limit use of land for stormwater management", None, QtGui.QApplication.UnicodeUTF8))
         self.ref_limit_check.setObjectName(_fromUtf8("ref_limit_check"))
         self.svu_supply_spin = QtGui.QSpinBox(self.ref_svu_params)
         self.svu_supply_spin.setGeometry(QtCore.QRect(170, 220, 51, 16))
-        self.svu_supply_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_supply_spin.setMaximum(100)
         self.svu_supply_spin.setObjectName(_fromUtf8("svu_supply_spin"))
         self.svu_waste_spin = QtGui.QSpinBox(self.ref_svu_params)
         self.svu_waste_spin.setGeometry(QtCore.QRect(170, 245, 51, 16))
-        self.svu_waste_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_waste_spin.setMaximum(100)
         self.svu_waste_spin.setProperty("value", 100)
         self.svu_waste_spin.setObjectName(_fromUtf8("svu_waste_spin"))
         self.svu_storm_spin = QtGui.QSpinBox(self.ref_svu_params)
         self.svu_storm_spin.setGeometry(QtCore.QRect(170, 270, 51, 16))
-        self.svu_storm_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_storm_spin.setMaximum(100)
         self.svu_storm_spin.setProperty("value", 50)
         self.svu_storm_spin.setObjectName(_fromUtf8("svu_storm_spin"))
         self.svu_allocate_lbl = QtGui.QLabel(self.ref_svu_params)
         self.svu_allocate_lbl.setGeometry(QtCore.QRect(20, 110, 301, 20))
-        self.svu_allocate_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Allocation of area to following services (adjust the slider)", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_allocate_lbl.setObjectName(_fromUtf8("svu_allocate_lbl"))
         self.svu_slider = QtGui.QSlider(self.ref_svu_params)
         self.svu_slider.setGeometry(QtCore.QRect(90, 140, 191, 20))
@@ -2093,7 +1607,6 @@ class Ui_BuildingBlockDialog(object):
         self.svu_slider.setObjectName(_fromUtf8("svu_slider"))
         self.svu_nonwat_lbl = QtGui.QLabel(self.ref_svu_params)
         self.svu_nonwat_lbl.setGeometry(QtCore.QRect(20, 160, 101, 20))
-        self.svu_nonwat_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Non-Water Services", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_nonwat_lbl.setObjectName(_fromUtf8("svu_nonwat_lbl"))
         self.svu_wat_box = QtGui.QLineEdit(self.ref_svu_params)
         self.svu_wat_box.setGeometry(QtCore.QRect(290, 140, 31, 16))
@@ -2102,7 +1615,6 @@ class Ui_BuildingBlockDialog(object):
         self.svu_wat_box.setObjectName(_fromUtf8("svu_wat_box"))
         self.svu_wat_lbl = QtGui.QLabel(self.ref_svu_params)
         self.svu_wat_lbl.setGeometry(QtCore.QRect(280, 160, 81, 20))
-        self.svu_wat_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Water Services", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_wat_lbl.setObjectName(_fromUtf8("svu_wat_lbl"))
         self.svu_nonwat_box = QtGui.QLineEdit(self.ref_svu_params)
         self.svu_nonwat_box.setGeometry(QtCore.QRect(40, 140, 31, 16))
@@ -2111,15 +1623,12 @@ class Ui_BuildingBlockDialog(object):
         self.svu_nonwat_box.setObjectName(_fromUtf8("svu_nonwat_box"))
         self.svu_breakdown_lbl = QtGui.QLabel(self.ref_svu_params)
         self.svu_breakdown_lbl.setGeometry(QtCore.QRect(20, 190, 311, 20))
-        self.svu_breakdown_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Breakdown of Area Allocation for Water-related Services", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_breakdown_lbl.setObjectName(_fromUtf8("svu_breakdown_lbl"))
         self.svu_nonwat_lbl_2 = QtGui.QLabel(self.ref_svu_params)
         self.svu_nonwat_lbl_2.setGeometry(QtCore.QRect(72, 139, 21, 20))
-        self.svu_nonwat_lbl_2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_nonwat_lbl_2.setObjectName(_fromUtf8("svu_nonwat_lbl_2"))
         self.svu_nonwat_lbl_3 = QtGui.QLabel(self.ref_svu_params)
         self.svu_nonwat_lbl_3.setGeometry(QtCore.QRect(320, 140, 21, 20))
-        self.svu_nonwat_lbl_3.setText(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.svu_nonwat_lbl_3.setObjectName(_fromUtf8("svu_nonwat_lbl_3"))
         self.verticalLayout_8.addWidget(self.ref_svu_params)
         self.opsp_parameters.setWidget(self.opsp_scrollAreaWidgetContents)
@@ -2151,7 +1660,6 @@ class Ui_BuildingBlockDialog(object):
         font.setBold(True)
         font.setWeight(75)
         self.genrules_title_6.setFont(font)
-        self.genrules_title_6.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Unclassified and Undeveloped Land", None, QtGui.QApplication.UnicodeUTF8))
         self.genrules_title_6.setObjectName(_fromUtf8("genrules_title_6"))
         self.genrules_separator_6 = QtGui.QFrame(self.oth_heading)
         self.genrules_separator_6.setGeometry(QtCore.QRect(0, 20, 442, 3))
@@ -2181,11 +1689,6 @@ class Ui_BuildingBlockDialog(object):
         self.unc_title.setSizePolicy(sizePolicy)
         self.unc_title.setMinimumSize(QtCore.QSize(0, 13))
         self.unc_title.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.unc_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Unclassified Land</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_title.setObjectName(_fromUtf8("unc_title"))
         self.gridLayout_18.addWidget(self.unc_title, 0, 0, 1, 1)
         self.unc_params = QtGui.QWidget(self.oth_scrollAreaWidgetContents)
@@ -2199,37 +1702,29 @@ class Ui_BuildingBlockDialog(object):
         self.unc_params.setObjectName(_fromUtf8("unc_params"))
         self.unc_merge_check = QtGui.QCheckBox(self.unc_params)
         self.unc_merge_check.setGeometry(QtCore.QRect(10, 10, 261, 17))
-        self.unc_merge_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Merge/Mimic other Land Zones if areas are small", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_merge_check.setObjectName(_fromUtf8("unc_merge_check"))
         self.unc_merge2pg_check = QtGui.QCheckBox(self.unc_params)
         self.unc_merge2pg_check.setGeometry(QtCore.QRect(40, 35, 281, 17))
-        self.unc_merge2pg_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Treat as part of Parks & Garden Open Space", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_merge2pg_check.setObjectName(_fromUtf8("unc_merge2pg_check"))
         self.unc_merge2trans_check = QtGui.QCheckBox(self.unc_params)
         self.unc_merge2trans_check.setGeometry(QtCore.QRect(40, 85, 251, 17))
-        self.unc_merge2trans_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Treat as part of road (e.g. medians, islands)", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_merge2trans_check.setObjectName(_fromUtf8("unc_merge2trans_check"))
         self.unc_custom_check = QtGui.QCheckBox(self.unc_params)
         self.unc_custom_check.setGeometry(QtCore.QRect(10, 115, 301, 17))
-        self.unc_custom_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Define surface cover if area exceeds a given threshold?", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_custom_check.setObjectName(_fromUtf8("unc_custom_check"))
         self.unc_areathresh_spin = QtGui.QDoubleSpinBox(self.unc_params)
         self.unc_areathresh_spin.setGeometry(QtCore.QRect(190, 140, 61, 16))
-        self.unc_areathresh_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_areathresh_spin.setDecimals(1)
         self.unc_areathresh_spin.setProperty("value", 100.0)
         self.unc_areathresh_spin.setObjectName(_fromUtf8("unc_areathresh_spin"))
         self.unc_customthresh_lbl = QtGui.QLabel(self.unc_params)
         self.unc_customthresh_lbl.setGeometry(QtCore.QRect(40, 140, 141, 16))
-        self.unc_customthresh_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Threshold (% of block size)", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_customthresh_lbl.setObjectName(_fromUtf8("unc_customthresh_lbl"))
         self.unc_customimp_lbl = QtGui.QLabel(self.unc_params)
         self.unc_customimp_lbl.setGeometry(QtCore.QRect(40, 165, 141, 16))
-        self.unc_customimp_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Surface imperviousness", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_customimp_lbl.setObjectName(_fromUtf8("unc_customimp_lbl"))
         self.unc_customimp_spin = QtGui.QDoubleSpinBox(self.unc_params)
         self.unc_customimp_spin.setGeometry(QtCore.QRect(190, 165, 61, 16))
-        self.unc_customimp_spin.setSuffix(QtGui.QApplication.translate("BuildingBlockDialog", "%", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_customimp_spin.setDecimals(1)
         self.unc_customimp_spin.setProperty("value", 100.0)
         self.unc_customimp_spin.setObjectName(_fromUtf8("unc_customimp_spin"))
@@ -2241,15 +1736,12 @@ class Ui_BuildingBlockDialog(object):
         self.unc_merge2trans_spin.setObjectName(_fromUtf8("unc_merge2trans_spin"))
         self.unc_mergeweight_lbl = QtGui.QLabel(self.unc_params)
         self.unc_mergeweight_lbl.setGeometry(QtCore.QRect(320, 10, 41, 16))
-        self.unc_mergeweight_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Weight", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_mergeweight_lbl.setObjectName(_fromUtf8("unc_mergeweight_lbl"))
         self.unc_customirrigate_check = QtGui.QCheckBox(self.unc_params)
         self.unc_customirrigate_check.setGeometry(QtCore.QRect(40, 190, 181, 17))
-        self.unc_customirrigate_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Land is part of public irrigation", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_customirrigate_check.setObjectName(_fromUtf8("unc_customirrigate_check"))
         self.unc_merge2ref_check = QtGui.QCheckBox(self.unc_params)
         self.unc_merge2ref_check.setGeometry(QtCore.QRect(40, 60, 271, 17))
-        self.unc_merge2ref_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Treat as part of Reserves & Floodways Open Space", None, QtGui.QApplication.UnicodeUTF8))
         self.unc_merge2ref_check.setObjectName(_fromUtf8("unc_merge2ref_check"))
         self.unc_merge2ref_spin = QtGui.QSpinBox(self.unc_params)
         self.unc_merge2ref_spin.setGeometry(QtCore.QRect(320, 60, 42, 16))
@@ -2263,11 +1755,6 @@ class Ui_BuildingBlockDialog(object):
         self.und_title.setSizePolicy(sizePolicy)
         self.und_title.setMinimumSize(QtCore.QSize(0, 13))
         self.und_title.setMaximumSize(QtCore.QSize(16777215, 13))
-        self.und_title.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Undeveloped Land</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.und_title.setObjectName(_fromUtf8("und_title"))
         self.gridLayout_18.addWidget(self.und_title, 3, 0, 1, 1)
         self.und_params = QtGui.QWidget(self.oth_scrollAreaWidgetContents)
@@ -2281,28 +1768,21 @@ class Ui_BuildingBlockDialog(object):
         self.und_params.setObjectName(_fromUtf8("und_params"))
         self.und_state_lbl = QtGui.QLabel(self.und_params)
         self.und_state_lbl.setGeometry(QtCore.QRect(10, 10, 151, 16))
-        self.und_state_lbl.setText(QtGui.QApplication.translate("BuildingBlockDialog", "State of Undeveloped Land:", None, QtGui.QApplication.UnicodeUTF8))
         self.und_state_lbl.setObjectName(_fromUtf8("und_state_lbl"))
         self.und_statemanual_radio = QtGui.QRadioButton(self.und_params)
         self.und_statemanual_radio.setGeometry(QtCore.QRect(30, 30, 181, 17))
-        self.und_statemanual_radio.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Select Manually for entire area", None, QtGui.QApplication.UnicodeUTF8))
         self.und_statemanual_radio.setObjectName(_fromUtf8("und_statemanual_radio"))
         self.und_stateauto_radio = QtGui.QRadioButton(self.und_params)
         self.und_stateauto_radio.setGeometry(QtCore.QRect(30, 50, 311, 17))
-        self.und_stateauto_radio.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Determine based on location (distance from city centres)", None, QtGui.QApplication.UnicodeUTF8))
         self.und_stateauto_radio.setObjectName(_fromUtf8("und_stateauto_radio"))
         self.und_statemanual_combo = QtGui.QComboBox(self.und_params)
         self.und_statemanual_combo.setGeometry(QtCore.QRect(210, 30, 131, 16))
         self.und_statemanual_combo.setObjectName(_fromUtf8("und_statemanual_combo"))
         self.und_statemanual_combo.addItem(_fromUtf8(""))
-        self.und_statemanual_combo.setItemText(0, QtGui.QApplication.translate("BuildingBlockDialog", "Greenfield", None, QtGui.QApplication.UnicodeUTF8))
         self.und_statemanual_combo.addItem(_fromUtf8(""))
-        self.und_statemanual_combo.setItemText(1, QtGui.QApplication.translate("BuildingBlockDialog", "Brownfield", None, QtGui.QApplication.UnicodeUTF8))
         self.und_statemanual_combo.addItem(_fromUtf8(""))
-        self.und_statemanual_combo.setItemText(2, QtGui.QApplication.translate("BuildingBlockDialog", "Agriculture", None, QtGui.QApplication.UnicodeUTF8))
         self.und_allowdev_check = QtGui.QCheckBox(self.und_params)
         self.und_allowdev_check.setGeometry(QtCore.QRect(30, 70, 291, 17))
-        self.und_allowdev_check.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Allow usage of land space for large water infrastructure?", None, QtGui.QApplication.UnicodeUTF8))
         self.und_allowdev_check.setObjectName(_fromUtf8("und_allowdev_check"))
         self.gridLayout_18.addWidget(self.und_params, 4, 0, 1, 1)
         self.oth_parameters.setWidget(self.oth_scrollAreaWidgetContents)
@@ -2337,15 +1817,356 @@ class Ui_BuildingBlockDialog(object):
         sizePolicy.setHeightForWidth(self.other_explain.sizePolicy().hasHeightForWidth())
         self.other_explain.setSizePolicy(sizePolicy)
         self.other_explain.setMaximumSize(QtCore.QSize(141, 16777215))
-        self.other_explain.setHtml(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Specify what needs to be done with land parcels that are unclassified and what should be done with land parcels that are undeveloped. Information about the general city structure from &quot;General Info&quot; will be used to determine what to do with these land classes.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.other_explain.setObjectName(_fromUtf8("other_explain"))
         self.gridLayout_13.addWidget(self.other_explain, 1, 0, 1, 1)
         self.gridLayout_14.addWidget(self.oth_sidebar, 0, 1, 1, 1)
         self.buildingblocktabs.addTab(self.Others, _fromUtf8(""))
+        self.tab = QtGui.QWidget()
+        self.tab.setObjectName(_fromUtf8("tab"))
+        self.horizontalLayout_2 = QtGui.QHBoxLayout(self.tab)
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.res_input_2 = QtGui.QWidget(self.tab)
+        self.res_input_2.setObjectName(_fromUtf8("res_input_2"))
+        self.verticalLayout_14 = QtGui.QVBoxLayout(self.res_input_2)
+        self.verticalLayout_14.setMargin(0)
+        self.verticalLayout_14.setObjectName(_fromUtf8("verticalLayout_14"))
+        self.res_heading_2 = QtGui.QWidget(self.res_input_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.res_heading_2.sizePolicy().hasHeightForWidth())
+        self.res_heading_2.setSizePolicy(sizePolicy)
+        self.res_heading_2.setMinimumSize(QtCore.QSize(0, 30))
+        self.res_heading_2.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.res_heading_2.setObjectName(_fromUtf8("res_heading_2"))
+        self.genrules_title_7 = QtGui.QLabel(self.res_heading_2)
+        self.genrules_title_7.setGeometry(QtCore.QRect(0, 0, 303, 16))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.genrules_title_7.setFont(font)
+        self.genrules_title_7.setObjectName(_fromUtf8("genrules_title_7"))
+        self.genrules_separator_7 = QtGui.QFrame(self.res_heading_2)
+        self.genrules_separator_7.setGeometry(QtCore.QRect(0, 20, 442, 3))
+        self.genrules_separator_7.setFrameShape(QtGui.QFrame.HLine)
+        self.genrules_separator_7.setFrameShadow(QtGui.QFrame.Sunken)
+        self.genrules_separator_7.setObjectName(_fromUtf8("genrules_separator_7"))
+        self.verticalLayout_14.addWidget(self.res_heading_2)
+        self.res_parameters_2 = QtGui.QScrollArea(self.res_input_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.res_parameters_2.sizePolicy().hasHeightForWidth())
+        self.res_parameters_2.setSizePolicy(sizePolicy)
+        self.res_parameters_2.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.res_parameters_2.setWidgetResizable(True)
+        self.res_parameters_2.setObjectName(_fromUtf8("res_parameters_2"))
+        self.res_scrollAreaWidgetContents_2 = QtGui.QWidget()
+        self.res_scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 398, 687))
+        self.res_scrollAreaWidgetContents_2.setObjectName(_fromUtf8("res_scrollAreaWidgetContents_2"))
+        self.gridLayout_16 = QtGui.QGridLayout(self.res_scrollAreaWidgetContents_2)
+        self.gridLayout_16.setObjectName(_fromUtf8("gridLayout_16"))
+        self.mc_open_title = QtGui.QLabel(self.res_scrollAreaWidgetContents_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(13)
+        sizePolicy.setHeightForWidth(self.mc_open_title.sizePolicy().hasHeightForWidth())
+        self.mc_open_title.setSizePolicy(sizePolicy)
+        self.mc_open_title.setMinimumSize(QtCore.QSize(0, 13))
+        self.mc_open_title.setMaximumSize(QtCore.QSize(16777215, 13))
+        self.mc_open_title.setObjectName(_fromUtf8("mc_open_title"))
+        self.gridLayout_16.addWidget(self.mc_open_title, 6, 0, 1, 1)
+        self.res_paramfield6_2 = QtGui.QWidget(self.res_scrollAreaWidgetContents_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(50)
+        sizePolicy.setHeightForWidth(self.res_paramfield6_2.sizePolicy().hasHeightForWidth())
+        self.res_paramfield6_2.setSizePolicy(sizePolicy)
+        self.res_paramfield6_2.setMinimumSize(QtCore.QSize(369, 150))
+        self.res_paramfield6_2.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.res_paramfield6_2.setObjectName(_fromUtf8("res_paramfield6_2"))
+        self.mc_rdhwy_lbl = QtGui.QLabel(self.res_paramfield6_2)
+        self.mc_rdhwy_lbl.setGeometry(QtCore.QRect(20, 10, 111, 16))
+        self.mc_rdhwy_lbl.setObjectName(_fromUtf8("mc_rdhwy_lbl"))
+        self.mc_rdart_lbl = QtGui.QLabel(self.res_paramfield6_2)
+        self.mc_rdart_lbl.setGeometry(QtCore.QRect(20, 40, 121, 16))
+        self.mc_rdart_lbl.setObjectName(_fromUtf8("mc_rdart_lbl"))
+        self.mc_rdloc_lbl = QtGui.QLabel(self.res_paramfield6_2)
+        self.mc_rdloc_lbl.setGeometry(QtCore.QRect(20, 70, 121, 16))
+        self.mc_rdloc_lbl.setObjectName(_fromUtf8("mc_rdloc_lbl"))
+        self.mc_rdhwy_combo = QtGui.QComboBox(self.res_paramfield6_2)
+        self.mc_rdhwy_combo.setGeometry(QtCore.QRect(140, 10, 141, 16))
+        self.mc_rdhwy_combo.setObjectName(_fromUtf8("mc_rdhwy_combo"))
+        self.mc_rdhwy_combo.addItem(_fromUtf8(""))
+        self.mc_rdhwy_combo.addItem(_fromUtf8(""))
+        self.mc_rdhwy_combo.addItem(_fromUtf8(""))
+        self.mc_rdloc_combo = QtGui.QComboBox(self.res_paramfield6_2)
+        self.mc_rdloc_combo.setGeometry(QtCore.QRect(140, 70, 141, 16))
+        self.mc_rdloc_combo.setObjectName(_fromUtf8("mc_rdloc_combo"))
+        self.mc_rdloc_combo.addItem(_fromUtf8(""))
+        self.mc_rdloc_combo.addItem(_fromUtf8(""))
+        self.mc_rdloc_combo.addItem(_fromUtf8(""))
+        self.mc_rdart_combo = QtGui.QComboBox(self.res_paramfield6_2)
+        self.mc_rdart_combo.setGeometry(QtCore.QRect(140, 40, 141, 16))
+        self.mc_rdart_combo.setObjectName(_fromUtf8("mc_rdart_combo"))
+        self.mc_rdart_combo.addItem(_fromUtf8(""))
+        self.mc_rdart_combo.addItem(_fromUtf8(""))
+        self.mc_rdart_combo.addItem(_fromUtf8(""))
+        self.mc_rdtreedens_lbl = QtGui.QLabel(self.res_paramfield6_2)
+        self.mc_rdtreedens_lbl.setGeometry(QtCore.QRect(20, 100, 111, 16))
+        self.mc_rdtreedens_lbl.setObjectName(_fromUtf8("mc_rdtreedens_lbl"))
+        self.mc_rdtreedens_spin = QtGui.QSpinBox(self.res_paramfield6_2)
+        self.mc_rdtreedens_spin.setGeometry(QtCore.QRect(140, 100, 51, 16))
+        self.mc_rdtreedens_spin.setMaximum(10)
+        self.mc_rdtreedens_spin.setObjectName(_fromUtf8("mc_rdtreedens_spin"))
+        self.mc_rdtreedens_lbl2 = QtGui.QLabel(self.res_paramfield6_2)
+        self.mc_rdtreedens_lbl2.setGeometry(QtCore.QRect(200, 100, 151, 16))
+        self.mc_rdtreedens_lbl2.setObjectName(_fromUtf8("mc_rdtreedens_lbl2"))
+        self.mc_rdtreedens_lbl3 = QtGui.QLabel(self.res_paramfield6_2)
+        self.mc_rdtreedens_lbl3.setGeometry(QtCore.QRect(20, 125, 361, 16))
+        self.mc_rdtreedens_lbl3.setObjectName(_fromUtf8("mc_rdtreedens_lbl3"))
+        self.gridLayout_16.addWidget(self.res_paramfield6_2, 5, 0, 1, 1)
+        self.mc_res_widget = QtGui.QWidget(self.res_scrollAreaWidgetContents_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.mc_res_widget.sizePolicy().hasHeightForWidth())
+        self.mc_res_widget.setSizePolicy(sizePolicy)
+        self.mc_res_widget.setMinimumSize(QtCore.QSize(369, 130))
+        self.mc_res_widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.mc_res_widget.setObjectName(_fromUtf8("mc_res_widget"))
+        self.mc_resdrive_lbl = QtGui.QLabel(self.mc_res_widget)
+        self.mc_resdrive_lbl.setGeometry(QtCore.QRect(20, 10, 111, 16))
+        self.mc_resdrive_lbl.setObjectName(_fromUtf8("mc_resdrive_lbl"))
+        self.mc_respatio_lbl = QtGui.QLabel(self.mc_res_widget)
+        self.mc_respatio_lbl.setGeometry(QtCore.QRect(20, 40, 121, 16))
+        self.mc_respatio_lbl.setObjectName(_fromUtf8("mc_respatio_lbl"))
+        self.mc_resdrive_combo = QtGui.QComboBox(self.mc_res_widget)
+        self.mc_resdrive_combo.setGeometry(QtCore.QRect(140, 10, 141, 16))
+        self.mc_resdrive_combo.setObjectName(_fromUtf8("mc_resdrive_combo"))
+        self.mc_resdrive_combo.addItem(_fromUtf8(""))
+        self.mc_resdrive_combo.addItem(_fromUtf8(""))
+        self.mc_resdrive_combo.addItem(_fromUtf8(""))
+        self.mc_respatio_combo = QtGui.QComboBox(self.mc_res_widget)
+        self.mc_respatio_combo.setGeometry(QtCore.QRect(140, 40, 141, 16))
+        self.mc_respatio_combo.setObjectName(_fromUtf8("mc_respatio_combo"))
+        self.mc_respatio_combo.addItem(_fromUtf8(""))
+        self.mc_respatio_combo.addItem(_fromUtf8(""))
+        self.mc_respatio_combo.addItem(_fromUtf8(""))
+        self.mc_resirri_lbl = QtGui.QLabel(self.mc_res_widget)
+        self.mc_resirri_lbl.setGeometry(QtCore.QRect(20, 70, 121, 16))
+        self.mc_resirri_lbl.setObjectName(_fromUtf8("mc_resirri_lbl"))
+        self.mc_resirriperv_radio = QtGui.QRadioButton(self.mc_res_widget)
+        self.mc_resirriperv_radio.setGeometry(QtCore.QRect(140, 70, 91, 17))
+        self.mc_resirriperv_radio.setObjectName(_fromUtf8("mc_resirriperv_radio"))
+        self.mc_resirrigard_radio = QtGui.QRadioButton(self.mc_res_widget)
+        self.mc_resirrigard_radio.setGeometry(QtCore.QRect(240, 70, 101, 17))
+        self.mc_resirrigard_radio.setObjectName(_fromUtf8("mc_resirrigard_radio"))
+        self.mc_restrees_lbl = QtGui.QLabel(self.mc_res_widget)
+        self.mc_restrees_lbl.setGeometry(QtCore.QRect(20, 100, 121, 16))
+        self.mc_restrees_lbl.setObjectName(_fromUtf8("mc_restrees_lbl"))
+        self.mc_restrees_slider = QtGui.QSlider(self.mc_res_widget)
+        self.mc_restrees_slider.setGeometry(QtCore.QRect(180, 100, 160, 19))
+        self.mc_restrees_slider.setMaximum(100)
+        self.mc_restrees_slider.setOrientation(QtCore.Qt.Horizontal)
+        self.mc_restrees_slider.setTickPosition(QtGui.QSlider.TicksBelow)
+        self.mc_restrees_slider.setObjectName(_fromUtf8("mc_restrees_slider"))
+        self.mc_restrees_lbl2 = QtGui.QLabel(self.mc_res_widget)
+        self.mc_restrees_lbl2.setGeometry(QtCore.QRect(140, 100, 31, 16))
+        self.mc_restrees_lbl2.setObjectName(_fromUtf8("mc_restrees_lbl2"))
+        self.mc_restrees_lbl3 = QtGui.QLabel(self.mc_res_widget)
+        self.mc_restrees_lbl3.setGeometry(QtCore.QRect(350, 100, 31, 16))
+        self.mc_restrees_lbl3.setObjectName(_fromUtf8("mc_restrees_lbl3"))
+        self.gridLayout_16.addWidget(self.mc_res_widget, 1, 0, 1, 1)
+        self.res_paramfield6_3 = QtGui.QWidget(self.res_scrollAreaWidgetContents_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.res_paramfield6_3.sizePolicy().hasHeightForWidth())
+        self.res_paramfield6_3.setSizePolicy(sizePolicy)
+        self.res_paramfield6_3.setMinimumSize(QtCore.QSize(369, 70))
+        self.res_paramfield6_3.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.res_paramfield6_3.setObjectName(_fromUtf8("res_paramfield6_3"))
+        self.mc_openfpath_lbl = QtGui.QLabel(self.res_paramfield6_3)
+        self.mc_openfpath_lbl.setGeometry(QtCore.QRect(20, 10, 111, 16))
+        self.mc_openfpath_lbl.setObjectName(_fromUtf8("mc_openfpath_lbl"))
+        self.mc_openfpath_combo = QtGui.QComboBox(self.res_paramfield6_3)
+        self.mc_openfpath_combo.setGeometry(QtCore.QRect(140, 10, 141, 16))
+        self.mc_openfpath_combo.setObjectName(_fromUtf8("mc_openfpath_combo"))
+        self.mc_openfpath_combo.addItem(_fromUtf8(""))
+        self.mc_openfpath_combo.addItem(_fromUtf8(""))
+        self.mc_openfpath_combo.addItem(_fromUtf8(""))
+        self.mc_opentrees_lbl = QtGui.QLabel(self.res_paramfield6_3)
+        self.mc_opentrees_lbl.setGeometry(QtCore.QRect(20, 40, 111, 16))
+        self.mc_opentrees_lbl.setObjectName(_fromUtf8("mc_opentrees_lbl"))
+        self.mc_opentrees_spin = QtGui.QSpinBox(self.res_paramfield6_3)
+        self.mc_opentrees_spin.setGeometry(QtCore.QRect(140, 40, 51, 16))
+        self.mc_opentrees_spin.setMaximum(10)
+        self.mc_opentrees_spin.setObjectName(_fromUtf8("mc_opentrees_spin"))
+        self.mc_opentrees_lbl2 = QtGui.QLabel(self.res_paramfield6_3)
+        self.mc_opentrees_lbl2.setGeometry(QtCore.QRect(200, 40, 171, 16))
+        self.mc_opentrees_lbl2.setObjectName(_fromUtf8("mc_opentrees_lbl2"))
+        self.gridLayout_16.addWidget(self.res_paramfield6_3, 8, 0, 1, 1)
+        self.mc_nres_widget = QtGui.QWidget(self.res_scrollAreaWidgetContents_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.mc_nres_widget.sizePolicy().hasHeightForWidth())
+        self.mc_nres_widget.setSizePolicy(sizePolicy)
+        self.mc_nres_widget.setMinimumSize(QtCore.QSize(369, 130))
+        self.mc_nres_widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.mc_nres_widget.setObjectName(_fromUtf8("mc_nres_widget"))
+        self.mc_nrespark_lbl = QtGui.QLabel(self.mc_nres_widget)
+        self.mc_nrespark_lbl.setGeometry(QtCore.QRect(20, 10, 121, 16))
+        self.mc_nrespark_lbl.setObjectName(_fromUtf8("mc_nrespark_lbl"))
+        self.mc_nresbay_lbl = QtGui.QLabel(self.mc_nres_widget)
+        self.mc_nresbay_lbl.setGeometry(QtCore.QRect(20, 40, 121, 16))
+        self.mc_nresbay_lbl.setObjectName(_fromUtf8("mc_nresbay_lbl"))
+        self.mc_nrespark_combo = QtGui.QComboBox(self.mc_nres_widget)
+        self.mc_nrespark_combo.setGeometry(QtCore.QRect(140, 10, 141, 16))
+        self.mc_nrespark_combo.setObjectName(_fromUtf8("mc_nrespark_combo"))
+        self.mc_nrespark_combo.addItem(_fromUtf8(""))
+        self.mc_nrespark_combo.addItem(_fromUtf8(""))
+        self.mc_nrespark_combo.addItem(_fromUtf8(""))
+        self.mc_nresbay_combo = QtGui.QComboBox(self.mc_nres_widget)
+        self.mc_nresbay_combo.setGeometry(QtCore.QRect(140, 40, 141, 16))
+        self.mc_nresbay_combo.setObjectName(_fromUtf8("mc_nresbay_combo"))
+        self.mc_nresbay_combo.addItem(_fromUtf8(""))
+        self.mc_nresbay_combo.addItem(_fromUtf8(""))
+        self.mc_nresbay_combo.addItem(_fromUtf8(""))
+        self.mc_nreshard_lbl = QtGui.QLabel(self.mc_nres_widget)
+        self.mc_nreshard_lbl.setGeometry(QtCore.QRect(20, 70, 121, 16))
+        self.mc_nreshard_lbl.setObjectName(_fromUtf8("mc_nreshard_lbl"))
+        self.mc_nreshard_combo = QtGui.QComboBox(self.mc_nres_widget)
+        self.mc_nreshard_combo.setGeometry(QtCore.QRect(140, 70, 141, 16))
+        self.mc_nreshard_combo.setObjectName(_fromUtf8("mc_nreshard_combo"))
+        self.mc_nreshard_combo.addItem(_fromUtf8(""))
+        self.mc_nreshard_combo.addItem(_fromUtf8(""))
+        self.mc_nreshard_combo.addItem(_fromUtf8(""))
+        self.mc_nrestrees_slider = QtGui.QSlider(self.mc_nres_widget)
+        self.mc_nrestrees_slider.setGeometry(QtCore.QRect(180, 100, 160, 19))
+        self.mc_nrestrees_slider.setMaximum(100)
+        self.mc_nrestrees_slider.setOrientation(QtCore.Qt.Horizontal)
+        self.mc_nrestrees_slider.setTickPosition(QtGui.QSlider.TicksBelow)
+        self.mc_nrestrees_slider.setObjectName(_fromUtf8("mc_nrestrees_slider"))
+        self.mc_nrestrees_lbl = QtGui.QLabel(self.mc_nres_widget)
+        self.mc_nrestrees_lbl.setGeometry(QtCore.QRect(20, 100, 121, 16))
+        self.mc_nrestrees_lbl.setObjectName(_fromUtf8("mc_nrestrees_lbl"))
+        self.mc_nrestrees_lbl2 = QtGui.QLabel(self.mc_nres_widget)
+        self.mc_nrestrees_lbl2.setGeometry(QtCore.QRect(140, 100, 31, 16))
+        self.mc_nrestrees_lbl2.setObjectName(_fromUtf8("mc_nrestrees_lbl2"))
+        self.mc_nrestrees_lbl3 = QtGui.QLabel(self.mc_nres_widget)
+        self.mc_nrestrees_lbl3.setGeometry(QtCore.QRect(350, 100, 31, 16))
+        self.mc_nrestrees_lbl3.setObjectName(_fromUtf8("mc_nrestrees_lbl3"))
+        self.mc_nrestreeloc_lbl = QtGui.QLabel(self.mc_nres_widget)
+        self.mc_nrestreeloc_lbl.setGeometry(QtCore.QRect(20, 130, 101, 16))
+        self.mc_nrestreeloc_lbl.setObjectName(_fromUtf8("mc_nrestreeloc_lbl"))
+        self.mc_nrestreeloc_checkon = QtGui.QCheckBox(self.mc_nres_widget)
+        self.mc_nrestreeloc_checkon.setGeometry(QtCore.QRect(140, 130, 70, 17))
+        self.mc_nrestreeloc_checkon.setObjectName(_fromUtf8("mc_nrestreeloc_checkon"))
+        self.mc_nrestreeloc_checkoff = QtGui.QCheckBox(self.mc_nres_widget)
+        self.mc_nrestreeloc_checkoff.setGeometry(QtCore.QRect(230, 130, 70, 17))
+        self.mc_nrestreeloc_checkoff.setObjectName(_fromUtf8("mc_nrestreeloc_checkoff"))
+        self.gridLayout_16.addWidget(self.mc_nres_widget, 3, 0, 1, 1)
+        self.mc_res_title = QtGui.QLabel(self.res_scrollAreaWidgetContents_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(13)
+        sizePolicy.setHeightForWidth(self.mc_res_title.sizePolicy().hasHeightForWidth())
+        self.mc_res_title.setSizePolicy(sizePolicy)
+        self.mc_res_title.setMinimumSize(QtCore.QSize(0, 13))
+        self.mc_res_title.setMaximumSize(QtCore.QSize(16777215, 13))
+        self.mc_res_title.setObjectName(_fromUtf8("mc_res_title"))
+        self.gridLayout_16.addWidget(self.mc_res_title, 0, 0, 1, 1)
+        self.mc_roads_title = QtGui.QLabel(self.res_scrollAreaWidgetContents_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(13)
+        sizePolicy.setHeightForWidth(self.mc_roads_title.sizePolicy().hasHeightForWidth())
+        self.mc_roads_title.setSizePolicy(sizePolicy)
+        self.mc_roads_title.setMinimumSize(QtCore.QSize(0, 13))
+        self.mc_roads_title.setMaximumSize(QtCore.QSize(16777215, 13))
+        self.mc_roads_title.setObjectName(_fromUtf8("mc_roads_title"))
+        self.gridLayout_16.addWidget(self.mc_roads_title, 4, 0, 1, 1)
+        self.mc_nres_title = QtGui.QLabel(self.res_scrollAreaWidgetContents_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(13)
+        sizePolicy.setHeightForWidth(self.mc_nres_title.sizePolicy().hasHeightForWidth())
+        self.mc_nres_title.setSizePolicy(sizePolicy)
+        self.mc_nres_title.setMinimumSize(QtCore.QSize(0, 13))
+        self.mc_nres_title.setMaximumSize(QtCore.QSize(16777215, 13))
+        self.mc_nres_title.setObjectName(_fromUtf8("mc_nres_title"))
+        self.gridLayout_16.addWidget(self.mc_nres_title, 2, 0, 1, 1)
+        self.mc_vegetation_title = QtGui.QLabel(self.res_scrollAreaWidgetContents_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(13)
+        sizePolicy.setHeightForWidth(self.mc_vegetation_title.sizePolicy().hasHeightForWidth())
+        self.mc_vegetation_title.setSizePolicy(sizePolicy)
+        self.mc_vegetation_title.setMinimumSize(QtCore.QSize(0, 13))
+        self.mc_vegetation_title.setMaximumSize(QtCore.QSize(16777215, 13))
+        self.mc_vegetation_title.setObjectName(_fromUtf8("mc_vegetation_title"))
+        self.gridLayout_16.addWidget(self.mc_vegetation_title, 9, 0, 1, 1)
+        self.mc_vegetation_widget = QtGui.QWidget(self.res_scrollAreaWidgetContents_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.mc_vegetation_widget.sizePolicy().hasHeightForWidth())
+        self.mc_vegetation_widget.setSizePolicy(sizePolicy)
+        self.mc_vegetation_widget.setMinimumSize(QtCore.QSize(369, 40))
+        self.mc_vegetation_widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.mc_vegetation_widget.setObjectName(_fromUtf8("mc_vegetation_widget"))
+        self.mc_treetype_lbl = QtGui.QLabel(self.mc_vegetation_widget)
+        self.mc_treetype_lbl.setGeometry(QtCore.QRect(20, 10, 111, 16))
+        self.mc_treetype_lbl.setObjectName(_fromUtf8("mc_treetype_lbl"))
+        self.mc_treetype_combo = QtGui.QComboBox(self.mc_vegetation_widget)
+        self.mc_treetype_combo.setGeometry(QtCore.QRect(140, 10, 211, 16))
+        self.mc_treetype_combo.setObjectName(_fromUtf8("mc_treetype_combo"))
+        self.mc_treetype_combo.addItem(_fromUtf8(""))
+        self.mc_treetype_combo.addItem(_fromUtf8(""))
+        self.mc_treetype_combo.addItem(_fromUtf8(""))
+        self.mc_treetype_combo.addItem(_fromUtf8(""))
+        self.mc_treetype_combo.addItem(_fromUtf8(""))
+        self.mc_treetype_combo.addItem(_fromUtf8(""))
+        self.gridLayout_16.addWidget(self.mc_vegetation_widget, 10, 0, 1, 1)
+        self.res_parameters_2.setWidget(self.res_scrollAreaWidgetContents_2)
+        self.verticalLayout_14.addWidget(self.res_parameters_2)
+        self.horizontalLayout_2.addWidget(self.res_input_2)
+        self.res_sidebar_2 = QtGui.QWidget(self.tab)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.res_sidebar_2.sizePolicy().hasHeightForWidth())
+        self.res_sidebar_2.setSizePolicy(sizePolicy)
+        self.res_sidebar_2.setMaximumSize(QtCore.QSize(145, 16777215))
+        self.res_sidebar_2.setObjectName(_fromUtf8("res_sidebar_2"))
+        self.gridLayout_17 = QtGui.QGridLayout(self.res_sidebar_2)
+        self.gridLayout_17.setMargin(0)
+        self.gridLayout_17.setObjectName(_fromUtf8("gridLayout_17"))
+        self.residential_pic_2 = QtGui.QLabel(self.res_sidebar_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.residential_pic_2.sizePolicy().hasHeightForWidth())
+        self.residential_pic_2.setSizePolicy(sizePolicy)
+        self.residential_pic_2.setMaximumSize(QtCore.QSize(141, 101))
+        self.residential_pic_2.setText(_fromUtf8(""))
+        self.residential_pic_2.setPixmap(QtGui.QPixmap(_fromUtf8(":/urbplanbb/landcover.png")))
+        self.residential_pic_2.setObjectName(_fromUtf8("residential_pic_2"))
+        self.gridLayout_17.addWidget(self.residential_pic_2, 0, 0, 1, 1)
+        self.residential_explain_2 = QtGui.QTextBrowser(self.res_sidebar_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.residential_explain_2.sizePolicy().hasHeightForWidth())
+        self.residential_explain_2.setSizePolicy(sizePolicy)
+        self.residential_explain_2.setMaximumSize(QtCore.QSize(141, 16777215))
+        self.residential_explain_2.setObjectName(_fromUtf8("residential_explain_2"))
+        self.gridLayout_17.addWidget(self.residential_explain_2, 1, 0, 1, 1)
+        self.horizontalLayout_2.addWidget(self.res_sidebar_2)
+        self.buildingblocktabs.addTab(self.tab, _fromUtf8(""))
         self.gridLayout_2.addWidget(self.buildingblocktabs, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.bbwidget, 1, 0, 1, 1)
         self.bbfooter = QtGui.QWidget(BuildingBlockDialog)
@@ -2360,11 +2181,6 @@ class Ui_BuildingBlockDialog(object):
         self.horizontalLayout.setMargin(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.remarks = QtGui.QLabel(self.bbfooter)
-        self.remarks.setText(QtGui.QApplication.translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS v1.0 - (C) 2013 Peter M. Bach </span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.remarks.setObjectName(_fromUtf8("remarks"))
         self.horizontalLayout.addWidget(self.remarks)
         self.buttonBox = QtGui.QDialogButtonBox(self.bbfooter)
@@ -2374,8 +2190,6 @@ class Ui_BuildingBlockDialog(object):
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.horizontalLayout.addWidget(self.buttonBox)
         self.pushButton = QtGui.QPushButton(self.bbfooter)
-        self.pushButton.setWhatsThis(QtGui.QApplication.translate("BuildingBlockDialog", "Like I said, I really don\'t think you need any help! :)", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButton.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.horizontalLayout.addWidget(self.pushButton)
         self.gridLayout.addWidget(self.bbfooter, 2, 0, 1, 1)
@@ -2390,7 +2204,6 @@ class Ui_BuildingBlockDialog(object):
         self.label.setObjectName(_fromUtf8("label"))
         self.bbdescr1 = QtGui.QLabel(self.widget_2)
         self.bbdescr1.setGeometry(QtCore.QRect(50, 22, 611, 16))
-        self.bbdescr1.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Click on a the tabs below to set planning parameters for Building Blocks. If inputs are not specified, default values for", None, QtGui.QApplication.UnicodeUTF8))
         self.bbdescr1.setObjectName(_fromUtf8("bbdescr1"))
         self.bbtitle = QtGui.QLabel(self.widget_2)
         self.bbtitle.setGeometry(QtCore.QRect(48, 4, 441, 21))
@@ -2399,11 +2212,9 @@ class Ui_BuildingBlockDialog(object):
         font.setBold(True)
         font.setWeight(75)
         self.bbtitle.setFont(font)
-        self.bbtitle.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Building Blocks - Urban Planning Customisation", None, QtGui.QApplication.UnicodeUTF8))
         self.bbtitle.setObjectName(_fromUtf8("bbtitle"))
         self.bbdescr2 = QtGui.QLabel(self.widget_2)
         self.bbdescr2.setGeometry(QtCore.QRect(50, 33, 431, 16))
-        self.bbdescr2.setText(QtGui.QApplication.translate("BuildingBlockDialog", "Metropolitan Melbourne will be used.", None, QtGui.QApplication.UnicodeUTF8))
         self.bbdescr2.setObjectName(_fromUtf8("bbdescr2"))
         self.gridLayout.addWidget(self.widget_2, 0, 0, 1, 1)
 
@@ -2582,14 +2393,647 @@ class Ui_BuildingBlockDialog(object):
         BuildingBlockDialog.setTabOrder(self.und_allowdev_check, self.other_explain)
 
     def retranslateUi(self, BuildingBlockDialog):
-        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.GenRules), QtGui.QApplication.translate("BuildingBlockDialog", "General Info", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.Residential), QtGui.QApplication.translate("BuildingBlockDialog", "Residential", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.NonRes), QtGui.QApplication.translate("BuildingBlockDialog", "Non-Residential", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.Transport), QtGui.QApplication.translate("BuildingBlockDialog", "Transport", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.OpenSpaces), QtGui.QApplication.translate("BuildingBlockDialog", "Open Spaces", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.Others), QtGui.QApplication.translate("BuildingBlockDialog", "Others", None, QtGui.QApplication.UnicodeUTF8))
+        BuildingBlockDialog.setWindowTitle(_translate("BuildingBlockDialog", "Urban Planning Customisation", None))
+        self.genrules_explain.setHtml(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Set general urban planning constraints in this window. This includes limitations to how much can be built on-site. Note: decisions made here will influence outcomes for all land uses.</span></p></body></html>", None))
+        self.genrules_title.setText(_translate("BuildingBlockDialog", "General Planning Metrics, Rules and Constraints", None))
+        self.label_63.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">General City Structure</span></p></body></html>", None))
+        self.citysprawl_spin.setSuffix(_translate("BuildingBlockDialog", " km", None))
+        self.citypoly_radio.setText(_translate("BuildingBlockDialog", "Poly-Centric", None))
+        self.citysprawl_lbl2.setWhatsThis(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Site cover refers to building footprint. Any area that is occupied by a structure that covers an open space with a roof. (Typical restriction: 60%)</span></p></body></html>", None))
+        self.citysprawl_lbl2.setText(_translate("BuildingBlockDialog", "(from main CBD)", None))
+        self.cityarchetype_lbl.setWhatsThis(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Site cover refers to building footprint. Any area that is occupied by a structure that covers an open space with a roof. (Typical restriction: 60%)</span></p></body></html>", None))
+        self.cityarchetype_lbl.setText(_translate("BuildingBlockDialog", "City Archetype:", None))
+        self.citysprawl_lbl.setWhatsThis(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Site cover refers to building footprint. Any area that is occupied by a structure that covers an open space with a roof. (Typical restriction: 60%)</span></p></body></html>", None))
+        self.citysprawl_lbl.setText(_translate("BuildingBlockDialog", "Approximate Urban Sprawl Radius:", None))
+        self.mun_localmap_check.setWhatsThis(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Check this box if information on the facilities is available on the locality map provided to the model. If no locality map has been given, you may choose to customise the rules for each of the facilities. If no locality map is given or facility is checked and not indicated on the map, radius of influence methodology will be used.</span></p></body></html>", None))
+        self.mun_localmap_check.setText(_translate("BuildingBlockDialog", "Municipal and Transport Facilities available on locality map", None))
+        self.citymono_radio.setText(_translate("BuildingBlockDialog", "Mono-Centric", None))
+        self.label_78.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Decision Variables for Development Dynamics</span></p></body></html>", None))
+        self.lucredevelop_lbl.setText(_translate("BuildingBlockDialog", "Tolerance Threshold", None))
+        self.lucredevelop_check.setText(_translate("BuildingBlockDialog", "Redevelop Block if Land Classes differ by a significant amount?", None))
+        self.popredevelop_check.setText(_translate("BuildingBlockDialog", "Redevelop Block if Population differs by a significant amount?", None))
+        self.popredevelop_lbl.setText(_translate("BuildingBlockDialog", "Tolerance Threshold", None))
+        self.noredevelop_check.setText(_translate("BuildingBlockDialog", "Do not Redevelop Blocks regardless of changes", None))
+        self.lucredevelop_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.popredevelop_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.GenRules), _translate("BuildingBlockDialog", "General Info", None))
+        self.genrules_title_2.setText(_translate("BuildingBlockDialog", "Residential Dwelling Information", None))
+        self.roof_connected_radiovary.setText(_translate("BuildingBlockDialog", "Variable (adjust likelihood of roof disconnection)", None))
+        self.roof_connected_lbl.setText(_translate("BuildingBlockDialog", "Configure roof drainage connection (affects effective imperviousness)?", None))
+        self.roof_connected_radiodisc.setText(_translate("BuildingBlockDialog", "Disconnect all downpipes in all houses (unless a raintank is present)", None))
+        self.roof_connected_radiodirect.setText(_translate("BuildingBlockDialog", "Directly connected downpipe in all houses", None))
+        self.imperv_prop_dced_lbl.setText(_translate("BuildingBlockDialog", "Average % of Ground Imperviousness Disconnected:", None))
+        self.avg_imp_dced_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.roofdced_vary_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.setback_f_to.setText(_translate("BuildingBlockDialog", "to", None))
+        self.lineEdit_7.setText(_translate("BuildingBlockDialog", "2", None))
+        self.setback_f_lbl.setText(_translate("BuildingBlockDialog", "Front Setback Range [m]", None))
+        self.label_16.setText(_translate("BuildingBlockDialog", "Minimum Rear Setback [m]", None))
+        self.setback_s_to.setText(_translate("BuildingBlockDialog", "to", None))
+        self.setback_s_lbl.setText(_translate("BuildingBlockDialog", "Side Setback Range [m]", None))
+        self.fsetbackmed_check.setText(_translate("BuildingBlockDialog", "Use median", None))
+        self.ssetbackmed_check.setText(_translate("BuildingBlockDialog", "Use median", None))
+        self.label_14.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Single/Detached/Semi-Detached Dwelling Information</span></p></body></html>", None))
+        self.label_18.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">High-Density Residential Housing</span></p></body></html>", None))
+        self.w_driveway_min_lbl.setText(_translate("BuildingBlockDialog", "Minimum Driveway Width [m]", None))
+        self.carports_max_lbl.setText(_translate("BuildingBlockDialog", "Max. No. of Car Ports", None))
+        self.garage_incl_box.setText(_translate("BuildingBlockDialog", "Include Garage?", None))
+        self.person_space_lbl.setText(_translate("BuildingBlockDialog", "Personal Space [sqm/person]", None))
+        self.occup_avg_lbl.setText(_translate("BuildingBlockDialog", "Avg. Occupancy [pax]", None))
+        self.extra_comm_area_lbl.setText(_translate("BuildingBlockDialog", "Extra Communal Area [%]", None))
+        self.occup_max_lbl.setText(_translate("BuildingBlockDialog", "Max. Occupancy [persons]", None))
+        self.patio_area_max_lbl.setText(_translate("BuildingBlockDialog", "Maximum Patio Area [sqm]", None))
+        self.patio_covered_box.setText(_translate("BuildingBlockDialog", "Patio is covered?", None))
+        self.floor_num_max_lbl.setText(_translate("BuildingBlockDialog", "Maximum No. Floors [floors]", None))
+        self.occup_flat_avg_lbl.setText(_translate("BuildingBlockDialog", "Avg. Flat Occupancy [pax]", None))
+        self.flat_area_max_lbl.setText(_translate("BuildingBlockDialog", "Avg. Apartment Size [sqm]", None))
+        self.commspace_indoor_lbl.setText(_translate("BuildingBlockDialog", "Indoor Communal Area", None))
+        self.commspace_outdoor_lbl.setText(_translate("BuildingBlockDialog", "Outdoor Communal Area", None))
+        self.setback_HDR_avg_lbl.setText(_translate("BuildingBlockDialog", "Avg. Site Setback [m]", None))
+        self.OSR_parks_include.setText(_translate("BuildingBlockDialog", "Leverage nearby parks to fulfill Outdoor Open Space Requirements?", None))
+        self.setback_HDR_avg_lbl_2.setText(_translate("BuildingBlockDialog", "Parking Arrangement:", None))
+        self.parking_on.setText(_translate("BuildingBlockDialog", "On-site", None))
+        self.parking_none.setText(_translate("BuildingBlockDialog", "None", None))
+        self.parking_off.setText(_translate("BuildingBlockDialog", "Off-site", None))
+        self.indoor_com_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.outdoor_com_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.comspace_lbl.setText(_translate("BuildingBlockDialog", "(% of total floor space)", None))
+        self.parking_vary.setText(_translate("BuildingBlockDialog", "Vary", None))
+        self.floor_num_max_lbl_2.setText(_translate("BuildingBlockDialog", "Maximum No. Floors [floors]", None))
+        self.label_19.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Drainage Properties for Residential Lots</span></p></body></html>", None))
+        self.residential_explain.setHtml(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define demographics, geometry and water characteristics for planning residential districts. Model uses this and other information to distinguish between houses and apartments within the city.</span></p></body></html>", None))
+        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.Residential), _translate("BuildingBlockDialog", "Residential", None))
+        self.nonres_explain.setHtml(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define geometry and basic planning details for non-residential land uses. This includes commercial sites, industrial sites and municipal facilities. Details about individual municipal facilities are set at a later stage.</span></p></body></html>", None))
+        self.genrules_title_3.setText(_translate("BuildingBlockDialog", "Industrial, Commercial & Municipal Planning Information", None))
+        self.ComInd_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Industrial and Commercial Zones</span></p></body></html>", None))
+        self.nres_setback_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Minimum Front Setback [m]</span></p></body></html>", None))
+        self.jobs_direct_radio.setWhatsThis(_translate("BuildingBlockDialog", "Employment is defined by the employment map input data. The model will use this information to determine the number of jobs in each block of the map.", None))
+        self.jobs_direct_radio.setText(_translate("BuildingBlockDialog", "Spatial Input", None))
+        self.jobs_total_radio.setWhatsThis(_translate("BuildingBlockDialog", "Using a single value of employment for the entire simulation region, the model determines the possible distribution of jobs. Use this option only if spatially explicit data is unavailable and statuatory regulations are difficult to determine or generalize across the simulation region and only a single value is known.", None))
+        self.jobs_total_radio.setText(_translate("BuildingBlockDialog", "Single Value", None))
+        self.nres_setback_auto.setText(_translate("BuildingBlockDialog", "Determine automatically", None))
+        self.jobs_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define employment:</span></p></body></html>", None))
+        self.jobs_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Employment</span></p></body></html>", None))
+        self.site_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Land Subdivision and Site Layout</span></p></body></html>", None))
+        self.nres_maxfloors_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Max. Allowable Floors above Ground:</span></p></body></html>", None))
+        self.lscape_hsbalance_soft.setText(_translate("BuildingBlockDialog", "Soft", None))
+        self.lscape_hsbalance_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Balance of Hard and Soft Landscaping</span></p></body></html>", None))
+        self.lscape_hsbalance_hard.setText(_translate("BuildingBlockDialog", "Hard", None))
+        self.carpark_dim_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Minimum Parking Lot Dimensions [m]</span></p></body></html>", None))
+        self.carpark_dimW_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">W</span></p></body></html>", None))
+        self.parking_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Car Parking and Loading Bay</span></p></body></html>", None))
+        self.carpark_dimD_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">D</span></p></body></html>", None))
+        self.carpark_imp_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Avg. Imperviousness of Parking Area</span></p></body></html>", None))
+        self.lscape_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Landscaping and Drainage</span></p></body></html>", None))
+        self.carpark_imp_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.lscape_impdced_lbl.setText(_translate("BuildingBlockDialog", "Average % of Imperviousness Disconnected", None))
+        self.jobs_dist_radio.setWhatsThis(_translate("BuildingBlockDialog", "Employment is defined as a ratio of employees per net developable hectare. User specifies a range of ratios for industrial and commercial areas. The model uses this to compute the total employment for the area and plan out the urban form appropriately. (Use this if employment data is unavailable but statuatory planning regulations are fairly consistent across the simulation region).", None))
+        self.jobs_dist_radio.setText(_translate("BuildingBlockDialog", "Distribution", None))
+        self.groupBox.setTitle(_translate("BuildingBlockDialog", "Spatial Input", None))
+        self.jobs_direct_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">no further input required here...</span></p></body></html>", None))
+        self.groupBox_2.setTitle(_translate("BuildingBlockDialog", "Distribution of Employment", None))
+        self.dist_ind_units.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">employees/ha</span></p></body></html>", None))
+        self.dist_ind_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Industrial Zones</span></p></body></html>", None))
+        self.dist_com_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Commercial Zones</span></p></body></html>", None))
+        self.dist_com_units.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">employees/ha</span></p></body></html>", None))
+        self.dist_explain.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">(indicate typical employment density on net developable area)</span></p></body></html>", None))
+        self.dist_orc_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Offices</span></p></body></html>", None))
+        self.dist_orc_units.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">employees/ha</span></p></body></html>", None))
+        self.jobs_define_box.setTitle(_translate("BuildingBlockDialog", "Single Value of Employment", None))
+        self.totjobs_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Total jobs in simulation area [thousands]:</span></p></body></html>", None))
+        self.totjobs_explain.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">(enter a rough estimate for the total region, the model will</span></p></body></html>", None))
+        self.totjobs_explain_2.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">attempt to rescale it according to the proportions of different</span></p></body></html>", None))
+        self.totjobs_explain_3.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">non-residential areas within the map)</span></p></body></html>", None))
+        self.nres_maxfloors_nolimit.setText(_translate("BuildingBlockDialog", "No Limit", None))
+        self.plotratio_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Maximum Plot Ratios:</span></p></body></html>", None))
+        self.plotratio_ind_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Industrial Estates</span></p></body></html>", None))
+        self.plotratio_com_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Commercial Estates</span></p></body></html>", None))
+        self.carpark_allocate_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Parking Requirements</span></p></body></html>", None))
+        self.carpark_ind_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Industrial Estates</span></p></body></html>", None))
+        self.carparking_com_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Commercial Estates</span></p></body></html>", None))
+        self.carpark_com_units.setText(_translate("BuildingBlockDialog", "[bays/100sqm floor area]", None))
+        self.carpark_ind_units.setText(_translate("BuildingBlockDialog", "[bays/employee]", None))
+        self.loadingbay_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Area allocation for Loading Bay [sqm/100sqm floor area]</span></p></body></html>", None))
+        self.lscape_impdced_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.plotratio_ind_minlbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">0.1</span></p></body></html>", None))
+        self.plotratio_ind_maxlbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">1.0</span></p></body></html>", None))
+        self.plotratio_com_minlbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">0.1</span></p></body></html>", None))
+        self.plotratio_com_maxlbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">1.0</span></p></body></html>", None))
+        self.landsubd_title.setWhatsThis(_translate("BuildingBlockDialog", "An area threshold, which the model uses to subdivide the land into separate land districts  within the block. These districts are bounded by local streets. This information is independent of patch data as subdivision on individual patches may occur since their size exceeds the threshold. ", None))
+        self.landsubd_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Land Parcel Subdivision Thresholds (specify range)</span></p></body></html>", None))
+        self.com_subd_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Commercial Land [ha/parcel]</span></p></body></html>", None))
+        self.ind_subd_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Industrial Land [ha/parcel]</span></p></body></html>", None))
+        self.ind_subd_lbl2.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">to</span></p></body></html>", None))
+        self.com_subd_lbl2.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">to</span></p></body></html>", None))
+        self.civ_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Civic Facilities</span></p></body></html>", None))
+        self.civ_clinic_box.setText(_translate("BuildingBlockDialog", "Health Clinic", None))
+        self.civ_fire_box.setText(_translate("BuildingBlockDialog", "Fire Station", None))
+        self.civ_race_box.setText(_translate("BuildingBlockDialog", "Racing Track", None))
+        self.civ_leisure_box.setText(_translate("BuildingBlockDialog", "Community/Leisure Centre", None))
+        self.civ_religion_box.setText(_translate("BuildingBlockDialog", "Places of Worship", None))
+        self.edu_uni_box.setText(_translate("BuildingBlockDialog", "University Campus", None))
+        self.civ_jail_box.setText(_translate("BuildingBlockDialog", "City Jail", None))
+        self.edu_school_box.setText(_translate("BuildingBlockDialog", "School (Pre-/Primary-/Secondary-)", None))
+        self.civ_dead_box.setText(_translate("BuildingBlockDialog", "Cemetery", None))
+        self.civ_police_box.setText(_translate("BuildingBlockDialog", "Police Station", None))
+        self.civ_sports_box.setText(_translate("BuildingBlockDialog", "Sports Stadium", None))
+        self.civ_hospital_box.setText(_translate("BuildingBlockDialog", "Hospital", None))
+        self.edu_customise.setText(_translate("BuildingBlockDialog", "Customise...", None))
+        self.edu_lib_box.setText(_translate("BuildingBlockDialog", "Public Library", None))
+        self.mun_customise.setText(_translate("BuildingBlockDialog", "Customise...", None))
+        self.civ_museum_box.setText(_translate("BuildingBlockDialog", "Museum", None))
+        self.edu_facilities_lbl.setText(_translate("BuildingBlockDialog", "Education Facilities within simulation bounds", None))
+        self.civ_zoo_box.setText(_translate("BuildingBlockDialog", "Public Zoo", None))
+        self.mun_facilities_lbl.setText(_translate("BuildingBlockDialog", "Municipal Facilities within simulation bounds", None))
+        self.civ_consider_check.setWhatsThis(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">If detailed consideration of these facilities is to be included in the model, check this box to enable further options. Otherwise this land use will simply be treated as commercial/industrial land use.</span></p></body></html>", None))
+        self.civ_consider_check.setText(_translate("BuildingBlockDialog", "Consider Civic Facilities explicitly", None))
+        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.NonRes), _translate("BuildingBlockDialog", "Non-Residential", None))
+        self.transprot_explain.setHtml(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define planning geometry for city\'s transport infrastructure. This includes roads and the more generalised transport facilities. Note that these details only influence large arterials and highways, not local collectors within neighbourhoods.</span></p></body></html>", None))
+        self.genrules_title_4.setText(_translate("BuildingBlockDialog", "Transport Infrastructure", None))
+        self.frontage_info_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Frontage &amp; Pedestrian Information</span></p></body></html>", None))
+        self.w_resnaturestrip_lbl.setText(_translate("BuildingBlockDialog", "Nature strip width (range) [m]", None))
+        self.w_resfootpath_lbl.setText(_translate("BuildingBlockDialog", "Footpath width  (range) [m]", None))
+        self.w_resnaturestrip_lbl2.setText(_translate("BuildingBlockDialog", "to", None))
+        self.w_resfootpath_lbl2.setText(_translate("BuildingBlockDialog", "to", None))
+        self.w_resfootpath_med_check.setText(_translate("BuildingBlockDialog", "Use median", None))
+        self.w_resnaturestrip_med_check.setText(_translate("BuildingBlockDialog", "Use median", None))
+        self.w_resfrontage_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Residential Districts</span></p></body></html>", None))
+        self.w_comfootpath_lbl.setText(_translate("BuildingBlockDialog", "Footpath width  (range) [m]", None))
+        self.w_comfrontage_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Non-Residential Districts</span></p></body></html>", None))
+        self.w_comnaturestrip_lbl.setText(_translate("BuildingBlockDialog", "Nature strip width (range) [m]", None))
+        self.w_comnaturestrip_med_check.setText(_translate("BuildingBlockDialog", "Use median", None))
+        self.w_comnaturestrip_lbl2.setText(_translate("BuildingBlockDialog", "to", None))
+        self.w_comfootpath_lbl2.setText(_translate("BuildingBlockDialog", "to", None))
+        self.w_comfootpath_med_check.setText(_translate("BuildingBlockDialog", "Use median", None))
+        self.collector_info_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Local Access/Service/Collector Roads</span></p></body></html>", None))
+        self.w_collectlane_lbl.setText(_translate("BuildingBlockDialog", "Lane width (range) [m]", None))
+        self.w_collectlane_med_check.setText(_translate("BuildingBlockDialog", "Use median", None))
+        self.w_collectlane_lbl2.setText(_translate("BuildingBlockDialog", "to", None))
+        self.collect_crossfall_lbl.setText(_translate("BuildingBlockDialog", "Average crossfall [%]", None))
+        self.arterial_info_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Major Arterials &amp; Highways</span></p></body></html>", None))
+        self.w_arterial_lbl2.setText(_translate("BuildingBlockDialog", "to", None))
+        self.w_arterial_lbl.setText(_translate("BuildingBlockDialog", "Lane width (range) [m]", None))
+        self.arterial_crossfall_lbl.setText(_translate("BuildingBlockDialog", "Average crossfall [%]", None))
+        self.w_arterial_med_check.setText(_translate("BuildingBlockDialog", "Use median", None))
+        self.w_arterialmed_lbl.setText(_translate("BuildingBlockDialog", "Median Width (range) [m]", None))
+        self.w_arterialmed_nodev_check.setWhatsThis(_translate("BuildingBlockDialog", "If the median area cannot be developed at all, check this box to restrict any activity on this part of the infrastructure.", None))
+        self.w_arterialmed_nodev_check.setText(_translate("BuildingBlockDialog", "Median Area reserved for future road widening", None))
+        self.highway_buffer_check.setWhatsThis(_translate("BuildingBlockDialog", "Check this box to influence the likelihood of parks and highways in the neighbourhood being arranged alongside each other (results in higher likelihood of linear parks that run along highways, typical of Melbourne).", None))
+        self.highway_buffer_check.setText(_translate("BuildingBlockDialog", "Incorporate Open Spaces as road buffers if nearby", None))
+        self.w_arterialmed_lbl2.setText(_translate("BuildingBlockDialog", "to", None))
+        self.w_arterialmed_med_check.setText(_translate("BuildingBlockDialog", "Use median", None))
+        self.w_arterialsh_lbl_2.setText(_translate("BuildingBlockDialog", "Buffer Width (range) [m]", None))
+        self.w_arterialsh_lbl2.setText(_translate("BuildingBlockDialog", "to", None))
+        self.w_arterialsh_med_check.setText(_translate("BuildingBlockDialog", "Use median", None))
+        self.othertrans_info_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Other Transportation</span></p></body></html>", None))
+        self.trans_facilities_lbl.setText(_translate("BuildingBlockDialog", "Transport Facilities within simulation boundary", None))
+        self.trans_airport_box.setText(_translate("BuildingBlockDialog", "Airport", None))
+        self.trans_seaport_box.setText(_translate("BuildingBlockDialog", "Seaport", None))
+        self.trans_busdepot_box.setText(_translate("BuildingBlockDialog", "Bus Depot", None))
+        self.trans_rail_box.setText(_translate("BuildingBlockDialog", "Major Rail Terminal", None))
+        self.trans_customise.setText(_translate("BuildingBlockDialog", "Customise...", None))
+        self.trans_on_off_check.setWhatsThis(_translate("BuildingBlockDialog", "If detailed consideration of these facilities is to be included in the model, check this box to enable further options. Otherwise this land use will simply be treated as commercial/industrial land use.", None))
+        self.trans_on_off_check.setText(_translate("BuildingBlockDialog", "Consider Other Transportation Facilities explicitly", None))
+        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.Transport), _translate("BuildingBlockDialog", "Transport", None))
+        self.openspace_explain.setHtml(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define geometry and characteristics of open spaces. This includes parks, gardens, reserves and floodways within the city. </span></p></body></html>", None))
+        self.genrules_title_5.setText(_translate("BuildingBlockDialog", "Open Space Design", None))
+        self.park_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Parks, Squares &amp; Gardens</span></p></body></html>", None))
+        self.pg_ggratio_lbl.setText(_translate("BuildingBlockDialog", "Ratio of green to grey spaces", None))
+        self.pg_clustering_low_lbl.setText(_translate("BuildingBlockDialog", "Low", None))
+        self.pg_clustering_high_lbl.setText(_translate("BuildingBlockDialog", "High", None))
+        self.pg_clustering_med_lbl.setText(_translate("BuildingBlockDialog", "Medium", None))
+        self.pg_clustering_low_lbl_2.setText(_translate("BuildingBlockDialog", "Grey", None))
+        self.pg_clustering_low_lbl_3.setText(_translate("BuildingBlockDialog", "Green", None))
+        self.pg_usable_lbl.setText(_translate("BuildingBlockDialog", "Average % of unused space in Parks & Gardens", None))
+        self.pg_usable_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.pg_usable_prohibit.setText(_translate("BuildingBlockDialog", "Restrict Park Space Usage for Technologies", None))
+        self.pg_dist_lbl.setText(_translate("BuildingBlockDialog", "Distribution of squares and green space:", None))
+        self.pg_dist_mix_radio.setText(_translate("BuildingBlockDialog", "Combined/Mixed", None))
+        self.pg_dist_sep_radio.setText(_translate("BuildingBlockDialog", "Separate/Distinct", None))
+        self.rfw_svu_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Reserves, Floodways &amp; Land for Services &amp; Utilities</span></p></body></html>", None))
+        self.ref_usable_check.setText(_translate("BuildingBlockDialog", "Usable area in Reserves/Floodways:", None))
+        self.ref_usable_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.ref_usable_lbl.setText(_translate("BuildingBlockDialog", "of total area", None))
+        self.ref_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Reserves &amp; Floodways</span></p></body></html>", None))
+        self.svu_supply_check.setText(_translate("BuildingBlockDialog", "Water Supply Utilities", None))
+        self.svu_waste_check.setText(_translate("BuildingBlockDialog", "Wastewater Utilities", None))
+        self.svu_storm_check.setText(_translate("BuildingBlockDialog", "Stormwater Drainage", None))
+        self.svu_lbl.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600; font-style:italic;\">Services &amp; Utilities Land Use</span></p></body></html>", None))
+        self.ref_limit_check.setText(_translate("BuildingBlockDialog", "Limit use of land for stormwater management", None))
+        self.svu_supply_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.svu_waste_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.svu_storm_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.svu_allocate_lbl.setText(_translate("BuildingBlockDialog", "Allocation of area to following services (adjust the slider)", None))
+        self.svu_nonwat_lbl.setText(_translate("BuildingBlockDialog", "Non-Water Services", None))
+        self.svu_wat_lbl.setText(_translate("BuildingBlockDialog", "Water Services", None))
+        self.svu_breakdown_lbl.setText(_translate("BuildingBlockDialog", "Breakdown of Area Allocation for Water-related Services", None))
+        self.svu_nonwat_lbl_2.setText(_translate("BuildingBlockDialog", "%", None))
+        self.svu_nonwat_lbl_3.setText(_translate("BuildingBlockDialog", "%", None))
+        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.OpenSpaces), _translate("BuildingBlockDialog", "Open Spaces", None))
+        self.genrules_title_6.setText(_translate("BuildingBlockDialog", "Unclassified and Undeveloped Land", None))
+        self.unc_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Unclassified Land</span></p></body></html>", None))
+        self.unc_merge_check.setText(_translate("BuildingBlockDialog", "Merge/Mimic other Land Zones if areas are small", None))
+        self.unc_merge2pg_check.setText(_translate("BuildingBlockDialog", "Treat as part of Parks & Garden Open Space", None))
+        self.unc_merge2trans_check.setText(_translate("BuildingBlockDialog", "Treat as part of road (e.g. medians, islands)", None))
+        self.unc_custom_check.setText(_translate("BuildingBlockDialog", "Define surface cover if area exceeds a given threshold?", None))
+        self.unc_areathresh_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.unc_customthresh_lbl.setText(_translate("BuildingBlockDialog", "Threshold (% of block size)", None))
+        self.unc_customimp_lbl.setText(_translate("BuildingBlockDialog", "Surface imperviousness", None))
+        self.unc_customimp_spin.setSuffix(_translate("BuildingBlockDialog", "%", None))
+        self.unc_mergeweight_lbl.setText(_translate("BuildingBlockDialog", "Weight", None))
+        self.unc_customirrigate_check.setText(_translate("BuildingBlockDialog", "Land is part of public irrigation", None))
+        self.unc_merge2ref_check.setText(_translate("BuildingBlockDialog", "Treat as part of Reserves & Floodways Open Space", None))
+        self.und_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Undeveloped Land</span></p></body></html>", None))
+        self.und_state_lbl.setText(_translate("BuildingBlockDialog", "State of Undeveloped Land:", None))
+        self.und_statemanual_radio.setText(_translate("BuildingBlockDialog", "Select Manually for entire area", None))
+        self.und_stateauto_radio.setText(_translate("BuildingBlockDialog", "Determine based on location (distance from city centres)", None))
+        self.und_statemanual_combo.setItemText(0, _translate("BuildingBlockDialog", "Greenfield", None))
+        self.und_statemanual_combo.setItemText(1, _translate("BuildingBlockDialog", "Brownfield", None))
+        self.und_statemanual_combo.setItemText(2, _translate("BuildingBlockDialog", "Agriculture", None))
+        self.und_allowdev_check.setText(_translate("BuildingBlockDialog", "Allow usage of land space for large water infrastructure?", None))
+        self.other_explain.setHtml(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Specify what needs to be done with land parcels that are unclassified and what should be done with land parcels that are undeveloped. Information about the general city structure from &quot;General Info&quot; will be used to determine what to do with these land classes.</span></p></body></html>", None))
+        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.Others), _translate("BuildingBlockDialog", "Other Uses", None))
+        self.genrules_title_7.setText(_translate("BuildingBlockDialog", "Land Cover Classification", None))
+        self.mc_open_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Open Spaces</span></p></body></html>", None))
+        self.mc_rdhwy_lbl.setText(_translate("BuildingBlockDialog", "Highway Surface:", None))
+        self.mc_rdart_lbl.setText(_translate("BuildingBlockDialog", "Major Arterial Surface:", None))
+        self.mc_rdloc_lbl.setText(_translate("BuildingBlockDialog", "Local Street Surface:", None))
+        self.mc_rdhwy_combo.setItemText(0, _translate("BuildingBlockDialog", "Asphalt", None))
+        self.mc_rdhwy_combo.setItemText(1, _translate("BuildingBlockDialog", "Concrete", None))
+        self.mc_rdhwy_combo.setItemText(2, _translate("BuildingBlockDialog", "Gravel/Compacted Dirt", None))
+        self.mc_rdloc_combo.setItemText(0, _translate("BuildingBlockDialog", "Asphalt", None))
+        self.mc_rdloc_combo.setItemText(1, _translate("BuildingBlockDialog", "Concrete", None))
+        self.mc_rdloc_combo.setItemText(2, _translate("BuildingBlockDialog", "Gravel/Compacted Dirt", None))
+        self.mc_rdart_combo.setItemText(0, _translate("BuildingBlockDialog", "Asphalt", None))
+        self.mc_rdart_combo.setItemText(1, _translate("BuildingBlockDialog", "Concrete", None))
+        self.mc_rdart_combo.setItemText(2, _translate("BuildingBlockDialog", "Gravel/Compacted Dirt", None))
+        self.mc_rdtreedens_lbl.setText(_translate("BuildingBlockDialog", "Tree Cover Density:", None))
+        self.mc_rdtreedens_lbl2.setText(_translate("BuildingBlockDialog", "trees per 100m road length", None))
+        self.mc_rdtreedens_lbl3.setText(_translate("BuildingBlockDialog", "<html><head/><body><p><span style=\" font-style:italic;\">(Note: Tree cover only applies if there is adjacent median or nature strip)</span></p></body></html>", None))
+        self.mc_resdrive_lbl.setText(_translate("BuildingBlockDialog", "Driveway Surface:", None))
+        self.mc_respatio_lbl.setText(_translate("BuildingBlockDialog", "Patio Surface:", None))
+        self.mc_resdrive_combo.setItemText(0, _translate("BuildingBlockDialog", "Asphalt", None))
+        self.mc_resdrive_combo.setItemText(1, _translate("BuildingBlockDialog", "Concrete", None))
+        self.mc_resdrive_combo.setItemText(2, _translate("BuildingBlockDialog", "Gravel/Compacted Dirt", None))
+        self.mc_respatio_combo.setItemText(0, _translate("BuildingBlockDialog", "Asphalt", None))
+        self.mc_respatio_combo.setItemText(1, _translate("BuildingBlockDialog", "Concrete", None))
+        self.mc_respatio_combo.setItemText(2, _translate("BuildingBlockDialog", "Gravel/Compacted Dirt", None))
+        self.mc_resirri_lbl.setText(_translate("BuildingBlockDialog", "Irrigated Surfaces:", None))
+        self.mc_resirriperv_radio.setText(_translate("BuildingBlockDialog", "All Pervious", None))
+        self.mc_resirrigard_radio.setText(_translate("BuildingBlockDialog", "Only Garden", None))
+        self.mc_restrees_lbl.setText(_translate("BuildingBlockDialog", "Tree Coverage:", None))
+        self.mc_restrees_lbl2.setText(_translate("BuildingBlockDialog", "None", None))
+        self.mc_restrees_lbl3.setText(_translate("BuildingBlockDialog", "Max.", None))
+        self.mc_openfpath_lbl.setText(_translate("BuildingBlockDialog", "Footpath Surface:", None))
+        self.mc_openfpath_combo.setItemText(0, _translate("BuildingBlockDialog", "Asphalt", None))
+        self.mc_openfpath_combo.setItemText(1, _translate("BuildingBlockDialog", "Concrete", None))
+        self.mc_openfpath_combo.setItemText(2, _translate("BuildingBlockDialog", "Gravel/Compacted Dirt", None))
+        self.mc_opentrees_lbl.setText(_translate("BuildingBlockDialog", "Tree Cover Density:", None))
+        self.mc_opentrees_lbl2.setText(_translate("BuildingBlockDialog", "trees per 100sqm. of open space", None))
+        self.mc_nrespark_lbl.setText(_translate("BuildingBlockDialog", "Parking Lot Surface:", None))
+        self.mc_nresbay_lbl.setText(_translate("BuildingBlockDialog", "Loading Bay Surface:", None))
+        self.mc_nrespark_combo.setItemText(0, _translate("BuildingBlockDialog", "Asphalt", None))
+        self.mc_nrespark_combo.setItemText(1, _translate("BuildingBlockDialog", "Concrete", None))
+        self.mc_nrespark_combo.setItemText(2, _translate("BuildingBlockDialog", "Gravel/Compacted Dirt", None))
+        self.mc_nresbay_combo.setItemText(0, _translate("BuildingBlockDialog", "Asphalt", None))
+        self.mc_nresbay_combo.setItemText(1, _translate("BuildingBlockDialog", "Concrete", None))
+        self.mc_nresbay_combo.setItemText(2, _translate("BuildingBlockDialog", "Gravel/Compacted Dirt", None))
+        self.mc_nreshard_lbl.setText(_translate("BuildingBlockDialog", "Hard Landscaping:", None))
+        self.mc_nreshard_combo.setItemText(0, _translate("BuildingBlockDialog", "Asphalt", None))
+        self.mc_nreshard_combo.setItemText(1, _translate("BuildingBlockDialog", "Concrete", None))
+        self.mc_nreshard_combo.setItemText(2, _translate("BuildingBlockDialog", "Gravel/Compacted Dirt", None))
+        self.mc_nrestrees_lbl.setText(_translate("BuildingBlockDialog", "Tree Coverage:", None))
+        self.mc_nrestrees_lbl2.setText(_translate("BuildingBlockDialog", "None", None))
+        self.mc_nrestrees_lbl3.setText(_translate("BuildingBlockDialog", "Max.", None))
+        self.mc_nrestreeloc_lbl.setText(_translate("BuildingBlockDialog", "Tree Locations:", None))
+        self.mc_nrestreeloc_checkon.setText(_translate("BuildingBlockDialog", "On-site", None))
+        self.mc_nrestreeloc_checkoff.setText(_translate("BuildingBlockDialog", "Frontage", None))
+        self.mc_res_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Residential</span></p></body></html>", None))
+        self.mc_roads_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Roads</span></p></body></html>", None))
+        self.mc_nres_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Non-residential</span></p></body></html>", None))
+        self.mc_vegetation_title.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Vegetation Type</span></p></body></html>", None))
+        self.mc_treetype_lbl.setText(_translate("BuildingBlockDialog", "Default Tree Shape:", None))
+        self.mc_treetype_combo.setItemText(0, _translate("BuildingBlockDialog", "Round with Broad Leaves", None))
+        self.mc_treetype_combo.setItemText(1, _translate("BuildingBlockDialog", "Round with Needle Leaves", None))
+        self.mc_treetype_combo.setItemText(2, _translate("BuildingBlockDialog", "Tall with Broad Leaves", None))
+        self.mc_treetype_combo.setItemText(3, _translate("BuildingBlockDialog", "Tall with Needle Leaves", None))
+        self.mc_treetype_combo.setItemText(4, _translate("BuildingBlockDialog", "Open with Broad Leaves", None))
+        self.mc_treetype_combo.setItemText(5, _translate("BuildingBlockDialog", "Open with Needle Leaves", None))
+        self.residential_explain_2.setHtml(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Define demographics, geometry and water characteristics for planning residential districts. Model uses this and other information to distinguish between houses and apartments within the city.</span></p></body></html>", None))
+        self.buildingblocktabs.setTabText(self.buildingblocktabs.indexOf(self.tab), _translate("BuildingBlockDialog", "Land Cover", None))
+        self.remarks.setText(_translate("BuildingBlockDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS v1.0 - (C) 2013 Peter M. Bach </span></p></body></html>", None))
+        self.pushButton.setWhatsThis(_translate("BuildingBlockDialog", "Like I said, I really don\'t think you need any help! :)", None))
+        self.pushButton.setText(_translate("BuildingBlockDialog", "Help", None))
+        self.bbdescr1.setText(_translate("BuildingBlockDialog", "Click on a the tabs below to set planning parameters for Building Blocks. If inputs are not specified, default values for", None))
+        self.bbtitle.setText(_translate("BuildingBlockDialog", "Building Blocks - Urban Planning Customisation", None))
+        self.bbdescr2.setText(_translate("BuildingBlockDialog", "Metropolitan Melbourne will be used.", None))
 
-import dialogimg_rc
-import dialogimg_rc
-import dialogimg_rc
 import dialogimg_rc
