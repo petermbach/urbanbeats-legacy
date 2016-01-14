@@ -393,7 +393,7 @@ class Urbplanbb(UBModule):
         self.svu4storm_prop = float(40.0)
         
         ############################
-        #Others Parameters
+        #Others Land Uses
         ############################
         #(includes Unclassified and Undeveloped)
         #--> Unclassified Land
@@ -435,58 +435,55 @@ class Urbplanbb(UBModule):
         self.considerGF = 1     #Even consider Greenfield?
         self.considerAG = 1     #Even consider Agriculture areas in model?
         self.CBD_MAD_dist = 10.0        #km - approximate distance between main CBD and major activity districts
-        
+
+        ############################
+        #Land Cover Classification
+        ############################
+        self.materialtypes = ["ASPH", "CONC", "DIRT"]
+
+        self.createParameter("surfDriveway", STRING, "")
+        self.createParameter("surfPatio", STRING, "")
+        self.createParameter("surfResIrrigate", STRING, "")
+        self.createParameter("trees_Res", DOUBLE, "Residential tree cover 0 to 1")
+        self.surfDriveway = "CONC"
+        self.surfPatio = "CONC"
+        self.surfResIrrigate = "G"
+        self.trees_Res = 0.1
+
+        self.createParameter("surfParking", STRING, "")
+        self.createParameter("surfBay", STRING, "")
+        self.createParameter("surfHard", STRING, "")
+        self.createParameter("trees_Nres", DOUBLE, "Non-residential tree cover 0 to 1")
+        self.createParameter("trees_Site", BOOL, "")
+        self.createParameter("trees_Front", BOOL, "")
+        self.surfParking = "ASPH"
+        self.surfBay = "ASPH"
+        self.surfHard = "CONC"
+        self.trees_Nres = 0.0
+        self.trees_Site = 0
+        self.trees_Front = 0
+
+        self.createParameter("surfHwy", STRING, "")
+        self.createParameter("surfArt", STRING, "")
+        self.createParameter("surfLoc", STRING, "")
+        self.createParameter("trees_roaddens", DOUBLE, "")
+        self.surfHwy = "ASPH"
+        self.surfArt = "ASPH"
+        self.surfLoc = "ASPH"
+        self.trees_roaddens = 1
+
+        self.treetypes = ["RB", "RN", "TB", "TN", "OB", "ON"]   #R = round, T = tall, O = open, B = broad leaves, N = needle leaves
+
+        self.createParameter("surfFpath", STRING, "")
+        self.createParameter("trees_opendens", DOUBLE, "")
+        self.createParameter("tree_type", STRING, "")
+        self.surfFpath = "CONC"
+        self.trees_opendens = 10
+        self.tree_type = "RB"
+
         #------------------------------------------
         #END OF INPUT PARAMETER LIST
 
-        #VIEWS-------------------------------------
-        #self.mapattributes = View("GlobalMapAttributes", COMPONENT,READ)
-        #self.mapattributes.getAttribute("NumBlocks")
-        #self.mapattributes.getAttribute("BlockSize")
-        #self.mapattributes.getAttribute("WidthBlocks")
-        #self.mapattributes.getAttribute("HeightBlocks")
-        #self.mapattributes.getAttribute("InputReso")
-        #self.mapattributes.addAttribute("ParkProhibit")
-        #self.mapattributes.addAttribute("RefLimit")
-        #self.mapattributes.addAttribute("UndevAllow")
-        #self.mapattributes.addAttribute("HwyMedLimit")
-        #
-        #self.blocks = View("Block", FACE, WRITE)
-        #self.blocks.getAttribute("BlockID")
-        #self.blocks.modifyAttribute("Employ")
-        #self.blocks.addAttribute("MiscAtot")
-        #self.blocks.addAttribute("MiscAimp")
-        #self.blocks.addAttribute("UndType")
-        #self.blocks.addAttribute("UND_av")
-        #self.blocks.addAttribute("OpenSpace")
-        #self.blocks.addAttribute("AGardens")
-        #self.blocks.addAttribute("ASquare")
-        #self.blocks.addAttribute("PG_av")
-        #self.blocks.addAttribute("REF_av")
-        #self.blocks.addAttribute("ANonW_Util")
-        #self.blocks.addAttribute("SVU_avWS")
-        #self.blocks.addAttribute("SVU_avWW")
-        #self.blocks.addAttribute("SVU_avSW")
-        #self.blocks.addAttribute("SVU_avOTH")
-        #self.blocks.addAttribute("RoadTIA")
-        #self.blocks.addAttribute("ParkBuffer")
-        #self.blocks.addAttribute("RD_av")
-        #self.blocks.addAttribute("RDMedW")
-        #self.blocks.addAttribute("DemPublicI")
-        #
-        ##BlockDYNAMICS Views
-        #self.prevBlocks = View("PreviousBlocks", COMPONENT, READ)
-        #self.prevMapAttr = View("MasterMapAttributes", COMPONENT, READ)
-        #
-        ##DEFINE DATA STREAM:
-        #datastream = []
-        #datastream.append(self.blocks)
-        #datastream.append(self.mapattributes)
-        #datastream.append(self.prevBlocks)
-        #datastream.append(self.prevMapAttr)
-        #self.addData("City", datastream)
-        #self.BLOCKIDtoUUID = {}         #DYNAMIND
-        #self.prevBLOCKIDtoUUID = {}     #DYNAMIND
 
     def run(self):
         self.notify("Start Urban Planning!")        #UBCORE
@@ -857,7 +854,7 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("LIAestate", indLI_dict["Aestate"])
                     currentAttList.addAttribute("LIAeBldg", indLI_dict["EstateBuildingArea"])
                     currentAttList.addAttribute("LIFloors", indLI_dict["Floors"])
-                    currentAttList.addAttribute("LIAeLoad", indLI_dict["Aloadingbay"])
+                    currentAttList.addAttribute("LIAeLoad", indLI_dict["Outdoorloadbay"])
                     currentAttList.addAttribute("LIAeCPark", indLI_dict["Outdoorcarpark"])     #TOTAL OUTDOOR VISIBLE CARPARK
                     currentAttList.addAttribute("avLt_LI", indLI_dict["EstateGreenArea"])
                     currentAttList.addAttribute("LIAeLgrey", indLI_dict["Alandscape"]-indLI_dict["EstateGreenArea"])
@@ -884,7 +881,7 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("HIAestate", indHI_dict["Aestate"])
                     currentAttList.addAttribute("HIAeBldg", indHI_dict["EstateBuildingArea"])
                     currentAttList.addAttribute("HIFloors", indHI_dict["Floors"])
-                    currentAttList.addAttribute("HIAeLoad", indHI_dict["Aloadingbay"])
+                    currentAttList.addAttribute("HIAeLoad", indHI_dict["Outdoorloadbay"])
                     currentAttList.addAttribute("HIAeCPark", indHI_dict["Outdoorcarpark"])     #TOTAL OUTDOOR VISIBLE CARPARK
                     currentAttList.addAttribute("avLt_HI", indHI_dict["EstateGreenArea"])
                     currentAttList.addAttribute("HIAeLgrey", indHI_dict["Alandscape"]-indHI_dict["EstateGreenArea"])
@@ -911,7 +908,7 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("COMAestate", com_dict["Aestate"])
                     currentAttList.addAttribute("COMAeBldg", com_dict["EstateBuildingArea"])
                     currentAttList.addAttribute("COMFloors", com_dict["Floors"])
-                    currentAttList.addAttribute("COMAeLoad", com_dict["Aloadingbay"])
+                    currentAttList.addAttribute("COMAeLoad", com_dict["Outdoorloadbay"])
                     currentAttList.addAttribute("COMAeCPark", com_dict["Outdoorcarpark"])     #TOTAL OUTDOOR VISIBLE CARPARK
                     currentAttList.addAttribute("avLt_COM", com_dict["EstateGreenArea"])
                     currentAttList.addAttribute("COMAeLgrey", com_dict["Alandscape"]-com_dict["EstateGreenArea"])
@@ -938,7 +935,7 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("ORCAestate", orc_dict["Aestate"])
                     currentAttList.addAttribute("ORCAeBldg", orc_dict["EstateBuildingArea"])
                     currentAttList.addAttribute("ORCFloors", orc_dict["Floors"])
-                    currentAttList.addAttribute("ORCAeLoad", orc_dict["Aloadingbay"])
+                    currentAttList.addAttribute("ORCAeLoad", orc_dict["Outdoorloadbay"])
                     currentAttList.addAttribute("ORCAeCPark", orc_dict["Outdoorcarpark"])     #TOTAL OUTDOOR VISIBLE CARPARK
                     currentAttList.addAttribute("avLt_ORC", orc_dict["EstateGreenArea"])
                     currentAttList.addAttribute("ORCAeLgrey", orc_dict["Alandscape"]-orc_dict["EstateGreenArea"])
@@ -1605,9 +1602,9 @@ class Urbplanbb(UBModule):
         #other neighbouring sites. This is up for future revision.
         
         #Determine frontage info
-        laneW = float(frontage[0])
+        laneW = float(frontage[2])
         nstrip = float(frontage[1])
-        fpath = float(frontage[2])
+        fpath = float(frontage[0])
         Wfrontage = laneW + nstrip + fpath
         
         #STEP 1: Determine employment in the area
@@ -1629,7 +1626,7 @@ class Urbplanbb(UBModule):
         estates = float(max(int(Aluc/(blockthresh*10000)),1))
         Aestate = Aluc/float(estates)
         Westate = math.sqrt(Aestate)
-        Afrontage = Westate*Wfrontage + Wfrontage*(Westate-2*Wfrontage)
+        Afrontage = Westate*Wfrontage + Wfrontage*(Westate-Wfrontage)
         Aca = max(Aestate - Afrontage, 0)
         
         employed = employmentDens * (Aestate/10000)
@@ -1733,20 +1730,24 @@ class Urbplanbb(UBModule):
         
         setbackArea = math.sqrt(Aestate)*minsetback*2 - minsetback*minsetback       #take setback area on two faces
         Asite_remain = Aca - Afootprintfinal - setbackArea
-        
+        #print "Debug"
         if (Asite_remain - Acarpark - Aloadingbay) > 0:
             #Case 1: It all fits, hooray! --> Alandscape = setback area + remaining area
             Alandscape = (Asite_remain - Acarpark - Aloadingbay) + setbackArea
             nresdict["Alandscape"] = Alandscape
+            nresdict["Outdoorloadbay"] = Aloadingbay
             nresdict["Outdoorcarpark"] = Acarpark
         elif (Asite_remain - Aloadingbay) > 0:
             #Case 2: Loading bay fits, but carpark does not entirely --> that's ok, Alandscape = setback area
             Alandscape = setbackArea
             nresdict["Alandscape"] = Alandscape
+            nresdict["Outdoorloadbay"] = Aloadingbay
             nresdict["Outdoorcarpark"] = Asite_remain - Aloadingbay
         elif Asite_remain > 0:
             #Case 3: Loading bay does not fit --> use setback area to fit, Alandscape = remaining setback
-            Alandscape = max(setbackArea - Aloadingbay, 0)
+            Aloadingbay = min(Aloadingbay, Asite_remain + setbackArea)  #remaining site area + setback area intrusion
+            Alandscape = max(Asite_remain + setbackArea - Aloadingbay, 0) #The rest of the area
+            nresdict["Outdoorloadbay"] = Aloadingbay
             nresdict["Alandscape"] = Alandscape
             nresdict["Outdoorcarpark"] = 0
         else:
@@ -1756,6 +1757,7 @@ class Urbplanbb(UBModule):
             #self.notify( "Revised Setback: "+str(revisedSetback))
             Alandscape = max(revisedSetback, 0)
             nresdict["Alandscape"] = Alandscape
+            nresdict["Outdoorloadbay"] = 0
             nresdict["Outdoorcarpark"] = 0
             
         #STEP 5: Landscaping
@@ -1774,12 +1776,11 @@ class Urbplanbb(UBModule):
         
         #Tally up all land surface cover information
         Aimp_total = Aca - Alandscape + Aimpaddition
-        Aimp_connected = (1- self.lscape_impdced/100) * Aimp_total
+        Aimp_connected = (1 - self.lscape_impdced/100) * Aimp_total
         
         nresdict["EstateGreenArea"] = Agreen
         nresdict["EstateImperviousArea"] = Aimp_total
         nresdict["EstateEffectiveImpervious"] = Aimp_connected
-        
         return nresdict
         
     def determineEmployment(self, method, currentAttList, map_attr, Aluc, type):
