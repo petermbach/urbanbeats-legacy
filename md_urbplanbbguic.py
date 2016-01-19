@@ -474,6 +474,41 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
 
         self.ui.und_allowdev_check.setChecked(bool(int(self.module.getParameter("und_allowdev"))))
 
+        ##########################
+        #Land Cover Tab
+        ##########################
+        self.surfcovers = ["AS", "CO", "DG"]
+
+        self.ui.mc_resdrive_combo.setCurrentIndex(self.surfcovers.index(self.module.getParameter("surfDriveway")))
+
+        if self.module.getParameter("surfResIrrigate") == "P":
+            self.ui.mc_resirriperv_radio.setChecked(1)
+        else:
+            self.ui.mc_resirrigard_radio.setChecked(1)
+
+        self.ui.mc_restrees_slider.setValue(int(self.module.getParameter("trees_Res")))
+
+        self.ui.mc_nrespark_combo.setCurrentIndex(self.surfcovers.index(self.module.getParameter("surfParking")))
+        self.ui.mc_nresbay_combo.setCurrentIndex(self.surfcovers.index(self.module.getParameter("surfBay")))
+        self.ui.mc_nreshard_combo.setCurrentIndex(self.surfcovers.index(self.module.getParameter("surfHard")))
+        self.ui.mc_nrestrees_slider.setValue(int(self.module.getParameter("trees_Nres")))
+        self.ui.mc_nrestreeloc_checkon.setChecked(bool(int(self.module.getParameter("trees_Site"))))
+        self.ui.mc_nrestreeloc_checkoff.setChecked(bool(int(self.module.getParameter("trees_Front"))))
+
+        self.ui.mc_rdhwy_combo.setCurrentIndex(self.surfcovers.index(self.module.getParameter("surfHwy")))
+        self.ui.mc_rdloc_combo.setCurrentIndex(self.surfcovers.index(self.module.getParameter("surfLoc")))
+        self.ui.mc_rdfpath_combo.setCurrentIndex(self.surfcovers.index(self.module.getParameter("surfFpath")))
+        self.ui.mc_rdtreedens_spin.setValue(int(self.module.getParameter("trees_roaddens")))
+
+        self.ui.mc_opengrey_combo.setCurrentIndex(self.surfcovers.index(self.module.getParameter("surfSquare")))
+        self.ui.mc_opentrees_spin.setValue(int(self.module.getParameter("trees_opendens")))
+        self.ui.mc_reftrees_spin.setValue(int(self.module.getParameter("trees_refdens")))
+
+        self.treetypes = ["RB", "RN", "TB", "TN", "OB", "ON"]
+        self.ui.mc_treetype_combo.setCurrentIndex(self.treetypes.index(self.module.getParameter("tree_type")))
+
+        #-------------------------------
+
         #CONNECT DETAILS WITH THE OK BUTTON SO THAT GUI UPDATES MODULE
         QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
 
@@ -907,5 +942,35 @@ class UrbplanbbGUILaunch(QtGui.QDialog):
         self.module.setParameter("und_type_manual", undev_type)
 
         self.module.setParameter("und_allowdev", int(self.ui.und_allowdev_check.isChecked()))
+
+        ##########################
+        #Land Cover Tab
+        ##########################
+        self.module.setParameter("surfDriveway", self.surfcovers[self.ui.mc_resdrive_combo.currentIndex()])
+
+        if self.ui.mc_resirriperv_radio.isChecked():
+            self.module.setParameter("surfResIrrigate", "P")
+        else:
+            self.module.setParameter("surfResIrrigate", "G")
+
+        self.module.setParameter("trees_Res", float(self.ui.mc_restrees_slider.value()))
+
+        self.module.setParameter("surfParking", self.surfcovers[self.ui.mc_nrespark_combo.currentIndex()])
+        self.module.setParameter("surfBay", self.surfcovers[self.ui.mc_nresbay_combo.currentIndex()])
+        self.module.setParameter("surfHard", self.surfcovers[self.ui.mc_nreshard_combo.currentIndex()])
+        self.module.setParameter("trees_Nres", float(self.ui.mc_nrestrees_slider.value()))
+        self.module.setParameter("trees_Site", int(self.ui.mc_nrestreeloc_checkon.isChecked()))
+        self.module.setParameter("trees_Front", int(self.ui.mc_nrestreeloc_checkoff.isChecked()))
+
+        self.module.setParameter("surfHwy", self.surfcovers[self.ui.mc_rdhwy_combo.currentIndex()])
+        self.module.setParameter("surfLoc", self.surfcovers[self.ui.mc_rdloc_combo.currentIndex()])
+        self.module.setParameter("surfFpath", self.surfcovers[self.ui.mc_rdfpath_combo.currentIndex()])
+        self.module.setParameter("trees_roaddens", float(self.ui.mc_rdtreedens_spin.value()))
+
+        self.module.setParameter("surfSquare", self.surfcovers[self.ui.mc_opengrey_combo.currentIndex()])
+        self.module.setParameter("trees_opendens", float(self.ui.mc_opentrees_spin.value()))
+        self.module.setParameter("trees_refdens", float(self.ui.mc_reftrees_spin.value()))
+
+        self.module.setParameter("trees_type", self.treetypes[self.ui.mc_treetype_combo.currentIndex()])
 
         #----------------END OF SAVE VALUES------------------------------------#

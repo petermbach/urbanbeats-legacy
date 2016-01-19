@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>646</width>
-    <height>522</height>
+    <height>546</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -180,7 +180,7 @@ p, li { white-space: pre-wrap; }
                   <x>0</x>
                   <y>0</y>
                   <width>398</width>
-                  <height>286</height>
+                  <height>310</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -4607,7 +4607,7 @@ p, li { white-space: pre-wrap; }
                 <property name="geometry">
                  <rect>
                   <x>0</x>
-                  <y>0</y>
+                  <y>-222</y>
                   <width>398</width>
                   <height>532</height>
                  </rect>
@@ -5862,45 +5862,16 @@ p, li { white-space: pre-wrap; }
                   <x>0</x>
                   <y>0</y>
                   <width>398</width>
-                  <height>687</height>
+                  <height>697</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_16">
                  <item row="6" column="0">
-                  <widget class="QLabel" name="mc_open_title">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>13</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Open Spaces&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="5" column="0">
                   <widget class="QWidget" name="res_paramfield6_2" native="true">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                      <horstretch>0</horstretch>
-                     <verstretch>50</verstretch>
+                     <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
                    <property name="minimumSize">
@@ -5920,32 +5891,19 @@ p, li { white-space: pre-wrap; }
                      <rect>
                       <x>20</x>
                       <y>10</y>
-                      <width>111</width>
+                      <width>141</width>
                       <height>16</height>
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Highway Surface:</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="mc_rdart_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>20</x>
-                      <y>40</y>
-                      <width>121</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>Major Arterial Surface:</string>
+                     <string>Highway/Arterial Surface:</string>
                     </property>
                    </widget>
                    <widget class="QLabel" name="mc_rdloc_lbl">
                     <property name="geometry">
                      <rect>
                       <x>20</x>
-                      <y>70</y>
+                      <y>40</y>
                       <width>121</width>
                       <height>16</height>
                      </rect>
@@ -5957,7 +5915,7 @@ p, li { white-space: pre-wrap; }
                    <widget class="QComboBox" name="mc_rdhwy_combo">
                     <property name="geometry">
                      <rect>
-                      <x>140</x>
+                      <x>160</x>
                       <y>10</y>
                       <width>141</width>
                       <height>16</height>
@@ -5982,32 +5940,7 @@ p, li { white-space: pre-wrap; }
                    <widget class="QComboBox" name="mc_rdloc_combo">
                     <property name="geometry">
                      <rect>
-                      <x>140</x>
-                      <y>70</y>
-                      <width>141</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <item>
-                     <property name="text">
-                      <string>Asphalt</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Concrete</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Gravel/Compacted Dirt</string>
-                     </property>
-                    </item>
-                   </widget>
-                   <widget class="QComboBox" name="mc_rdart_combo">
-                    <property name="geometry">
-                     <rect>
-                      <x>140</x>
+                      <x>160</x>
                       <y>40</y>
                       <width>141</width>
                       <height>16</height>
@@ -6081,59 +6014,24 @@ p, li { white-space: pre-wrap; }
                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;(Note: Tree cover only applies if there is adjacent median or nature strip)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QWidget" name="mc_res_widget" native="true">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>369</width>
-                     <height>130</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <widget class="QLabel" name="mc_resdrive_lbl">
+                   <widget class="QLabel" name="mc_rdfpath_lbl">
                     <property name="geometry">
                      <rect>
                       <x>20</x>
-                      <y>10</y>
-                      <width>111</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>Driveway Surface:</string>
-                    </property>
-                   </widget>
-                   <widget class="QLabel" name="mc_respatio_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>20</x>
-                      <y>40</y>
+                      <y>70</y>
                       <width>121</width>
                       <height>16</height>
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Patio Surface:</string>
+                     <string>Local Footpath Surface:</string>
                     </property>
                    </widget>
-                   <widget class="QComboBox" name="mc_resdrive_combo">
+                   <widget class="QComboBox" name="mc_rdfpath_combo">
                     <property name="geometry">
                      <rect>
-                      <x>140</x>
-                      <y>10</y>
+                      <x>160</x>
+                      <y>70</y>
                       <width>141</width>
                       <height>16</height>
                      </rect>
@@ -6154,11 +6052,46 @@ p, li { white-space: pre-wrap; }
                      </property>
                     </item>
                    </widget>
-                   <widget class="QComboBox" name="mc_respatio_combo">
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QWidget" name="mc_res_widget" native="true">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>369</width>
+                     <height>110</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <widget class="QLabel" name="mc_resdrive_lbl">
                     <property name="geometry">
                      <rect>
-                      <x>140</x>
-                      <y>40</y>
+                      <x>20</x>
+                      <y>10</y>
+                      <width>111</width>
+                      <height>16</height>
+                     </rect>
+                    </property>
+                    <property name="text">
+                     <string>Paved Surfaces:</string>
+                    </property>
+                   </widget>
+                   <widget class="QComboBox" name="mc_resdrive_combo">
+                    <property name="geometry">
+                     <rect>
+                      <x>160</x>
+                      <y>10</y>
                       <width>141</width>
                       <height>16</height>
                      </rect>
@@ -6183,7 +6116,7 @@ p, li { white-space: pre-wrap; }
                     <property name="geometry">
                      <rect>
                       <x>20</x>
-                      <y>70</y>
+                      <y>40</y>
                       <width>121</width>
                       <height>16</height>
                      </rect>
@@ -6196,7 +6129,7 @@ p, li { white-space: pre-wrap; }
                     <property name="geometry">
                      <rect>
                       <x>140</x>
-                      <y>70</y>
+                      <y>40</y>
                       <width>91</width>
                       <height>17</height>
                      </rect>
@@ -6209,7 +6142,7 @@ p, li { white-space: pre-wrap; }
                     <property name="geometry">
                      <rect>
                       <x>240</x>
-                      <y>70</y>
+                      <y>40</y>
                       <width>101</width>
                       <height>17</height>
                      </rect>
@@ -6222,20 +6155,20 @@ p, li { white-space: pre-wrap; }
                     <property name="geometry">
                      <rect>
                       <x>20</x>
-                      <y>100</y>
+                      <y>70</y>
                       <width>121</width>
                       <height>16</height>
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Tree Coverage:</string>
+                     <string>Lot Tree Coverage:</string>
                     </property>
                    </widget>
                    <widget class="QSlider" name="mc_restrees_slider">
                     <property name="geometry">
                      <rect>
                       <x>180</x>
-                      <y>100</y>
+                      <y>70</y>
                       <width>160</width>
                       <height>19</height>
                      </rect>
@@ -6254,7 +6187,7 @@ p, li { white-space: pre-wrap; }
                     <property name="geometry">
                      <rect>
                       <x>140</x>
-                      <y>100</y>
+                      <y>70</y>
                       <width>31</width>
                       <height>16</height>
                      </rect>
@@ -6267,7 +6200,7 @@ p, li { white-space: pre-wrap; }
                     <property name="geometry">
                      <rect>
                       <x>350</x>
-                      <y>100</y>
+                      <y>70</y>
                       <width>31</width>
                       <height>16</height>
                      </rect>
@@ -6278,7 +6211,36 @@ p, li { white-space: pre-wrap; }
                    </widget>
                   </widget>
                  </item>
-                 <item row="8" column="0">
+                 <item row="7" column="0">
+                  <widget class="QLabel" name="mc_open_title">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>13</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>13</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>13</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Open Spaces&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="0">
                   <widget class="QWidget" name="res_paramfield6_3" native="true">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -6289,7 +6251,7 @@ p, li { white-space: pre-wrap; }
                    <property name="minimumSize">
                     <size>
                      <width>369</width>
-                     <height>70</height>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="maximumSize">
@@ -6298,7 +6260,7 @@ p, li { white-space: pre-wrap; }
                      <height>16777215</height>
                     </size>
                    </property>
-                   <widget class="QLabel" name="mc_openfpath_lbl">
+                   <widget class="QLabel" name="mc_opengrey_lbl">
                     <property name="geometry">
                      <rect>
                       <x>20</x>
@@ -6308,13 +6270,13 @@ p, li { white-space: pre-wrap; }
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Footpath Surface:</string>
+                     <string>Grey Area Surface:</string>
                     </property>
                    </widget>
-                   <widget class="QComboBox" name="mc_openfpath_combo">
+                   <widget class="QComboBox" name="mc_opengrey_combo">
                     <property name="geometry">
                      <rect>
-                      <x>140</x>
+                      <x>160</x>
                       <y>10</y>
                       <width>141</width>
                       <height>16</height>
@@ -6346,7 +6308,7 @@ p, li { white-space: pre-wrap; }
                      </rect>
                     </property>
                     <property name="text">
-                     <string>Tree Cover Density:</string>
+                     <string>Park Tree Cover:</string>
                     </property>
                    </widget>
                    <widget class="QSpinBox" name="mc_opentrees_spin">
@@ -6375,9 +6337,239 @@ p, li { white-space: pre-wrap; }
                      <string>trees per 100sqm. of open space</string>
                     </property>
                    </widget>
+                   <widget class="QLabel" name="mc_reftrees_lbl">
+                    <property name="geometry">
+                     <rect>
+                      <x>20</x>
+                      <y>70</y>
+                      <width>111</width>
+                      <height>16</height>
+                     </rect>
+                    </property>
+                    <property name="text">
+                     <string>Reserves Tree Cover:</string>
+                    </property>
+                   </widget>
+                   <widget class="QLabel" name="mc_reftrees_lbl2">
+                    <property name="geometry">
+                     <rect>
+                      <x>200</x>
+                      <y>70</y>
+                      <width>171</width>
+                      <height>16</height>
+                     </rect>
+                    </property>
+                    <property name="text">
+                     <string>trees per 100sqm. of reserve</string>
+                    </property>
+                   </widget>
+                   <widget class="QSpinBox" name="mc_reftrees_spin">
+                    <property name="geometry">
+                     <rect>
+                      <x>140</x>
+                      <y>70</y>
+                      <width>51</width>
+                      <height>16</height>
+                     </rect>
+                    </property>
+                    <property name="maximum">
+                     <number>10</number>
+                    </property>
+                   </widget>
                   </widget>
                  </item>
-                 <item row="3" column="0">
+                 <item row="11" column="0">
+                  <widget class="QWidget" name="mc_vegetation_widget" native="true">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>369</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <widget class="QLabel" name="mc_treetype_lbl">
+                    <property name="geometry">
+                     <rect>
+                      <x>20</x>
+                      <y>10</y>
+                      <width>111</width>
+                      <height>16</height>
+                     </rect>
+                    </property>
+                    <property name="text">
+                     <string>Default Tree Shape:</string>
+                    </property>
+                   </widget>
+                   <widget class="QComboBox" name="mc_treetype_combo">
+                    <property name="geometry">
+                     <rect>
+                      <x>140</x>
+                      <y>10</y>
+                      <width>211</width>
+                      <height>16</height>
+                     </rect>
+                    </property>
+                    <item>
+                     <property name="text">
+                      <string>Round with Broad Leaves</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Round with Needle Leaves</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Tall with Broad Leaves</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Tall with Needle Leaves</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Open with Broad Leaves</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Open with Needle Leaves</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="mc_res_title">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>13</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>13</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>13</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Residential&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="0">
+                  <widget class="QLabel" name="mc_roads_title">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>13</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>13</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>13</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Roads&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="mc_nres_title">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>13</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>13</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>13</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Non-residential&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="0">
+                  <widget class="QLabel" name="mc_vegetation_title">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>13</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>13</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>13</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Vegetation Type&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
                   <widget class="QWidget" name="mc_nres_widget" native="true">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -6388,7 +6580,7 @@ p, li { white-space: pre-wrap; }
                    <property name="minimumSize">
                     <size>
                      <width>369</width>
-                     <height>130</height>
+                     <height>140</height>
                     </size>
                    </property>
                    <property name="maximumSize">
@@ -6426,7 +6618,7 @@ p, li { white-space: pre-wrap; }
                    <widget class="QComboBox" name="mc_nrespark_combo">
                     <property name="geometry">
                      <rect>
-                      <x>140</x>
+                      <x>160</x>
                       <y>10</y>
                       <width>141</width>
                       <height>16</height>
@@ -6451,7 +6643,7 @@ p, li { white-space: pre-wrap; }
                    <widget class="QComboBox" name="mc_nresbay_combo">
                     <property name="geometry">
                      <rect>
-                      <x>140</x>
+                      <x>160</x>
                       <y>40</y>
                       <width>141</width>
                       <height>16</height>
@@ -6489,7 +6681,7 @@ p, li { white-space: pre-wrap; }
                    <widget class="QComboBox" name="mc_nreshard_combo">
                     <property name="geometry">
                      <rect>
-                      <x>140</x>
+                      <x>160</x>
                       <y>70</y>
                       <width>141</width>
                       <height>16</height>
@@ -6607,197 +6799,6 @@ p, li { white-space: pre-wrap; }
                     <property name="text">
                      <string>Frontage</string>
                     </property>
-                   </widget>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="mc_res_title">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>13</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Residential&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="4" column="0">
-                  <widget class="QLabel" name="mc_roads_title">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>13</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Roads&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="QLabel" name="mc_nres_title">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>13</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Non-residential&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="9" column="0">
-                  <widget class="QLabel" name="mc_vegetation_title">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>13</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>13</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Vegetation Type&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="10" column="0">
-                  <widget class="QWidget" name="mc_vegetation_widget" native="true">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>369</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <widget class="QLabel" name="mc_treetype_lbl">
-                    <property name="geometry">
-                     <rect>
-                      <x>20</x>
-                      <y>10</y>
-                      <width>111</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <property name="text">
-                     <string>Default Tree Shape:</string>
-                    </property>
-                   </widget>
-                   <widget class="QComboBox" name="mc_treetype_combo">
-                    <property name="geometry">
-                     <rect>
-                      <x>140</x>
-                      <y>10</y>
-                      <width>211</width>
-                      <height>16</height>
-                     </rect>
-                    </property>
-                    <item>
-                     <property name="text">
-                      <string>Round with Broad Leaves</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Round with Needle Leaves</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Tall with Broad Leaves</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Tall with Needle Leaves</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Open with Broad Leaves</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Open with Needle Leaves</string>
-                     </property>
-                    </item>
                    </widget>
                   </widget>
                  </item>
