@@ -439,14 +439,11 @@ class Urbplanbb(UBModule):
         ############################
         #Land Cover Classification
         ############################
-        self.materialtypes = ["ASPH", "CONC", "DIRT"]
-
+        self.materialtypes = ["AS", "CO", "DG"]
         self.createParameter("surfDriveway", STRING, "")
-        self.createParameter("surfPatio", STRING, "")
         self.createParameter("surfResIrrigate", STRING, "")
         self.createParameter("trees_Res", DOUBLE, "Residential tree cover 0 to 1")
-        self.surfDriveway = "CONC"
-        self.surfPatio = "CONC"
+        self.surfDriveway = "CO"
         self.surfResIrrigate = "G"
         self.trees_Res = 0.1
 
@@ -456,29 +453,31 @@ class Urbplanbb(UBModule):
         self.createParameter("trees_Nres", DOUBLE, "Non-residential tree cover 0 to 1")
         self.createParameter("trees_Site", BOOL, "")
         self.createParameter("trees_Front", BOOL, "")
-        self.surfParking = "ASPH"
-        self.surfBay = "ASPH"
-        self.surfHard = "CONC"
+        self.surfParking = "AS"
+        self.surfBay = "AS"
+        self.surfHard = "CO"
         self.trees_Nres = 0.0
         self.trees_Site = 0
         self.trees_Front = 0
 
         self.createParameter("surfHwy", STRING, "")
-        self.createParameter("surfArt", STRING, "")
         self.createParameter("surfLoc", STRING, "")
+        self.createParameter("surfFpath", STRING, "")
         self.createParameter("trees_roaddens", DOUBLE, "")
-        self.surfHwy = "ASPH"
-        self.surfArt = "ASPH"
-        self.surfLoc = "ASPH"
+        self.surfHwy = "AS"
+        self.surfLoc = "AS"
+        self.surfFpath = "CO"
         self.trees_roaddens = 1
 
         self.treetypes = ["RB", "RN", "TB", "TN", "OB", "ON"]   #R = round, T = tall, O = open, B = broad leaves, N = needle leaves
 
         self.createParameter("surfFpath", STRING, "")
         self.createParameter("trees_opendens", DOUBLE, "")
+        self.createParameter("trees_refdens", DOUBLE, "")
         self.createParameter("tree_type", STRING, "")
-        self.surfFpath = "CONC"
+        self.surfSquare = "CO"
         self.trees_opendens = 10
+        self.trees_refdens = 10
         self.tree_type = "RB"
 
         #------------------------------------------
@@ -488,13 +487,6 @@ class Urbplanbb(UBModule):
     def run(self):
         self.notify("Start Urban Planning!")        #UBCORE
         #random.seed()   #Random seed has already been placed in delinblocks
-        #city = self.getData("City")             #DYNAMIND - obtain the City's datastream
-        #self.initBLOCKIDtoUUID(city)            #DYNAMIND - initialize the dictionary that tracks Block ID and UUID
-
-        #strvec = city.getUUIDsOfComponentsInView(self.mapattributes)    #DYNAMIND - get map attributes
-        #map_attr = city.getComponent(strvec[0]) #Get Map Attributes     #DYNAMIND - save attributes to a variable
-        #strvec = city.getUUIDsOfComponentsInView(self.prevMapAttr)
-        #prev_map_attr = city.getComponent(strvec[0])
 
         prev_map_attr = self.activesim.getAssetWithName("PrevMapAttributes")  #Implementation Cycle only
 
@@ -520,9 +512,6 @@ class Urbplanbb(UBModule):
         nres_nsw = self.adjustSampleRange(self.nres_nswmin, self.nres_nswmax, self.nres_nsmed)
         lane_w = self.adjustSampleRange(self.lane_wmin, self.lane_wmax, self.lane_wmed)
 
-        #if int(prev_map_attr.getAttribute("Impl_cycle")) == 0:    #Is this implementation cycle?
-        #    self.initPrevBLOCKIDtoUUID(city)        #DYNAMIND - initialize the dictionary that tracks Previous Block IDs and UUID
-        
         #LOOP ACROSS BLOCKS
         for i in range(int(blocks_num)):
             #Reset tally variables
@@ -586,7 +575,17 @@ class Urbplanbb(UBModule):
             
             currentAttList.addAttribute("MiscAtot", otherarea)
             currentAttList.addAttribute("MiscAimp", otherimp)
-            
+
+            if self.unc_custom:
+                currentAttList.addAttribute("MiscThresh", self.unc_customthresh)
+            else:
+                currentAttList.addAttribute("MiscThresh", 999.9)    #If not using custom threshold, make it unrealistically high
+
+            #LAND COVER CLASSIFICATION - UNC Land use - Landmark area only
+            # Covers of interest: Irrigated Grass (IG), Concrete (CO)
+            currentAttList.addAttribute("LC_UNC_IG", (otherarea - otherimp)/otherarea)
+            currentAttList.addAttribute("LC_UNC_CO", otherimp/otherarea)              #Assume concrete is main cover
+
             #Add to cumulative area variables
             blk_tia += otherimp
             blk_eia += otherimp
@@ -599,14 +598,23 @@ class Urbplanbb(UBModule):
             A_und = currentAttList.getAttribute("pLU_UND") * Aactive + undevextra
             #self.notify( "Undeveloped Area: "+str(A_und))
             if A_und != 0:
-                type = self.determineUndevType(currentAttList, considerCBD)
+                undtype = self.determineUndevType(currentAttList, considerCBD)
             else:
-                type = str("NA")
+                undtype = str("NA")
             
             #self.notify( "Undev Area Type: "str(type))
-            currentAttList.addAttribute("UndType", type)
+            currentAttList.addAttribute("UndType", undtype)
             currentAttList.addAttribute("UND_av", float(A_und*self.und_allowdev))
-            
+
+            #LAND COVER CLASSIFICATION - Undeveloped area
+            # Covers of interest: Irrigated Grass (IG), Dry Grass (DG)
+            if undtype in ["BF", "GF", "NA"]:
+                currentAttList.addAttribute("LC_UND_DG", A_und/A_und)     #If brownfield or greenfield, assume no irrigation
+                currentAttList.addAttribute("LC_UND_IG", 0.00)
+            elif undtype in ["AG"]:
+                currentAttList.addAttribute("LC_UND_IG", A_und/A_und)     #If agriculture, assume some kind of irrigation
+                currentAttList.addAttribute("LC_UND_DG", 0.00)
+
             #Add to cumulative area variables
             blk_tia += 0
             blk_eia += 0
@@ -631,7 +639,7 @@ class Urbplanbb(UBModule):
             currentAttList.addAttribute("AGardens", parkarea)
             currentAttList.addAttribute("ASquare", sqarea)
             currentAttList.addAttribute("PG_av", avail_space)
-            
+
             #Add to cumulative area variables
             blk_tia += sqarea
             blk_eia += sqarea
@@ -641,7 +649,27 @@ class Urbplanbb(UBModule):
             #---Reserves & Floodways
             avail_ref = A_ref * self.ref_usable_percent/100
             currentAttList.addAttribute("REF_av", avail_ref)
-            
+
+            #LAND COVER CLASSIFICATION - OPEN SPACES
+            # Covers of interest: Irrigated Grass (IG), Dry Grass (DG), Concrete (CO), Asphalt (AS), Trees (TR)
+            currentAttList.addAttribute("LC_PG_IG", float(parkarea/Apark))           #Assume irrigated grass by default, adjust later
+
+            if self.surfSquare == "CO":                                 #!!!!!!!!!!!!!!!!!!!!!
+                currentAttList.addAttribute("LC_PG_CO", float(sqarea/A_park))         #INTEGRATE TREE COVER
+                currentAttList.addAttribute("LC_PG_AS", 0.00)           #!!!!!!!!!!!!!!!!!!!!!
+            elif self.surfSquare == "AS":
+                currentAttList.addAttribute("LC_PG_CO", 0.00)
+                currentAttList.addAttribute("LC_PG_AS", float(sqarea/A_park))
+
+            currentAttList.addAttribute("LC_PG_TR", 0.00)
+            currentAttList.addAttribute("LC_PG_DG", 0.00)
+
+            currentAttList.addAttribute("LC_REF_DG", A_ref/A_ref)             #Assume dry grass, unirrigated by default, adjust later
+            currentAttList.addAttribute("LC_REF_IG", 0.00)
+            currentAttList.addAttribute("LC_REF_CO", 0.00)
+            currentAttList.addAttribute("LC_REF_AS", 0.00)
+            currentAttList.addAttribute("LC_REF_TR", 0.00)
+
             #Add to cumulative area variables
             blk_tia += 0
             blk_eia += 0
@@ -677,7 +705,12 @@ class Urbplanbb(UBModule):
             currentAttList.addAttribute("SVU_avWW", Asvu_WW)
             currentAttList.addAttribute("SVU_avSW", Asvu_SW)
             currentAttList.addAttribute("SVU_avOTH", Asvu_OTH)
-            
+
+            #LAND COVER CLASSIFICATION - SERVICES & UTILITIES
+            # Covers of interest: Irrigated Grass (IG), Dry Grass (DG)
+            currentAttList.addAttribute("LC_SVU_DG", float((Asvu_others + Asvu_water)/A_svu))
+            currentAttList.addAttribute("LC_SVU_IG", 0.00)
+
             #Add to cumulative area variables
             blk_tia += 0
             blk_eia += 0
@@ -708,7 +741,20 @@ class Urbplanbb(UBModule):
             currentAttList.addAttribute("ParkBuffer", park_buffer)
             currentAttList.addAttribute("RD_av", av_spRD)
             currentAttList.addAttribute("RDMedW", medW)
-            
+
+            #LAND COVER CLASSIFICATION - ROADS
+            # Covers of interest: Irrigated Grass (IG), Dry Grass (DG), Asphalt (AS), Concrete (CO)
+            if self.surfHwy == "AS":
+                currentAttList.addAttribute("LC_RD_AS", float(Aimp_rd/A_rd))
+                currentAttList.addAttribute("LC_RD_DG", float(av_spRD/A_rd))
+                currentAttList.addAttribute("LC_RD_CO", 0.00)
+                currentAttList.addAttribute("LC_RD_IG", 0.00)       #No trees on major roads
+            elif self.surfHwy == "CO":
+                currentAttList.addAttribute("LC_RD_AS", 0.00)
+                currentAttList.addAttribute("LC_RD_DG", float(av_spRD/A_rd))
+                currentAttList.addAttribute("LC_RD_CO", float(Aimp_rd/A_rd))
+                currentAttList.addAttribute("LC_RD_IG", 0.00)       #No trees on major roads
+
             #Add to cumulative area variables
             blk_tia += Aimp_rd
             blk_eia += Aimp_rd * 0.9
@@ -751,7 +797,10 @@ class Urbplanbb(UBModule):
                         frontageTIF = 0
                     else:
                         frontageTIF = 1 - (resdict["avSt_RES"] / resdict["TotalFrontage"])
-                    
+
+                    #LAND COVER CLASSIFICATION - HOUSES
+                    lcover = self.determineHouseLandCover(resdict, A_res)
+
                     #Add to cumulative area variables
                     blk_tia += (resdict["ResLotTIA"] * resdict["ResAllots"]) + frontageTIF * resdict["TotalFrontage"]
                     blk_eia += (resdict["ResLotEIA"] * resdict["ResAllots"]) + 0.9 * frontageTIF * resdict["TotalFrontage"]
@@ -771,11 +820,24 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("HDRGarden", resdict["HDRGarden"])
                     currentAttList.addAttribute("HDRCarPark", resdict["HDRCarPark"])
                     #...
+
+                    #LAND COVER CLASSIFICATION - APARTMENTS/HIGH DENSITY
+                    lcover = self.determineApartmentLandCover(resdict, A_res)
+
                     #Add to cumulative area variables
                     blk_tia += resdict["HDR_TIA"]
                     blk_eia += resdict["HDR_EIA"]
                     blk_roof += resdict["HDRRoofA"]
                     blk_avspace += resdict["av_HDRes"]
+
+                #LAND COVER CLASSIFICATION - APARTMENTS/HIGH DENSITY
+                currentAttList.addAttribute("LC_RES_IG", lcover["IG"])
+                currentAttList.addAttribute("LC_RES_DG", lcover["DG"])
+                currentAttList.addAttribute("LC_RES_CO", lcover["CO"])
+                currentAttList.addAttribute("LC_RES_RF", lcover["RF"])
+                currentAttList.addAttribute("LC_RES_AS", lcover["AS"])
+                currentAttList.addAttribute("LC_RES_TR", lcover["TR"])
+
             else:
                 currentAttList.addAttribute("HasRes", 0)
                 currentAttList.addAttribute("avSt_RES", A_res)  #becomes street-scape area available
@@ -805,7 +867,7 @@ class Urbplanbb(UBModule):
                     hotspotsCIV, remainA = self.identifyHotspots(A_civ, currentAttList, map_attr) #get info
                     extraCom += remainA
                     #Write attributes from hotspotsCIV
-                    
+
                     #Add to cumulative area variables - MODIFY WHEN IMPLEMENTING MUNICIPAL FACILITIES!!!
                     blk_tia += 0
                     blk_eia += 0
@@ -860,7 +922,17 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("LIAeLgrey", indLI_dict["Alandscape"]-indLI_dict["EstateGreenArea"])
                     currentAttList.addAttribute("LIAeEIA", indLI_dict["EstateEffectiveImpervious"])
                     currentAttList.addAttribute("LIAeTIA", indLI_dict["EstateImperviousArea"])
-                    
+
+                    #LAND COVER CLASSIFICATION - LIGHT INDUSTRY
+                    lcover = self.determineNonresLandCover(indLI_dict, A_li)
+
+                    currentAttList.addAttribute("LC_LI_IG", lcover["IG"])
+                    currentAttList.addAttribute("LC_LI_DG", lcover["DG"])
+                    currentAttList.addAttribute("LC_LI_CO", lcover["CO"])
+                    currentAttList.addAttribute("LC_LI_RF", lcover["RF"])
+                    currentAttList.addAttribute("LC_LI_AS", lcover["AS"])
+                    currentAttList.addAttribute("LC_LI_TR", lcover["TR"])
+
                     #Add to cumulative area variables
                     totalblockemployed += indLI_dict["TotalBlockEmployed"]
                     blk_tia += indLI_dict["Estates"] *(indLI_dict["EstateImperviousArea"] + indLI_dict["FrontageEIA"])
@@ -887,7 +959,17 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("HIAeLgrey", indHI_dict["Alandscape"]-indHI_dict["EstateGreenArea"])
                     currentAttList.addAttribute("HIAeEIA", indHI_dict["EstateEffectiveImpervious"])
                     currentAttList.addAttribute("HIAeTIA", indHI_dict["EstateImperviousArea"])
-            
+
+                    #LAND COVER CLASSIFICATION - HEAVY INDUSTRY
+                    lcover = self.determineNonresLandCover(indHI_dict, A_hi)
+
+                    currentAttList.addAttribute("LC_HI_IG", lcover["IG"])
+                    currentAttList.addAttribute("LC_HI_DG", lcover["DG"])
+                    currentAttList.addAttribute("LC_HI_CO", lcover["CO"])
+                    currentAttList.addAttribute("LC_HI_RF", lcover["RF"])
+                    currentAttList.addAttribute("LC_HI_AS", lcover["AS"])
+                    currentAttList.addAttribute("LC_HI_TR", lcover["TR"])
+
                     #Add to cumulative area variables
                     totalblockemployed += indHI_dict["TotalBlockEmployed"]
                     blk_tia += indHI_dict["Estates"] *(indHI_dict["EstateImperviousArea"] + indHI_dict["FrontageEIA"])
@@ -914,7 +996,17 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("COMAeLgrey", com_dict["Alandscape"]-com_dict["EstateGreenArea"])
                     currentAttList.addAttribute("COMAeEIA", com_dict["EstateEffectiveImpervious"])
                     currentAttList.addAttribute("COMAeTIA", com_dict["EstateImperviousArea"])
-                    
+
+                    #LAND COVER CLASSIFICATION - COMMERCIAL
+                    lcover = self.determineNonresLandCover(com_dict, A_com)
+
+                    currentAttList.addAttribute("LC_COM_IG", lcover["IG"])
+                    currentAttList.addAttribute("LC_COM_DG", lcover["DG"])
+                    currentAttList.addAttribute("LC_COM_CO", lcover["CO"])
+                    currentAttList.addAttribute("LC_COM_RF", lcover["RF"])
+                    currentAttList.addAttribute("LC_COM_AS", lcover["AS"])
+                    currentAttList.addAttribute("LC_COM_TR", lcover["TR"])
+
                     #Add to cumulative area variables
                     totalblockemployed += com_dict["TotalBlockEmployed"]
                     blk_tia += com_dict["Estates"] *(com_dict["EstateImperviousArea"] + com_dict["FrontageEIA"])
@@ -941,7 +1033,17 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("ORCAeLgrey", orc_dict["Alandscape"]-orc_dict["EstateGreenArea"])
                     currentAttList.addAttribute("ORCAeEIA", orc_dict["EstateEffectiveImpervious"])
                     currentAttList.addAttribute("ORCAeTIA", orc_dict["EstateImperviousArea"])
-                    
+
+                    #LAND COVER CLASSIFICATION - OFFICES & MIXED RES COM
+                    lcover = self.determineNonresLandCover(orc_dict, A_orc)
+
+                    currentAttList.addAttribute("LC_ORC_IG", lcover["IG"])
+                    currentAttList.addAttribute("LC_ORC_DG", lcover["DG"])
+                    currentAttList.addAttribute("LC_ORC_CO", lcover["CO"])
+                    currentAttList.addAttribute("LC_ORC_RF", lcover["RF"])
+                    currentAttList.addAttribute("LC_ORC_AS", lcover["AS"])
+                    currentAttList.addAttribute("LC_ORC_TR", lcover["TR"])
+
                     #Add to cumulative area variables
                     totalblockemployed += orc_dict["TotalBlockEmployed"]
                     blk_tia += orc_dict["Estates"] *(orc_dict["EstateImperviousArea"] + orc_dict["FrontageEIA"])
@@ -1157,9 +1259,18 @@ class Urbplanbb(UBModule):
         Wparcel = district_L / parcels
         Aparcel = Wparcel * 100                             #Area of one parcel
         Afrontage = (district_L * Wfrontage * 2) + ((parcels*2)*Wfrontage*(100 - 2*Wfrontage))
+        Afpath = Afrontage * float(Wfp/Wfrontage)
+        Anstrip = Afrontage * float(Wns/Wfrontage)
+        Aroad = Afrontage - Afpath - Anstrip
+
+        resdict["Afpath"] = Afpath          #For WHOLE district
+        resdict["Anstrip"] = Anstrip        #For WHOLE district
+        resdict["Aroad"] = Aroad            #For WHOLE district
+
         Dlot = (100 - 2*Wfrontage)/2                        #Depth of one allotment
         Aca = A_res - Afrontage
-        
+
+
         if Aca < self.min_allot_width*Dlot:  #Construction area should be large enough such that a single allotment
                                              # containing all buildings satisfies all width requirements.
             self.notify( "Too much area taken up for frontage, removing frontage to clear up construction area!" )
@@ -1232,7 +1343,9 @@ class Urbplanbb(UBModule):
         Als = lotratios[3]*Alot
         Ars = lotratios[4]*Alot
         Apave = fsetback * self.w_driveway_min + Apatio + Aparking  #DRIVEWAY + PATIO + PARKING
-        
+
+        resdict["ResDriveway"]= fsetback*self.w_driveway_min
+
         #Determine if need more floors
         floors = 1
         Aba = Alotfloor
@@ -1253,7 +1366,7 @@ class Urbplanbb(UBModule):
 
         #Retry #2 - fsetback becomes ssetback (i.e. reduces paved driveway area further)
         if floors > self.floor_num_max:
-            Apave -= (fsetback - ssetback)*self.w_driveway_min      #REDUCED DRIVEWAY + PATIO + either half of PARKING or NONE
+            Apave -= (fsetback - ssetback)*self.w_driveway_min     #REDUCED DRIVEWAY + PATIO + either half of PARKING or NONE
             floors = 1
             Aba = Alotfloor
             while (Aba + Apave + Als) > Alot:
@@ -1263,7 +1376,7 @@ class Urbplanbb(UBModule):
 
         #Retry #3 - Remove setback completely (i.e. can be compensated with external paving later)
         if floors > self.floor_num_max:
-            Apave -= ssetback*self.w_driveway_min
+            Apave -= ssetback*self.w_driveway_min       #i.e. PATIO + Parking
             floors = 1
             Aba = Alotfloor
             while (Aba + Apave + Als) > Alot:
@@ -1280,7 +1393,7 @@ class Urbplanbb(UBModule):
             floors = 1
             Aba = Alotfloor
             while(Aba + Apave + Als) > Alot:
-                self.notify( "Even with less garden and less carpark pavinga and no driveway, need more than "+str(floors)+"floor(s)!")
+                self.notify( "Even with less garden and less carpark paving and no driveway, need more than "+str(floors)+"floor(s)!")
                 floors += 1
                 Aba = Alotfloor/floors
 
@@ -1300,6 +1413,7 @@ class Urbplanbb(UBModule):
         resdict["ResRoof"] = Aba
         resdict["avLt_RES"] = av_LOT
         resdict["ResHFloors"] = floors
+        resdict["Apaving"] = Apave
         
         #Determine Roof Connectivity
         roofconnect = self.roof_connected
@@ -1323,6 +1437,53 @@ class Urbplanbb(UBModule):
         resdict["ResLotALS"] = Als
         resdict["ResLotARS"] = Ars
         return resdict
+
+    def determineHouseLandCover(self, resdict, A_res):
+        """Determines proportions of land cover on residential land and provides a percentage estimate for the block.
+        Relevant for microclimate module or general interest in the land cover prevalence.
+
+        :param resdict: output from function designResidentialHouses()
+        :param A_res: total residential area in block
+        :return: lcover dictionary of land cover proportions subdivided into Concrete (C), Asphalt (A), Dry Grass (DG),
+                    Irrigated Grass (IG), Roof (RF) and Trees (TR)
+        """
+        lcover = {"IG": 0.00, "RF": 0.00, "DG": 0.00, "AS": 0.00, "CO": 0.00, "TR": 0.00}
+
+        road = float(resdict["Aroad"])
+        nstrip = float(resdict["Anstrip"])
+        fpath = float(resdict["Afpath"])
+        roof = float(resdict["ResRoof"] * resdict["ResAllots"])
+
+        perviouslot = float(resdict["ResGarden"] * resdict["ResAllots"])
+        freespace = float(resdict["avLt_RES"] * resdict["ResAllots"])
+
+        paving = float(resdict["Apaving"] * resdict["ResAllots"])
+
+        #Assign Roof
+        lcover["RF"] += roof
+
+        #Assign On-site paved areas
+        lcover[self.surfDriveway] += paving
+
+        #Assign Pervious surfaces
+        if self.surfResIrrigate == "G":
+            lcover["IG"] += freespace
+            lcover["DG"] += perviouslot - freespace + nstrip
+        elif self.surfResIrrigate == "P":
+            lcover["IG"] += perviouslot
+            lcover["DG"] += nstrip
+
+        #Assign Road
+        lcover[self.surfLoc] += road
+
+        #Assign Footpath
+        lcover[self.surfFpath] += fpath
+
+        #Convert all to proportions
+        for cover in lcover.keys():
+            lcover[cover] = float(lcover[cover] / A_res)
+        return lcover
+
 
     def designResidentialApartments(self, currentAttList, map_attr, A_res, pop, ratios, Afloor):
         """Lays out the specified residential area with high density apartments for a given population
@@ -1473,6 +1634,42 @@ class Urbplanbb(UBModule):
         resdict["HDRCarPark"] = Aparking
         
         return resdict
+
+    def determineApartmentLandCover(self, resdict, A_res):
+        """Determines proportions of land cover on residential land and provides a percentage estimate for the block.
+        Relevant for microclimate module or general interest in the land cover prevalence.
+
+        :param resdict: output from function designResidentialHouses()
+        :param A_res: total residential area in block
+        :return: lcover dictionary of land cover proportions subdivided into Concrete (C), Asphalt (A), Dry Grass (DG),
+                    Irrigated Grass (IG), Roof (RF) and Trees (TR)
+        """
+        lcover = {"IG": 0.00, "RF": 0.00, "DG": 0.00, "AS": 0.00, "CO": 0.00, "TR": 0.00}
+
+        roof = float(resdict["HDRRoofA"])
+        perviouslot = float(resdict["HDRGarden"])
+        freespace = float(resdict["av_HDRes"])
+        paving = float(resdict["HDRCarPark"])
+
+        #Assign Roof
+        lcover["RF"] += roof
+
+        #Assign On-site paved areas
+        lcover[self.surfDriveway] += paving
+
+        #Assign Pervious surfaces
+        if self.surfResIrrigate == "G":
+            lcover["IG"] += freespace
+            lcover["DG"] += perviouslot - freespace
+        elif self.surfResIrrigate == "P":
+            lcover["IG"] += perviouslot
+            lcover["DG"] += 0
+
+        #Convert all to proportions
+        for cover in lcover.keys():
+            lcover[cover] = float(lcover[cover] / A_res)
+        return lcover
+
 
     def calculateParkingArea(self, Aout, Alive, cpMin, cpMax):
         """Determines the total outdoor parking space on the HDR site based on OSR's remaining
@@ -1627,11 +1824,18 @@ class Urbplanbb(UBModule):
         Aestate = Aluc/float(estates)
         Westate = math.sqrt(Aestate)
         Afrontage = Westate*Wfrontage + Wfrontage*(Westate-Wfrontage)
+        Afpath = Afrontage * float(fpath/Wfrontage)
+        Anstrip = Afrontage * float(nstrip/Wfrontage)
+        Aroad = Afrontage - Afpath - Anstrip
+
         Aca = max(Aestate - Afrontage, 0)
         
         employed = employmentDens * (Aestate/10000)
         
         nresdict["Afrontage"] = Afrontage
+        nresdict["Afpath"] = Afpath
+        nresdict["Anstrip"] = Anstrip
+        nresdict["Aroad"] = Aroad
         nresdict["av_St"] = (nstrip/(laneW+nstrip+fpath)) * Afrontage
         nresdict["FrontageEIA"] = nresdict["Afrontage"] - nresdict["av_St"]
         nresdict["SiteArea"] = Aluc
@@ -1782,7 +1986,49 @@ class Urbplanbb(UBModule):
         nresdict["EstateImperviousArea"] = Aimp_total
         nresdict["EstateEffectiveImpervious"] = Aimp_connected
         return nresdict
-        
+
+    def determineNonresLandCover(self, nres_dict, A_nres):
+        """Determines all land use covers for the non-residential land for which an urban form has already been defined
+        and returns information on the proportions of irrigated and dry grass, concrete, asphalt, roof and trees.
+
+        :param nres_dict: Dictionary obtained from running the buildNonRes function
+        :param A_nres: Total Area of non-residential land for which the function is being run
+        :return: lcover dictionary containing proportions of all the six different land covers for the site
+        """
+        lcover = {"IG": 0.00, "DG": 0.00, "CO": 0.00, "AS": 0.00, "TR": 0.00, "RF": 0.00}
+
+        estates = nres_dict["Estates"]
+
+        road = nres_dict["Aroad"]
+        lcover[self.surfLoc] += float(road * estates)
+
+        carpark = nres_dict["Outdoorcarpark"]
+        lcover[self.surfParking] += float(carpark * estates)
+
+        lbay = nres_dict["Outdoorloadbay"]
+        lcover[self.surfBay] += float(lbay * estates)
+
+        roof = nres_dict["EstateBuildingArea"]
+        lcover["RF"] += float(roof * estates)
+
+        greylscape = nres_dict["Alandscape"] - nres_dict["EstateGreenArea"]
+        lcover[self.surfHard] += float(greylscape * estates)
+
+        nstrip = nres_dict["Anstrip"]
+        lcover["DG"] += nstrip
+
+        greenlscape = nres_dict["EstateGreenArea"]
+        lcover["IG"] += greenlscape     #Assume it's irrigated unless not
+
+        fpath = nres_dict["Afpath"]
+        lcover[self.surfFpath] += fpath
+
+        for cover in lcover.keys():
+            lcover[cover] = float(lcover[cover] / A_nres)
+
+        return lcover
+
+
     def determineEmployment(self, method, currentAttList, map_attr, Aluc, type):
         """Determines the employment of the block based on the selected method. Calls
         some alternative functions for scaling or other aspects"""
@@ -1960,42 +2206,3 @@ class Urbplanbb(UBModule):
         currentAttList.addAttribute("Blk_TIF", prevAttList.getAttribute("Blk_TIF"))
         currentAttList.addAttribute("Blk_RoofsA", prevAttList.getAttribute("Blk_RoofsA"))
         return True
-    
-    ########################################################
-    #DYNAMIND-SPECIFIC FUNCTIONS                           #
-    ########################################################   
-    
-    #def getBlockUUID(self, blockid,city):
-    #try:
-    #        key = self.BLOCKIDtoUUID[blockid]
-    #except KeyError:
-    #        key = ""
-    #return city.getFace(key)
-    #
-    #def getPrevBlockUUID(self, blockid, city):
-    #    try:
-    #        key = self.prevBLOCKIDtoUUID[blockid]
-    #    except KeyError:
-    #        key = ""
-    #    return city.getComponent(key)
-    #
-    #def initBLOCKIDtoUUID(self, city):
-    #blockuuids = city.getUUIDsOfComponentsInView(self.blocks)
-    #    for blockuuid in blockuuids:
-    #        block = city.getFace(blockuuid)
-    #        ID = int(round(block.getAttribute("BlockID")))
-	 #   self.BLOCKIDtoUUID[ID] = blockuuid
-    #
-    #def initPrevBLOCKIDtoUUID(self, city):
-    #    prevblockuuids = city.getUUIDsOfComponentsInView(self.prevBlocks)
-    #    for uuid in prevblockuuids:
-    #        block = city.getComponent(uuid)
-    #        ID = int(round(block.getAttribute("BlockID")))
-    #        self.prevBLOCKIDtoUUID[ID] = uuid
-    #
-    #def createInputDialog(self):
-    #    form = activateurbplanbbGUI(self, QApplication.activeWindow())
-    #    form.exec_()
-    #    return True
-
-        
