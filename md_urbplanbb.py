@@ -583,8 +583,12 @@ class Urbplanbb(UBModule):
 
             #LAND COVER CLASSIFICATION - UNC Land use - Landmark area only
             # Covers of interest: Irrigated Grass (IG), Concrete (CO)
-            currentAttList.addAttribute("LC_UNC_IG", (otherarea - otherimp)/otherarea)
-            currentAttList.addAttribute("LC_UNC_CO", otherimp/otherarea)              #Assume concrete is main cover
+            if otherarea != 0:
+                currentAttList.addAttribute("LC_UNC_IG", (otherarea - otherimp)/otherarea)
+                currentAttList.addAttribute("LC_UNC_CO", otherimp/otherarea)              #Assume concrete is main cover
+            else:
+                currentAttList.addAttribute("LC_UNC_IG", 0.00)
+                currentAttList.addAttribute("LC_UNC_CO", 0.00)              #Assume concrete is main cover
 
             #Add to cumulative area variables
             blk_tia += otherimp
@@ -600,7 +604,7 @@ class Urbplanbb(UBModule):
             if A_und != 0:
                 undtype = self.determineUndevType(currentAttList, considerCBD)
             else:
-                undtype = str("NA")
+                undtype = str("NA")     #If no undeveloped land
             
             #self.notify( "Undev Area Type: "str(type))
             currentAttList.addAttribute("UndType", undtype)
@@ -608,12 +612,15 @@ class Urbplanbb(UBModule):
 
             #LAND COVER CLASSIFICATION - Undeveloped area
             # Covers of interest: Irrigated Grass (IG), Dry Grass (DG)
-            if undtype in ["BF", "GF", "NA"]:
+            if undtype in ["BF", "GF"]:
                 currentAttList.addAttribute("LC_UND_DG", A_und/A_und)     #If brownfield or greenfield, assume no irrigation
                 currentAttList.addAttribute("LC_UND_IG", 0.00)
             elif undtype in ["AG"]:
                 currentAttList.addAttribute("LC_UND_IG", A_und/A_und)     #If agriculture, assume some kind of irrigation
                 currentAttList.addAttribute("LC_UND_DG", 0.00)
+            elif undtype in ["NA"]:
+                currentAttList.addAttribute("LC_UND_DG", 0.00)     #If brownfield or greenfield, assume no irrigation
+                currentAttList.addAttribute("LC_UND_IG", 0.00)
 
             #Add to cumulative area variables
             blk_tia += 0
@@ -652,19 +659,26 @@ class Urbplanbb(UBModule):
 
             #LAND COVER CLASSIFICATION - OPEN SPACES
             # Covers of interest: Irrigated Grass (IG), Dry Grass (DG), Concrete (CO), Asphalt (AS), Trees (TR)
-            currentAttList.addAttribute("LC_PG_IG", float(parkarea/Apark))           #Assume irrigated grass by default, adjust later
-
-            if self.surfSquare == "CO":                                 #!!!!!!!!!!!!!!!!!!!!!
-                currentAttList.addAttribute("LC_PG_CO", float(sqarea/A_park))         #INTEGRATE TREE COVER
-                currentAttList.addAttribute("LC_PG_AS", 0.00)           #!!!!!!!!!!!!!!!!!!!!!
-            elif self.surfSquare == "AS":
+            if self.surfSquare == "CO" and A_park != 0:                                 #!!!!!!!!!!!!!!!!!!!!!
+                currentAttList.addAttribute("LC_PG_CO", float(sqarea/A_park))           #INTEGRATE TREE COVER
+                currentAttList.addAttribute("LC_PG_AS", 0.00)                           #!!!!!!!!!!!!!!!!!!!!!
+                currentAttList.addAttribute("LC_PG_IG", float(parkarea/A_park))           #Assume irrigated grass by default, adjust later
+            elif self.surfSquare == "AS" and A_park != 0:
                 currentAttList.addAttribute("LC_PG_CO", 0.00)
                 currentAttList.addAttribute("LC_PG_AS", float(sqarea/A_park))
+                currentAttList.addAttribute("LC_PG_IG", float(parkarea/A_park))           #Assume irrigated grass by default, adjust later
+            else:
+                currentAttList.addAttribute("LC_PG_CO", 0.00)
+                currentAttList.addAttribute("LC_PG_AS", 0.00)
 
             currentAttList.addAttribute("LC_PG_TR", 0.00)
             currentAttList.addAttribute("LC_PG_DG", 0.00)
 
-            currentAttList.addAttribute("LC_REF_DG", A_ref/A_ref)             #Assume dry grass, unirrigated by default, adjust later
+            if A_ref != 0:
+                currentAttList.addAttribute("LC_REF_DG", A_ref/A_ref)             #Assume dry grass, unirrigated by default, adjust later
+            else:
+                currentAttList.addAttribute("LC_REF_DG", 0.00)
+
             currentAttList.addAttribute("LC_REF_IG", 0.00)
             currentAttList.addAttribute("LC_REF_CO", 0.00)
             currentAttList.addAttribute("LC_REF_AS", 0.00)
@@ -708,8 +722,12 @@ class Urbplanbb(UBModule):
 
             #LAND COVER CLASSIFICATION - SERVICES & UTILITIES
             # Covers of interest: Irrigated Grass (IG), Dry Grass (DG)
-            currentAttList.addAttribute("LC_SVU_DG", float((Asvu_others + Asvu_water)/A_svu))
-            currentAttList.addAttribute("LC_SVU_IG", 0.00)
+            if A_svu != 0:
+                currentAttList.addAttribute("LC_SVU_DG", float((Asvu_others + Asvu_water)/A_svu))
+                currentAttList.addAttribute("LC_SVU_IG", 0.00)
+            else:
+                currentAttList.addAttribute("LC_SVU_DG", 0.00)
+                currentAttList.addAttribute("LC_SVU_IG", 0.00)
 
             #Add to cumulative area variables
             blk_tia += 0
@@ -719,7 +737,7 @@ class Urbplanbb(UBModule):
             
             #-----------ROADS---------------------------------------------------
             A_rd += rdextra                              #This part only plans out the Major Arterials & Hwys
-            #self.notify( "Total Road Area: ", A_rd
+            #self.notify( "Total Road Area: ", A_rd )
             
             #Draw stochastic values:
             laneW = float(random.randint(hwy_wlane[0], hwy_wlane[1]))
@@ -733,7 +751,7 @@ class Urbplanbb(UBModule):
             else:                                       #consider road's own buffer
                 rd_imp = (2.0*laneW)/(2.0*laneW + medW + 2.0*buffW)
                 park_buffer = 0
-                av_spRD = medW /(2.0*laneW+medW+buffW*2.0) * A_rd
+                av_spRD = (medW+2*buffW) /(2.0*laneW+medW+buffW*2.0) * A_rd
             
             Aimp_rd = A_rd*rd_imp
             
@@ -744,15 +762,20 @@ class Urbplanbb(UBModule):
 
             #LAND COVER CLASSIFICATION - ROADS
             # Covers of interest: Irrigated Grass (IG), Dry Grass (DG), Asphalt (AS), Concrete (CO)
-            if self.surfHwy == "AS":
+            if self.surfHwy == "AS" and A_rd != 0:
                 currentAttList.addAttribute("LC_RD_AS", float(Aimp_rd/A_rd))
                 currentAttList.addAttribute("LC_RD_DG", float(av_spRD/A_rd))
                 currentAttList.addAttribute("LC_RD_CO", 0.00)
                 currentAttList.addAttribute("LC_RD_IG", 0.00)       #No trees on major roads
-            elif self.surfHwy == "CO":
+            elif self.surfHwy == "CO" and A_rd != 0:
                 currentAttList.addAttribute("LC_RD_AS", 0.00)
                 currentAttList.addAttribute("LC_RD_DG", float(av_spRD/A_rd))
                 currentAttList.addAttribute("LC_RD_CO", float(Aimp_rd/A_rd))
+                currentAttList.addAttribute("LC_RD_IG", 0.00)       #No trees on major roads
+            else:
+                currentAttList.addAttribute("LC_RD_AS", 0.00)
+                currentAttList.addAttribute("LC_RD_DG", 0.00)
+                currentAttList.addAttribute("LC_RD_CO", 0.00)
                 currentAttList.addAttribute("LC_RD_IG", 0.00)       #No trees on major roads
 
             #Add to cumulative area variables
@@ -924,7 +947,7 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("LIAeTIA", indLI_dict["EstateImperviousArea"])
 
                     #LAND COVER CLASSIFICATION - LIGHT INDUSTRY
-                    lcover = self.determineNonresLandCover(indLI_dict, A_li)
+                    lcover = self.determineNonresLandCover(indLI_dict, indLI_dict["Aestate"])
 
                     currentAttList.addAttribute("LC_LI_IG", lcover["IG"])
                     currentAttList.addAttribute("LC_LI_DG", lcover["DG"])
@@ -961,7 +984,7 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("HIAeTIA", indHI_dict["EstateImperviousArea"])
 
                     #LAND COVER CLASSIFICATION - HEAVY INDUSTRY
-                    lcover = self.determineNonresLandCover(indHI_dict, A_hi)
+                    lcover = self.determineNonresLandCover(indHI_dict, indHI_dict["Aestate"])
 
                     currentAttList.addAttribute("LC_HI_IG", lcover["IG"])
                     currentAttList.addAttribute("LC_HI_DG", lcover["DG"])
@@ -998,7 +1021,7 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("COMAeTIA", com_dict["EstateImperviousArea"])
 
                     #LAND COVER CLASSIFICATION - COMMERCIAL
-                    lcover = self.determineNonresLandCover(com_dict, A_com)
+                    lcover = self.determineNonresLandCover(com_dict, com_dict["Aestate"])
 
                     currentAttList.addAttribute("LC_COM_IG", lcover["IG"])
                     currentAttList.addAttribute("LC_COM_DG", lcover["DG"])
@@ -1035,7 +1058,7 @@ class Urbplanbb(UBModule):
                     currentAttList.addAttribute("ORCAeTIA", orc_dict["EstateImperviousArea"])
 
                     #LAND COVER CLASSIFICATION - OFFICES & MIXED RES COM
-                    lcover = self.determineNonresLandCover(orc_dict, A_orc)
+                    lcover = self.determineNonresLandCover(orc_dict, orc_dict["Aestate"])
 
                     currentAttList.addAttribute("LC_ORC_IG", lcover["IG"])
                     currentAttList.addAttribute("LC_ORC_DG", lcover["DG"])
@@ -1448,6 +1471,8 @@ class Urbplanbb(UBModule):
                     Irrigated Grass (IG), Roof (RF) and Trees (TR)
         """
         lcover = {"IG": 0.00, "RF": 0.00, "DG": 0.00, "AS": 0.00, "CO": 0.00, "TR": 0.00}
+        if A_res == 0:
+            return lcover
 
         road = float(resdict["Aroad"])
         nstrip = float(resdict["Anstrip"])
@@ -1645,6 +1670,8 @@ class Urbplanbb(UBModule):
                     Irrigated Grass (IG), Roof (RF) and Trees (TR)
         """
         lcover = {"IG": 0.00, "RF": 0.00, "DG": 0.00, "AS": 0.00, "CO": 0.00, "TR": 0.00}
+        if A_res == 0:
+            return lcover
 
         roof = float(resdict["HDRRoofA"])
         perviouslot = float(resdict["HDRGarden"])
@@ -1996,23 +2023,23 @@ class Urbplanbb(UBModule):
         :return: lcover dictionary containing proportions of all the six different land covers for the site
         """
         lcover = {"IG": 0.00, "DG": 0.00, "CO": 0.00, "AS": 0.00, "TR": 0.00, "RF": 0.00}
-
-        estates = nres_dict["Estates"]
+        if A_nres == 0:
+            return lcover
 
         road = nres_dict["Aroad"]
-        lcover[self.surfLoc] += float(road * estates)
+        lcover[self.surfLoc] += float(road)
 
         carpark = nres_dict["Outdoorcarpark"]
-        lcover[self.surfParking] += float(carpark * estates)
+        lcover[self.surfParking] += float(carpark)
 
         lbay = nres_dict["Outdoorloadbay"]
-        lcover[self.surfBay] += float(lbay * estates)
+        lcover[self.surfBay] += float(lbay)
 
         roof = nres_dict["EstateBuildingArea"]
-        lcover["RF"] += float(roof * estates)
+        lcover["RF"] += float(roof)
 
         greylscape = nres_dict["Alandscape"] - nres_dict["EstateGreenArea"]
-        lcover[self.surfHard] += float(greylscape * estates)
+        lcover[self.surfHard] += float(greylscape)
 
         nstrip = nres_dict["Anstrip"]
         lcover["DG"] += nstrip
