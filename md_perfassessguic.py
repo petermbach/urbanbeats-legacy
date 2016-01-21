@@ -143,9 +143,71 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #-------- ECONOMICS ---------------------------------------------------#
         #----------------------------------------------------------------------#
 
+
         #----------------------------------------------------------------------#
         #-------- MICROCLIMATE ------------------------------------------------#
         #----------------------------------------------------------------------#
+        #Determine if patch delineation is switched on!
+        self.patchdelin = self.activesim.getModuleDelinblocks().getParameter("patchdelin")
+        if self.module.getParameter("assesslevel") == "P":
+            self.ui.mc_assesslvl_patch.setChecked(1)
+        else:
+            self.ui.mc_assesslvl_block.setChecked(1)
+
+        if int(self.patchdelin) == 1:
+            self.ui.mc_assesslvl_patch.setEnabled(1)
+        else:
+            self.ui.mc_assesslvl_patch.setEnabled(0)
+            self.ui.mc_assesslvl_block.setChecked(1)
+
+        self.assessunits = ["LST", "IDW"]
+        self.interptype = ["IDW", "KRI"]
+
+        self.ui.mc_assessunits_combo.setCurrentIndex(self.assessunits.index(self.module.getParameter("assessunits")))
+        self.ui.mc_assessinterp_combo.setCurrentIndex(self.interptype.index(self.module.getParameter("interptype")))
+
+        self.ui.mc_assessbase_check.setChecked(int(self.module.getParameter("basecase")))
+        self.ui.mc_assessdiff_check.setChecked(int(self.module.getParameter("diffmap")))
+        self.mc_checkbase()
+
+        self.lst_shapes = ["B", "C", "U"]
+        self.ui.lst_as_shape.setCurrentIndex(self.lst_shapes.index(self.module.getParameter("as_shape")))
+        self.ui.lst_co_shape.setCurrentIndex(self.lst_shapes.index(self.module.getParameter("co_shape")))
+        self.ui.lst_dg_shape.setCurrentIndex(self.lst_shapes.index(self.module.getParameter("dg_shape")))
+        self.ui.lst_ig_shape.setCurrentIndex(self.lst_shapes.index(self.module.getParameter("ig_shape")))
+        self.ui.lst_rf_shape.setCurrentIndex(self.lst_shapes.index(self.module.getParameter("rf_shape")))
+        self.ui.lst_tr_shape.setCurrentIndex(self.lst_shapes.index(self.module.getParameter("tr_shape")))
+        self.ui.lst_wa_shape.setCurrentIndex(self.lst_shapes.index(self.module.getParameter("wa_shape")))
+
+        self.ui.lst_as_min.setValue(float(self.module.getParameter("as_min")))
+        self.ui.lst_co_min.setValue(float(self.module.getParameter("co_min")))
+        self.ui.lst_dg_min.setValue(float(self.module.getParameter("dg_min")))
+        self.ui.lst_ig_min.setValue(float(self.module.getParameter("ig_min")))
+        self.ui.lst_rf_min.setValue(float(self.module.getParameter("rf_min")))
+        self.ui.lst_tr_min.setValue(float(self.module.getParameter("tr_min")))
+        self.ui.lst_wa_min.setValue(float(self.module.getParameter("wa_min")))
+
+        self.ui.lst_as_max.setValue(float(self.module.getParameter("as_max")))
+        self.ui.lst_co_max.setValue(float(self.module.getParameter("co_max")))
+        self.ui.lst_dg_max.setValue(float(self.module.getParameter("dg_max")))
+        self.ui.lst_ig_max.setValue(float(self.module.getParameter("ig_max")))
+        self.ui.lst_rf_max.setValue(float(self.module.getParameter("rf_max")))
+        self.ui.lst_tr_max.setValue(float(self.module.getParameter("tr_max")))
+        self.ui.lst_wa_max.setValue(float(self.module.getParameter("wa_max")))
+
+        self.covertypes = ["as", "co", "dg", "ig", "rf", "tr", "wa"]
+        for covertype in self.covertypes:
+            self.lst_enabledisabled(covertype)
+
+        QtCore.QObject.connect(self.ui.mc_assessbase_check, QtCore.SIGNAL("clicked()"), self.mc_checkbase)
+
+        QtCore.QObject.connect(self.ui.lst_as_shape, QtCore.SIGNAL("currentIndexChanged(int)"),lambda value, func = self.lst_enabledisabled: func("as"))
+        QtCore.QObject.connect(self.ui.lst_co_shape, QtCore.SIGNAL("currentIndexChanged(int)"),lambda value, func = self.lst_enabledisabled: func("co"))
+        QtCore.QObject.connect(self.ui.lst_dg_shape, QtCore.SIGNAL("currentIndexChanged(int)"),lambda value, func = self.lst_enabledisabled: func("dg"))
+        QtCore.QObject.connect(self.ui.lst_ig_shape, QtCore.SIGNAL("currentIndexChanged(int)"),lambda value, func = self.lst_enabledisabled: func("ig"))
+        QtCore.QObject.connect(self.ui.lst_rf_shape, QtCore.SIGNAL("currentIndexChanged(int)"),lambda value, func = self.lst_enabledisabled: func("rf"))
+        QtCore.QObject.connect(self.ui.lst_tr_shape, QtCore.SIGNAL("currentIndexChanged(int)"),lambda value, func = self.lst_enabledisabled: func("tr"))
+        QtCore.QObject.connect(self.ui.lst_wa_shape, QtCore.SIGNAL("currentIndexChanged(int)"),lambda value, func = self.lst_enabledisabled: func("wa"))
 
         #----------------------------------------------------------------------#
         #-------- EPANET ------------------------------------------------------#
@@ -228,14 +290,15 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.ui.epanetsim_acc_box.setText(str(self.module.getParameter("epanetsim_accuracy")))
         self.ui.epanetsim_demmult_box.setText(str(self.module.getParameter("epanetsim_demmult")))
 
-
-
         #----------------------------------------------------------------------#
         #-------- INTEGRATED WATER CYCLE MODEL  -------------------------------#
         #----------------------------------------------------------------------#
 
+        #-------------
 
         QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
+
+
 
     def changeRainscalars(self):
         if int(self.module.getParameter("rainscaleconstant")) == 1:
@@ -402,6 +465,18 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         return True
 
 
+    def mc_checkbase(self):
+        if self.ui.mc_assessbase_check.isChecked():
+            self.ui.mc_assessdiff_check.setEnabled(1)
+        else:
+            self.ui.mc_assessdiff_check.setEnabled(0)
+
+    def lst_enabledisabled(self, covertype):
+        if eval("self.ui.lst_"+str(covertype)+"_shape.currentIndex()") == 1:
+            eval("self.ui.lst_"+str(covertype)+"_max.setEnabled(0)")
+        else:
+            eval("self.ui.lst_"+str(covertype)+"_max.setEnabled(1)")
+
     def ed_EPANET(self):
         #To write once first pass EPANET module is done
         return True
@@ -494,6 +569,42 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #----------------------------------------------------------------------#
         #-------- MICROCLIMATE ------------------------------------------------#
         #----------------------------------------------------------------------#
+        if self.patchdelin == 0:
+            self.module.setParameter("assesslevel", "B")
+        elif self.ui.mc_assesslvl_patch.isChecked():
+            self.module.setParameter("assesslevel", "P")
+        else:
+            self.module.setParameter("assesslevel", "B")
+
+        self.module.setParameter("assessunits", self.assessunits[self.ui.mc_assessunits_combo.currentIndex()])
+        self.module.setParameter("interptype", self.interptype[self.ui.mc_assessinterp_combo.currentIndex()])
+
+        self.module.setParameter("basecase", int(self.ui.mc_assessbase_check.isChecked()))
+        self.module.setParameter("diffmap", int(self.ui.mc_assessdiff_check.isChecked()))
+
+        self.module.setParameter("as_shape", self.lst_shapes[self.ui.lst_as_shape.currentIndex()])
+        self.module.setParameter("co_shape", self.lst_shapes[self.ui.lst_co_shape.currentIndex()])
+        self.module.setParameter("dg_shape", self.lst_shapes[self.ui.lst_dg_shape.currentIndex()])
+        self.module.setParameter("ig_shape", self.lst_shapes[self.ui.lst_ig_shape.currentIndex()])
+        self.module.setParameter("rf_shape", self.lst_shapes[self.ui.lst_rf_shape.currentIndex()])
+        self.module.setParameter("tr_shape", self.lst_shapes[self.ui.lst_tr_shape.currentIndex()])
+        self.module.setParameter("wa_shape", self.lst_shapes[self.ui.lst_wa_shape.currentIndex()])
+
+        self.module.setParameter("as_min", float(self.ui.lst_as_min.value()))
+        self.module.setParameter("co_min", float(self.ui.lst_co_min.value()))
+        self.module.setParameter("dg_min", float(self.ui.lst_dg_min.value()))
+        self.module.setParameter("ig_min", float(self.ui.lst_ig_min.value()))
+        self.module.setParameter("rf_min", float(self.ui.lst_rf_min.value()))
+        self.module.setParameter("tr_min", float(self.ui.lst_tr_min.value()))
+        self.module.setParameter("wa_min", float(self.ui.lst_wa_min.value()))
+
+        self.module.setParameter("as_max", float(self.ui.lst_as_max.value()))
+        self.module.setParameter("co_max", float(self.ui.lst_co_max.value()))
+        self.module.setParameter("dg_max", float(self.ui.lst_dg_max.value()))
+        self.module.setParameter("ig_max", float(self.ui.lst_ig_max.value()))
+        self.module.setParameter("rf_max", float(self.ui.lst_rf_max.value()))
+        self.module.setParameter("tr_max", float(self.ui.lst_tr_max.value()))
+        self.module.setParameter("wa_max", float(self.ui.lst_wa_max.value()))
 
         #----------------------------------------------------------------------#
         #-------- EPANET ------------------------------------------------------#

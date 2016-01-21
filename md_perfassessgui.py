@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perfassessgui.ui'
 #
-# Created: Thu Jan 21 10:37:41 2016
+# Created: Thu Jan 21 11:15:13 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -1051,9 +1051,9 @@ class Ui_Perfconfig_Dialog(object):
         self.mc_assesslvl_patch = QtGui.QRadioButton(self.mc_assess_widget)
         self.mc_assesslvl_patch.setGeometry(QtCore.QRect(180, 10, 91, 17))
         self.mc_assesslvl_patch.setObjectName(_fromUtf8("mc_assesslvl_patch"))
-        self.mc_assesslbl_block = QtGui.QRadioButton(self.mc_assess_widget)
-        self.mc_assesslbl_block.setGeometry(QtCore.QRect(300, 10, 82, 17))
-        self.mc_assesslbl_block.setObjectName(_fromUtf8("mc_assesslbl_block"))
+        self.mc_assesslvl_block = QtGui.QRadioButton(self.mc_assess_widget)
+        self.mc_assesslvl_block.setGeometry(QtCore.QRect(300, 10, 82, 17))
+        self.mc_assesslvl_block.setObjectName(_fromUtf8("mc_assesslvl_block"))
         self.mc_assessinterp_lbl = QtGui.QLabel(self.mc_assess_widget)
         self.mc_assessinterp_lbl.setGeometry(QtCore.QRect(10, 70, 171, 20))
         self.mc_assessinterp_lbl.setObjectName(_fromUtf8("mc_assessinterp_lbl"))
@@ -2155,7 +2155,7 @@ class Ui_Perfconfig_Dialog(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Conduct assessment at:</p></body></html>", None))
         self.mc_assesslvl_patch.setText(_translate("Perfconfig_Dialog", "Patch Level", None))
-        self.mc_assesslbl_block.setText(_translate("Perfconfig_Dialog", "Block Level", None))
+        self.mc_assesslvl_block.setText(_translate("Perfconfig_Dialog", "Block Level", None))
         self.mc_assessinterp_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

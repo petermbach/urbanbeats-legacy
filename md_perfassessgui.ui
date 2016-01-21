@@ -3324,7 +3324,7 @@ p, li { white-space: pre-wrap; }
                   <string>Patch Level</string>
                  </property>
                 </widget>
-                <widget class="QRadioButton" name="mc_assesslbl_block">
+                <widget class="QRadioButton" name="mc_assesslvl_block">
                  <property name="geometry">
                   <rect>
                    <x>300</x>

@@ -156,6 +156,62 @@ class PerformanceAssess(UBModule):      #UBCORE
         #ECONOMICS TAB
 
         #MICROCLIMATE TAB
+        self.createParameter("assesslevel", STRING, "")
+        self.createParameter("assessunits", STRING, "")
+        self.createParameter("interptype", STRING, "")
+        self.createParameter("basecase", BOOL, "")
+        self.createParameter("diffmap", BOOL, "")
+        self.assesslevel = "P"      #P = patch, B = block
+        self.assessunits = "LST"      #LST = land surface temp, ETC = equivalent thermal comfort index
+        self.interptype = "IDW"     #IDW = inverse distance weighted, KRI = kriging
+        self.basecase = 0
+        self.diffmap = 0
+
+        #Interpolation parameters
+
+        #Land Surface Temp Parameters
+        self.createParameter("as_shape", STRING, "")
+        self.createParameter("co_shape", STRING, "")
+        self.createParameter("dg_shape", STRING, "")
+        self.createParameter("ig_shape", STRING, "")
+        self.createParameter("rf_shape", STRING, "")
+        self.createParameter("tr_shape", STRING, "")
+        self.createParameter("wa_shape", STRING, "")
+        self.createParameter("as_min", DOUBLE, "")
+        self.createParameter("co_min", DOUBLE, "")
+        self.createParameter("dg_min", DOUBLE, "")
+        self.createParameter("ig_min", DOUBLE, "")
+        self.createParameter("rf_min", DOUBLE, "")
+        self.createParameter("tr_min", DOUBLE, "")
+        self.createParameter("wa_min", DOUBLE, "")
+        self.createParameter("as_max", DOUBLE, "")
+        self.createParameter("co_max", DOUBLE, "")
+        self.createParameter("dg_max", DOUBLE, "")
+        self.createParameter("ig_max", DOUBLE, "")
+        self.createParameter("rf_max", DOUBLE, "")
+        self.createParameter("tr_max", DOUBLE, "")
+        self.createParameter("wa_max", DOUBLE, "")
+        self.as_shape = "C"     #B = bell-curve, C = constant, U = uniform
+        self.co_shape = "C"     #B = bell-curve, C = constant, U = uniform
+        self.dg_shape = "C"     #B = bell-curve, C = constant, U = uniform
+        self.ig_shape = "C"     #B = bell-curve, C = constant, U = uniform
+        self.rf_shape = "C"     #B = bell-curve, C = constant, U = uniform
+        self.tr_shape = "C"     #B = bell-curve, C = constant, U = uniform
+        self.wa_shape = "C"     #B = bell-curve, C = constant, U = uniform
+        self.as_min = 32.0
+        self.co_min = 32.0
+        self.dg_min = 32.0
+        self.ig_min = 32.0
+        self.rf_min = 32.0
+        self.tr_min = 32.0
+        self.wa_min = 32.0
+        self.as_max = 45.0
+        self.co_max = 45.0
+        self.dg_max = 45.0
+        self.ig_max = 45.0
+        self.rf_max = 45.0
+        self.tr_max = 45.0
+        self.wa_max = 45.0
 
         #WATER SUPPLY
         #Pattern names include: SDD - standard daily diurnal, CDP - constant daily pattern,
