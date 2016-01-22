@@ -117,17 +117,23 @@ def exportGISShapeFile(activesim, tabindex, curcycle):
     else:
         tech_impl = 1
 
+    if len(activesim.getModulePerfAssess(9999)) == 0:
+        perf_incl = 0     #MUSIC, economics, microclimate, supply, IUWCM
+    else:
+        perf_incl = 1
+
+
     if gisoptions["BuildingBlocks"] == 1:
         print "Exporting Blocks"
         #Get all assets from activesim
         assets = activesim.getAssetsWithIdentifier("BlockID")
-        exportBuildingBlocks(fname, assets, miscoptions, map_data, kmlbool, tech_incl)
+        exportBuildingBlocks(fname, assets, miscoptions, map_data, kmlbool, tech_incl, perf_incl)
         
     if gisoptions["PatchData"] == 1:
         print "Exporting Patch Data"
         #Get all assets from activesim        
         assets = activesim.getAssetsWithIdentifier("PatchID")        
-        exportPatchData(fname, assets, miscoptions, map_data)
+        exportPatchData(fname, assets, miscoptions, map_data, perf_incl)
 
     if gisoptions["Flowpaths"] == 1:
         print "Exporting Flow Paths"
@@ -160,14 +166,19 @@ def exportGISShapeFile(activesim, tabindex, curcycle):
         print "Exporting Block Centres"
         #Get all assets from activesim
         assets = activesim.getAssetsWithIdentifier("CP")
-        exportBlockCentre(fname, assets, miscoptions, map_data, kmlbool)
+        exportBlockCentre(fname, assets, miscoptions, map_data, kmlbool, perf_incl)
         
     print "Export Complete"          
     
     return True
 
-def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_incl):
-    """Exports the Blocks to a GIS Shapefile using the Osgeo GDAL Library"""
+def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_incl, perf_incl):
+    """Exports the Blocks to a GIS Shapefile using the Osgeo GDAL Library
+
+    tech_incl = boolean that indicates that current simulation included technology simulation
+    perf_incl = boolean that indicates that current simulation included performance assessment
+
+    """
     spatialRef = osr.SpatialReference()                #Define Spatial Reference
     spatialRef.ImportFromProj4(miscoptions[0])
 
@@ -264,6 +275,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
     fielddefmatrix.append(ogr.FieldDefn("ParkBuffer", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("RD_av", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("RDMedW", ogr.OFTReal))
+    fielddefmatrix.append(ogr.FieldDefn("DemPublicI", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("LC_UNC_IG", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("LC_UNC_CO", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("LC_UND_DG", ogr.OFTReal))
@@ -456,6 +468,9 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         fielddefmatrix.append(ogr.FieldDefn("Blk_PubIrr", ogr.OFTReal))
 
         fielddefmatrix.append(ogr.FieldDefn("ServedIA", ogr.OFTReal))
+
+    if perf_incl == 1:       #Microclimate module
+        fielddefmatrix.append(ogr.FieldDefn("LSTemp", ogr.OFTReal))
 
     #Create the fields
     for field in fielddefmatrix:
@@ -754,6 +769,10 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
 
             feature.SetField("ServedIA", currentAttList.getAttribute("ServedIA"))
 
+        if perf_incl == 1:       #Microclimate module
+            feature.SetField("LSTemp", currentAttList.getAttribute("LSTemp"))
+
+
         layer.CreateFeature(feature)
     
     shapefile.Destroy()
@@ -763,7 +782,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         convertSHPtoKML(str(filename)+"_Blocks")
     return True
 
-def exportPatchData(filename, assets, miscoptions, map_attr):
+def exportPatchData(filename, assets, miscoptions, map_attr, perf_incl):
     if map_attr.getAttribute("patchdelin") == 0:
         return True
     
@@ -790,7 +809,12 @@ def exportPatchData(filename, assets, miscoptions, map_attr):
     fielddefmatrix.append(ogr.FieldDefn("AvgElev", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("SoilK", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("BlockID", ogr.OFTInteger))
-    
+    fielddefmatrix.append(ogr.FieldDefn("AspRatio", ogr.OFTReal))
+
+    if perf_incl == 1:       #Microclimate module
+        fielddefmatrix.append(ogr.FieldDefn("LSTemp", ogr.OFTReal))
+
+
     #Create the fields
     for field in fielddefmatrix:
         layer.CreateField(field)
@@ -845,6 +869,9 @@ def exportPatchData(filename, assets, miscoptions, map_attr):
         feature2.SetField("SoilK", currentAttList.getAttribute("SoilK"))
         feature2.SetField("BlockID", int(currentAttList.getAttribute("BlockID")))
         feature2.SetField("AspRatio", currentAttList.getAttribute("AspRatio"))
+
+        if perf_incl == 1:       #Microclimate module
+            feature.SetField("LSTemp", currentAttList.getAttribute("LSTemp"))
 
         layer.CreateFeature(feature)
         layer2.CreateFeature(feature2)
@@ -1141,7 +1168,7 @@ def exportImplementWSUD(filename, assets, miscoptions, map_attr, kmlbool):
 
     return True
 
-def exportBlockCentre(filename, assets, miscoptions, map_attr, kmlbool):
+def exportBlockCentre(filename, assets, miscoptions, map_attr, kmlbool, perf_incl):
     
     spatialRef = osr.SpatialReference()                #Define Spatial Reference
     spatialRef.ImportFromProj4(miscoptions[0])
@@ -1158,7 +1185,10 @@ def exportBlockCentre(filename, assets, miscoptions, map_attr, kmlbool):
     fielddefmatrix.append(ogr.FieldDefn("BlockID", ogr.OFTInteger))
     fielddefmatrix.append(ogr.FieldDefn("AvgElev", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("Type", ogr.OFTString))
-    
+
+    if perf_incl == 1:       #Microclimate module
+        fielddefmatrix.append(ogr.FieldDefn("LSTemp", ogr.OFTReal))
+
     #Create the fields
     for field in fielddefmatrix:
         layer.CreateField(field)
@@ -1180,6 +1210,10 @@ def exportBlockCentre(filename, assets, miscoptions, map_attr, kmlbool):
         feature.SetField("BlockID", int(currentAttList.getAttribute("BlockID")))
         feature.SetField("AvgElev", currentAttList.getAttribute("AvgElev"))
         feature.SetField("Type", currentAttList.getAttribute("Type"))
+
+        if perf_incl == 1:       #Microclimate module
+            feature.SetField("LSTemp", currentAttList.getAttribute("LSTemp"))
+
         layer.CreateFeature(feature)
     
     shapefile.Destroy()
