@@ -224,25 +224,7 @@ class Delinblocks(UBModule):      #UBCORE
         
         #-----------------------------------------------------------------------
         #END OF INPUT PARAMETER LIST
-        
-        #Input Data
-#        #DYNAMIND -------------->        
-#        self.elevation = View("Elevation", RASTERDATA, READ)
-#        self.soil = View("Soil", RASTERDATA, READ)
-#        self.landuse = View("LandUse", RASTERDATA, READ)
-#        self.population = View("Population", RASTERDATA, READ)
-#        self.plan_map = View("PlanMap", RASTERDATA, READ)               #<-- ADDITIONAL INPUTS
-#        self.employment = View("Employment", RASTERDATA, READ)          #rivers, lakes and localities are read externally
-#        self.groundwater = View("Groundwater", RASTERDATA, READ)        #see HIDDEN PARAMETERS
-#        self.socpar1 = View("SocialParam1", RASTERDATA, READ)
-#        self.socpar2 = View("SocialParam2", RASTERDATA, READ)
-#        #--------------> DYNAMIND 
-        
-        #self.road_map = View("RoadMap", VECTORDATA, READ)
-        #self.supply_net = View("SupplyMains", VECTORDATA, READ)
-        #self.sewer_net = View("SewerMains", VECTORDATA, READ)
-        
-        #UBCORE --------------->
+
         self.elevation = 0            #<-- BASE INPUTS
         self.soil = 0
         self.landuse = 0
@@ -252,168 +234,7 @@ class Delinblocks(UBModule):      #UBCORE
         self.groundwater = 0        #see HIDDEN PARAMETERS
         self.socpar1 = 0
         self.socpar2 = 0
-        #-------------- END OF UBCORE ---------
 
-#        #DYNAMIND VIEWS =================================================================================================
-#        #Global Attributes View
-#        self.mapattributes = View("GlobalMapAttributes", COMPONENT, WRITE)
-#        self.mapattributes.addAttribute("NumBlocks")                  #Number of blocks in the grid
-#        self.mapattributes.addAttribute("WidthBlocks")                #Width of simulation area in # of blocks
-#        self.mapattributes.addAttribute("HeightBlocks")               #Height of simulation area in # of blocks
-#        self.mapattributes.addAttribute("BlockSize")                  #Size of block [m]
-#        self.mapattributes.addAttribute("InputReso")                  #Resolution of the input data [m]
-#        self.mapattributes.addAttribute("Neigh_Type")
-#        self.mapattributes.addAttribute("ConsiderCBD")
-#        self.mapattributes.addAttribute("CBDLocationLong")
-#        self.mapattributes.addAttribute("CBDLocationLat")
-#        self.mapattributes.addAttribute("TotalBasins")
-#        self.mapattributes.addAttribute("include_plan_map")
-#        self.mapattributes.addAttribute("include_local_map")
-#        self.mapattributes.addAttribute("include_employment")
-#        self.mapattributes.addAttribute("include_rivers")
-#        self.mapattributes.addAttribute("include_lakes")
-#        self.mapattributes.addAttribute("include_groundwater")
-#        self.mapattributes.addAttribute("include_soc_par1")
-#        self.mapattributes.addAttribute("include_soc_par2")
-#        self.mapattributes.addAttribute("patchdelin")
-#        self.mapattributes.addAttribute("spatialmetrics")
-#        self.mapattributes.addAttribute("considerCBD")
-#        #self.mapattributes.addAttribute("UrbanSimData")             #"Yes" or "no" as to whether input derived from UrbanSim
-#        
-#        #Block Data View
-#        self.block = View("Block", FACE, WRITE)
-#        self.block.addAttribute("BlockID")              #ID of the Block (different from UUID)
-#        self.block.addAttribute("BasinID")              #ID of the Basin that Block belongs to
-#        self.block.addAttribute("LocateX")             #x location of bottom-left corner of block (for drawing)
-#        self.block.addAttribute("LocateY")             #y location of bottom-right corner of block (for drawing)
-#        self.block.addAttribute("CentreX")             #centre x location of block
-#        self.block.addAttribute("CentreY")              #centre y location of block
-#        self.block.addAttribute("OriginX")
-#        self.block.addAttribute("OriginY")             
-#        self.block.addAttribute("Status")               #Status: 1 = part of simulation, 0 = not part of simulation
-#        self.block.addAttribute("Active")             #Degree to which block is active in simulation (how much data is available)
-#        self.block.addAttribute("Nhd_N")             #North neighbour Block ID
-#        self.block.addAttribute("Nhd_S")             #South neighbour Block ID
-#        self.block.addAttribute("Nhd_W")             #West neighbour Block ID
-#        self.block.addAttribute("Nhd_E")             #East neighbour Block ID
-#        self.block.addAttribute("Nhd_NE")            #Northeast neighbour Block ID
-#        self.block.addAttribute("Nhd_NW")            #Northwest neighbour Block ID
-#        self.block.addAttribute("Nhd_SE")            #Southeast neighbour Block ID
-#        self.block.addAttribute("Nhd_SW")            #Southwest neighbour Block ID
-#        self.block.addAttribute("Soil_k")               #Soil infiltration rate [mm/hr]
-#        self.block.addAttribute("AvgElev")              #Average elevation of Block [m]
-#
-#        self.block.addAttribute("pLU_RES")             #Land use proportions in block (multiply with block area to get Area
-#        self.block.addAttribute("pLU_COM")             #RES = Residential      RD = Road
-#        self.block.addAttribute("pLU_ORC")             #COM = Commercial       TR = Transport facility
-#        self.block.addAttribute("pLU_LI")              #ORC = Offices & Res    PG = Parks & Gardens
-#        self.block.addAttribute("pLU_HI")              #LI = Light Industry    REF = Reserves & Floodways
-#        self.block.addAttribute("pLU_CIV")             #HI = Heavy Industry    UND = Undeveloped
-#        self.block.addAttribute("pLU_SVU")             #CIV = Civic Facilities NA = Unclassified
-#        self.block.addAttribute("pLU_RD")              #SVU = Services & Utility
-#        self.block.addAttribute("pLU_TR")
-#        self.block.addAttribute("pLU_PG")
-#        self.block.addAttribute("pLU_REF")
-#        self.block.addAttribute("pLU_UND")
-#        self.block.addAttribute("pLU_NA")
-#        
-#        self.block.addAttribute("Pop")           #Total people LIVING in block
-#        self.block.addAttribute("Employ")           #Total people EMPLOYED in block
-#        self.block.addAttribute("GWDepth")              #Depth to groundwater from surface
-#        self.block.addAttribute("SocPar1")
-#        self.block.addAttribute("SocPar2")
-#        self.block.addAttribute("PM_RES")
-#        self.block.addAttribute("PM_COM")
-#        self.block.addAttribute("PM_LI")
-#        self.block.addAttribute("PM_HI")
-#        self.block.addAttribute("HasRiv")
-#        self.block.addAttribute("HasLake")
-#        self.block.addAttribute("LakeAr")
-#        self.block.addAttribute("HasLoc")
-#        self.block.addAttribute("NFacil")
-#        
-#        self.block.addAttribute("Patches")           #Total Patches in Block
-#        self.block.addAttribute("Rich")             #Richness of Land use mix in Block
-#        self.block.addAttribute("ShDIV")           #Shannon Diversity Index
-#        self.block.addAttribute("ShDOM")           #Shannon Dominance Index
-#        self.block.addAttribute("ShEVEN")          #Shannon Evenness Index
-#        
-#        self.block.addAttribute("downID")            #ID block water flows to naturally
-#        self.block.addAttribute("maxdZ")            #maximum drop in elevation
-#        self.block.addAttribute("slope")            #average slope
-#        self.block.addAttribute("drainID")           #ID block drains to if a sink
-#        self.block.addAttribute("h_pond")               #height of ponding before sink can drain
-#        self.block.addAttribute("Outlet")       #If the Block is an outlet = 1, yes - 0, no
-#        self.block.addAttribute("CBDdist")          #Distance from CBD [km]
-#        self.block.addAttribute("CBDdir")         #Which direction to travel from CBD to get to Block? Specified as an angle in degrees
-#        
-#        self.block.addAttribute("UpstrIDs")
-#        
-#        #Patch Data View
-#        self.patch = View("Patch", FACE, WRITE)
-#        self.patch.addAttribute("LandUse")              #Land use of the patch
-#        self.patch.addAttribute("Area")                 #Area of the patch
-#        self.patch.addAttribute("AvgElev")              #Average elevation of the patch
-#        self.patch.addAttribute("SoilK")
-#        self.patch.addAttribute("BlockID")              #Block ID that patch belongs to
-#        
-#        #Network Data View
-#        self.network = View("Network", EDGE, WRITE)
-#        self.network.addAttribute("BlockID")
-#        self.network.addAttribute("DownID")
-#        self.network.addAttribute("Z_up")
-#        self.network.addAttribute("Z_down")
-#        self.network.addAttribute("max_Zdrop")
-#        self.network.addAttribute("Type")
-#        self.network.addAttribute("avg_slope")
-#        
-#        #Nodes Data View
-#        self.blocknodes = View("BlockNodes", NODE, WRITE)
-#        self.blocknodes.addAttribute("BlockID")         #Holds the Block ID or -1 for CBD location
-#        self.blocknodes.addAttribute("AvgElev")
-#        self.blocknodes.addAttribute("Type")
-#        
-#        #Locality Map Data View
-#        self.blocklocality = View("BlockLocality", NODE, WRITE)
-#        self.blocklocality.addAttribute("BlockID")
-#        self.blocklocality.addAttribute("Type")
-#        self.blocklocality.addAttribute("Area")
-#        self.blocklocality.addAttribute("TIF")
-#        self.blocklocality.addAttribute("ARoof")
-#        self.blocklocality.addAttribute("AvgWD")
-#        
-#        #Append all views to the data stream
-#        datastream = []
-#        datastream.append(self.elevation)
-#        datastream.append(self.soil)
-#        datastream.append(self.landuse)
-#        datastream.append(self.population)
-#        #datastream.append(self.urbansim)
-#        
-#        datastream.append(self.plan_map)
-#        datastream.append(self.employment)
-#        datastream.append(self.groundwater)
-#        
-#        #datastream.append(self.road_map)
-#        #datastream.append(self.supply_net)
-#        #datastream.append(self.sewer_net)
-#        
-#        datastream.append(self.socpar1)
-#        datastream.append(self.socpar2)
-#        
-#        datastream.append(self.mapattributes)
-#        datastream.append(self.block)
-#        datastream.append(self.patch)
-#        datastream.append(self.network)
-#        datastream.append(self.blocknodes)
-#        datastream.append(self.blocklocality)
-#        
-#        self.addData("City", datastream)
-#
-#        #================================================================================================= DYNAMIND VIEWS END
-  
-#        self.BlockIDtoUUID = {} #DYNAMIND : Define dictionary to hold Block ID - UUID relationship
-        
         self.CBDcoordinates = {
                     "Adelaide" : [280780.0759095973, 6132244.023877329],
                     "Brisbane" : [502317.812981302, 6961397.420122750],
@@ -435,22 +256,7 @@ class Delinblocks(UBModule):      #UBCORE
         self.notify("Loading "+str(dtype))
         rasterload = ubdata.importRasterData(dataset[str(dtype)])
         self.notify("Load "+str(dtype)+" Complete")
-        return rasterload    
-    
-#    def getBlockUUID(self, blockid,city):       #DYNAMIND FUNCTION
-#        try:
-#            key = self.BlockIDtoUUID[int(blockid)]
-#        except KeyError:
-#            key = ""	
-#        return key
-#
-#
-#    def initBLOCKIDtoUUID(self, city):          #DYNAMIND FUNCTION
-#        blockuuids = city.getUUIDsOfComponentsInView(self.block)
-#        for blockuuid in blockuuids:
-#            block = city.getFace(blockuuid)
-#            ID = int(block.getAttribute("BlockID").getDouble())
-#            self.BlockIDtoUUID[ID] = blockuuid
+        return rasterload
     
     def run(self):
         self.notify("StartDelinBlocks!")        #UBCORE
