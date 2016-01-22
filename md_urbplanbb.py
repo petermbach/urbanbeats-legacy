@@ -584,11 +584,11 @@ class Urbplanbb(UBModule):
             #LAND COVER CLASSIFICATION - UNC Land use - Landmark area only
             # Covers of interest: Irrigated Grass (IG), Concrete (CO)
             if otherarea != 0:
-                currentAttList.addAttribute("LC_UNC_IG", (otherarea - otherimp)/otherarea)
-                currentAttList.addAttribute("LC_UNC_CO", otherimp/otherarea)              #Assume concrete is main cover
+                currentAttList.addAttribute("LC_NA_IG", (otherarea - otherimp)/otherarea)
+                currentAttList.addAttribute("LC_NA_CO", otherimp/otherarea)              #Assume concrete is main cover
             else:
-                currentAttList.addAttribute("LC_UNC_IG", 0.00)
-                currentAttList.addAttribute("LC_UNC_CO", 0.00)              #Assume concrete is main cover
+                currentAttList.addAttribute("LC_NA_IG", 0.00)
+                currentAttList.addAttribute("LC_NA_CO", 0.00)              #Assume concrete is main cover
 
             #Add to cumulative area variables
             blk_tia += otherimp

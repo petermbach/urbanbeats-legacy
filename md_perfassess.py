@@ -52,6 +52,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         # CORE: contains either planning or implementation (so it knows what to do and whether to skip)
         self.tabindex = tabindex        #UBCORE: the simulation period (knowing what iteration this module is being run at)
         self.activesim = activesim      #UBCORE
+        self.LUCMatrix = ["RES", "COM", "ORC", "LI", "HI", "CIV", "SVU", "RD", "TR", "PG", "REF", "UND", "NA"]
 
         #PARAMETER LIST START
         #-----------------------------------------------------------------------
@@ -198,13 +199,13 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.rf_shape = "C"     #B = bell-curve, C = constant, U = uniform
         self.tr_shape = "C"     #B = bell-curve, C = constant, U = uniform
         self.wa_shape = "C"     #B = bell-curve, C = constant, U = uniform
-        self.as_min = 32.0
-        self.co_min = 32.0
-        self.dg_min = 32.0
-        self.ig_min = 32.0
-        self.rf_min = 32.0
-        self.tr_min = 32.0
-        self.wa_min = 32.0
+        self.as_min = 55.8
+        self.co_min = 47.9
+        self.dg_min = 55.4
+        self.ig_min = 35.9
+        self.rf_min = 58.0
+        self.tr_min = 37.8
+        self.wa_min = 28.0
         self.as_max = 45.0
         self.co_max = 45.0
         self.dg_max = 45.0
@@ -530,6 +531,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 ubmusicwrite.writeMUSICfooter(ufile)
         return True
 
+
     def runEconomicAnalysis(self):
         """Conducts an economic analysis of the life cycle costs and a number of other factors based
         on the planned options
@@ -538,13 +540,139 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         return True
 
+
     def runMicroclimateAnalysis(self):
         """ Undertakes land cover analysis followed by applying land surface and air temperature
         relationships to understand local microclimate of the current modelled urban environment.
         """
-        pass
+
+        #Create temperature vector for all land covers
+        dist = [self.as_shape, self.co_shape, self.dg_shape, self.ig_shape, self.rf_shape, self.tr_shape, self.wa_shape]
+        mins = [self.as_min, self.co_min, self.dg_min, self.ig_min, self.rf_min, self.tr_min, self.wa_min]
+        maxs = [self.as_max, self.co_max, self.dg_max, self.ig_max, self.rf_max, self.tr_max, self.wa_max]
+
+        tempdict = self.createTemperatureDictionary(dist, mins, maxs)
+
+        #Calculate equivalent LSTs at either block or patch level
+        if self.assesslevel == "P":
+            self.transferTemperatureDataToPatches(tempdict)
+        elif self.assesslevel == "B":
+            self.transferTemperatureDataToBlocks(tempdict)
+
+        #Perform Interpolation
+
 
         return True
+
+
+    def transferTemperatureDataToPatches(self, tempdict):
+        """ Transfers temperature data to patches for different land uses.
+
+        :param tempdict: temperature dictionary created by createTemperatureDictionary()
+        :return: void, writes LST value to patch centrepoint map
+        """
+        self.notify("Transferring Temperature Data To Patches")
+
+        patcheslist = self.activesim.getAssetsWithIdentifier("PatchID")
+        for i in range(len(patcheslist)):
+            currentPatch = patcheslist[i]
+            curA = currentPatch.getAttribute("Area")
+            curLUC = self.LUCMatrix[int(currentPatch.getAttribute("LandUse"))-1]
+            print "Block ID", currentPatch.getAttribute("BlockID"), "Patch No.", currentPatch.getAttribute("PatchID"), "Land use", curLUC
+
+            lcoverdict = self.getLandCoverProportions(currentPatch.getAttribute("BlockID"), curLUC)
+
+            patchtemp = 0
+            for i in lcoverdict.keys():
+                patchtemp += float(lcoverdict[i]) * float(eval(tempdict[i]))
+
+            currentPatch.addAttribute("LSTemp", patchtemp)
+        return True
+
+
+    def transferTemperatureDataToBlocks(self, tempdict):
+        """ Transfers temperature data to block Centre points for different land uses for use in
+        interpolation, also writes the LST to the block map for export.
+
+        :param tempdict: temperature dictionary obtained from createTemperatureDictionary()
+        :return: void, writes LST value to block map and block centre point map
+        """
+        self.notify("Transferring Temperature Data To Blocks")
+
+        #Retrieve Blocks
+        blocklist = self.activesim.getAssetsWithIdentifier("BlockID")
+
+        #Loop across blocks and calculate temperatures
+        for i in range(len(blocklist)):
+            if blocklist[i].getAttribute("Status") == 0:
+                continue
+            currentAttList = blocklist[i]
+            currentID = currentAttList.getAttribute("BlockID")
+            blockCP = self.activesim.getAssetWithName("BlockCPID"+str(currentID))       #Note that there is also possibly a CBD centre point!
+
+            blocktemp = 0
+
+            for luc in self.LUCMatrix:
+                pLU = currentAttList.getAttribute("pLU_"+luc)
+                lcoverdict = self.getLandCoverProportions(currentID, luc)
+
+                for j in lcoverdict.keys():
+                    blocktemp += float(lcoverdict[j]) * float(eval(tempdict[j])) * pLU
+
+            currentAttList.addAttribute("LSTemp", blocktemp)
+            blockCP.addAttribute("LSTemp", blocktemp)
+        return True
+
+
+    def createTemperatureDictionary(self, dist, minvalues, maxvalues):
+        """ Creates the reference dictionary for the land cover temperatures
+
+        :param dist:    shape of the distribution for all proposed surface cover temperatures
+        :param mins:    input vector of all minimum temperature values
+        :param maxs:    input vector of all maximum temperature values
+        :return: tempdict, to be called with eval() since some options have a random generation contained within them
+        """
+        refnames = ["AS", "CO", "DG", "IG", "RF", "TR", "WA"]
+        tempdict = {}
+        for i in range(len(refnames)):
+            if dist[i] == "C":
+                tempdict[refnames[i]] = str(minvalues[i])
+            elif dist[i] == "B":
+                tempdict[refnames[i]] = "min(max(random.normalvariate(("+str((minvalues[i]+maxvalues[i])/2.0)+", ("+str((minvalues[i]+maxvalues[i])/20.0)+", "+str(minvalues[i])+"), "+str(maxvalues[i])+")"
+            elif dist[i] == "U":
+                tempdict[refnames[i]] = "random.randrange("+str(minvalues[i])+", "+str(maxvalues[i])+")"
+        return tempdict
+
+
+    def getLandCoverProportions(self, blockID, landuse):
+        """ Retrieves the full set of land cover proportions for different land uses for a given block ID
+
+        :param blockID: ID of the block to look up land cover information for
+        :param landuse: land use code to look up land cover information for.
+        :return:
+        """
+        lcover = {"CO": 0.00, "AS": 0.00, "TR": 0.00, "DG": 0.00, "IG": 0.00, "RF": 0.00, "WA": 0.00}
+        currentAttList = self.activesim.getAssetWithName("BlockID"+str(blockID))
+        print landuse
+        if landuse in ["RES", "COM", "ORC", "LI", "HI", "TR", "CIV"]:
+            covers = ["CO", "AS", "TR", "DG", "IG", "RF"]
+            if landuse == "CIV":
+                landuse = "COM"
+            elif landuse == "TR":
+                landuse = "LI"
+        elif landuse in ["PG", "REF"]:
+            covers = ["CO", "AS", "TR", "DG", "IG"]
+        elif landuse in ["UND", "SVU"]:
+            covers = ["DG", "IG"]
+        elif landuse in ["RD"]:
+            covers = ["AS", "CO", "DG", "IG"]
+        elif landuse in ["NA"]:
+            covers = ["IG", "CO"]
+
+        for c in covers:
+            lcover[c] = currentAttList.getAttribute("LC_"+landuse+"_"+c)
+        return lcover
+
 
     def runWaterSupply(self):
         """ Conducts integration with EPANET and water supply modelling. Coming Soon. Subject of
