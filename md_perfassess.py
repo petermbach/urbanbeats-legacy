@@ -578,7 +578,7 @@ class PerformanceAssess(UBModule):      #UBCORE
             currentPatch = patcheslist[i]
             curA = currentPatch.getAttribute("Area")
             curLUC = self.LUCMatrix[int(currentPatch.getAttribute("LandUse"))-1]
-            print "Block ID", currentPatch.getAttribute("BlockID"), "Patch No.", currentPatch.getAttribute("PatchID"), "Land use", curLUC
+            #print "Block ID", currentPatch.getAttribute("BlockID"), "Patch No.", currentPatch.getAttribute("PatchID"), "Land use", curLUC
 
             lcoverdict = self.getLandCoverProportions(currentPatch.getAttribute("BlockID"), curLUC)
 
@@ -598,6 +598,9 @@ class PerformanceAssess(UBModule):      #UBCORE
         :return: void, writes LST value to block map and block centre point map
         """
         self.notify("Transferring Temperature Data To Blocks")
+
+        map_attr = self.activesim.getAssetWithName("MapAttributes")     #fetches global map attributes
+        blocks_size = map_attr.getAttribute("BlockSize")
 
         #Retrieve Blocks
         blocklist = self.activesim.getAssetsWithIdentifier("BlockID")
@@ -653,7 +656,6 @@ class PerformanceAssess(UBModule):      #UBCORE
         """
         lcover = {"CO": 0.00, "AS": 0.00, "TR": 0.00, "DG": 0.00, "IG": 0.00, "RF": 0.00, "WA": 0.00}
         currentAttList = self.activesim.getAssetWithName("BlockID"+str(blockID))
-        print landuse
         if landuse in ["RES", "COM", "ORC", "LI", "HI", "TR", "CIV"]:
             covers = ["CO", "AS", "TR", "DG", "IG", "RF"]
             if landuse == "CIV":
@@ -667,7 +669,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         elif landuse in ["RD"]:
             covers = ["AS", "CO", "DG", "IG"]
         elif landuse in ["NA"]:
-            covers = ["IG", "CO"]
+            covers = ["IG", "CO", "DG"]
 
         for c in covers:
             lcover[c] = currentAttList.getAttribute("LC_"+landuse+"_"+c)
