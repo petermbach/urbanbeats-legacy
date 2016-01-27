@@ -297,6 +297,8 @@ def loadSimFile(activesim, filename, projectpath):
                 data = lines.split("*||*")
                 moduledata[data[0]] = data[1]
             for keys in moduledata.keys():
+                if curmodule.getParameter(keys) == None:
+                    continue
                 print keys, (moduledata[keys]), type(curmodule.getParameter(keys)), curmodule.getParameterType(keys)
                 if curmodule.getParameterType(keys) == 'BOOL':
                     curmodule.setParameter(keys, type(curmodule.getParameter(keys))(int(float(moduledata[keys]))))
