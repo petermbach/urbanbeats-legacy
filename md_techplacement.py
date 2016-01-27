@@ -4313,11 +4313,19 @@ class Techplacement(UBModule):
                 loc.addAttribute("Qty", 0)      #Currently none available
                 loc.addAttribute("GoalQty", goalqty)  #lot scale mainly - number of lots to build
                 loc.addAttribute("SysArea", current_wsud.getSize())
+                loc.addAttribute("StoreVol", current_wsud.getRecycledStorageVolume())
+                loc.addAttribute("StoreType", current_wsud.getRecycledStorageType())
+                loc.addAttribute("IntegStore", current_wsud.isStoreIntegrated())
                 loc.addAttribute("Status", 0)   #0 = not built, 1 = built
                 loc.addAttribute("Year", 9999)
                 loc.addAttribute("EAFact", current_wsud.getAreaFactor())
-                loc.addAttribute("ImpT", current_wsud.getService("WQ"))
-                loc.addAttribute("CurImpT", 0)  #New systems don't treat anything yet, not implemented
+                loc.addAttribute("SvWQ_ImpT", current_wsud.getService("WQ"))
+                loc.addAttribute("SvQty_ImpT", current_wsud.getService("Qty"))
+                loc.addAttribute("SvRec_Supp", current_wsud.getService("Rec"))
+                loc.addAttribute("CurImpTWQ", 0)  #New systems don't treat anything yet, not implemented
+                loc.addAttribute("CurImpTQty", 0)    #New systems don't treat anything yet, not implemented
+                loc.addAttribute("CurSupply", 0)    #New systems don't supply yet
+                loc.addAttribute("SupplyRel", float(self.targets_reliability * self.ration_harvest))
                 loc.addAttribute("Upgrades", 0) #Done in the retrofit/implementation part
                 #city.addComponent(loc, self.wsudAttr)
 
@@ -4355,11 +4363,19 @@ class Techplacement(UBModule):
                 loc.addAttribute("Qty", 0)      #currently none available
                 loc.addAttribute("GoalQty", 1)  #lot scale mainly - number of lots to build
                 loc.addAttribute("SysArea", outblock_strat.getSize())
+                loc.addAttribute("StoreVol", outblock_strat.getRecycledStorageVolume())
+                loc.addAttribute("StoreType", outblock_strat.getRecycledStorageType())
+                loc.addAttribute("IntegStore", outblock_strat.isStoreIntegrated())
                 loc.addAttribute("Status", 0)
                 loc.addAttribute("Year", 9999)
                 loc.addAttribute("EAFact", outblock_strat.getAreaFactor())
-                loc.addAttribute("ImpT", outblock_strat.getService("WQ"))
-                loc.addAttribute("CurImpT", 0)  #New systems don't treat anything yet before implemented
+                loc.addAttribute("SvWQ_ImpT", outblock_strat.getService("WQ"))
+                loc.addAttribute("SvQty_ImpT", outblock_strat.getService("Qty"))
+                loc.addAttribute("SvRec_Supp", outblock_strat.getService("Rec"))
+                loc.addAttribute("CurImpTWQ", 0)  #New systems don't treat anything yet, not implemented
+                loc.addAttribute("CurImpTQty", 0)    #New systems don't treat anything yet, not implemented
+                loc.addAttribute("CurSupply", 0)    #New systems don't supply yet
+                loc.addAttribute("SupplyRel", float(self.targets_reliability * self.ration_harvest))
                 loc.addAttribute("Upgrades", 0)
                 #city.addComponent(loc, self.wsudAttr)
 
@@ -4402,11 +4418,19 @@ class Techplacement(UBModule):
             loc.addAttribute("Qty", curSys.getAttribute("Qty"))      #currently none available
             loc.addAttribute("GoalQty", curSys.getAttribute("GoalQty"))  #lot scale mainly - number of lots to build
             loc.addAttribute("SysArea", curSys.getAttribute("SysArea"))
+            loc.addAttribute("StoreVol", curSys.getAttribute("StoreVol"))
+            loc.addAttribute("StoreType", curSys.getAttribute("StoreType"))
+            loc.addAttribute("IntegStore", curSys.getAttribute("IntegStore"))
             loc.addAttribute("Status", int(curSys.getAttribute("Status")))
             loc.addAttribute("Year", int(curSys.getAttribute("Year")))
             loc.addAttribute("EAFact", curSys.getAttribute("EAFact"))
-            loc.addAttribute("ImpT", curSys.getAttribute("ImpT"))
-            loc.addAttribute("CurImpT", curSys.getAttribute("CurImpT"))  #New systems don't treat anything yet before implemented
+            loc.addAttribute("SvWQ_ImpT", curSys.getAttribute("SvWQ_ImpT"))
+            loc.addAttribute("SvQty_ImpT", curSys.getAttribute("SvQty_ImpT"))
+            loc.addAttribute("SvRec_Supp", curSys.getAttribute("SvRec_Supp"))
+            loc.addAttribute("CurImpTWQ", curSys.getAttribute("CurImpTWQ"))  #New systems don't treat anything yet, not implemented
+            loc.addAttribute("CurImpTQty", curSys.getAttribute("CurImpTQty"))    #New systems don't treat anything yet, not implemented
+            loc.addAttribute("CurSupply", curSys.getAttribute("CurSupply"))    #New systems don't supply yet
+            loc.addAttribute("SupplyRel", curSys.getAttribute("SupplyRel"))
             loc.addAttribute("Upgrades", int(curSys.getAttribute("Upgrades")))
             loc.addAttribute("WDepth", curSys.getAttribute("WDepth"))
             loc.addAttribute("FDepth", curSys.getAttribute("FDepth"))
