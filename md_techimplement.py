@@ -280,11 +280,19 @@ class Techimplement(UBModule):
         sysAttr.addAttribute("Qty", qty)      #Currently none available
         sysAttr.addAttribute("GoalQty", sys.getAttribute("GoalQty"))  #lot scale mainly - number of lots to build
         sysAttr.addAttribute("SysArea", sys.getAttribute("SysArea"))
+        sysAttr.addAttribute("StoreVol", sys.getAttribute("StoreVol"))
+        sysAttr.addAttribute("StoreType", sys.getAttribute("StoreType"))
+        sysAttr.addAttribute("IntegStore", sys.getAttribute("IntegStore"))
         sysAttr.addAttribute("Status", 1)   #0 = not built, 1 = built
         sysAttr.addAttribute("Year", int(year))
         sysAttr.addAttribute("EAFact", sys.getAttribute("EAFact"))
-        sysAttr.addAttribute("ImpT", sys.getAttribute("ImpT"))
-        sysAttr.addAttribute("CurImpT", currentImpT)
+        sysAttr.addAttribute("SvWQ_ImpT", sys.getAttribute("SvWQ_ImpT"))
+        sysAttr.addAttribute("SvQty_ImpT", 0.00)
+        sysAttr.addAttribute("SvRec_Supp", 0.00)
+        sysAttr.addAttribute("CurImpTWQ", currentImpT)
+        sysAttr.addAttribute("CurImpTQty", 0.00)
+        sysAttr.addAttribute("CurSupply", 0.00)
+        sysAttr.addAttribute("SupplyRel", sys.getAttribute("SupplyRel"))
         sysAttr.addAttribute("Upgrades", sys.getAttribute("Upgrades")) #Done in the retrofit/implementation part
         sysAttr.addAttribute("WDepth", sys.getAttribute("WDepth")) #Done in the retrofit/implementation part
         sysAttr.addAttribute("FDepth", sys.getAttribute("FDepth")) #Done in the retrofit/implementation part
@@ -363,7 +371,7 @@ class Techimplement(UBModule):
                 year = int(sys.getAttribute("Year"))
         
         #SPACE FOR FUTURE DECISION VARIABLES
-        currentImpT = lotqty * sys.getAttribute("ImpT")
+        currentImpT = lotqty * sys.getAttribute("SvWQ_ImpT")
         return lotqty, currentImpT, year
     
     
@@ -374,7 +382,7 @@ class Techimplement(UBModule):
         
         if int(sys.getAttribute("Status")) == 1:    #Only for S and N systems
             #Transfer attributes as is
-            curImpT = sys.getAttribute("CurImpT")
+            curImpT = sys.getAttribute("CurImpTWQ")
             year = int(sys.getAttribute("Year"))
             return curImpT, year
         #If status == 0, then buildyear is also 9999
@@ -407,12 +415,12 @@ class Techimplement(UBModule):
                 return 0,0
             else:
                 year = self.currentyear
-                curImpT = sys.getAttribute("ImpT")
+                curImpT = sys.getAttribute("ImpTWQ")
                 return curImpT, year
         elif sys.getAttribute("Scale") == "N":
             #Develop. Have already checked the block threshold for the Neighbourhood
             year = self.currentyear
-            curImpT = sys.getAttribute("ImpT")
+            curImpT = sys.getAttribute("SvWQ_ImpT")
             return curImpT, year
         return 0,0
     
@@ -421,7 +429,7 @@ class Techimplement(UBModule):
         implemented in the current Block using current Block data and masterplan data"""
         if int(sys.getAttribute("Status")) == 1:    #Only for S and N systems
             #Transfer attributes as is
-            curImpT = sys.getAttribute("CurImpT")
+            curImpT = sys.getAttribute("CurImpTWQ")
             year = int(sys.getAttribute("Year"))
             self.notify("This system already is implemented")
             return curImpT, year
@@ -447,7 +455,7 @@ class Techimplement(UBModule):
         
         #If the models makes it to this point, then the system is implemented
         year = self.currentyear
-        curImpT = sys.getAttribute("ImpT")
+        curImpT = sys.getAttribute("SvWQ_ImpT")
         return curImpT, year
 
     def retrieveUndevelopedAreas(self, currentAttList, prevAttList, direction):
