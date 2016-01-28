@@ -1025,6 +1025,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuUrban_Form"/>
     <addaction name="actionSimulation_Options"/>
     <addaction name="actionOutput_Options"/>
+    <addaction name="actionModel_Calibration_Viewer"/>
     <addaction name="separator"/>
     <addaction name="menuExternal_Programs"/>
    </widget>
@@ -1767,6 +1768,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionPerformance_Assessment">
    <property name="text">
     <string>Performance Assessment...</string>
+   </property>
+  </action>
+  <action name="actionModel_Calibration_Viewer">
+   <property name="text">
+    <string>Model Calibration Viewer</string>
    </property>
   </action>
  </widget>

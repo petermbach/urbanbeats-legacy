@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatsmaingui.ui'
 #
-# Created: Mon Apr 20 13:00:06 2015
+# Created: Thu Jan 28 16:01:01 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -635,6 +635,8 @@ class Ui_urbanbeatsMain(object):
         self.actionEPANET.setObjectName(_fromUtf8("actionEPANET"))
         self.actionPerformance_Assessment = QtGui.QAction(urbanbeatsMain)
         self.actionPerformance_Assessment.setObjectName(_fromUtf8("actionPerformance_Assessment"))
+        self.actionModel_Calibration_Viewer = QtGui.QAction(urbanbeatsMain)
+        self.actionModel_Calibration_Viewer.setObjectName(_fromUtf8("actionModel_Calibration_Viewer"))
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
@@ -694,6 +696,7 @@ class Ui_urbanbeatsMain(object):
         self.menuAdvanced.addAction(self.menuUrban_Form.menuAction())
         self.menuAdvanced.addAction(self.actionSimulation_Options)
         self.menuAdvanced.addAction(self.actionOutput_Options)
+        self.menuAdvanced.addAction(self.actionModel_Calibration_Viewer)
         self.menuAdvanced.addSeparator()
         self.menuAdvanced.addAction(self.menuExternal_Programs.menuAction())
         self.menuWindow.addAction(self.actionMinimize)
@@ -893,6 +896,7 @@ class Ui_urbanbeatsMain(object):
         self.actionSimulation_Results.setShortcut(_translate("urbanbeatsMain", "Ctrl+Shift+T", None))
         self.actionEPANET.setText(_translate("urbanbeatsMain", "EPANET 2", None))
         self.actionPerformance_Assessment.setText(_translate("urbanbeatsMain", "Performance Assessment...", None))
+        self.actionModel_Calibration_Viewer.setText(_translate("urbanbeatsMain", "Model Calibration Viewer", None))
 
 from PyQt4 import QtWebKit
 import guitoolbaricons_rc
