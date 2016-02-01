@@ -2937,13 +2937,13 @@ class Techplacement(UBModule):
                 #Required surface are of a system that only does water quality management...
 
             vol = storeObj.getSize()
-            #self.notify(vol)
+            #self.notify("Volume "+str(vol))
             if vol == np.inf:       #Strange error where volume return is inf, yet the name 'inf' is not defined
                 vol = np.inf
 
             design_harvest = True
             if AsystemRecWQ[0] in [np.inf, None] or vol == np.inf:
-                #Skip harvesting design! Cannot fulfill treatment + storage
+                #self.notify("Skip harvesting design! Cannot fulfill treatment + storage")
                 design_harvest = False
 
             #Harvesting System Design: Part 1 - INTEGRATED Design extra storage space as integrated storage
@@ -2954,6 +2954,7 @@ class Techplacement(UBModule):
             if techabbr in ["RT", "GW", "PB", "WSUR"] and design_harvest:        #Turn the WQ system into a SWH system based on hybrid combos
                 sysdepth = float(self.sysdepths[techabbr])     #obtain the system depth
                 AsystemRecQty = eval('td.sizeStoreArea_'+str(techabbr)+'('+str(vol)+','+str(sysdepth)+','+str(0)+','+str(9999)+')')
+                #self.notify("AsysrecQty[RT, GW, PB. WSUR] "+str(AsystemRecQty))
                 if AsystemRecQty[0] != None:
                     addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, techabbr, 1])     #Input arguments to addstore function
 
@@ -2964,6 +2965,7 @@ class Techplacement(UBModule):
             if techabbr in ["WSUR", "BF", "SW"] and design_harvest:
                 sysdepth = float(self.sysdepths["RT"])
                 AsystemRecQty = td.sizeStoreArea_RT(vol, sysdepth, 0, 9999)
+                #self.notify("AsysrecQty[WSUR, BF, SW] "+str(AsystemRecQty))
                 if AsystemRecQty[0] != None:
                     addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "RT", 0])
 
@@ -2973,6 +2975,7 @@ class Techplacement(UBModule):
             if techabbr in ["BF", "SW"] and curscale in ["N", "B"] and design_harvest:
                 sysdepth = float(self.sysdepths["PB"])
                 AsystemRecQty = td.sizeStoreArea_PB(vol, sysdepth, 0.0, 9999.0)
+                #self.notify("AsysrecQty[BF, SW] "+str(AsystemRecQty))
                 if AsystemRecQty[0] != None:
                     addstore.append([storeObj, AsystemRecWQ, AsystemRecQty, "PB", 0])
 
@@ -2982,7 +2985,7 @@ class Techplacement(UBModule):
         for i in range(len(addstore)):
             curstore = addstore[i]
             if len(curstore) == 0:
-                # print "No Addstore Data, continuing"
+                #self.notify("No Addstore Data, continuing")
                 continue
             #CHECK WHAT THE TOTAL SYSTEM SIZE IS FIRST BY COMPARING LARGEST SYSTEM TO DATE VS. HARVESTING SYSTEM
             recsize = curstore[1][0] + curstore[2][0]   #AsystemRecWQ + AsystemRecQTY
@@ -2994,6 +2997,8 @@ class Techplacement(UBModule):
                 Asystem["Size"] = Asystem["Rec"]    #Because the integrated system has same planning rules so EAFACT is the same
             else:
                 Asystem["Size"] = curstore[1]   #if non-integrated, then base system is defined ONLY as WQ area/treatment...
+
+            #self.notify("Asystem "+str(Asystem))
 
             #NOW CHECK AVAILABLE SPACE - CREATE OBJECT AND PASS TO FUNCTION RETURN
             if recsize < avail_sp and recsize != None:        #if it fits and is NOT a NoneType
