@@ -73,7 +73,7 @@ def getDataFromInpFile(inpfile, tag, format):
         # print inpfile[i]
 
         # if tag in ["[OPTIONS]", "[TIMES]"]:
-        dataline = inpfile[i].strip().split("\t")   #to account for the double word variables
+        dataline = inpfile[i].strip().split()
         for j in range(len(dataline)):
             dataline[j] = dataline[j].rstrip()
 
