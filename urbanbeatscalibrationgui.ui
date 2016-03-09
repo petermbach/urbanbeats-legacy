@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ResultsBrowseDialog</class>
- <widget class="QDialog" name="ResultsBrowseDialog">
+ <class>CalibrationGUI_Dialog</class>
+ <widget class="QDialog" name="CalibrationGUI_Dialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -144,6 +144,11 @@
          </property>
          <item>
           <property name="text">
+           <string>&lt;select parameter to calibrate&gt;</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>Impervious Area</string>
           </property>
          </item>
@@ -209,46 +214,6 @@
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
          </attribute>
-         <row>
-          <property name="text">
-           <string>BlockID 1</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>BlockID 2</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>BlockID 3</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>BlockID 4</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>BlockID 5</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>BlockID 6</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>BlockID 7</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>BlockID 8</string>
-          </property>
-         </row>
          <column>
           <property name="text">
            <string>BlockID</string>
@@ -289,7 +254,7 @@
         <widget class="QRadioButton" name="set_typetotal_radio">
          <property name="geometry">
           <rect>
-           <x>130</x>
+           <x>30</x>
            <y>110</y>
            <width>91</width>
            <height>17</height>
@@ -315,7 +280,7 @@
         <widget class="QRadioButton" name="set_typeblock_radio">
          <property name="geometry">
           <rect>
-           <x>20</x>
+           <x>130</x>
            <y>110</y>
            <width>91</width>
            <height>17</height>
@@ -341,9 +306,9 @@
         <widget class="QPushButton" name="set_data_reset">
          <property name="geometry">
           <rect>
-           <x>169</x>
+           <x>129</x>
            <y>370</y>
-           <width>71</width>
+           <width>111</width>
            <height>23</height>
           </rect>
          </property>
@@ -356,25 +321,12 @@
           <rect>
            <x>10</x>
            <y>370</y>
-           <width>75</width>
+           <width>111</width>
            <height>23</height>
           </rect>
          </property>
          <property name="text">
           <string>Load...</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="set_data_save">
-         <property name="geometry">
-          <rect>
-           <x>90</x>
-           <y>370</y>
-           <width>75</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Save As...</string>
          </property>
         </widget>
         <widget class="QLabel" name="set_eval_lbl">
@@ -627,7 +579,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>closeButton</sender>
    <signal>clicked()</signal>
-   <receiver>ResultsBrowseDialog</receiver>
+   <receiver>CalibrationGUI_Dialog</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">

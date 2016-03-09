@@ -41,6 +41,7 @@ import md_urbplanbbguic
 import md_techplacementguic
 import md_techimplementguic
 import md_perfassessguic
+import urbanbeatscalibration
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -149,7 +150,8 @@ class MainWindow(QtGui.QMainWindow):
                         
         #Advanced Menu
         #most advanced parameters disabled for now
-        self.connect(self.ui.actionOutput_Options, QtCore.SIGNAL("triggered()"), self.editOutputOptions)        
+        self.connect(self.ui.actionOutput_Options, QtCore.SIGNAL("triggered()"), self.editOutputOptions)
+        self.connect(self.ui.actionModel_Calibration_Viewer, QtCore.SIGNAL("triggered()"), self.callCalibrationGui)
         #----------------------------------------------------------------------------------------------<<<
                 
         #Window Menu
@@ -883,6 +885,11 @@ class MainWindow(QtGui.QMainWindow):
         narrativeguic = ubdialogs.NarrativesGuiLaunch(self.getActiveSimulationObject(), tabindex)
         self.connect(narrativeguic, QtCore.SIGNAL("updatedDetails"), lambda tabindex=tabindex: self.updateSummaryBox(tabindex))
         narrativeguic.exec_()
+
+    def callCalibrationGui(self):
+        tabindex = self.ui.simconfig_tabs.currentIndex()
+        calibrationguic = urbanbeatscalibration.CalibrationGUILaunch(self.getActiveSimulationObject(), tabindex)
+        calibrationguic.exec_()
 
     def callDelinblocksGui(self):
         tabindex = self.ui.simconfig_tabs.currentIndex()

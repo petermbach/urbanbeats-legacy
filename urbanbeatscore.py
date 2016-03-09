@@ -150,6 +150,18 @@ class UrbanBeatsSim(threading.Thread):
                 "GoogleEarth" : int(0),
                 "Localities" : int(0)   }
 
+        self.__calibration_history = {
+                "datafile_imp" : None,
+                "datafile_allot" : None,
+                "datafile_house" : None,
+                "datafile_roofarea": None,
+                "datafile_demand": None,
+                "totalvalue_imp" : 0.0,
+                "totalvalue_allot" : 0.0,
+                "totalvalue_house": 0.0,
+                "totalvalue_roofarea" : 0.0,
+                "totalvalue_demand" : 0.0   }
+
         self.__optionsinfo = {
                 "ReportType": "html",
                 "ReportFile": "unnamed",
@@ -463,6 +475,12 @@ class UrbanBeatsSim(threading.Thread):
 
     def getAllNarratives(self):
         return self.__narratives
+
+    def getCalibrationHistory(self):
+        return self.__calibration_history
+
+    def setCalibrationHistory(self, newDict):
+        self.__calibration_history = newDict
 
     def getProjectDetails(self):
         return self.__projectinfo
