@@ -156,11 +156,11 @@ class UrbanBeatsSim(threading.Thread):
                 "datafile_house" : None,
                 "datafile_roofarea": None,
                 "datafile_demand": None,
-                "totalvalue_imp" : 0.0,
-                "totalvalue_allot" : 0.0,
-                "totalvalue_house": 0.0,
-                "totalvalue_roofarea" : 0.0,
-                "totalvalue_demand" : 0.0   }
+                "totalvalue_imp" : None,
+                "totalvalue_allot" : None,
+                "totalvalue_house": None,
+                "totalvalue_roofarea" : None,
+                "totalvalue_demand" : None   }
 
         self.__optionsinfo = {
                 "ReportType": "html",

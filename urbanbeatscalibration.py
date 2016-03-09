@@ -36,6 +36,9 @@ class CalibrationGUILaunch(QtGui.QDialog):
         self.activesim = activesim
         self.calibrationhistory = self.activesim.getCalibrationHistory()
 
+        self.activeCalibrationData = []
+        self.activeCalibrationValue = None
+
         #Setup GUI
         self.ui.set_param_combo.setCurrentIndex(0)
         self.ui.set_typetotal_radio.setChecked(1)
@@ -44,22 +47,29 @@ class CalibrationGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.set_param_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.changeGUI)
         QtCore.QObject.connect(self.ui.set_param_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.setupCalibration)
         QtCore.QObject.connect(self.ui.set_typeblock_radio, QtCore.SIGNAL("clicked()"), self.enabledisableGUIs)
+        QtCore.QObject.connect(self.ui.set_typeblock_radio, QtCore.SIGNAL("clicked()"), self.setupCalibration)
         QtCore.QObject.connect(self.ui.set_typetotal_radio, QtCore.SIGNAL("clicked()"), self.enabledisableGUIs)
+        QtCore.QObject.connect(self.ui.set_typetotal_radio, QtCore.SIGNAL("clicked()"), self.setupCalibration)
+
+        QtCore.QObject.connect(self.ui.set_totvalue_box, QtCore.SIGNAL("editingFinished()"), self.updateSingleValue)
 
         #Load calibration data
         QtCore.QObject.connect(self.ui.set_data_load, QtCore.SIGNAL("clicked()"), self.openFileDialog_calibdata)
         QtCore.QObject.connect(self.ui.set_data_reset, QtCore.SIGNAL("clicked()"), self.resetCalibrationData)
         QtCore.QObject.connect(self.ui.set_gen_button, QtCore.SIGNAL("clicked()"), self.generate_calibdata)
 
-        #Do stuff with GUI
-
-
-
+        #Save state of calibration data
         QtCore.QObject.connect(self.ui.closeButton, QtCore.SIGNAL("clicked()"), self.saveHistory)
+        QtCore.QObject.connect(self.ui.out_export, QtCore.SIGNAL("clicked()"), self.exportCalibrationResults)
+
+    def updateSingleValue(self):
+        self.calibrationhistory[self.getCalibrationKeyword()] = self.ui.set_totvalue_box.text()
+        return True
 
     def resetCalibrationData(self):
         #Reset Table
         self.calibrationhistory[self.getCalibrationKeyword()] = None
+        self.ui.set_data_table.setRowCount(0)
         self.updateGUI()
         return True
 
@@ -76,9 +86,57 @@ class CalibrationGUILaunch(QtGui.QDialog):
             pass
 
     def setupCalibration(self):
-        pass
+        """Sets up the calibration by retrieving modelled data and updates the calibration data table"""
+        #Change Units regardless of single value or block-based comparison used
 
-    def retrieveModelData(self):
+        units = ["", "units: [sqm]", "units: []", "units: []", "units: [sqm]", "units: [kL/yr]"]
+        self.ui.set_totvalue_units.setText(units[self.ui.set_param_combo.currentIndex()])
+
+        #Retrieve Model Data    mod = [[Blk ID], [Data]]
+        if self.ui.set_param_combo.currentIndex() == 0:
+            pass
+        elif self.ui.set_param_combo.currentIndex() == 1:       #Blk_TIA
+            mod = self.retrieveModelData(["Blk_TIA"])
+        elif self.ui.set_param_combo.currentIndex() == 2:       #Res Allotments
+            mod = self.retrieveModelData([""])
+        elif self.ui.set_param_combo.currentIndex() == 3:       #Res Dwelling Count
+            mod = self.retrieveModelData([""])
+        elif self.ui.set_param_combo.currentIndex() == 4:       #Res Roof Area
+            mod = self.retrieveModelData([""])
+        elif self.ui.set_param_combo.currentIndex() == 5:       #Total Water Demand
+            mod = self.retrieveModelData(["Blk_WD"])
+
+        if self.ui.set_typetotal_radio.isChecked():
+            pass
+            #mod = sum(mod[1])
+
+        #Update calibration data table
+        if self.calibrationhistory[self.getCalibrationKeyword()] == None:
+            self.ui.set_totvalue_box.clear()
+            self.ui.set_data_table.setRowCount(0)
+            return True
+
+        if self.ui.set_typeblock_radio.isChecked():
+            calibdata = ubcal.readCalibrationData(str(self.calibrationhistory[self.getCalibrationKeyword()]))
+            self.updateCalibrationDataTable(calibdata)
+        else:
+            self.ui.set_totvalue_box.setText(str(self.calibrationhistory[self.getCalibrationKeyword()]))
+
+
+    def updateCalibrationDataTable(self, calibdata):
+        self.ui.set_data_table.setRowCount(0)
+
+        for i in range(len(calibdata)):
+            #Update Table in GUI
+            rowPosition = self.ui.set_data_table.rowCount()
+            self.ui.set_data_table.insertRow(rowPosition)
+            blocknum = calibdata[i][0]
+            datavalue = calibdata[i][1]
+            self.ui.set_data_table.setItem(rowPosition, 0, QtGui.QTableWidgetItem(str(blocknum)))
+            self.ui.set_data_table.setItem(rowPosition, 1, QtGui.QTableWidgetItem(str(datavalue)))
+
+
+    def retrieveModelData(self, attributes):
         pass
 
     def openFileDialog_calibdata(self):
@@ -86,24 +144,11 @@ class CalibrationGUILaunch(QtGui.QDialog):
         if fname:
             self.calibrationhistory[self.getCalibrationKeyword()] = fname
             calibdata = ubcal.readCalibrationData(fname)
-
-            for i in range(len(calibdata)):
-                #Update Table in GUI
-                blocknum = QtGui.QTableWidgetItem()
-                blocknum.setData(calibdata[i][0])
-                datavalue = QtGui.QTableWidgetItem()
-                datavalue.setData(calibdata[i][1])
-                self.ui.set_data_table.insertRow()
-                self.ui.set_data_table.setItem(i, 0, blocknum)
-                self.ui.set_data_table.setItem(i, 1, datavalue)
-
-            #self.ui.set_data_table --->
+            self.updateCalibrationDataTable(calibdata)
 
         self.updateGUI()
         return True
 
-    def updateDataTable(self):
-        pass
 
     def changeGUI(self, currentindex):
         if currentindex == 0:
@@ -165,14 +210,38 @@ class CalibrationGUILaunch(QtGui.QDialog):
             self.ui.set_gen_button.setEnabled(0)
             self.ui.set_gen_combo.setEnabled(0)
 
-    def updateGUI(self):
-        #Calibration scripts to update the GUI
-
-        pass
-
-
-
-
     def saveHistory(self):
         """Is called upon GUI closure"""
         self.activesim.setCalibrationHistory(self.calibrationhistory)
+
+    def updateGUI(self):
+        """Updates the Calibration User Interface depending on the current state of
+        data entered into the viewer. If Modelled and Observed data is available,
+        program will plot the results. If at least one of the Performance criteria
+        has been selected, the model calculate this as well.
+        """
+        #Display Results as a text report
+            #1.1 General Reporting Stuff, data stats
+
+
+            #1.2 Goodness of Fit Criterion
+
+
+
+        #Plot Data
+            #1a  - Plot scatter if based on block-by-block
+
+
+
+            #1b - Plot Histogram if only a single value
+
+
+
+
+        pass
+
+    def exportCalibrationResults(self):
+        """Writes calibration results to an output report file that can be used to
+        make plots in Excel or other programs"""
+        pass
+
