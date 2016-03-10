@@ -23,28 +23,28 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
-def estimateTIF_MW(inputdata):
-    pass
-
-
-
+import numpy as np
 
 def calculateNashE(real,mod):
-    nashE = 0
+    #1 - sum(mod/obs diff squared) / sum(mod/modavg diff squared)
+    modavg = np.average(mod)
 
+    omsq = 0
+    mmsq = 0
 
-    return nashE
+    for i in range(len(real)):
+        omsq += pow((real[i] - mod[i]),2)
+        mmsq += pow((mod[i] - modavg),2)
 
-
+    return (1.0 - (omsq/mmsq))
 
 def calculateRMSE(real,mod):
-    rmse = 0
+    errordiff = 0
 
+    for i in range(len(real)):
+        errordiff += pow((real[i]-mod[i]),2)
 
-    return rmse
-
-
-
+    return np.sqrt(errordiff/float(len(real)))
 
 def calculateRelativeError(real,mod):
     relErr = 0

@@ -53,6 +53,10 @@ class CalibrationGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.set_typetotal_radio, QtCore.SIGNAL("clicked()"), self.enabledisableGUIs)
         QtCore.QObject.connect(self.ui.set_typetotal_radio, QtCore.SIGNAL("clicked()"), self.setupCalibration)
 
+        QtCore.QObject.connect(self.ui.set_eval_nash, QtCore.SIGNAL("clicked()"), self.updateGUI)
+        QtCore.QObject.connect(self.ui.set_eval_rmse, QtCore.SIGNAL("clicked()"), self.updateGUI)
+        QtCore.QObject.connect(self.ui.set_eval_error, QtCore.SIGNAL("clicked()"), self.updateGUI)
+
         QtCore.QObject.connect(self.ui.set_totvalue_box, QtCore.SIGNAL("editingFinished()"), self.updateSingleValue)
 
         #Load calibration data
@@ -357,11 +361,34 @@ class CalibrationGUILaunch(QtGui.QDialog):
 
         #Update Results Browser
         if self.moddata and self.obsdata:
-            pass
-            #1.1 General Reporting Stuff, data stats
+            summaryline = ""
 
+            #1.1 General Reporting Stuff, data stats
+            summaryline += "Summary of Calibration: \n"
+            summaryline += "---------------------------\n"
+            summaryline += "Observed Data Points: "+str(len(observedvalues))+"\n"
+            summaryline += "Modelled Data Points: "+str(len(modelled[0]))+"\n"
+            summaryline += "Data Points not compared: "+str(abs(len(modelled[0])-len(observedvalues)))+"\n\n"
 
             #1.2 Goodness of Fit Criterion
+            if self.ui.set_eval_nash.isChecked():
+                nashE = ubcal.calculateNashE(observedvalues, modelledvalues)
+                summaryline += "Nash-Sutcliffe E = "+str(round(nashE,2))+"\n"
+            else:
+                summaryline += "Nash-Sufcliffe E = (not calculated) \n"
+            if self.ui.set_eval_rmse.isChecked():
+                rmse = ubcal.calculateRMSE(observedvalues, modelledvalues)
+                summaryline += "RMSE = "+str(round(rmse,2))+"\n"
+            else:
+                summaryline += "RMSE = (not calculated) \n"
+            if self.ui.set_eval_error.isChecked():
+                relerr = ubcal.calculateRelativeError(observedvalues, modelledvalues)
+                summaryline += "Relative Error = "+str(round(relerr,2))+"\n"
+            else:
+                summaryline += "Relative Error = (not calculated) \n"
+
+            self.ui.out_box.setPlainText(summaryline)
+
         else:
             self.ui.out_box.clear()
             self.ui.out_box.setPlainText("Results:\n")
