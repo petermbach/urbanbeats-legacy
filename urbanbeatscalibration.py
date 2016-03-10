@@ -26,7 +26,7 @@ import os
 from PyQt4 import QtCore, QtGui
 from urbanbeatscalibrationgui import Ui_CalibrationGUI_Dialog
 import urbanbeatscalibrationscripts as ubcal
-
+import ubhighcharts
 
 class CalibrationGUILaunch(QtGui.QDialog):
     def __init__(self, activesim, tabindex, parent=None):
@@ -34,10 +34,12 @@ class CalibrationGUILaunch(QtGui.QDialog):
         self.ui = Ui_CalibrationGUI_Dialog()
         self.ui.setupUi(self)
         self.activesim = activesim
+        self.ubeatsdir = activesim.getGlobalOptionsRoot()       #Current directory of the file
         self.calibrationhistory = self.activesim.getCalibrationHistory()
-
+        self.tabindex = tabindex
         self.activeCalibrationData = []
         self.activeCalibrationValue = None
+        self.modelled_data = None
 
         #Setup GUI
         self.ui.set_param_combo.setCurrentIndex(0)
@@ -62,6 +64,12 @@ class CalibrationGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.closeButton, QtCore.SIGNAL("clicked()"), self.saveHistory)
         QtCore.QObject.connect(self.ui.out_export, QtCore.SIGNAL("clicked()"), self.exportCalibrationResults)
 
+        #Definition of GUI States: used in UpdateGUI to determine what to do.
+        self.moddata = False
+        self.obsdata = False
+        self.criterionselect = False
+
+
     def updateSingleValue(self):
         self.calibrationhistory[self.getCalibrationKeyword()] = self.ui.set_totvalue_box.text()
         return True
@@ -70,6 +78,7 @@ class CalibrationGUILaunch(QtGui.QDialog):
         #Reset Table
         self.calibrationhistory[self.getCalibrationKeyword()] = None
         self.ui.set_data_table.setRowCount(0)
+        self.obsdata = False
         self.updateGUI()
         return True
 
@@ -79,16 +88,79 @@ class CalibrationGUILaunch(QtGui.QDialog):
         return keys[kwindex]
 
     def generate_calibdata(self):
+        allassetdata = self.activesim.retrieveAssetsFromCollection("pc", self.tabindex)
+        assetdata = self.activesim.getAssetsWithIdentifier("BlockID", assetcol=allassetdata)
+
         if self.ui.set_gen_combo.currentIndex() == 0:
-            pass
             #Melbourne Water guide
+            calibdata = self.generateImpAreaFromMWGuide(assetdata)
+            self.updateCalibrationDataTable(calibdata)
+            self.calibrationhistory[self.getCalibrationKeyword()] = None    #Set to None because this data changes every time
+            self.obsdata = True
         else:
             pass
+
+        self.updateGUI()
+
+
+    def generateImpAreaFromMWGuide(self, assetdata):
+        map_attr = self.activesim.getAssetWithName("MapAttributes")
+        block_size = map_attr.getAttribute("BlockSize")
+        #print "Block Size", block_size
+
+        nonreslucmatrix = ["COM", "LI", "HI", "ORC", "CIV", "SVU", "TR", "RD", "PG", "REF", "UND", "NA"]
+        dataset = {}
+        rawdata = []
+        f = open(self.ubeatsdir+"/ancillary/mw_mmg.cfg", 'r')
+        for lines in f:
+            rawdata.append(lines.split(','))
+        f.close()
+
+        for lines in range(len(rawdata)):
+            dataset[str(rawdata[lines][0])] = rawdata[lines][1:]
+        #print "Calibration MW", dataset
+
+        #Calculate impervious area for non-residential land uses
+        calibdata = [[],[]]
+        curindex = 0
+        for i in range(len(assetdata)):
+            asset = assetdata[i]
+            if asset.getAttribute("Status") == 0:
+                continue
+
+            calibdata[0].append(int(asset.getAttribute("BlockID")))
+            print "BlockID", calibdata[0][curindex]
+            calibdata[1].append(0)
+
+            #Non-Residential Land uses
+            for luc in nonreslucmatrix:
+                calibdata[1][curindex] += asset.getAttribute("pLU_"+luc) * float(dataset[luc][2])
+
+            #Residential
+            lotarea = float(asset.getAttribute("ResLotArea"))
+            if lotarea == 0:
+                pass
+            if lotarea < 350.0:
+                calibdata[1][curindex] += asset.getAttribute("pLU_RES") * float(dataset["RES-350"][2])
+            elif lotarea < 500.0:
+                calibdata[1][curindex] += asset.getAttribute("pLU_RES") * float(dataset["RES-500"][2])
+            elif lotarea < 800.0:
+                calibdata[1][curindex] += asset.getAttribute("pLU_RES") * float(dataset["RES-800"][2])
+            else:
+                calibdata[1][curindex] += asset.getAttribute("pLU_RES") * float(dataset["RES-4000"][2])
+
+            if asset.getAttribute("HDRFlats") != 0:
+                calibdata[1][curindex] += asset.getAttribute("pLU_RES") * float(dataset["HDR"][2])
+
+            #HDR
+            calibdata[1][curindex] = calibdata[1][curindex] * asset.getAttribute("Active") * float(block_size) * float(block_size)
+            curindex += 1
+        return calibdata
+
 
     def setupCalibration(self):
         """Sets up the calibration by retrieving modelled data and updates the calibration data table"""
         #Change Units regardless of single value or block-based comparison used
-
         units = ["", "units: [sqm]", "units: []", "units: []", "units: [sqm]", "units: [kL/yr]"]
         self.ui.set_totvalue_units.setText(units[self.ui.set_param_combo.currentIndex()])
 
@@ -107,37 +179,59 @@ class CalibrationGUILaunch(QtGui.QDialog):
             mod = self.retrieveModelData(["Blk_WD"])
 
         if self.ui.set_typetotal_radio.isChecked():
-            pass
-            #mod = sum(mod[1])
+            mod = sum(mod[1])
+
+        self.modelled_data = mod
+        self.moddata = True
 
         #Update calibration data table
         if self.calibrationhistory[self.getCalibrationKeyword()] == None:
             self.ui.set_totvalue_box.clear()
             self.ui.set_data_table.setRowCount(0)
+            self.obsdata = False
             return True
 
         if self.ui.set_typeblock_radio.isChecked():
             calibdata = ubcal.readCalibrationData(str(self.calibrationhistory[self.getCalibrationKeyword()]))
             self.updateCalibrationDataTable(calibdata)
+            self.obsdata = True
         else:
             self.ui.set_totvalue_box.setText(str(self.calibrationhistory[self.getCalibrationKeyword()]))
+            self.obsdata = True
+
+        self.updateGUI()
 
 
     def updateCalibrationDataTable(self, calibdata):
         self.ui.set_data_table.setRowCount(0)
 
-        for i in range(len(calibdata)):
+        for i in range(len(calibdata[0])):
             #Update Table in GUI
             rowPosition = self.ui.set_data_table.rowCount()
             self.ui.set_data_table.insertRow(rowPosition)
-            blocknum = calibdata[i][0]
-            datavalue = calibdata[i][1]
+            blocknum = calibdata[0][i]
+            datavalue = calibdata[1][i]
             self.ui.set_data_table.setItem(rowPosition, 0, QtGui.QTableWidgetItem(str(blocknum)))
             self.ui.set_data_table.setItem(rowPosition, 1, QtGui.QTableWidgetItem(str(datavalue)))
+        self.obsdata = True
 
 
     def retrieveModelData(self, attributes):
-        pass
+        """Retrieve data from the current model run"""
+        allassetdata = self.activesim.retrieveAssetsFromCollection("pc", self.tabindex)
+        assetdata = self.activesim.getAssetsWithIdentifier("BlockID", assetcol=allassetdata)
+        mod = [[],[]]
+        curindex = 0
+        for i in range(len(assetdata)):
+            if assetdata[i].getAttribute("Status") == 0:
+                continue
+            mod[0].append(int(assetdata[i].getAttribute("BlockID")))
+            mod[1].append(0)
+            for att in attributes:
+                mod[1][curindex] += float(assetdata[i].getAttribute(att))
+            curindex += 1
+        return mod
+
 
     def openFileDialog_calibdata(self):
         fname = QtGui.QFileDialog.getOpenFileName(self, "Choose Calibration Data File...", os.curdir, "Calibration Data (*.csv *.txt)")
@@ -150,12 +244,22 @@ class CalibrationGUILaunch(QtGui.QDialog):
         return True
 
 
+    def readTableData(self):
+        "Grabs all the data in the observed data table when requested"
+        blockColl = {}
+        for i in range(self.ui.set_data_table.rowCount()):
+            print self.ui.set_data_table.item(i, 0).text(), self.ui.set_data_table.item(i, 1).text()
+            blockColl[int(self.ui.set_data_table.item(i, 0).text())] = float(self.ui.set_data_table.item(i, 1).text())
+        return blockColl
+
+
     def changeGUI(self, currentindex):
         if currentindex == 0:
             self.enabledisableAllGUIs(0)
         elif currentindex != 0:
             self.enabledisableAllGUIs(1)
             self.enabledisableGUIs()
+
 
     def enabledisableAllGUIs(self, status):
         self.ui.set_typetotal_radio.setEnabled(status)
@@ -172,6 +276,7 @@ class CalibrationGUILaunch(QtGui.QDialog):
         self.ui.set_totvalue_box.setEnabled(status)
         self.ui.set_totvalue_units.setEnabled(status)
         self.ui.set_eval_error.setEnabled(status)
+
 
     def enabledisableGUIs(self):
         if self.ui.set_typetotal_radio.isChecked():
@@ -202,6 +307,7 @@ class CalibrationGUILaunch(QtGui.QDialog):
 
             self.checkGenerateGUI()
 
+
     def checkGenerateGUI(self):
         if self.ui.set_param_combo.currentIndex() == 1:
             self.ui.set_gen_button.setEnabled(1)
@@ -210,9 +316,11 @@ class CalibrationGUILaunch(QtGui.QDialog):
             self.ui.set_gen_button.setEnabled(0)
             self.ui.set_gen_combo.setEnabled(0)
 
+
     def saveHistory(self):
         """Is called upon GUI closure"""
         self.activesim.setCalibrationHistory(self.calibrationhistory)
+
 
     def updateGUI(self):
         """Updates the Calibration User Interface depending on the current state of
@@ -220,28 +328,98 @@ class CalibrationGUILaunch(QtGui.QDialog):
         program will plot the results. If at least one of the Performance criteria
         has been selected, the model calculate this as well.
         """
-        #Display Results as a text report
+        #Plot Data
+        if self.obsdata and self.moddata:
+            if self.ui.set_typeblock_radio.isChecked():
+                observed = self.readTableData()
+                modelled = self.modelled_data
+
+                observedvalues = []
+                modelledvalues = []
+                for i in observed.keys():
+                    if i not in modelled[0]:
+                        continue
+                    observedvalues.append(round(float(observed[i]),2))
+                    modelledvalues.append(round(float(modelled[1][modelled[0].index(i)]),2))
+
+                #PLOT SCATTER
+                self.plotCalibrationScatter(observedvalues, modelledvalues)
+
+            else:
+                observed = float(self.ui.set_totvalue_box.text())
+                modelled = self.modelled_data
+
+                #PLOT HISTOGRAM
+
+        else:
+            self.ui.calibrationView.setHtml("")
+
+
+        #Update Results Browser
+        if self.moddata and self.obsdata:
+            pass
             #1.1 General Reporting Stuff, data stats
 
 
             #1.2 Goodness of Fit Criterion
+        else:
+            self.ui.out_box.clear()
+            self.ui.out_box.setPlainText("Results:\n")
+
+        return True
 
 
-
-        #Plot Data
-            #1a  - Plot scatter if based on block-by-block
-
-
-
-            #1b - Plot Histogram if only a single value
-
-
-
-
+    def plotCalibrationHistogram(self, obs, mod):
         pass
+
+
+    def plotCalibrationScatter(self, obs, mod):
+        """Plots a scatter plot showing the correlation of two of the selected attributes at the Block Level
+        :return:
+        """
+        x_name = "Observed Data"
+        y_name = "Modelled Data"
+        title = str(self.ui.set_param_combo.currentText()) + " " +self.ui.set_totvalue_units.text()[7:]
+
+        x_values = obs
+        y_values = mod
+        datadict = {x_name+" vs. "+y_name : []}
+        for i in range(len(x_values)):
+            datadict[x_name+" vs. "+y_name].append([x_values[i], y_values[i]])
+
+        self.htmlscript = ubhighcharts.scatter_plot(self.ubeatsdir, title, x_name, y_name, 3, "", "", datadict)
+        self.ui.calibrationView.setHtml(self.htmlscript)
+
 
     def exportCalibrationResults(self):
         """Writes calibration results to an output report file that can be used to
         make plots in Excel or other programs"""
-        pass
+
+        if self.moddata or self.obsdata:
+            f = open("CalibrationResults.txt", 'w')
+        else:
+            QtGui.QMessageBox.warning(self, "No data to export", "There is currently no data to export!", QtGui.QMessageBox.Ok)
+            return True
+
+        #Export the Results Box
+        f.write(self.ui.out_box.toPlainText())
+
+        #Exports the Observed and Modelled Data if Available
+        f.write("\n\n")
+        f.write("BlockID, Observed, Modelled \n")
+        if self.obsdata and self.moddata:
+            if self.ui.set_typeblock_radio.isChecked():
+                observed = self.readTableData()
+                modelled = self.modelled_data
+
+                for i in observed.keys():
+                    if i not in modelled[0]:
+                        continue
+                    f.write(str(i)+","+str(round(float(observed[i]),2))+","+str(round(float(modelled[1][modelled[0].index(i)]),2))+"\n")
+
+        #Export the Parameter Set Data if Requested
+        #Urban Form only, unless Water Demands
+
+        f.close()
+        QtGui.QMessageBox.warning(self, "Export Complete", "Results for current calibration successfully \n exported to project path!", QtGui.QMessageBox.Ok)
 

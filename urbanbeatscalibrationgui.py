@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatscalibrationgui.ui'
 #
-# Created: Wed Mar 09 12:17:25 2016
+# Created: Thu Mar 10 11:49:34 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -161,6 +161,9 @@ class Ui_CalibrationGUI_Dialog(object):
         self.out_box = QtGui.QPlainTextEdit(self.calibrationResults)
         self.out_box.setObjectName(_fromUtf8("out_box"))
         self.verticalLayout_2.addWidget(self.out_box)
+        self.report_includeparams_check = QtGui.QCheckBox(self.calibrationResults)
+        self.report_includeparams_check.setObjectName(_fromUtf8("report_includeparams_check"))
+        self.verticalLayout_2.addWidget(self.report_includeparams_check)
         self.out_export = QtGui.QPushButton(self.calibrationResults)
         self.out_export.setObjectName(_fromUtf8("out_export"))
         self.verticalLayout_2.addWidget(self.out_export)
@@ -211,6 +214,7 @@ class Ui_CalibrationGUI_Dialog(object):
         self.set_param_combo.setItemText(4, _translate("CalibrationGUI_Dialog", "Total Residential Roof Area", None))
         self.set_param_combo.setItemText(5, _translate("CalibrationGUI_Dialog", "Water Demand", None))
         self.set_param_lbl.setText(_translate("CalibrationGUI_Dialog", "Select Parameter to Calibrate:", None))
+        self.set_data_table.setSortingEnabled(False)
         item = self.set_data_table.horizontalHeaderItem(0)
         item.setText(_translate("CalibrationGUI_Dialog", "BlockID", None))
         item = self.set_data_table.horizontalHeaderItem(1)
@@ -233,6 +237,7 @@ class Ui_CalibrationGUI_Dialog(object):
         self.calibset_title.setText(_translate("CalibrationGUI_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Calibration Settings</span></p></body></html>", None))
         self.caliboutput_title.setText(_translate("CalibrationGUI_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Calibration Outputs</span></p></body></html>", None))
         self.out_box.setPlainText(_translate("CalibrationGUI_Dialog", "Results:", None))
+        self.report_includeparams_check.setText(_translate("CalibrationGUI_Dialog", "Include Parameters in Report", None))
         self.out_export.setText(_translate("CalibrationGUI_Dialog", "Export Report...", None))
         self.remarks.setText(_translate("CalibrationGUI_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"

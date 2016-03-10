@@ -208,6 +208,9 @@
          <property name="gridStyle">
           <enum>Qt::SolidLine</enum>
          </property>
+         <property name="sortingEnabled">
+          <bool>false</bool>
+         </property>
          <attribute name="horizontalHeaderVisible">
           <bool>true</bool>
          </attribute>
@@ -457,6 +460,13 @@
           <widget class="QPlainTextEdit" name="out_box">
            <property name="plainText">
             <string>Results:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="report_includeparams_check">
+           <property name="text">
+            <string>Include Parameters in Report</string>
            </property>
           </widget>
          </item>

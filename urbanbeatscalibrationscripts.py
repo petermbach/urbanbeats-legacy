@@ -53,8 +53,13 @@ def calculateRelativeError(real,mod):
 
 
 def readCalibrationData(filename):
+    """Reads the calibration data file and returns an array.
+    :param filename: filename containing the calibration data set split into two columns: Block ID and Value
+    :return: final array [ [BlockID], [Value] ]
+    """
     rawdata = []
     calibdata = []
+    final = [ [] , [] ]
     f = open(filename, 'r')
     for lines in f:
         rawdata.append(lines.split(','))
@@ -64,4 +69,7 @@ def readCalibrationData(filename):
             calibdata.append([int(rawdata[i][0]), float(rawdata[i][1])])
         except ValueError:
             pass
-    return calibdata
+    for i in range(len(calibdata)):
+        final[0].append(calibdata[i][0])
+        final[1].append(calibdata[i][1])
+    return final
