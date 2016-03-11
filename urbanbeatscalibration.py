@@ -22,6 +22,18 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
+
+#Still to Do:
+    #- Histogram Plot for Single Value calibration
+    #- Relative Error Calculations
+    #- Calibration viewer for other parameters e.g. houses, roof, etc.
+    #- More result summary stats
+    #- Oprion for customising excel .csv file based on headers e.g. if calibration data all contained in one file
+    #  which column should be used?
+    #- Future: more plotting Options for data
+
+
+
 import os
 from PyQt4 import QtCore, QtGui
 from urbanbeatscalibrationgui import Ui_CalibrationGUI_Dialog
