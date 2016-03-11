@@ -47,9 +47,32 @@ def calculateRMSE(real,mod):
     return np.sqrt(errordiff/float(len(real)))
 
 def calculateRelativeError(real,mod):
-    relErr = 0
+    relErrors = []
+    for i in range(len(real)):
+        if real[i] == 0:
+            relErrors.append(100.0)
+        else:
+            relErrors.append(abs(round((real[i] - mod[i])/real[i],1)*100.0))
 
-    return relErr
+    avgerr = np.average(relErrors)
+    maxerr = np.max(relErrors)
+    minerr = np.min(relErrors)
+
+    counterr50 = 0
+    counterr30 = 0
+    counterr10 = 0
+    for i in range(len(relErrors)):
+        if relErrors[i] < 10.0:
+            counterr50 += 1
+            counterr30 += 1
+            counterr10 += 1
+        elif relErrors[i] < 30.0:
+            counterr50 += 1
+            counterr30 += 1
+        elif relErrors[i] < 50.0:
+            counterr50 += 1
+    return avgerr, minerr, maxerr, counterr10, counterr30, counterr50
+
 
 
 def readCalibrationData(filename):

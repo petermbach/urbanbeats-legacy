@@ -24,7 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
 #Still to Do:
-    #- Relative Error Calculations
     #- Calibration viewer for other parameters e.g. houses, roof, etc.
     #- More result summary stats
     #- Oprion for customising excel .csv file based on headers e.g. if calibration data all contained in one file
@@ -397,8 +396,13 @@ class CalibrationGUILaunch(QtGui.QDialog):
                 else:
                     summaryline += "RMSE = (not calculated) \n"
                 if self.ui.set_eval_error.isChecked():
-                    relerr = ubcal.calculateRelativeError(observedvalues, modelledvalues)
-                    summaryline += "Relative Error = "+str(round(relerr,2))+"\n"
+                    avgerr, minerr, maxerr, e10, e30, e50 = ubcal.calculateRelativeError(observedvalues, modelledvalues)
+                    summaryline += "Average Relative Error = "+str(round(avgerr,1))+"%\n"
+                    summaryline += "Min. Relative Error = "+str(round(minerr,1))+"%\n"
+                    summaryline += "Max Relative Error = "+str(round(maxerr,1))+"%\n\n"
+                    summaryline += "Data Points with < 10% Error = "+str(round(e10,0))+"\n"
+                    summaryline += "Data Points with < 30% Error = "+str(round(e30,0))+"\n"
+                    summaryline += "Data Points with < 50% Error = "+str(round(e50,0))+"\n"
                 else:
                     summaryline += "Relative Error = (not calculated) \n"
             else:
