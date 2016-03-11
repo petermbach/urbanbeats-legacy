@@ -266,6 +266,10 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.createParameter("epanet_inpfname", STRING, "")
         self.createParameter("runBaseInp", BOOL, "")
         self.createParameter("epanet_simtype", STRING, "")
+        self.createParameter("epanet_offset", BOOL, "")
+        self.createParameter("epanet_useProjectOffset", BOOL, "")
+        self.createParameter("epanet_offsetX", DOUBLE, "")
+        self.createParameter("epanet_offsetY", DOUBLE, "")
 
         #VD = voronoi diagram, DT = delaunay triangulation, RS = radial scan, NN = nearest neighbour
         self.epanetintmethod = "VD"
@@ -276,6 +280,10 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.runBaseInp = 0         #run the base simulation? will rebuild the .inp file
         #STS = static sim, 24H = 24-hour, EPS = extended period sim (72hrs), LTS = long-term sim
         self.epanet_simtype = "STS"
+        self.epanet_offset = 0
+        self.epanet_useProjectOffset = 0
+        self.epanet_offsetX = 0
+        self.epanet_offsetY = 0
 
         self.createParameter("epanetsim_hl", STRING, "")
         self.createParameter("epanetsim_hlc", DOUBLE, "")
@@ -793,12 +801,23 @@ class PerformanceAssess(UBModule):      #UBCORE
             dem_list = self.adjustEPANETdemands(rev_node_list, nbrelation)
             print dem_list
 
+        #Clarify Offsets
+        if self.epanet_offset:
+            if self.epanet_useProjectOffset:
+                #Get Project Offsets
+                offX = 0
+                offY = 0
+            else:
+                offX = self.epanet_offsetX
+                offY = self.epanet_offsetY
+
         #Use the node block list to work out the new demands and rewrite the EPANET file
         if self.runBaseInp:
-            self.rewriteEPANETbase(base_inpfile)
+            self.rewriteEPANETbase(base_inpfile,offX, offY)
+
 
         self.writeUB_EPANETfile(base_inpfile, node_list, opt_list, times_list,
-                                node_props, dem_list, pat_list)
+                                node_props, dem_list, pat_list, offX, offY)
 
         #Run the EPANET Simulations
         self.runEPANETsim()
@@ -1125,11 +1144,11 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         return nbrelation
 
-    def rewriteEPANETbase(self, basedata):
+    def rewriteEPANETbase(self, basedata, offX, offY):
         print "Re-run the base input file"
         return True
 
-    def writeUB_EPANETfile(self, basedata, node_list, opt_list, times_list, node_props, dem_list, pat_list):
+    def writeUB_EPANETfile(self, basedata, node_list, opt_list, times_list, node_props, dem_list, pat_list, offX, offY):
         epanetpath = self.activesim.getActiveProjectPath()
         epanetfname = self.activesim.getGISExportDetails()["Filename"]+"_epanet.inp"
 
