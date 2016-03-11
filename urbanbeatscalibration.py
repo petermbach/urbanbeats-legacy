@@ -24,7 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
 #Still to Do:
-    #- Histogram Plot for Single Value calibration
     #- Relative Error Calculations
     #- Calibration viewer for other parameters e.g. houses, roof, etc.
     #- More result summary stats
@@ -88,6 +87,8 @@ class CalibrationGUILaunch(QtGui.QDialog):
 
     def updateSingleValue(self):
         self.calibrationhistory[self.getCalibrationKeyword()] = self.ui.set_totvalue_box.text()
+        self.obsdata = 1
+        self.updateGUI()
         return True
 
     def resetCalibrationData(self):
@@ -366,6 +367,7 @@ class CalibrationGUILaunch(QtGui.QDialog):
                 modelled = self.modelled_data
 
                 #PLOT HISTOGRAM
+                self.plotCalibrationHistogram(observed, modelled)
 
         else:
             self.ui.calibrationView.setHtml("")
@@ -374,30 +376,43 @@ class CalibrationGUILaunch(QtGui.QDialog):
         #Update Results Browser
         if self.moddata and self.obsdata:
             summaryline = ""
-
-            #1.1 General Reporting Stuff, data stats
             summaryline += "Summary of Calibration: \n"
             summaryline += "---------------------------\n"
-            summaryline += "Observed Data Points: "+str(len(observedvalues))+"\n"
-            summaryline += "Modelled Data Points: "+str(len(modelled[0]))+"\n"
-            summaryline += "Data Points not compared: "+str(abs(len(modelled[0])-len(observedvalues)))+"\n\n"
 
-            #1.2 Goodness of Fit Criterion
-            if self.ui.set_eval_nash.isChecked():
-                nashE = ubcal.calculateNashE(observedvalues, modelledvalues)
-                summaryline += "Nash-Sutcliffe E = "+str(round(nashE,2))+"\n"
+            if self.ui.set_typeblock_radio.isChecked():
+                #1.1 General Reporting Stuff, data stats
+                summaryline += "Observed Data Points: "+str(len(observedvalues))+"\n"
+                summaryline += "Modelled Data Points: "+str(len(modelled[0]))+"\n"
+                summaryline += "Data Points not compared: "+str(abs(len(modelled[0])-len(observedvalues)))+"\n\n"
+
+                #1.2 Goodness of Fit Criterion
+                if self.ui.set_eval_nash.isChecked():
+                    nashE = ubcal.calculateNashE(observedvalues, modelledvalues)
+                    summaryline += "Nash-Sutcliffe E = "+str(round(nashE,2))+"\n"
+                else:
+                    summaryline += "Nash-Sufcliffe E = (not calculated) \n"
+                if self.ui.set_eval_rmse.isChecked():
+                    rmse = ubcal.calculateRMSE(observedvalues, modelledvalues)
+                    summaryline += "RMSE = "+str(round(rmse,2))+"\n"
+                else:
+                    summaryline += "RMSE = (not calculated) \n"
+                if self.ui.set_eval_error.isChecked():
+                    relerr = ubcal.calculateRelativeError(observedvalues, modelledvalues)
+                    summaryline += "Relative Error = "+str(round(relerr,2))+"\n"
+                else:
+                    summaryline += "Relative Error = (not calculated) \n"
             else:
-                summaryline += "Nash-Sufcliffe E = (not calculated) \n"
-            if self.ui.set_eval_rmse.isChecked():
-                rmse = ubcal.calculateRMSE(observedvalues, modelledvalues)
-                summaryline += "RMSE = "+str(round(rmse,2))+"\n"
-            else:
-                summaryline += "RMSE = (not calculated) \n"
-            if self.ui.set_eval_error.isChecked():
-                relerr = ubcal.calculateRelativeError(observedvalues, modelledvalues)
-                summaryline += "Relative Error = "+str(round(relerr,2))+"\n"
-            else:
-                summaryline += "Relative Error = (not calculated) \n"
+                summaryline += "Observed Data: Using Total Value \n"
+                summaryline += "Modelled Data: Using Total Value \n\n"
+
+                if self.ui.set_eval_error.isChecked():
+                    if observed == 0:
+                        err = 100.0
+                    else:
+                        err = (observed - modelled)/observed * 100.0
+                    summaryline += "Relative Error = "+str(abs(round(err,1)))+"%\n"
+                else:
+                    summaryline += "Relative Error = (not calculated)"
 
             self.ui.out_box.setPlainText(summaryline)
 
@@ -409,7 +424,18 @@ class CalibrationGUILaunch(QtGui.QDialog):
 
 
     def plotCalibrationHistogram(self, obs, mod):
-        pass
+        title = str(self.ui.set_param_combo.currentText()) + " "+self.ui.set_totvalue_units.text()[7:]
+        categories = [""]
+        xlabel = ""
+        units = self.ui.set_totvalue_units.text()[7:]
+        labelformat = [-45, 'right', 13, 'Verdana, sans-serif']
+        data = {"Observed": [obs],
+                "Modelled": [mod]}
+        self.htmlscript = ubhighcharts.column_basic(self.ubeatsdir, title, categories, xlabel, labelformat,  units, data)
+        self.ui.calibrationView.setHtml(self.htmlscript)
+
+        print self.htmlscript
+        return True
 
 
     def plotCalibrationScatter(self, obs, mod):
