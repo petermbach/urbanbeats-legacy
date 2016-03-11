@@ -24,9 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
 #Still to Do:
-    #- Calibration viewer for other parameters e.g. houses, roof, etc.
-    #- More result summary stats
-    #- Oprion for customising excel .csv file based on headers e.g. if calibration data all contained in one file
+    #- Future: Option for customising excel .csv file based on headers e.g. if calibration data all contained in one file
     #  which column should be used?
     #- Future: more plotting Options for data
 
@@ -68,6 +66,8 @@ class CalibrationGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.set_eval_error, QtCore.SIGNAL("clicked()"), self.updateGUI)
 
         QtCore.QObject.connect(self.ui.set_totvalue_box, QtCore.SIGNAL("editingFinished()"), self.updateSingleValue)
+        QtCore.QObject.connect(self.ui.plottype_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateGUI)
+
 
         #Load calibration data
         QtCore.QObject.connect(self.ui.set_data_load, QtCore.SIGNAL("clicked()"), self.openFileDialog_calibdata)
@@ -186,11 +186,11 @@ class CalibrationGUILaunch(QtGui.QDialog):
         elif self.ui.set_param_combo.currentIndex() == 1:       #Blk_TIA
             mod = self.retrieveModelData(["Blk_TIA"])
         elif self.ui.set_param_combo.currentIndex() == 2:       #Res Allotments
-            mod = self.retrieveModelData([""])
+            mod = self.retrieveModelData(["ResAllots"])
         elif self.ui.set_param_combo.currentIndex() == 3:       #Res Dwelling Count
-            mod = self.retrieveModelData([""])
+            mod = self.retrieveModelData(["ResHouses", "HDRFlats"])
         elif self.ui.set_param_combo.currentIndex() == 4:       #Res Roof Area
-            mod = self.retrieveModelData([""])
+            mod = self.retrieveModelData(["ResRoof", "HDRRoofA"])
         elif self.ui.set_param_combo.currentIndex() == 5:       #Total Water Demand
             mod = self.retrieveModelData(["Blk_WD"])
 
@@ -244,7 +244,10 @@ class CalibrationGUILaunch(QtGui.QDialog):
             mod[0].append(int(assetdata[i].getAttribute("BlockID")))
             mod[1].append(0)
             for att in attributes:
-                mod[1][curindex] += float(assetdata[i].getAttribute(att))
+                if att == "ResRoof":
+                    mod[1][curindex] += float(assetdata[i].getAttribute(att)*assetdata[i].getAttribute("ResHouses"))
+                else:
+                    mod[1][curindex] += float(assetdata[i].getAttribute(att))
             curindex += 1
         return mod
 
@@ -358,15 +361,29 @@ class CalibrationGUILaunch(QtGui.QDialog):
                     observedvalues.append(round(float(observed[i]),2))
                     modelledvalues.append(round(float(modelled[1][modelled[0].index(i)]),2))
 
-                #PLOT SCATTER
-                self.plotCalibrationScatter(observedvalues, modelledvalues)
+                if self.ui.plottype_combo.currentIndex() == 0:
+                    #PLOT SCATTER MODELLED VS OBSERVED
+                    self.plotCalibrationScatter(observedvalues, modelledvalues)
+                elif self.ui.plottype_combo.currentIndex() == 1:
+                    #PLOT RESIDUALS (Obs - Mod)
+                    pass
+                elif self.ui.plottype_combo.currentIndex() == 2:
+                    #PLOT ERROR AS HISTOGRAM
+                    pass
 
             else:
                 observed = float(self.ui.set_totvalue_box.text())
                 modelled = self.modelled_data
 
-                #PLOT HISTOGRAM
-                self.plotCalibrationHistogram(observed, modelled)
+                if self.ui.plottype_combo.currentIndex() == 0:
+                    #PLOT HISTOGRAM MODELLED VS OBSERVED
+                    self.plotCalibrationHistogram(observed, modelled)
+                elif self.ui.plottype_combo.currentIndex() == 1:
+                    #PLOT RESIDUALS (Obs - Mod)
+                    pass
+                elif self.ui.plottype_combo.currentIndex() == 2:
+                    #PLOT ERROR AS HISTOGRAM
+                    pass
 
         else:
             self.ui.calibrationView.setHtml("")
@@ -425,6 +442,14 @@ class CalibrationGUILaunch(QtGui.QDialog):
             self.ui.out_box.setPlainText("Results:\n")
 
         return True
+
+
+    def plotCalibrationResidualHistogram(self, obs, mod):
+        pass
+
+    def plotErrorHistogram(self, obs, mod):
+        pass
+
 
 
     def plotCalibrationHistogram(self, obs, mod):

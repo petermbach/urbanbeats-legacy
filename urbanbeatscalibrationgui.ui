@@ -381,7 +381,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>Relative Error</string>
+          <string>Relative Errors</string>
          </property>
         </widget>
         <widget class="QPushButton" name="set_gen_button">
@@ -464,9 +464,42 @@
           </widget>
          </item>
          <item>
+          <widget class="QLabel" name="plottype_lbl">
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Select Plot Type:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="plottype_combo">
+           <item>
+            <property name="text">
+             <string>Modelled vs. Observed</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Residual Plot</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Error Distribution</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="report_lbl">
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Export Calibration Results&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="report_includeparams_check">
            <property name="text">
-            <string>Include Parameters in Report</string>
+            <string>Include Model Parameters in Report</string>
            </property>
           </widget>
          </item>

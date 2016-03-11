@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatscalibrationgui.ui'
 #
-# Created: Thu Mar 10 11:49:34 2016
+# Created: Fri Mar 11 14:38:15 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -161,6 +161,18 @@ class Ui_CalibrationGUI_Dialog(object):
         self.out_box = QtGui.QPlainTextEdit(self.calibrationResults)
         self.out_box.setObjectName(_fromUtf8("out_box"))
         self.verticalLayout_2.addWidget(self.out_box)
+        self.plottype_lbl = QtGui.QLabel(self.calibrationResults)
+        self.plottype_lbl.setObjectName(_fromUtf8("plottype_lbl"))
+        self.verticalLayout_2.addWidget(self.plottype_lbl)
+        self.plottype_combo = QtGui.QComboBox(self.calibrationResults)
+        self.plottype_combo.setObjectName(_fromUtf8("plottype_combo"))
+        self.plottype_combo.addItem(_fromUtf8(""))
+        self.plottype_combo.addItem(_fromUtf8(""))
+        self.plottype_combo.addItem(_fromUtf8(""))
+        self.verticalLayout_2.addWidget(self.plottype_combo)
+        self.report_lbl = QtGui.QLabel(self.calibrationResults)
+        self.report_lbl.setObjectName(_fromUtf8("report_lbl"))
+        self.verticalLayout_2.addWidget(self.report_lbl)
         self.report_includeparams_check = QtGui.QCheckBox(self.calibrationResults)
         self.report_includeparams_check.setObjectName(_fromUtf8("report_includeparams_check"))
         self.verticalLayout_2.addWidget(self.report_includeparams_check)
@@ -230,14 +242,19 @@ class Ui_CalibrationGUI_Dialog(object):
         self.set_eval_lbl.setText(_translate("CalibrationGUI_Dialog", "Select Evaluation Criteria:", None))
         self.set_eval_nash.setText(_translate("CalibrationGUI_Dialog", "Nash-Sutcliffe Coefficient", None))
         self.set_eval_rmse.setText(_translate("CalibrationGUI_Dialog", "Root Mean Squared Error", None))
-        self.set_eval_error.setText(_translate("CalibrationGUI_Dialog", "Relative Error", None))
+        self.set_eval_error.setText(_translate("CalibrationGUI_Dialog", "Relative Errors", None))
         self.set_gen_button.setText(_translate("CalibrationGUI_Dialog", "Generate", None))
         self.set_gen_lbl.setText(_translate("CalibrationGUI_Dialog", "...or Generate a Calibration Data Set:", None))
         self.set_gen_combo.setItemText(0, _translate("CalibrationGUI_Dialog", "MW MUSIC Guide", None))
         self.calibset_title.setText(_translate("CalibrationGUI_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Calibration Settings</span></p></body></html>", None))
         self.caliboutput_title.setText(_translate("CalibrationGUI_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Calibration Outputs</span></p></body></html>", None))
         self.out_box.setPlainText(_translate("CalibrationGUI_Dialog", "Results:", None))
-        self.report_includeparams_check.setText(_translate("CalibrationGUI_Dialog", "Include Parameters in Report", None))
+        self.plottype_lbl.setText(_translate("CalibrationGUI_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Select Plot Type:</span></p></body></html>", None))
+        self.plottype_combo.setItemText(0, _translate("CalibrationGUI_Dialog", "Modelled vs. Observed", None))
+        self.plottype_combo.setItemText(1, _translate("CalibrationGUI_Dialog", "Residual Plot", None))
+        self.plottype_combo.setItemText(2, _translate("CalibrationGUI_Dialog", "Error Distribution", None))
+        self.report_lbl.setText(_translate("CalibrationGUI_Dialog", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Export Calibration Results</span></p></body></html>", None))
+        self.report_includeparams_check.setText(_translate("CalibrationGUI_Dialog", "Include Model Parameters in Report", None))
         self.out_export.setText(_translate("CalibrationGUI_Dialog", "Export Report...", None))
         self.remarks.setText(_translate("CalibrationGUI_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
