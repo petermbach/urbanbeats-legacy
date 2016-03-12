@@ -250,6 +250,15 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.dp_ind_custom, QtCore.SIGNAL("clicked()"), lambda enduse="ind": self.callPatternGui(enduse))
         QtCore.QObject.connect(self.ui.dp_pubirr_custom, QtCore.SIGNAL("clicked()"), lambda enduse="publicirri": self.callPatternGui(enduse))
 
+        self.ui.epanet_align_check.setChecked(int(self.module.getParameter("epanet_offset")))
+        self.ui.epanet_align_map.setChecked(int(self.module.getParameter("epanet_useProjectOffset")))
+        self.ui.epanet_xoffset_line.setText(str(self.module.getParameter("epanet_offsetX")))
+        self.ui.epanet_yoffset_line.setText(str(self.module.getParameter("epanet_offsetY")))
+        self.enabledisableEPANETOFFSET()
+
+        QtCore.QObject.connect(self.ui.epanet_align_check, QtCore.SIGNAL("clicked()"), self.enabledisableEPANETOFFSET)
+        QtCore.QObject.connect(self.ui.epanet_align_map, QtCore.SIGNAL("clicked()"), self.enabledisableEPANETOFFSET)
+
         if self.module.getParameter("epanetintmethod") == "NN":
             self.ui.epanet_intnn.setChecked(1)
         elif self.module.getParameter("epanetintmethod") == "RS":
@@ -481,6 +490,21 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #To write once first pass EPANET module is done
         return True
 
+    def enabledisableEPANETOFFSET(self):
+        if self.ui.epanet_align_check.isChecked() == 1:
+            self.ui.epanet_align_map.setEnabled(1)
+            if self.ui.epanet_align_map.isChecked() == 0:
+                self.ui.epanet_xoffset_line.setEnabled(1)
+                self.ui.epanet_yoffset_line.setEnabled(1)
+            else:
+                self.ui.epanet_xoffset_line.setEnabled(0)
+                self.ui.epanet_yoffset_line.setEnabled(0)
+        else:
+            self.ui.epanet_align_map.setEnabled(0)
+            self.ui.epanet_xoffset_line.setEnabled(0)
+            self.ui.epanet_yoffset_line.setEnabled(0)
+        return True
+
 
     def ed_CD3(self):
         return True
@@ -624,6 +648,15 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #Network Hydraulics
 
         #EPANET Link
+        self.module.setParameter("epanet_offset", int(self.ui.epanet_align_check.isChecked()))
+        self.module.setParameter("epanet_useProjectOffset", int(self.ui.epanet_align_map.isChecked()))
+        if self.ui.epanet_align_map.isChecked():
+            self.module.setParameter("epanet_offsetX", float(0.00))
+            self.module.setParameter("epanet_offsetY", float(0.00))
+        else:
+            self.module.setParameter("epanet_offsetX", float(self.ui.epanet_xoffset_line.text()))
+            self.module.setParameter("epanet_offsetY", float(self.ui.epanet_yoffset_line.text()))
+
         if self.ui.epanet_intnn.isChecked():
             self.module.setParameter("epanetintmethod", "NN")
         elif self.ui.epanet_intrscan.isChecked():

@@ -100,7 +100,7 @@ p, li { white-space: pre-wrap; }
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
@@ -4457,9 +4457,9 @@ p, li { white-space: pre-wrap; }
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-657</y>
+               <y>0</y>
                <width>463</width>
-               <height>1146</height>
+               <height>1166</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_19">
@@ -5166,14 +5166,14 @@ p, li { white-space: pre-wrap; }
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>330</height>
+                  <height>350</height>
                  </size>
                 </property>
                 <widget class="QLabel" name="epanet_lbl2">
                  <property name="geometry">
                   <rect>
                    <x>20</x>
-                   <y>200</y>
+                   <y>220</y>
                    <width>121</width>
                    <height>16</height>
                   </rect>
@@ -5189,7 +5189,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>130</x>
-                   <y>225</y>
+                   <y>245</y>
                    <width>131</width>
                    <height>17</height>
                   </rect>
@@ -5202,7 +5202,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>280</x>
-                   <y>225</y>
+                   <y>245</y>
                    <width>121</width>
                    <height>17</height>
                   </rect>
@@ -5231,7 +5231,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>280</x>
-                   <y>200</y>
+                   <y>220</y>
                    <width>121</width>
                    <height>17</height>
                   </rect>
@@ -5244,7 +5244,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>130</x>
-                   <y>200</y>
+                   <y>220</y>
                    <width>121</width>
                    <height>17</height>
                   </rect>
@@ -5257,7 +5257,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>20</x>
-                   <y>255</y>
+                   <y>270</y>
                    <width>301</width>
                    <height>16</height>
                   </rect>
@@ -5270,7 +5270,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>320</x>
-                   <y>255</y>
+                   <y>270</y>
                    <width>51</width>
                    <height>16</height>
                   </rect>
@@ -5289,7 +5289,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>20</x>
-                   <y>305</y>
+                   <y>320</y>
                    <width>401</width>
                    <height>17</height>
                   </rect>
@@ -5302,7 +5302,7 @@ p, li { white-space: pre-wrap; }
                  <property name="geometry">
                   <rect>
                    <x>20</x>
-                   <y>280</y>
+                   <y>295</y>
                    <width>401</width>
                    <height>17</height>
                   </rect>
@@ -5419,14 +5419,14 @@ p, li { white-space: pre-wrap; }
                 <widget class="QCheckBox" name="epanet_align_check">
                  <property name="geometry">
                   <rect>
-                   <x>130</x>
+                   <x>120</x>
                    <y>140</y>
                    <width>291</width>
                    <height>17</height>
                   </rect>
                  </property>
                  <property name="text">
-                  <string>Apply custom offsets to Junction Coordinates</string>
+                  <string>Apply an offset to Junction Coordinates</string>
                  </property>
                 </widget>
                 <widget class="QLabel" name="epanet_align_lbl">
@@ -5445,8 +5445,8 @@ p, li { white-space: pre-wrap; }
                 <widget class="QLineEdit" name="epanet_xoffset_line">
                  <property name="geometry">
                   <rect>
-                   <x>150</x>
-                   <y>170</y>
+                   <x>210</x>
+                   <y>190</y>
                    <width>71</width>
                    <height>20</height>
                   </rect>
@@ -5455,8 +5455,8 @@ p, li { white-space: pre-wrap; }
                 <widget class="QLabel" name="epanet_xoffset">
                  <property name="geometry">
                   <rect>
-                   <x>90</x>
-                   <y>170</y>
+                   <x>150</x>
+                   <y>190</y>
                    <width>51</width>
                    <height>16</height>
                   </rect>
@@ -5468,8 +5468,8 @@ p, li { white-space: pre-wrap; }
                 <widget class="QLineEdit" name="epanet_yoffset_line">
                  <property name="geometry">
                   <rect>
-                   <x>300</x>
-                   <y>170</y>
+                   <x>360</x>
+                   <y>190</y>
                    <width>71</width>
                    <height>20</height>
                   </rect>
@@ -5478,14 +5478,27 @@ p, li { white-space: pre-wrap; }
                 <widget class="QLabel" name="epanet_yoffset">
                  <property name="geometry">
                   <rect>
-                   <x>240</x>
-                   <y>170</y>
+                   <x>300</x>
+                   <y>190</y>
                    <width>51</width>
                    <height>16</height>
                   </rect>
                  </property>
                  <property name="text">
                   <string>y-offset:</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="epanet_align_map">
+                 <property name="geometry">
+                  <rect>
+                   <x>120</x>
+                   <y>165</y>
+                   <width>291</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Use offsets from input spatial maps</string>
                  </property>
                 </widget>
                </widget>
