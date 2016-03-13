@@ -726,10 +726,17 @@ class PerformanceAssess(UBModule):      #UBCORE
             return True
 
         base_inpfile = ubepanet.readInpFile(self.epanet_inpfname)   #Load file data
-        node_list = ubepanet.getDataFromInpFile(base_inpfile, "[COORDINATES]", "array")   #Get the nodes
-        node_props = ubepanet.getDataFromInpFile(base_inpfile, "[JUNCTIONS]", "dict")       #Get the list of Junctinos
-        print node_list
-        print node_props
+        node_list = ubepanet.getDataFromInpFile(base_inpfile, "[COORDINATES]", "array")   #Get the nodes as [name, x, y]
+        node_props = ubepanet.getDataFromInpFile(base_inpfile, "[JUNCTIONS]", "dict")       #Get the list of Junctinos as {"Name" : [elev, demand, etc.]}
+        #print node_list
+        #print node_props
+
+        #Apply offset to entire Node List
+        if self.epanet_offset:
+            node_list, offx, offy = self.applyNetworkJunctionOffsets(node_list)
+        else:
+            offx, offy = 0, 0
+
         #Scan node list and create final list that follow two conditions:
         # (1) keep only nodes in the junction list,
         # (2) remove zero demand nodes if necessary
@@ -756,6 +763,22 @@ class PerformanceAssess(UBModule):      #UBCORE
         #[OPTIONS] & [TIMES] lists
         opt_list = ubepanet.getDataFromInpFile(base_inpfile, "[OPTIONS]", "dict")
         times_list = ubepanet.getDataFromInpFile(base_inpfile, "[TIMES]", "dict")
+        #print times_list
+
+        for a in times_list.keys():
+            if len(times_list[a]) > 1:
+                mergestring = ""
+                for b in range(len(times_list[a])):
+                    mergestring += str(times_list[a][b])
+                times_list[a] = [mergestring]
+
+        for a in opt_list.keys():
+            if len(opt_list[a]) > 1:
+                mergestring = ""
+                for b in range(len(opt_list[a])):
+                    mergestring += str(opt_list[a][b])
+                opt_list[a] = [mergestring]
+
 
             #Set the Times List
         if self.epanet_simtype == "STS": #STS = static sim, 24H = 24-hour, EPS = extended period sim (72hrs), LTS = long-term sim
@@ -799,29 +822,41 @@ class PerformanceAssess(UBModule):      #UBCORE
                         "PPubIrr": self.createPatternString(map_attr.getAttribute("wdp_publicirri"))}
 
             dem_list = self.adjustEPANETdemands(rev_node_list, nbrelation)
-            print dem_list
-
-        #Clarify Offsets
-        if self.epanet_offset:
-            if self.epanet_useProjectOffset:
-                #Get Project Offsets
-                offX = 0
-                offY = 0
-            else:
-                offX = self.epanet_offsetX
-                offY = self.epanet_offsetY
+            #print dem_list
 
         #Use the node block list to work out the new demands and rewrite the EPANET file
         if self.runBaseInp:
-            self.rewriteEPANETbase(base_inpfile,offX, offY)
+            self.rewriteEPANETbase(base_inpfile, offx, offy)
 
 
         self.writeUB_EPANETfile(base_inpfile, node_list, opt_list, times_list,
-                                node_props, dem_list, pat_list, offX, offY)
+                                node_props, dem_list, pat_list)
 
         #Run the EPANET Simulations
         self.runEPANETsim()
         return True
+
+    def applyNetworkJunctionOffsets(self, nodelist):
+        """Applies a custom offset to the entire EPANET node list coordinates. This offset allows alignment of GIS
+        map with EPANET network map.
+
+        :param nodelist: the nodelist obtained from ubEPANET
+        :return: nodelist with offset coordinates
+        """
+        newnodelist = []
+
+        if self.epanet_useProjectOffset:
+            map_attr = self.activesim.getAssetWithName("MapAttributes")
+            self.epanet_offsetX = map_attr.getAttribute("xllcorner")
+            self.epanet_offsetY = map_attr.getAttribute("yllcorner")
+
+        offx = self.epanet_offsetX
+        offy = self.epanet_offsetY
+
+        for i in range(len(nodelist)):
+            newnodelist.append([nodelist[i][0], str(float(nodelist[i][1])+float(offx)), str(float(nodelist[i][2])+float(offy))])
+        return newnodelist, offx, offy
+
 
     def createPatternString(self, pattern):
         """Creates a string that represents the demand pattern of a particular end use (patname)
@@ -889,11 +924,9 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         for i in rev_node_list:
             curID = i[0]
-            print curID
             nbfilter = [nbrelation.keys()[j] for j in range(len(nbrelation.keys())) if str(curID) in nbrelation.keys()[j]]
             if len(nbfilter) == 0:
                 continue
-
             for k in range(len(enduse_atts)):
                 nodedemand = self.calculateWeightedNodeDemand(nbrelation, nbfilter, enduse_atts[k])
                 if nodedemand != 0:
@@ -1057,7 +1090,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 ring.AddPoint(polysect[0][0][0], polysect[0][0][1])
                 poly.AddGeometry(ring)
                 area = poly.GetArea()
-                print area
+                #print area
 
                 #Key: NodeID-BlockID, attributes [NodeID, BlockID, wkbPolygon, Area]
                 nbrelation[str(i)+"-"+str(j)] = [i, j, poly, area, float(area/(blocksize*blocksize))]
@@ -1148,7 +1181,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         print "Re-run the base input file"
         return True
 
-    def writeUB_EPANETfile(self, basedata, node_list, opt_list, times_list, node_props, dem_list, pat_list, offX, offY):
+    def writeUB_EPANETfile(self, basedata, node_list, opt_list, times_list, node_props, dem_list, pat_list):
         epanetpath = self.activesim.getActiveProjectPath()
         epanetfname = self.activesim.getGISExportDetails()["Filename"]+"_epanet.inp"
 
@@ -1161,7 +1194,13 @@ class PerformanceAssess(UBModule):      #UBCORE
                 f.write(";ID \t Elev \t Demand \t Pattern \t\n")
                 for nID in node_props.keys():
                     nIDd = node_props[nID]  #nodeIDdata
-                    f.write(str(nID)+"\t"+str(nIDd[0])+"\t"+str(nIDd[1])+"\t"+str(nIDd[2])+"\t"+"\n")
+                    try:
+                        f.write(str(nID)+"\t"+str(nIDd[0])+"\t"+str(nIDd[1])+"\t"+str(nIDd[2])+"\t"+"\n")
+                    except IndexError:  #Catches an index error if no pattern has been defined for the node
+                        if len(nIDd) == 2:      #If no pattern has been defined, just write elevation and demand
+                            f.write(str(nID)+"\t"+str(nIDd[0])+"\t"+str(nIDd[1])+"\n")
+                        else:   #If no demand has been defined, just write elevation and set demand as zero
+                            f.write(str(nID)+"\t"+str(nID[0])+"\t"+str(0)+"\n")
                 f.write("\n")   #empty line
 
                 #Move the line variable forward to the next

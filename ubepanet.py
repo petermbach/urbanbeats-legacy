@@ -54,7 +54,7 @@ def getDataFromInpFile(inpfile, tag, format):
         if tag not in inpfile[i]:
             i += 1
             if i == len(inpfile):
-                print "Data not found"
+                #print "Data not found"
                 return False
         else:
             found = 1
@@ -76,6 +76,13 @@ def getDataFromInpFile(inpfile, tag, format):
         dataline = inpfile[i].strip().split()
         for j in range(len(dataline)):
             dataline[j] = dataline[j].rstrip()
+
+        if tag == "[TIMES]" or tag == "[OPTIONS]":
+            if len(dataline) >= 3:
+                summaryline = ""
+                for a in range(len(dataline)-2):
+                    summaryline += str(dataline[a+2])+" "
+                dataline = [str(dataline[0])+" "+str(dataline[1]), summaryline]
 
         if format == "array":
             inpdata.append(dataline)
