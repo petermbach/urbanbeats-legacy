@@ -885,11 +885,20 @@ class PerformanceAssess(UBModule):      #UBCORE
             nodedata = node_props[i]
 
             #Grab all the data for the single node id
-            nbfilter = [nbrelation.keys()[j] for j in range(len(nbrelation.keys())) if str(i) in nbrelation.keys()[j]]
+            nbfilter = []
+            for j in nbrelation.keys():
+                abbr = str(i)+"-"
+                relationnameLength = len(j.split("-")[0])
+                if abbr in j and len(abbr) == relationnameLength+1:
+                    nbfilter.append(j)
+
+            #nbfilter = [nbrelation.keys()[j] for j in range(len(nbrelation.keys())) if str(i)+"-" in nbrelation.keys()[j]]
             if len(nbfilter) == 0:
                 new_node_data[i] = nodedata
                 node_dem.addAttribute("NodeID_"+str(i), [nodedata[1], nodedata[1]])
                 continue
+            if i == 1 or i=="1":
+                print nbfilter
 
             #for all others grab block demand data and tally up
             nodedemand = self.calculateWeightedNodeDemand(nbrelation, nbfilter, "Blk_WD")
@@ -899,6 +908,9 @@ class PerformanceAssess(UBModule):      #UBCORE
             #     bdata = self.activesim.getAssetWithName("BlockID"+str(bID))
             #     prop = nbrelation[nbfilter[j]][4]
             #     nodedemand += float(bdata.getAttribute("Blk_WD") * cf * prop)
+
+            if i == 1 or i=="1":
+                print nodedemand
 
             node_dem.addAttribute("NodeID_"+str(i), [nodedata[1], nodedemand])
 
@@ -924,7 +936,19 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         for i in rev_node_list:
             curID = i[0]
-            nbfilter = [nbrelation.keys()[j] for j in range(len(nbrelation.keys())) if str(curID) in nbrelation.keys()[j]]
+            if curID == "1" or curID == 1:
+                print "BIG DEMAND NODE!!"
+            #nbfilter = [nbrelation.keys()[j] for j in range(len(nbrelation.keys())) if str(curID)+"-" in nbrelation.keys()[j]]
+            nbfilter = []
+            for j in nbrelation.keys():
+                abbr = str(i)+"-"
+                relationnameLength = len(j.split("-")[0])
+                if abbr in j and len(abbr) == relationnameLength+1:
+                    nbfilter.append(j)
+
+
+            if curID == "1" or curID ==1:
+                print nbfilter
             if len(nbfilter) == 0:
                 continue
             for k in range(len(enduse_atts)):
