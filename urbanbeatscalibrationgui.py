@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'urbanbeatscalibrationgui.ui'
 #
-# Created: Fri Mar 11 14:38:15 2016
+# Created: Sun Mar 13 18:23:13 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -216,7 +216,7 @@ class Ui_CalibrationGUI_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(CalibrationGUI_Dialog)
 
     def retranslateUi(self, CalibrationGUI_Dialog):
-        CalibrationGUI_Dialog.setWindowTitle(_translate("CalibrationGUI_Dialog", "UrbanBEATS Results Explorer", None))
+        CalibrationGUI_Dialog.setWindowTitle(_translate("CalibrationGUI_Dialog", "UrbanBEATS Calibration Viewer", None))
         self.windowtitle.setText(_translate("CalibrationGUI_Dialog", "Model Calibration Viewer", None))
         self.windowsubtitle.setText(_translate("CalibrationGUI_Dialog", "Load or generate a real and/or hypothetical data set to calibrate UrbanBEATS\' outputs against.", None))
         self.set_param_combo.setItemText(0, _translate("CalibrationGUI_Dialog", "<select parameter to calibrate>", None))

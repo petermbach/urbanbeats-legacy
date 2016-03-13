@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>UrbanBEATS Results Explorer</string>
+   <string>UrbanBEATS Calibration Viewer</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
