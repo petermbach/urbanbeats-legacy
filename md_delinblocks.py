@@ -320,61 +320,13 @@ class Delinblocks(UBModule):      #UBCORE
         
         #road_net, supply_net and sewer_net = coming in future versions
 
-        ################################### END OF DATA RETRIEVAL UBCORE VERSION ##############################################        
-        
-#        ## Retrieve the raster data DYNAMIND VERSION ##########################################################################        
-#        ### 4 BASIC INPUTS ###
-#        elevationraster = self.getRasterData("City", self.elevation)                   #ELEVATION AND SOIL DATA ARE NOT URBANSIM DEPENDENT!
-#        soilraster = self.getRasterData("City", self.soil)
-#        landuseraster = self.getRasterData("City", self.landuse)
-#        population = self.getRasterData("City", self.population)
-#        
-#        ### 7 ADDITIONAL INPUTS ###
-#        #(1) - Planner's Map
-#        if self.include_plan_map: plan_map = self.getRasterData("City", self.plan_map)
-#        else: plan_map = 0
-#        
-#        #(2) - Locality Map
-#        if self.include_local_map: localitymap = ubvmap.runLocalityImport(self.LocalityFilename)
-#        else: localitymap = 0
-#        
-#        #(3) - Employment Map
-#        if self.include_employment: employment = self.getRasterData("City", self.employment)
-#        else: employment = 0
-#        
-#        #(4) - Rivers Map
-#        if self.include_rivers: riverpoints = ubvmap.runRiverImport(float(cs/4), self.RiversFilename)
-#        else: riverpoints = 0
-#        
-#        #(5) - Lakes Map
-#        if self.include_lakes: lakepoints = ubvmap.runLakesImport(self.LakesFilename)
-#        else: lakepoints = 0
-#        
-#        #(6) - Groundwater Map
-#        if self.include_groundwater: groundwater = self.getRasterData("City", self.groundwater)
-#        else: groundwater = 0
-#        
-#        #(7) - Social Parameters
-#        if self.include_soc_par1: socpar1 = self.getRasterData("City", self.socpar1)
-#        else: socpar1 = 0
-#        print "Socpar1", socpar1
-#        if self.include_soc_par2: socpar2 = self.getRasterData("City", self.socpar2)
-#        else: socpar2 = 0
-#        print "Socpar2", socpar2
-#        
-#        #road_net, supply_net and sewer_net = coming in future versions
-#        
-#        ################################## END OF DATA RETRIEVAL DYNAMIND VERSION ##############################################
+        ################################### END OF DATA RETRIEVAL UBCORE VERSION ##############################################
         
         inputres = landuseraster.getCellSize()                                #input data resolution [m]
         width =  elevationraster.getDimensions()[0] * elevationraster.getCellSize()     #UBCORE
         height =  elevationraster.getDimensions()[1] * elevationraster.getCellSize()   #UBCORE 
-#        width = elevationraster.getWidth() * elevationraster.getCellSize()              #DYNAMIND "getWidth" syntax returns no. of cells
-#        height = elevationraster.getHeight() * elevationraster.getCellSize()            #DYNAMIND to get actual width, need to multiply by cell size [m]         
 
         xllcorner, yllcorner = landuseraster.getExtents()       #UBCORE
-#        xllcorner = self.xllcorner              #DYNAMIND
-#        yllcorner = self.yllcorner              #DYNAMIND
         #self.notify(elevationraster.getDimensions()[0])         #UBCORE
         #self.notify(str(width)+","+str(height))                 #UBCORE
 
@@ -1168,27 +1120,8 @@ class Delinblocks(UBModule):      #UBCORE
         patch_attr.addAttribute("AspRatio", aspect)     #Aspect ratio of the patch
         
         self.activesim.addAsset("B"+str(ID)+"PatchID"+str(PaID), patch_attr)
-        return True     # END OF UBCORE VERSION ------------------------------------------------------------------------------
-    
-#    def drawPatchFace(self, city, nodes, scalar, offset, PaID, ID, area, LUC, elev, soil):  #DYNAMIND VERSION --------------------->
-#        rs = scalar #rs = raster size
-#        plist = nodevector()
-#        
-#        for i in range(len(nodes)): #loop across the nodes
-#            n = city.addNode(nodes[i][0]*rs+offset[0], nodes[i][1]*rs+offset[1], 0)
-#            plist.append(n)
-#        
-#        endnode = city.addNode(nodes[0][0]*rs+offset[0], nodes[0][1]*rs+offset[1], 0)
-#        plist.append(endnode)
-#        
-#        patch_attr = city.addFace(plist, self.patch)
-#        patch_attr.addAttribute("PatchID", PaID)              #ID of Patch in Block ID
-#        patch_attr.addAttribute("LandUse", LUC)              #Land use of the patch
-#        patch_attr.addAttribute("Area", area*rs*rs)                 #Area of the patch
-#        patch_attr.addAttribute("AvgElev", elev)              #Average elevation of the patch
-#        patch_attr.addAttribute("SoilK", soil)
-#        patch_attr.addAttribute("BlockID", ID)              #Block ID that patch belongs to
-#        return True # END OF DYNAMIND VERSION ------------------------------------------------------------------------------   
+        return True
+
     
     def smoothDEM(self, numblocks, nhd_type):       #UBCORE VERSION -----------------------------------------------------------
         new_elevs = []
@@ -1226,45 +1159,6 @@ class Delinblocks(UBModule):      #UBCORE
             currentAttList = self.activesim.getAssetWithName(currentID)
             currentAttList.setAttribute("AvgElev", new_elevs[i])
         return True #END OF UBCORE VERSION ----------------------------------------------------------------------------------------
-
-
-#    def smoothDEM(self, city, numblocks, nhd_type): #DYNAMIND VERSION ------------------------------------------------------------
-#        new_elevs = []
-#        for i in range(int(numblocks)):
-#            nhd_count = 1
-#            currentID = i+1
-#            currentAttList = city.getFace(uuid = self.getBlockUUID(currentID, city))
-#            if currentAttList.getAttribute("Status").getDouble() == 0:
-#                new_elevs.append(0)
-#                continue
-#            
-#            new_elev = currentAttList.getAttribute("AvgElev").getDouble()
-#            
-#            neighbourhood = self.getBlockNeighbourhood(currentAttList)
-#            neighbourhoodZ = self.getNeighbourhoodZ(neighbourhood, city)
-#            
-#            if nhd_type == 4:
-#                #only vonNeumann cells
-#                for k in range(len(neighbourhoodZ)-4):
-#                    if k == 99999:
-#                        continue
-#                    new_elev += k
-#                    nhd_count += 1
-#            else:
-#                for k in neighbourhoodZ:                #Scan all neighbour cells
-#                    if k == 99999:                      #if the value is 99999, it means the cell isn't active
-#                        continue
-#                    new_elev += k
-#                    nhd_count += 1
-#                    
-#                new_elevs.append(new_elev/nhd_count)    #calculate average, add to the new matrix
-#        
-#        for i in range(int(numblocks)):     #write all new elevations to replace the existing value
-#            currentID = i+1
-#            currentAttList = city.getFace(self.getBlockUUID(currentID, city))
-#            currentAttList.modifyAttribute("AvgElev", new_elevs[i])
-#        return True #END OF DYNAMIND VERSION -------------------------------------------------------------------------------------------
-
 
 
     def getBlockNeighbourhood(self, currentAttList):        #UBCORE VERSION --------------------------------------------------
