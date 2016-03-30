@@ -100,7 +100,7 @@ p, li { white-space: pre-wrap; }
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
@@ -2735,12 +2735,268 @@ p, li { white-space: pre-wrap; }
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
+               <y>-107</y>
                <width>463</width>
-               <height>722</height>
+               <height>768</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_21">
+              <item>
+               <widget class="QLabel" name="lcc_title_5">
+                <property name="minimumSize">
+                 <size>
+                  <width>445</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Economic Assessment Parameters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="widget_5" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>230</width>
+                  <height>230</height>
+                 </size>
+                </property>
+                <widget class="QLabel" name="label_7">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>35</y>
+                   <width>121</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Assessment Period:</string>
+                 </property>
+                </widget>
+                <widget class="QSpinBox" name="spinBox">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>35</y>
+                   <width>81</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="suffix">
+                  <string> years</string>
+                 </property>
+                 <property name="minimum">
+                  <number>10</number>
+                 </property>
+                 <property name="maximum">
+                  <number>100</number>
+                 </property>
+                 <property name="singleStep">
+                  <number>10</number>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="label_8">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>65</y>
+                   <width>181</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Discount and Inflation Rates:</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="radioButton">
+                 <property name="geometry">
+                  <rect>
+                   <x>30</x>
+                   <y>90</y>
+                   <width>82</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Constant</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="radioButton_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>30</x>
+                   <y>115</y>
+                   <width>82</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Dynamic</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="label_9">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>145</y>
+                   <width>141</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Allocation of Costs&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="label_10">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>101</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;General Settings&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="checkBox">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>170</y>
+                   <width>341</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Perform Allocation based on pre-defined Stakeholders</string>
+                 </property>
+                </widget>
+                <widget class="QPushButton" name="pushButton_4">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>195</y>
+                   <width>81</width>
+                   <height>23</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Customize...</string>
+                 </property>
+                </widget>
+                <widget class="QLineEdit" name="lineEdit">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>115</y>
+                   <width>201</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QPushButton" name="pushButton_5">
+                 <property name="geometry">
+                  <rect>
+                   <x>350</x>
+                   <y>114</y>
+                   <width>81</width>
+                   <height>23</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Browse...</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="label_11">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>90</y>
+                   <width>81</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Discount rate:</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="label_12">
+                 <property name="geometry">
+                  <rect>
+                   <x>290</x>
+                   <y>90</y>
+                   <width>71</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Inflation rate:</string>
+                 </property>
+                </widget>
+                <widget class="QDoubleSpinBox" name="doubleSpinBox">
+                 <property name="geometry">
+                  <rect>
+                   <x>220</x>
+                   <y>90</y>
+                   <width>61</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="suffix">
+                  <string>%</string>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                </widget>
+                <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>370</x>
+                   <y>90</y>
+                   <width>61</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="suffix">
+                  <string>%</string>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                 <property name="value">
+                  <double>0.000000000000000</double>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="checkBox_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>240</x>
+                   <y>35</y>
+                   <width>131</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Only Capital Costs</string>
+                 </property>
+                </widget>
+               </widget>
+              </item>
               <item>
                <widget class="QLabel" name="lcc_title_3">
                 <property name="minimumSize">
@@ -2762,6 +3018,59 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Technology Costs&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="widget_6" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>230</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                 <item>
+                  <widget class="QLabel" name="label_13">
+                   <property name="text">
+                    <string>Select Technology Type:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="comboBox">
+                   <item>
+                    <property name="text">
+                     <string>Biofiltration Systems/Raingardens</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Infiltration Systems</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Ponds &amp; Sedimentation Basins</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Rainwater Tanks</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Surface Wetlands</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Swales &amp; Buffer Strips</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
               <item>
@@ -2953,128 +3262,6 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="text">
                   <string/>
-                 </property>
-                </widget>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="lcc_title">
-                <property name="minimumSize">
-                 <size>
-                  <width>445</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Life Cycle Costing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="market_widget_3" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>100</height>
-                 </size>
-                </property>
-                <widget class="QLabel" name="label_37">
-                 <property name="geometry">
-                  <rect>
-                   <x>20</x>
-                   <y>10</y>
-                   <width>131</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Real Discount Rate [%]</string>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="label_38">
-                 <property name="geometry">
-                  <rect>
-                   <x>20</x>
-                   <y>35</y>
-                   <width>131</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Inflation Rate [%]</string>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="label_39">
-                 <property name="geometry">
-                  <rect>
-                   <x>20</x>
-                   <y>60</y>
-                   <width>131</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Life Cycle Period [years]</string>
-                 </property>
-                </widget>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="market_title">
-                <property name="minimumSize">
-                 <size>
-                  <width>445</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Cost Allocations&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="market_widget" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>100</height>
-                 </size>
-                </property>
-                <widget class="QLabel" name="comingsoon_5">
-                 <property name="geometry">
-                  <rect>
-                   <x>90</x>
-                   <y>40</y>
-                   <width>111</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;coming soon...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
                </widget>
