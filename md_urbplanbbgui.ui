@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>646</width>
-    <height>546</height>
+    <height>527</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -180,7 +180,7 @@ p, li { white-space: pre-wrap; }
                   <x>0</x>
                   <y>0</y>
                   <width>398</width>
-                  <height>310</height>
+                  <height>291</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -617,7 +617,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>398</width>
+                  <width>387</width>
                   <height>605</height>
                  </rect>
                 </property>
@@ -1807,7 +1807,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>398</width>
+                  <width>387</width>
                   <height>1142</height>
                  </rect>
                 </property>
@@ -3510,7 +3510,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>398</width>
+                  <width>387</width>
                   <height>617</height>
                  </rect>
                 </property>
@@ -4607,8 +4607,8 @@ p, li { white-space: pre-wrap; }
                 <property name="geometry">
                  <rect>
                   <x>0</x>
-                  <y>-222</y>
-                  <width>398</width>
+                  <y>0</y>
+                  <width>387</width>
                   <height>532</height>
                  </rect>
                 </property>
@@ -5338,7 +5338,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>398</width>
+                  <width>387</width>
                   <height>392</height>
                  </rect>
                 </property>
@@ -5861,8 +5861,8 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>398</width>
-                  <height>697</height>
+                  <width>387</width>
+                  <height>677</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_16">
@@ -6994,7 +6994,7 @@ p, li { white-space: pre-wrap; }
        </font>
       </property>
       <property name="text">
-       <string>Building Blocks - Urban Planning Customisation</string>
+       <string>Urban Planning Customisation</string>
       </property>
      </widget>
      <widget class="QLabel" name="bbdescr2">

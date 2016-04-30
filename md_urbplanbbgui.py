@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_urbplanbbgui.ui'
 #
-# Created: Tue Jan 19 15:11:48 2016
+# Created: Thu Mar 31 13:36:23 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_BuildingBlockDialog(object):
     def setupUi(self, BuildingBlockDialog):
         BuildingBlockDialog.setObjectName(_fromUtf8("BuildingBlockDialog"))
-        BuildingBlockDialog.resize(646, 546)
+        BuildingBlockDialog.resize(646, 527)
         self.gridLayout = QtGui.QGridLayout(BuildingBlockDialog)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.bbwidget = QtGui.QWidget(BuildingBlockDialog)
@@ -120,7 +120,7 @@ class Ui_BuildingBlockDialog(object):
         self.gr_parameters.setWidgetResizable(True)
         self.gr_parameters.setObjectName(_fromUtf8("gr_parameters"))
         self.gr_scrollAreaWidgetContents = QtGui.QWidget()
-        self.gr_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 310))
+        self.gr_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 291))
         self.gr_scrollAreaWidgetContents.setObjectName(_fromUtf8("gr_scrollAreaWidgetContents"))
         self.verticalLayout_10 = QtGui.QVBoxLayout(self.gr_scrollAreaWidgetContents)
         self.verticalLayout_10.setObjectName(_fromUtf8("verticalLayout_10"))
@@ -260,7 +260,7 @@ class Ui_BuildingBlockDialog(object):
         self.res_parameters.setWidgetResizable(True)
         self.res_parameters.setObjectName(_fromUtf8("res_parameters"))
         self.res_scrollAreaWidgetContents = QtGui.QWidget()
-        self.res_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 605))
+        self.res_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 387, 605))
         self.res_scrollAreaWidgetContents.setObjectName(_fromUtf8("res_scrollAreaWidgetContents"))
         self.gridLayout_15 = QtGui.QGridLayout(self.res_scrollAreaWidgetContents)
         self.gridLayout_15.setObjectName(_fromUtf8("gridLayout_15"))
@@ -656,7 +656,7 @@ class Ui_BuildingBlockDialog(object):
         self.nr_parameters.setWidgetResizable(True)
         self.nr_parameters.setObjectName(_fromUtf8("nr_parameters"))
         self.nr_scrollAreaWidgetContents = QtGui.QWidget()
-        self.nr_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 1142))
+        self.nr_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 387, 1142))
         self.nr_scrollAreaWidgetContents.setObjectName(_fromUtf8("nr_scrollAreaWidgetContents"))
         self.verticalLayout_5 = QtGui.QVBoxLayout(self.nr_scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
@@ -1108,7 +1108,7 @@ class Ui_BuildingBlockDialog(object):
         self.tra_parameters.setWidgetResizable(True)
         self.tra_parameters.setObjectName(_fromUtf8("tra_parameters"))
         self.tra_scrollAreaWidgetContents = QtGui.QWidget()
-        self.tra_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 617))
+        self.tra_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 387, 617))
         self.tra_scrollAreaWidgetContents.setObjectName(_fromUtf8("tra_scrollAreaWidgetContents"))
         self.verticalLayout_7 = QtGui.QVBoxLayout(self.tra_scrollAreaWidgetContents)
         self.verticalLayout_7.setObjectName(_fromUtf8("verticalLayout_7"))
@@ -1454,7 +1454,7 @@ class Ui_BuildingBlockDialog(object):
         self.opsp_parameters.setWidgetResizable(True)
         self.opsp_parameters.setObjectName(_fromUtf8("opsp_parameters"))
         self.opsp_scrollAreaWidgetContents = QtGui.QWidget()
-        self.opsp_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -222, 398, 532))
+        self.opsp_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 387, 532))
         self.opsp_scrollAreaWidgetContents.setObjectName(_fromUtf8("opsp_scrollAreaWidgetContents"))
         self.verticalLayout_8 = QtGui.QVBoxLayout(self.opsp_scrollAreaWidgetContents)
         self.verticalLayout_8.setObjectName(_fromUtf8("verticalLayout_8"))
@@ -1677,7 +1677,7 @@ class Ui_BuildingBlockDialog(object):
         self.oth_parameters.setWidgetResizable(True)
         self.oth_parameters.setObjectName(_fromUtf8("oth_parameters"))
         self.oth_scrollAreaWidgetContents = QtGui.QWidget()
-        self.oth_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 392))
+        self.oth_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 387, 392))
         self.oth_scrollAreaWidgetContents.setObjectName(_fromUtf8("oth_scrollAreaWidgetContents"))
         self.gridLayout_18 = QtGui.QGridLayout(self.oth_scrollAreaWidgetContents)
         self.gridLayout_18.setObjectName(_fromUtf8("gridLayout_18"))
@@ -1863,7 +1863,7 @@ class Ui_BuildingBlockDialog(object):
         self.res_parameters_2.setWidgetResizable(True)
         self.res_parameters_2.setObjectName(_fromUtf8("res_parameters_2"))
         self.res_scrollAreaWidgetContents_2 = QtGui.QWidget()
-        self.res_scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 398, 697))
+        self.res_scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 387, 677))
         self.res_scrollAreaWidgetContents_2.setObjectName(_fromUtf8("res_scrollAreaWidgetContents_2"))
         self.gridLayout_16 = QtGui.QGridLayout(self.res_scrollAreaWidgetContents_2)
         self.gridLayout_16.setObjectName(_fromUtf8("gridLayout_16"))
@@ -3032,7 +3032,7 @@ class Ui_BuildingBlockDialog(object):
         self.pushButton.setWhatsThis(_translate("BuildingBlockDialog", "Like I said, I really don\'t think you need any help! :)", None))
         self.pushButton.setText(_translate("BuildingBlockDialog", "Help", None))
         self.bbdescr1.setText(_translate("BuildingBlockDialog", "Click on a the tabs below to set planning parameters for Building Blocks. If inputs are not specified, default values for", None))
-        self.bbtitle.setText(_translate("BuildingBlockDialog", "Building Blocks - Urban Planning Customisation", None))
+        self.bbtitle.setText(_translate("BuildingBlockDialog", "Urban Planning Customisation", None))
         self.bbdescr2.setText(_translate("BuildingBlockDialog", "Metropolitan Melbourne will be used.", None))
 
 import dialogimg_rc

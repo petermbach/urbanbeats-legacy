@@ -738,7 +738,7 @@ class Techplacement(UBModule):
         self.prevyear = 1960
         self.currentyear = 1980
         
-        self.lot_raintanksizes = [1,2,3,4,5,7.5,10,15,20]       #[kL]
+        self.lot_raintanksizes = [1,2,3,4,5,7.5,10,15,20,50,100]       #[kL]
         self.raindata = []      #Globals to contain the data time series
         self.evapdata = []
         self.evapscale = []
@@ -1722,7 +1722,12 @@ class Techplacement(UBModule):
                     "Toilet": [11,5.5,4.5,4.0,3.5,3.0,2.5],
                     "Shower": [16.0,12.0,9.0,7.5,6.0,4.5,4.5],
                     "Laundry": [200,150,105,73.5,51.5,36.0,25.2] }
-        
+
+        frdUSEPA = {"Kitchen": [8.3, 0.0, 0.0, 0.0, 0, 0.0, 0.0],
+                    "Toilet": [6.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                    "Shower": [9.46, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                    "Laundry": [269.0, 0, 0, 0, 0, 0.0, 0.0] }
+
         #Other ratings dictionaries
         if self.WEF_rating_system == "AS":
             return [frdAS6400["Kitchen"][int(rating)], frdAS6400["Toilet"][int(rating)],
@@ -1730,6 +1735,9 @@ class Techplacement(UBModule):
         elif self.WEF_rating_system == "Others":
             return [frdAS6400["Kitchen"][int(rating)], frdAS6400["Toilet"][int(rating)],
                     frdAS6400["Shower"][int(rating)], frdAS6400["Laundry"][int(rating)]]
+        elif self.WEF_rating_system == "USEPA":
+            return [frdUSEPA["Kitchen"][int(rating)], frdUSEPA["Toilet"][int(rating)],
+                    frdUSEPA["Shower"][int(rating)], frdUSEPA["Laundry"][int(rating)]]
         return True
 
 
