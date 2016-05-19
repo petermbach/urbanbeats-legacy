@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_urbplanbbgui.ui'
 #
-# Created: Thu Mar 31 13:36:23 2016
+# Created: Thu May 19 17:23:51 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -1863,7 +1863,7 @@ class Ui_BuildingBlockDialog(object):
         self.res_parameters_2.setWidgetResizable(True)
         self.res_parameters_2.setObjectName(_fromUtf8("res_parameters_2"))
         self.res_scrollAreaWidgetContents_2 = QtGui.QWidget()
-        self.res_scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 387, 677))
+        self.res_scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 398, 697))
         self.res_scrollAreaWidgetContents_2.setObjectName(_fromUtf8("res_scrollAreaWidgetContents_2"))
         self.gridLayout_16 = QtGui.QGridLayout(self.res_scrollAreaWidgetContents_2)
         self.gridLayout_16.setObjectName(_fromUtf8("gridLayout_16"))
@@ -2077,7 +2077,7 @@ class Ui_BuildingBlockDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.mc_nres_widget.sizePolicy().hasHeightForWidth())
         self.mc_nres_widget.setSizePolicy(sizePolicy)
-        self.mc_nres_widget.setMinimumSize(QtCore.QSize(369, 140))
+        self.mc_nres_widget.setMinimumSize(QtCore.QSize(369, 160))
         self.mc_nres_widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.mc_nres_widget.setObjectName(_fromUtf8("mc_nres_widget"))
         self.mc_nrespark_lbl = QtGui.QLabel(self.mc_nres_widget)

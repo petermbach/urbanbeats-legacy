@@ -892,6 +892,7 @@ class Techplacement(UBModule):
             currentAttList.addAttribute("Blk_ind", wdDict["Blk_ind"])           #[kL/day]
             currentAttList.addAttribute("Blk_publicirri", wdDict["Blk_publicirri"])     #[kL/day]
 
+            self.readjustLandCoverProportions(currentAttList)
 
         ###-------------------------------------------------------------------###
         #---  INTERMEDIATE LOOP - RECALCULATE IMP AREA TO SERVE
@@ -1218,7 +1219,7 @@ class Techplacement(UBModule):
     ########################################################
     #    TECHPLACEMENT SUBFUNCTIONS                        #
     ########################################################
-    
+
     ######################################
     #--- FUNCTIONS FOR PRE-PROCESSING ---#
     ######################################
@@ -1781,6 +1782,50 @@ class Techplacement(UBModule):
         while demandF < 0:
             demandF = demand + random.uniform(demand*vary*(-1), demand*vary)
         return demandF
+
+    def readjustLandCoverProportions(self, currentAttList):
+        """Checks whether irrigation settings coincide with the land cover definition from the
+        previous module and adjusts the land cover proportions accordingly.
+        :return:
+        """
+        if self.irrigate_nonres == 0 or self.public_irr_vol == 0:
+            # Move all IG land cover in commercial land uses to DG
+            lukeys = ["LI", "HI", "COM", "ORC", "NA", "RD"]
+            lckeys = ["LC_LI_", "LC_HI_", "LC_COM_", "LC_ORC_", "LC_NA_", "LC_RD_"]
+            keys = []
+            for i in range(len(lukeys)):
+                if currentAttList.getAttribute("pLU_"+lukeys[i]) != 0.0:
+                    keys.append(lckeys[i])
+            for i in keys:
+                dg = currentAttList.getAttribute(i + "DG")
+                ig = currentAttList.getAttribute(i + "IG")
+                currentAttList.changeAttribute(i + "DG", dg + ig)
+                currentAttList.changeAttribute(i + "IG", 0.0)
+        if (self.irrigate_parks == 0 or self.public_irr_vol == 0) and currentAttList.getAttribute("pLU_PG") != 0:
+            # Move all IG land cover from parks to DG
+            dg = currentAttList.getAttribute("LC_PG_DG")
+            ig = currentAttList.getAttribute("LC_PG_IG")
+            print "Park stuff: ", dg, ig
+            currentAttList.changeAttribute("LC_PG_DG", dg + ig)
+            currentAttList.changeAttribute("LC_PG_IG", 0.0)
+        if self.irrigate_refs == 0 or self.public_irr_vol == 0:
+            lukeys = ["REF", "UND", "SVU"]
+            lckeys = ["LC_REF_", "LC_UND_", "LC_SVU_"]
+            keys = []
+            for i in range(len(lukeys)):
+                if currentAttList.getAttribute("pLU_"+lukeys[i]) != 0.0:
+                    keys.append(lckeys[i])
+            for i in keys:
+                dg = currentAttList.getAttribute(i + "DG")
+                ig = currentAttList.getAttribute(i + "IG")
+                currentAttList.changeAttribute(i + "DG", dg + ig)
+                currentAttList.changeAttribute(i + "IG", 0.0)
+        if self.priv_irr_vol == 0 and currentAttList.getAttribute("pLU_RES") != 0:
+            # Move all IG land cover in RES to DG
+            dg = currentAttList.getAttribute("LC_RES_DG")
+            ig = currentAttList.getAttribute("LC_RES_IG")
+            currentAttList.changeAttribute("LC_RES_DG", dg + ig)
+            currentAttList.changeAttribute("LC_RES_IG", 0.0)
 
 
     ################################
