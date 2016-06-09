@@ -742,9 +742,9 @@ class Urbplanbb(UBModule):
             #self.notify( "Total Road Area: ", A_rd )
             
             #Draw stochastic values:
-            laneW = float(random.randint(hwy_wlane[0], hwy_wlane[1]))
-            medW =float(random.randint(hwy_med[0], hwy_med[1]))
-            buffW = float(random.randint(hwy_buf[0], hwy_buf[1]))
+            laneW = round(random.uniform(float(hwy_wlane[0]), float(hwy_wlane[1])),1)
+            medW = round(random.uniform(float(hwy_med[0]), float(hwy_med[1])),1)
+            buffW =  round(random.uniform(float(hwy_buf[0]), float(hwy_buf[1])),1)
             
             if (A_park+A_ref) >= 0.5*A_rd:               #if total open space is greater than half the road area, use it as buffer
                 rd_imp = float((2.0*laneW)/(2.0*laneW + medW))
@@ -927,9 +927,9 @@ class Urbplanbb(UBModule):
             A_orc = currentAttList.getAttribute("pLU_ORC") * Aactive 
             
             #Sample frontage information and create vector to store this
-            Wfp = random.randint(nres_fpw[0], nres_fpw[1])
-            Wns = random.randint(nres_nsw[0], nres_nsw[1])
-            Wrd = random.randint(lane_w[0], lane_w[1])
+            Wfp = round(random.uniform(float(nres_fpw[0]), float(nres_fpw[1])),1)
+            Wns = round(random.uniform(float(nres_nsw[0]), float(nres_nsw[1])),1)
+            Wrd = round(random.uniform(float(lane_w[0]), float(lane_w[1])),1)
             frontage = [Wfp, Wns, Wrd]
             
             #self.notify( "Total Non-res Area to be constructed with Planning Rules: "+str( A_li + A_hi + A_com + A_orc ))
@@ -1280,9 +1280,9 @@ class Urbplanbb(UBModule):
         res_fpw = self.adjustSampleRange(self.res_fpwmin, self.res_fpwmax, self.res_fpmed)
         res_nsw = self.adjustSampleRange(self.res_nswmin, self.res_nswmax, self.res_nsmed)
         lane_w = self.adjustSampleRange(self.lane_wmin, self.lane_wmax, self.lane_wmed)
-        Wfp = random.randint(res_fpw[0], res_fpw[1])
-        Wns = random.randint(res_nsw[0], res_nsw[1])
-        Wrd = random.randint(lane_w[0], lane_w[1])
+        Wfp = round(random.uniform(float(res_fpw[0]), float(res_fpw[1])),1)
+        Wns = round(random.uniform(float(res_nsw[0]), float(res_nsw[1])),1)
+        Wrd = round(random.uniform(float(lane_w[0]), float(lane_w[1])),1)
         Wfrontage = Wfp + Wns + Wrd
         
         #Step 2: Subdivide Area
