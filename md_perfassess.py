@@ -264,6 +264,43 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.createParameter("cp_publicirri",  LISTDOUBLE, "")
         self.cp_publicirri = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
 
+        #Long Term Water Supply Dynamics
+        self.createParameter("scalefile", STRING, "Filepath to the climate data to be used for scaling")
+        self.createParameter("scaleyears", DOUBLE, "Number of years of continuous scaling data to use")
+        self.createParameter("globalaverage", DOUBLE, "Global average to base the scaling upon")
+        self.createParameter("globalavgauto", BOOL, "Boolean to determine whether avg. calculated from data")
+        self.scalefile = "<none>"
+        self.rainyears = 2
+        self.globalaverage = 0
+        self.globalavgauto = 1
+
+        self.createParameter("weekend_nres", BOOL, "Reduce weekend non-residential demand?")
+        self.createParameter("weekend_nres_factor", DOUBLE, "Reduction factor for weekend non-res demand")
+        self.createParameter("weekend_res", BOOL, "Increase weekend residential demand?")
+        self.createParameter("weekend_res_factor", DOUBLE, "Multiplication factor to increase weekend demand")
+        self.weekend_nres = 0
+        self.weekend_nres_factor = 1.0
+        self.weekend_res = 0
+        self.weekend_res_factor = 1.0
+
+        self.createParameter("rain_no_irrigate", BOOL, "Do not irrigate when it is raining?")
+        self.createParameter("irrigate_lead", DOUBLE, "Lead time to begin irrigation again after rain")
+        self.rain_no_irrigate = 0
+        self.irrigate_lead = 24.0       #[hours]
+
+        self.createParameter("init_store_levels", DOUBLE, "Initial storage % in all storages")
+        self.createParameter("priority_pubirri", DOUBLE, "Priority for public irrigation supply")
+        self.createParameter("priority_privirri", DOUBLE, "Priority for private outdoor supply")
+        self.createParameter("priority_privin_nc", DOUBLE, "Priority for private indoor no contact supply")
+        self.createParameter("priority_privin_c", DOUBLE, "Priority for private indoor contact supply")
+        self.createParameter("regional_supply_rule", STRING, "Regional water supply rule")
+        self.init_store_levels = 0.0
+        self.priority_pubirri = 0
+        self.priority_privirri = 2
+        self.priority_privin_nc = 3
+        self.priority_privin_c = 4
+        self.regional_supply_rule = "CLOSE"   #of "EQUAL" for all surroundings evenly
+        
         #EPANET integration variables
         self.createParameter("epanetintmethod", STRING, "")
         self.createParameter("epanet_scanradius", DOUBLE, "")
