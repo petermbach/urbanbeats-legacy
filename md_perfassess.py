@@ -32,6 +32,8 @@ import scipy.spatial as sps
 from osgeo import ogr, osr
 import pymusic, ubmusicwrite, ubepanet
 import urbanbeatsdatatypes as ubdata
+import ubseriesread as ubseries
+import md_perf_waterbalance as ubwaterbal
 
 from urbanbeatsmodule import *
 
@@ -97,6 +99,10 @@ class PerformanceAssess(UBModule):      #UBCORE
 
 
         self.defaultscalars = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+
+        self.raindata = []  # Globals to contain the data time series
+        self.evapdata = []
+        self.solardata = []
 
         #MUSIC TAB
         self.createParameter("musicversion", STRING, "Active MUSIC Version for file writing")
@@ -312,13 +318,51 @@ class PerformanceAssess(UBModule):      #UBCORE
 
 
         #ADVANCED PARAMETERS ---------------------------------------------------------
-
+        self.totalbasins = 0
+        self.blocks_num = 0
+        self.blocks_size = 0
+        self.strats = 0
 
         # ----------------------------------------------------------------------------
 
 
     def run(self):
         self.notify("Now Running Performance Assessment")
+
+        map_attr = self.activesim.getAssetWithName("MapAttributes")  # fetches global map attributes
+        self.blocks_num = map_attr.getAttribute("NumBlocks")
+        self.blocks_size = map_attr.getAttribute("BlockSize")
+        self.totalbasins = map_attr.getAttribute("TotalBasins")
+        self.strats = map_attr.getAttribute("OutputStrats")
+
+
+
+        #If necessary: Load climate data and scale it according to factors
+        if self.perf_MUSIC or self.perf_EPANET or self.perf_CD3:
+            self.raindata = ubseries.loadClimate(self.rainfile, self.analysis_dt, self.rainyears)
+            self.evapdata = ubseries.loadClimate(self.evapfile, 1440, self.rainyears)   #Extract PET at daily
+            #self.solardata = ubseries.loadClimate(self.solarfile, 1440, self.rainyears)    #Solar Radiation data
+
+            if self.rainscale:
+                if self.rainscaleconstant:
+                    scalars = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+                    for i in range(len(scalars)):
+                        scalars[i] = self.rainscalars[0]
+                    self.raindata = ubseries.scaleClimateSeries(self.raindata, scalars)
+                else:
+                    self.raindata = ubseries.scaleClimateSeries(self.raindata, self.rainscalars)
+
+            if self.evapscale:
+                if self.evapscaleconstant:
+                    scalars = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+                    for i in range(len(scalars)):
+                        scalars[i] = self.evapscalars[0]
+                    print "Scalars", scalars
+                    self.evapdata = ubseries.scaleClimateSeries(self.evapdata, scalars)
+                else:
+                    self.evapdata = ubseries.scaleClimateSeries(self.evapdata, self.evapscalars)
+
+            #SCALING FOR SOLAR RADIATION DATA?
 
         if self.perf_MUSIC:
             self.notify("Exporting MUSIC Simulation...")
@@ -350,19 +394,14 @@ class PerformanceAssess(UBModule):      #UBCORE
         to create a number of MUSIC files to the export directory with the given block attributes
         system options and parameters.
         """
-        map_attr = self.activesim.getAssetWithName("MapAttributes")     #fetches global map attributes
-        blocks_num = map_attr.getAttribute("NumBlocks")
-        blocks_size = map_attr.getAttribute("BlockSize")
-        totalbasins = map_attr.getAttribute("TotalBasins")
-        strats = map_attr.getAttribute("OutputStrats")
-
         if self.masterplanmodel:    #differentiate between planning and implementation models
             filesuffix = "PC"
+            strats = self.strats
         else:
             filesuffix = "IC"
             strats = 1
 
-        self.notify("Total Basins: "+str(totalbasins))
+        self.notify("Total Basins: "+str(self.totalbasins))
         self.notify("Total Strategies: "+str(strats))
 
         #Define MUSIC Version
@@ -376,7 +415,7 @@ class PerformanceAssess(UBModule):      #UBCORE
             currentStratID = s+1
 
             if self.musicseparatebasin:     #Determine if to write separate files or one single file
-                musicbasins = totalbasins
+                musicbasins = self.totalbasins
             else:
                 musicbasins = 1
 
@@ -413,7 +452,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     #       Street/Neigh: x 1
                     if self.include_pervious:
                         catchment_parameter_list = [1, self.musicRR_soil, self.musicRR_field, 80,200, 1, 10, self.musicRR_rcr, self.musicRR_bfr, self.musicRR_dsr]
-                        total_catch_area = (blocks_size * blocks_size) * currentAttList.getAttribute("Active") / 10000      #[ha]
+                        total_catch_area = (self.blocks_size * self.blocks_size) * currentAttList.getAttribute("Active") / 10000      #[ha]
                         total_catch_imparea = currentAttList.getAttribute("Blk_EIA")/10000
                         total_catch_EIF = (total_catch_imparea / total_catch_area)
                     else:
@@ -450,20 +489,20 @@ class PerformanceAssess(UBModule):      #UBCORE
                             if lotareas[j] == 0:
                                 continue
                             ncount_list.append(ncount)
-                            ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, j, ncount, (blockX-blocks_size/4+(lotoffset*blocks_size/12))*scalar, (blockY+blocks_size/4+(lotoffset*blocks_size/12))*scalar, lotareas[j], loteifs[j], catchment_parameter_list)
+                            ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, j, ncount, (blockX-self.blocks_size/4+(lotoffset*self.blocks_size/12))*scalar, (blockY+self.blocks_size/4+(lotoffset*self.blocks_size/12))*scalar, lotareas[j], loteifs[j], catchment_parameter_list)
                             lotoffset += 1
                             musicnodedb["BlockID"+str(currentID)]["C_"+j] = ncount
                             ncount += 1
 
                         #Write Street/Neigh Catchment Node
                         ncount_list.append(ncount)
-                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount, (blockX-blocks_size/4)*scalar, (blockY)*scalar, nonlotarea, nonloteia, catchment_parameter_list)
+                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount, (blockX-self.blocks_size/4)*scalar, (blockY)*scalar, nonlotarea, nonloteia, catchment_parameter_list)
                         musicnodedb["BlockID"+str(currentID)]["C_R"] = ncount
                         ncount += 1
                     else:
                         ncount_list.append(0)
                         ncount_list.append(ncount)
-                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount, (blockX-blocks_size/4)*scalar, (blockY)*scalar, total_catch_area, total_catch_EIF, catchment_parameter_list)
+                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount, (blockX-self.blocks_size/4)*scalar, (blockY)*scalar, total_catch_area, total_catch_EIF, catchment_parameter_list)
                         musicnodedb["BlockID"+str(currentID)]["C_R"] = ncount
                         ncount += 1
 
@@ -482,16 +521,16 @@ class PerformanceAssess(UBModule):      #UBCORE
                             addOffset = lotoffset
                         else:
                             addOffset = 0
-                        offsets = self.getSystemOffsetXY(curSys, blocks_size)
+                        offsets = self.getSystemOffsetXY(curSys, self.blocks_size)
                         sysKexfil = curSys.getAttribute("Exfil")
                         parameter_list = eval("self.prepareParameters"+str(curSys.getAttribute("Type"))+"(curSys, sysKexfil)")
-                        eval("ubmusicwrite.writeMUSICnode"+str(systype)+"(ufile, currentID, scale, ncount, (blockX+offsets[0]+(addOffset*blocks_size/12))*scalar, (blockY+offsets[1]+(addOffset*blocks_size/12))*scalar, parameter_list)")
+                        eval("ubmusicwrite.writeMUSICnode"+str(systype)+"(ufile, currentID, scale, ncount, (blockX+offsets[0]+(addOffset*self.blocks_size/12))*scalar, (blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list)")
                         musicnodedb["BlockID"+str(currentID)]["S_"+scale] = ncount
                         ncount += 1
 
                     #(3) WRITE BLOCK JUNCTION
                     ncount_list.append(ncount)
-                    offsets = self.getSystemOffsetXY("J", blocks_size)
+                    offsets = self.getSystemOffsetXY("J", self.blocks_size)
                     if int(currentAttList.getAttribute("Outlet")) == 1:
                         self.notify("GOT AN OUTLET at BlockID"+str(currentID))
                         basinID = int(currentAttList.getAttribute("BasinID"))
@@ -518,7 +557,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     if self.include_route:
                         if self.musicRR_muskk_auto:
                             #Work out Muskingum k approximation based on block size and 1m/s flow
-                            musk_K = max(int(float(blocks_size)/60.0), 3)
+                            musk_K = max(int(float(self.blocks_size)/60.0), 3)
                         else:
                             musk_K = self.musicRR_muskk
                         routeparams = ["Routed", musk_K, self.musicRR_musktheta]
@@ -689,18 +728,15 @@ class PerformanceAssess(UBModule):      #UBCORE
         future research
         """
         map_attr = self.activesim.getAssetWithName("MapAttributes")     #fetches global map attributes
-        blocks_num = map_attr.getAttribute("NumBlocks")
-        blocks_size = map_attr.getAttribute("BlockSize")
-        totalbasins = map_attr.getAttribute("TotalBasins")
-        strats = map_attr.getAttribute("OutputStrats")
 
         if self.masterplanmodel:    #differentiate between planning and implementation models
             filesuffix = "PC"
+            strats = self.strats
         else:
             filesuffix = "IC"
             strats = 1
 
-        self.notify("Total Basins: "+str(totalbasins))
+        self.notify("Total Basins: "+str(self.totalbasins))
         self.notify("Total Strategies: "+str(strats))
 
         #(1) - Demand Downscaling Data
@@ -708,7 +744,6 @@ class PerformanceAssess(UBModule):      #UBCORE
         for i in enduses:
             if eval("self."+i+"pat") == "SDD":
                 map_attr.addAttribute("wdp_"+i, self.sdd)
-
             elif eval("self."+i+"pat") == "CDP":
                 map_attr.addAttribute("wdp_"+i, self.cdp)
             elif eval("self."+i+"pat") == "OHT":
