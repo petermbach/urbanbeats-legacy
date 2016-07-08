@@ -46,6 +46,7 @@ def loadClimate(filename, dt_out, numyears):
 
     """
     #Open climate file, grab data and figure out dt
+    print filename
     f = open(filename, 'r')
     datavec = []    #initialize vector that contains data [[Date] [Rain]]
     f.readline()    #skip the first line of the file
@@ -281,6 +282,11 @@ def mergeTimeSeries(timeseries1, timeseries2, includedatestamp):
             merger.append(timestepsum)
     return merger
 
+def scaleClimateSeries(data, scalars):
+    print "Scalars", scalars
+    for i in range(len(data)):
+        data[i][1] = data[i][1] * scalars[int(data[i][0][5:7]) - 1]
+    return data
 
 
 # DEPRECATED CODE
