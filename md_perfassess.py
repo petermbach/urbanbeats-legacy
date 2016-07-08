@@ -790,7 +790,30 @@ class PerformanceAssess(UBModule):      #UBCORE
             else:
                 map_attr.addAttribute("wdp_"+i, eval("self.cp_"+i))
 
-        #(2) - EPANET Link
+        # (2) - Integrated Water Balance Simulation
+        #Check if an IWBS is needed...
+        if self.epanet_simtype != "STS":
+            self.notify("Conducting Integrated Water Balance")
+
+            #Basin by Basin analysis
+            for i in range(self.totalbasins):
+                # Gain an Idea of the Block Progression
+                curbas = i+1
+                basinblockIDs = self.getBlocksIDsForBasinID(curbas)
+                idflow_assets, idflow_order = self.determineBlockFlowOrder(basinblockIDs)
+
+                #Proceed to Do Water Balance
+                for j in range(len(idflow_assets)):
+
+                    ubwaterbal.UB_WaterBalance(self.raindata, self.evapdata, idflow_assets)
+
+                #Evaluate Results and Readjust Demand Patterns depending
+
+
+
+
+
+        #(3) - EPANET Link
         #Check for valid EPANET file, if not valid, do not run
         self.notify("Performing EPANET Link...")
         if not os.path.isfile(self.epanet_inpfname):
@@ -1052,6 +1075,39 @@ class PerformanceAssess(UBModule):      #UBCORE
             prop = nbrelation[nbfilter[j]][4]
             nodedemand += float(bdata.getAttribute(enduse) * cf * prop)
         return nodedemand
+
+    def determineBlockFlowOrder(self, idList):
+        """ Orders blocks in flow direction for modelling drainage system from upstream most to
+        downstream most block for a given input list.
+        :param idList: List of BlockIDs that are connected to each other e.g. [319, 300, 303, 301, 282]
+        :return:
+        """
+        blockassets = []
+        for i in idList:
+            blockassets.append(self.activesim.getAssetWithName("BlockID"+str(i)))
+
+        blockOrder = []
+        blockIDs = []
+        for block in blockassets:
+            upstreamBlocks = block.getAttribute("UpstrIDs")
+            if len(upstreamBlocks) == 0:
+                blockOrder.append(block)
+                blockIDs.append(block.getAttribute("BlockID"))
+
+        for i in blockOrder:
+            if i.getAttribute("downID") == -1:
+                downID = i.getAttribute("drainID")
+            else:
+                downID = i.getAttribute("downID")
+            if downID == -1:
+                continue
+            if downID in blockIDs:
+                continue
+            else:
+                blockOrder.append(self.activesim.getAssetWithName("BlockID"+str(downID)))
+                blockIDs.append(downID)
+
+        return blockOrder, blockIDs
 
     def runIWCM(self):
         """ Creates a simulation file and calls the CityDrain3 Modelling Platform to undertake
