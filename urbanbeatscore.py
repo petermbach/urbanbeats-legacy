@@ -782,7 +782,7 @@ class UrbanBeatsSim(threading.Thread):
             self.updateObservers("PROGRESSUPDATE||"+str(int(70.0*progressincrement+incrementcount)))
 
             #(4.5) Performance Assessment
-            if len(self.__perfassess) > 0 and (self.__moduleactivity[0] == 1 or self.__moduleactivity[2] == 1):
+            if len(self.__perfassess) > 0 and self.__moduleactivity[0] == 1 and self.__moduleactivity[2] == 1:
                 perfassess = self.getModulePerfAssess(tab)
                 if perfassess.getParameter("cycletype") == "pc":
                     perfassess.setParameter("musicfilepathname", str(self.getActiveProjectPath()))
