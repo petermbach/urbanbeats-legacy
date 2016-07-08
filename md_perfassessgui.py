@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perfassessgui.ui'
 #
-# Created: Fri Jul 08 14:28:10 2016
+# Created: Fri Jul 08 16:20:31 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -1722,17 +1722,23 @@ class Ui_Perfconfig_Dialog(object):
         self.wsd_weekend_lbl.setGeometry(QtCore.QRect(30, 150, 191, 16))
         self.wsd_weekend_lbl.setObjectName(_fromUtf8("wsd_weekend_lbl"))
         self.wsd_reducenres_spin = QtGui.QDoubleSpinBox(self.ws_dynamics_widget)
-        self.wsd_reducenres_spin.setGeometry(QtCore.QRect(310, 175, 51, 16))
+        self.wsd_reducenres_spin.setGeometry(QtCore.QRect(300, 175, 51, 16))
         self.wsd_reducenres_spin.setSuffix(_fromUtf8(""))
         self.wsd_reducenres_spin.setDecimals(1)
         self.wsd_reducenres_spin.setMaximum(1.0)
         self.wsd_reducenres_spin.setObjectName(_fromUtf8("wsd_reducenres_spin"))
         self.wsd_increaseres_spin = QtGui.QDoubleSpinBox(self.ws_dynamics_widget)
-        self.wsd_increaseres_spin.setGeometry(QtCore.QRect(310, 200, 51, 16))
+        self.wsd_increaseres_spin.setGeometry(QtCore.QRect(300, 200, 51, 16))
         self.wsd_increaseres_spin.setDecimals(1)
         self.wsd_increaseres_spin.setMinimum(1.0)
         self.wsd_increaseres_spin.setMaximum(20.0)
         self.wsd_increaseres_spin.setObjectName(_fromUtf8("wsd_increaseres_spin"))
+        self.wsd_weekend_lbl_2 = QtGui.QLabel(self.ws_dynamics_widget)
+        self.wsd_weekend_lbl_2.setGeometry(QtCore.QRect(360, 175, 81, 16))
+        self.wsd_weekend_lbl_2.setObjectName(_fromUtf8("wsd_weekend_lbl_2"))
+        self.wsd_weekend_lbl_3 = QtGui.QLabel(self.ws_dynamics_widget)
+        self.wsd_weekend_lbl_3.setGeometry(QtCore.QRect(360, 200, 81, 16))
+        self.wsd_weekend_lbl_3.setObjectName(_fromUtf8("wsd_weekend_lbl_3"))
         self.verticalLayout_19.addWidget(self.ws_dynamics_widget)
         self.ws_network_title_2 = QtGui.QLabel(self.scrollAreaWidgetContents_10)
         self.ws_network_title_2.setEnabled(True)
@@ -2606,6 +2612,8 @@ class Ui_Perfconfig_Dialog(object):
         self.wsd_reducenres_check.setText(_translate("Perfconfig_Dialog", "Reduce non-residential demands during weekends", None))
         self.wsd_increaseres_check.setText(_translate("Perfconfig_Dialog", "Increase residential demands during weekends", None))
         self.wsd_weekend_lbl.setText(_translate("Perfconfig_Dialog", "Weekend Demand Factors:", None))
+        self.wsd_weekend_lbl_2.setText(_translate("Perfconfig_Dialog", "scaling factor", None))
+        self.wsd_weekend_lbl_3.setText(_translate("Perfconfig_Dialog", "scaling factor", None))
         self.ws_network_title_2.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

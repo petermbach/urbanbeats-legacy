@@ -5887,7 +5887,7 @@ p, li { white-space: pre-wrap; }
                 <widget class="QDoubleSpinBox" name="wsd_reducenres_spin">
                  <property name="geometry">
                   <rect>
-                   <x>310</x>
+                   <x>300</x>
                    <y>175</y>
                    <width>51</width>
                    <height>16</height>
@@ -5906,7 +5906,7 @@ p, li { white-space: pre-wrap; }
                 <widget class="QDoubleSpinBox" name="wsd_increaseres_spin">
                  <property name="geometry">
                   <rect>
-                   <x>310</x>
+                   <x>300</x>
                    <y>200</y>
                    <width>51</width>
                    <height>16</height>
@@ -5920,6 +5920,32 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="maximum">
                   <double>20.000000000000000</double>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="wsd_weekend_lbl_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>360</x>
+                   <y>175</y>
+                   <width>81</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>scaling factor</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="wsd_weekend_lbl_3">
+                 <property name="geometry">
+                  <rect>
+                   <x>360</x>
+                   <y>200</y>
+                   <width>81</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>scaling factor</string>
                  </property>
                 </widget>
                </widget>

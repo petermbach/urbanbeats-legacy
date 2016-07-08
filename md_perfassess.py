@@ -270,7 +270,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.createParameter("globalaverage", DOUBLE, "Global average to base the scaling upon")
         self.createParameter("globalavgauto", BOOL, "Boolean to determine whether avg. calculated from data")
         self.scalefile = "<none>"
-        self.rainyears = 2
+        self.scaleyears = 2
         self.globalaverage = 0
         self.globalavgauto = 1
 
@@ -300,7 +300,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.priority_privin_nc = 3
         self.priority_privin_c = 4
         self.regional_supply_rule = "CLOSE"   #of "EQUAL" for all surroundings evenly
-        
+
         #EPANET integration variables
         self.createParameter("epanetintmethod", STRING, "")
         self.createParameter("epanet_scanradius", DOUBLE, "")

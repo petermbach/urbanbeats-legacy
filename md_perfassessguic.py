@@ -37,6 +37,7 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.activesim = activesim
 
         self.months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+        self.scaledatafiles = []
 
         #Set all default parameters contained in the module file into the GUI's fields
 
@@ -250,6 +251,35 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.dp_ind_custom, QtCore.SIGNAL("clicked()"), lambda enduse="ind": self.callPatternGui(enduse))
         QtCore.QObject.connect(self.ui.dp_pubirr_custom, QtCore.SIGNAL("clicked()"), lambda enduse="publicirri": self.callPatternGui(enduse))
 
+        self.setupScaleDataCombo(self.activesim.showDataArchive()["Evapotranspiration"], self.activesim.showDataArchive()["Solar Radiation"], [])
+        self.ui.wsd_numyears_spin.setValue(self.module.getParameter("scaleyears"))
+        self.ui.wsd_globalavg_box.setText(str(self.module.getParameter("globalaverage")))
+        self.ui.wsd_globalavg_check.setChecked(int(self.module.getParameter("globalavgauto")))
+
+        self.ui.wsd_reducenres_check.setChecked(int(self.module.getParameter("weekend_nres")))
+        self.ui.wsd_reducenres_spin.setValue(self.module.getParameter("weekend_nres_factor"))
+        self.ui.wsd_increaseres_check.setChecked(int(self.module.getParameter("weekend_res")))
+        self.ui.wsd_increaseres_spin.setValue(self.module.getParameter("weekend_res_factor"))
+        self.ui.wsd_noirrigaterain_check.setChecked(int(self.module.getParameter("rain_no_irrigate")))
+        self.ui.wsd_irrigateresume_spin.setValue(int(self.module.getParameter("irrigate_lead")))
+
+        self.ui.wsd_init_store_spin.setValue(self.module.getParameter("init_store_levels"))
+        self.ui.wsd_priority_pubirri.setValue(self.module.getParameter("priority_pubirri"))
+        self.ui.wsd_priority_privirri.setValue(self.module.getParameter("priority_privirri"))
+        self.ui.wsd_priority_privinnocontact.setValue(self.module.getParameter("priority_privin_nc"))
+        self.ui.wsd_priority_privincontact.setValue(self.module.getParameter("priority_privin_c"))
+
+        self.supplyruleoptions = ["CLOSE", "EQUAL"]
+        self.ui.wsd_regionsupply_combo.setCurrentIndex(self.supplyruleoptions.index(self.module.getParameter("regional_supply_rule")))
+
+        self.enabledisableGlobalAvgBox()
+        self.enabledisableIrrigateRain()
+        self.enabledisableWeekend()
+        QtCore.QObject.connect(self.ui.wsd_globalavg_check, QtCore.SIGNAL("clicked()"), self.enabledisableGlobalAvgBox)
+        QtCore.QObject.connect(self.ui.wsd_noirrigaterain_check, QtCore.SIGNAL("clicked()"), self.enabledisableIrrigateRain)
+        QtCore.QObject.connect(self.ui.wsd_increaseres_check, QtCore.SIGNAL("clicked()"), self.enabledisableWeekend)
+        QtCore.QObject.connect(self.ui.wsd_reducenres_check, QtCore.SIGNAL("clicked()"), self.enabledisableWeekend)
+
         self.ui.epanet_align_check.setChecked(int(self.module.getParameter("epanet_offset")))
         self.ui.epanet_align_map.setChecked(int(self.module.getParameter("epanet_useProjectOffset")))
         self.ui.epanet_xoffset_line.setText(str(self.module.getParameter("epanet_offsetX")))
@@ -306,7 +336,6 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #-------------
 
         QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
-
 
 
     def changeRainscalars(self):
@@ -367,6 +396,24 @@ class PerfAssessGUILaunch(QtGui.QDialog):
 
         self.ui.clim_pet_combo.setCurrentIndex(comboindex)
 
+    def setupScaleDataCombo(self, evapdatanames, solardatanames, tempdatanames):
+        #Merge the filenames together
+        self.ui.wsd_scaledata_combo.clear()
+        self.scaledatafiles = ["<none>"]
+        self.scaledatafiles += evapdatanames + solardatanames + tempdatanames
+        if self.module.getParameter("scalefile") in self.scaledatafiles:
+            comboindex = self.scaledatafiles.index(self.module.getParameter("scalefile"))
+        else:
+            comboindex = 0
+
+        for i in self.scaledatafiles:
+            if i == "<none>":
+                self.ui.wsd_scaledata_combo.addItem(str("<none>"))
+                continue
+            self.ui.wsd_scaledata_combo.addItem(str(os.path.basename(i)))
+
+        self.ui.wsd_scaledata_combo.setCurrentIndex(comboindex)
+
     def rainscalar_checks(self):
         if self.ui.clim_rainscale_check.isChecked():
             for i in range(len(self.months)):
@@ -400,6 +447,19 @@ class PerfAssessGUILaunch(QtGui.QDialog):
     def rscan_boxchange(self):
         self.ui.epanet_scanradius.setEnabled(self.ui.epanet_intrscan.isChecked())
         return True
+
+    def enabledisableGlobalAvgBox(self):
+        if self.ui.wsd_globalavg_check.isChecked():
+            self.ui.wsd_globalavg_box.setEnabled(0)
+        else:
+            self.ui.wsd_globalavg_box.setEnabled(1)
+
+    def enabledisableIrrigateRain(self):
+        self.ui.wsd_irrigateresume_spin.setEnabled(self.ui.wsd_noirrigaterain_check.isChecked())
+
+    def enabledisableWeekend(self):
+        self.ui.wsd_increaseres_spin.setEnabled(int(self.ui.wsd_increaseres_check.isChecked()))
+        self.ui.wsd_reducenres_spin.setEnabled(int(self.ui.wsd_reducenres_check.isChecked()))
 
     def getEpanetInpName(self):
         fname = QtGui.QFileDialog.getOpenFileName(self, "Locate EPANET .inp File...", os.curdir, str("EPANET File (*.inp)"))
@@ -643,9 +703,28 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.module.setParameter("indpat", self.patterncomboindex[self.ui.dp_ind_combo.currentIndex()])
         self.module.setParameter("publicirripat", self.patterncomboindex[self.ui.dp_pubirr_combo.currentIndex()])
 
-        #Weekly and Seasonal Scaling
+        #Long Term Dynamics
+        filename = self.scaledatafiles[int(self.ui.wsd_scaledata_combo.currentIndex())]
+        print filename
+        self.module.setParameter("scalefile", str(filename))
+        self.module.setParameter("scaleyears", self.ui.wsd_numyears_spin.value())
+        self.module.setParameter("globalaverage", float(self.ui.wsd_globalavg_box.text()))
+        self.module.setParameter("globalavgauto", int(self.ui.wsd_globalavg_check.isChecked()))
 
-        #Network Hydraulics
+        self.module.setParameter("weekend_nres", int(self.ui.wsd_reducenres_check.isChecked()))
+        self.module.setParameter("weekend_nres_factor", float(self.ui.wsd_reducenres_spin.value()))
+        self.module.setParameter("weekend_res", int(self.ui.wsd_increaseres_check.isChecked()))
+        self.module.setParameter("weekend_res_factor", float(self.ui.wsd_increaseres_spin.value()))
+
+        self.module.setParameter("rain_no_irrigate", int(self.ui.wsd_noirrigaterain_check.isChecked()))
+        self.module.setParameter("irrigate_lead", int(self.ui.wsd_irrigateresume_spin.value()))
+
+        self.module.setParameter("init_store_levels", float(self.ui.wsd_init_store_spin.value()))
+        self.module.setParameter("priority_pubirri", int(self.ui.wsd_priority_pubirri.value()))
+        self.module.setParameter("priority_privirri", int(self.ui.wsd_priority_privirri.value()))
+        self.module.setParameter("priority_privin_nc", int(self.ui.wsd_priority_privinnocontact.value()))
+        self.module.setParameter("priority_privin_c", int(self.ui.wsd_priority_privincontact.value()))
+        self.module.setParameter("regional_supply_rule", self.supplyruleoptions[self.ui.wsd_regionsupply_combo.currentIndex()])
 
         #EPANET Link
         self.module.setParameter("epanet_offset", int(self.ui.epanet_align_check.isChecked()))
