@@ -3187,10 +3187,10 @@ class Techplacement(UBModule):
                       "Irrigation":currentAttList.getAttribute("wd_RES_I")*365.0/resallots }
         elif lottype == "HDR": #Demands based on entire apartment sharing a single roof
             hdrflats = float(currentAttList.getAttribute("HDRFlats"))
-            lotdemands = {"Kitchen":currentAttList.getAttribute("wd_HDR_K")*365.0/hdrflats,
-                      "Shower":currentAttList.getAttribute("wd_HDR_S")*365.0/hdrflats,
-                      "Toilet":currentAttList.getAttribute("wd_HDR_T")*365.0/hdrflats,
-                      "Laundry":currentAttList.getAttribute("wd_HDR_L")*365.0/hdrflats,
+            lotdemands = {"Kitchen":currentAttList.getAttribute("wd_HDR_K")*365.0,
+                      "Shower":currentAttList.getAttribute("wd_HDR_S")*365.0,
+                      "Toilet":currentAttList.getAttribute("wd_HDR_T")*365.0,
+                      "Laundry":currentAttList.getAttribute("wd_HDR_L")*365.0,
                       "Irrigation":currentAttList.getAttribute("wd_HDR_I")*365.0 }
         totalhhdemand = sum(lotdemands.values())    #Total House demand, [kL/yr]
         
@@ -3256,9 +3256,11 @@ class Techplacement(UBModule):
                 if mintank_found == 1:
                     continue
                 rel = dsim.calculateTankReliability(inflow, demandseries, i)
+                #print rel
                 if rel > self.targets_reliability:
                     mintank_found = 1
                     storageVol = i
+                    #print storageVol
         
         elif self.sb_method == "Eqn":
             vdemvsupp = recdemand / maxinflow
