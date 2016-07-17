@@ -28,6 +28,7 @@ from PyQt4.QtGui import *
 import PyQt4
 
 import sys, random, numpy, math, os, scipy, Polygon
+import dateutil.parser as dtparse
 import scipy.spatial as sps
 from osgeo import ogr, osr
 import pymusic, ubmusicwrite, ubepanet
@@ -765,6 +766,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         future research
         """
         map_attr = self.activesim.getAssetWithName("MapAttributes")     #fetches global map attributes
+        params = {}     #Dictionary containing all relevant data for integrated water supply balance sim
 
         if self.masterplanmodel:    #differentiate between planning and implementation models
             filesuffix = "PC"
@@ -781,37 +783,152 @@ class PerformanceAssess(UBModule):      #UBCORE
         for i in enduses:
             if eval("self."+i+"pat") == "SDD":
                 map_attr.addAttribute("wdp_"+i, self.sdd)
+                params[i+"_pat"] = self.sdd     #Save patterns to the parameter file
             elif eval("self."+i+"pat") == "CDP":
                 map_attr.addAttribute("wdp_"+i, self.cdp)
+                params[i + "_pat"] = self.cdp
             elif eval("self."+i+"pat") == "OHT":
                 map_attr.addAttribute("wdp_"+i, self.oht)
+                params[i + "_pat"] = self.oht
             elif eval("self."+i+"pat") == "AHC":
                 map_attr.addAttribute("wdp_"+i, self.ahc)
+                params[i + "_pat"] = self.ahc
             else:
                 map_attr.addAttribute("wdp_"+i, eval("self.cp_"+i))
+                params[i + "_pat"] = eval("self.cp_"+i)
 
-        # (2) - Integrated Water Balance Simulation
+        # (2) - Integrated Water Supply Balance Simulation
         #Check if an IWBS is needed...
-        if self.epanet_simtype != "STS":
-            self.notify("Conducting Integrated Water Balance")
+        if self.epanet_simtype != "STS":            #Introduce something for simplified 24-hr sim
+            self.notify("Conducting Integrated Water Supply Balance")
 
-            #Basin by Basin analysis
+            #Scaling Rules for temporal file
+            params["globalaverage"] = self.globalaverage
+            params["globalavgauto"] = self.globalavgauto
+
+            #Transfer temporal rule parameters
+            params["weekend_res"] = self.weekend_res
+            params["weekend_resfact"] = self.weekend_res_factor
+            params["weekend_nres"] = self.weekend_nres
+            params["weekend_nresfact"] = self.weekend_nres_factor
+
+            #Transfer alt supply parameters
+            params["init_store_levels"] = self.init_store_levels
+            params["priority_pubirri"] = self.priority_pubirri
+            params["priority_privirri"] = self.priority_privirri
+            params["priority_privin_nc"] = self.priority_privin_nc
+            params["priority_privin_c"] = self.priority_privin_c
+            params["regional_supply_rule"] = self.regional_supply_rule
+
+            print "Params ", params
+
+            #Grab Scaling Data Set and create a scalar array
+            scalefiledata = ubseries.loadClimate(self.scalefile, 1440, self.scaleyears)
+            print scalefiledata
+            if self.globalavgauto:
+                scalefilefact = ubseries.convertClimateToScalars(scalefiledata, "REL", 0)
+            else:
+                scalefilefact = ubseries.convertClimateToScalars(scalefiledata, "REL", self.globalaverage)
+
+            #Avoid running through time series as many times as possible.
+
+            #Retrieve the basin structure and set up a dictionary to track demands each time step
+            block_track = {}
+            basin_structure = {}
             for i in range(self.totalbasins):
                 # Gain an Idea of the Block Progression
                 curbas = i+1
                 basinblockIDs = self.getBlocksIDsForBasinID(curbas)
                 idflow_assets, idflow_order = self.determineBlockFlowOrder(basinblockIDs)
+                basin_structure[curbas] = [idflow_order, idflow_assets]
+                #print idflow_order
+                for j in range(len(idflow_order)):
+                    block_track[idflow_order[j]] = []
 
-                #Proceed to Do Water Balance
-                for j in range(len(idflow_assets)):
+            #Proceed to Do Water Balance
 
-                    ubwaterbal.UB_WaterBalance(self.raindata, self.evapdata, idflow_assets)
+            # Debugger to only run a certain number of time steps
+            debugStopper = 4    #DEBUG: how many time steps to work with
+            # ---------------------------------------------------
 
-                #Evaluate Results and Readjust Demand Patterns depending
+            f = open("C:/Users/Peter Bach/Documents/Coding Projects/TimeSeriesResults.csv", 'w')
+            headerstring = "Time,Rain[mm],"
+            for i in block_track.keys():
+                for j in enduses:
+                    headerstring+= str(i)+"_"+str(j)+","
+            f.write(headerstring+"\n")
 
+            scaledaytracker = 0
+            scaledaytrackermax = len(scalefilefact)
+            evapdaytracker = 0
+            evapdaytrackermax = len(self.evapdata)
+            monthtracker = 0
+            irrigationtracker = 9999  # Start at a very high number
 
+            curday = dtparse.parse(self.raindata[0][0]).day
+            curmonth = dtparse.parse(self.raindata[0][0]).month
+            self.notify("Current dt " + self.raindata[0][0])
+            for i in range(len(self.raindata)):
 
+                #Debugger to only run a certain number of time steps
+                # if debugStopper == 0:
+                #     break
+                #---------------------------------------------------
+                cdateTime = self.raindata[i][0]
+                cdateTimeP = dtparse.parse(cdateTime)
+                julianday = int(format(dtparse.parse(cdateTime), "%j")) #Julian day i.e. the continuous numbered day of the year
 
+                if cdateTimeP.month != curmonth:
+                    curmonth = cdateTimeP.month
+                    self.notify("Current dt "+cdateTime)
+
+                #Check the current day for the scaling data
+                if curday != dtparse.parse(cdateTime).day:
+                    scaledaytracker += 1
+                    if scaledaytracker > scaledaytrackermax:
+                        scaledaytracker = 0      #Reset to zero if it has reached its maximum
+                    evapdaytracker += 1
+                    if evapdaytracker > evapdaytrackermax:
+                        evapdaytracker = 0
+                    curday = dtparse.parse(cdateTime).day
+
+                #Check if irrigation necessary
+                if self.rain_no_irrigate:
+                    if self.raindata[i][1] > 0:
+                        irrigationtracker = 0   #Set to zero
+                    else:
+                        irrigationtracker += 1
+
+                for j in range(self.totalbasins):
+                    curbas = j+1
+                    basblocks = basin_structure[curbas][1]
+                    for k in range(len(basblocks)):
+                        bWD = ubwaterbal.UB_BlockDemand(cdateTime, self.raindata[i][1], self.evapdata[evapdaytracker][1],
+                                                  scalefilefact[scaledaytracker][1], params, basblocks[k])
+
+                        if irrigationtracker < self.irrigate_lead:
+                            bWD["irrigation"] = 0.0     #If the irrigationtracker is less than lead time, do not irrigate
+                            bWD["publicirri"] = 0.0     #if this is switched off, the tracker is ALWAYS > lead time
+
+                        block_track[basblocks[k].getAttribute("BlockID")] = bWD
+
+                #print block_track
+
+                #Write the data into a .csv for tracking
+                datastring = str(cdateTime)+ "," + str(self.raindata[i][1]) + ","
+                for j in block_track.keys():
+                    block_use_data = block_track[j]
+                    for k in enduses:
+                        #print k, block_use_data
+                        datastring += str(block_use_data[k]) + ","
+                f.write(datastring + "\n")
+
+                # Debugger to only run a certain number of time steps
+                # debugStopper -= 1
+                # ---------------------------------------------------
+
+            f.close()
+            print "FINISHED"
 
         #(3) - EPANET Link
         #Check for valid EPANET file, if not valid, do not run

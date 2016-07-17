@@ -23,19 +23,67 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 """
 
+import datetime
+import dateutil.parser as dtparse
+
+ENDUSE_NAMES = ["kitchen", "toilet", "shower", "laundry", "irrigation", "com", "ind", "publicirri"]
+
+def UB_BlockDemand(t_current, rain, evap, seasonFact, temporal_params, blockdata):
+    """ Runs through the full water demand calculation for a single block based on
+    current input data and behavioural parameters. Returns an array of demand
+    outputs for the current time step.
+
+    :param t_current: current time T, full ISO format including date
+    :param rain: Rainfall [mm] at time t
+    :param evap: Evapotranspiration [mm] at time t
+    :param scalefile: Seasonal Demand Scalar at time t
+    :param temporal_params: Parameters for temporal analysis
+    :param blockdata: asset containing data from current block
+    :return: [Updated hourly water consumption fro all end uses for that block]
+    """
+    dt = dtparse.parse(t_current)
+    hr = dt.hour        #index for 24-hr pattern
+    wkd = dt.weekday()  #index to check if need weekend rules
+
+    params = temporal_params    #Dictionary of all parameters
+    curBlockID = blockdata.getAttribute("BlockID")
+    #print "Current Block ID: ", curBlockID, " at H-", hr, " hour and WKD-", wkd, " weekday"
+    allDemands = GetBlockEndUseAverages(blockdata)
+    #print allDemands
+
+    #Determine weekend factor?
+    wkd_res = 1.0   #weekend residential demand scalar
+    wkd_nres = 1.0  #weekend non-residential demand scalar
+
+    if wkd in [5, 6]:   #if Saturday or Sunday i.e. if we are on a weekend
+        if params["weekend_res"]:           #Are we scaling residential demands?
+            wkd_res = params["weekend_resfact"] #Add the factors
+        if params["weekend_nres"]:
+            wkd_nres = params["weekend_nres"]
+
+    for d in allDemands.keys():
+        patscale = params[d+"_pat"][hr]
+        if d in ["kitchen", "shower", "toilet", "laundry", "irrigation"]:
+            allDemands[d] = allDemands[d] * patscale * seasonFact * wkd_res
+        elif d in ["com", "ind"]:
+            allDemands[d] = allDemands[d] * patscale * seasonFact * wkd_nres
+        else:
+            allDemands[d] = allDemands[d] * patscale * seasonFact   #Public irrigation still continues
+
+    return allDemands
 
 
-def UB_WaterBalance(rain, evap, blocks):
-
-    evapindex = 0
-    for i in range(len(rain)):
-        #Current rain and evap
-        currain = rain[i]
-        curevap = evap[evapindex]
+def GetBlockEndUseAverages(blockdata):
+    enduses = {}
+    for n in ENDUSE_NAMES:
+        enduses[n] = blockdata.getAttribute("Blk_"+n)/float(24.0)       #Retrieve in kL/hour
+    return enduses
 
 
-        print rain[i][0], rain[i][1]
+def UB_BlockSupply():
 
+
+    return True
 
 
 def SetupBlockData(blockasset):
