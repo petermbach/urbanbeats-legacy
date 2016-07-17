@@ -106,40 +106,58 @@ def loadClimate(filename, dt_out, numyears):
 
     return rescaledData
 
-def convertClimateToScalars(datavec):
+def convertClimateToScalars(datavec, method, avg):
     """Converts an input series to a set of scaling factors based on the annual data (2016 version)
-    Used main for evapotranspiration factors.
+    Used main for evapotranspiration factors or demand scaling based on a temperature or solar data set
 
     :param datavec: [<isostring>, <float>] format of evap data retrieved from loadClimate()
+    :param method: "SUB" - sub-scaling, factors are based on annual total, "REL" - relative scaling,
+                    factors based on average within that time series.
+    :param avg: 0 = average calculated based on data, !0 = scalars based on this value
     :return: scalefactors array
     """
+    if method == "REL":
+        if avg == 0:        #If the average given is zero, function recalculates based on data
+            timesteps = len(datavec)
+            print "Time Steps: ", timesteps
+            totalsum = 0
+            for i in range(len(datavec)):
+                totalsum += datavec[i][1]
+            avg = float(totalsum) / float(timesteps)
+            print "Average of the data: ", avg
+        #Rescale the data
+        scalefactors = []
+        for i in range(len(datavec)):
+            scalefactors.append([datavec[i][0], datavec[i][1]/avg])
+        print scalefactors
 
-    #Get a total annual value array
-    anndata = []
-    yeartrack = int(dtparse.parse(datavec[0][0]).date().year)
-    datasum = 0
-    for i in range(len(datavec)):
-        curyear = int(datavec[i][0][0:4])   #ISO format, the first four characters are ALWAYS the year (more efficient than converting the whole date)
-        if curyear == yeartrack:
-            datasum += datavec[i][1]
-        elif curyear != yeartrack:
-            anndata.append([yeartrack, datasum])
-            datasum = datavec[i][1]         #reinitialize datasum, but set to value of current year
-            yeartrack = curyear
-    anndata.append([yeartrack, datasum])
+    if method == "SUB":
+        # Get a total annual value array
+        anndata = []
+        yeartrack = int(dtparse.parse(datavec[0][0]).date().year)
+        datasum = 0
+        for i in range(len(datavec)):
+            curyear = int(datavec[i][0][0:4])   #ISO format, the first four characters are ALWAYS the year (more efficient than converting the whole date)
+            if curyear == yeartrack:
+                datasum += datavec[i][1]
+            elif curyear != yeartrack:
+                anndata.append([yeartrack, datasum])
+                datasum = datavec[i][1]         #reinitialize datasum, but set to value of current year
+                yeartrack = curyear
+        anndata.append([yeartrack, datasum])
 
-    #Rescale the data
-    scalefactors = []
-    yeartrack = int(dtparse.parse(datavec[0][0]).date().year)   #Reinitialise
-    anndataindex = 0
-    for i in range(len(datavec)):
-        curyear = int(datavec[i][0][0:4])   #ISO format, the first four characters are ALWAYS the year (more efficient than converting the whole date)
-        if curyear == yeartrack:
-            scalefactors.append([datavec[i][0], datavec[i][1]/anndata[anndataindex][1]])
-        else:
-            yeartrack = curyear
-            anndataindex += 1
-            scalefactors.append([datavec[i][0], datavec[i][1]/anndata[anndataindex][1]])
+        #Rescale the data
+        scalefactors = []
+        yeartrack = int(dtparse.parse(datavec[0][0]).date().year)   #Reinitialise
+        anndataindex = 0
+        for i in range(len(datavec)):
+            curyear = int(datavec[i][0][0:4])   #ISO format, the first four characters are ALWAYS the year (more efficient than converting the whole date)
+            if curyear == yeartrack:
+                scalefactors.append([datavec[i][0], datavec[i][1]/anndata[anndataindex][1]])
+            else:
+                yeartrack = curyear
+                anndataindex += 1
+                scalefactors.append([datavec[i][0], datavec[i][1]/anndata[anndataindex][1]])
 
     return scalefactors
 

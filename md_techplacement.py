@@ -1008,7 +1008,7 @@ class Techplacement(UBModule):
             #self.raindata = ubseries.loadClimateFile(self.rainfile, "csv", self.rain_dt, 1440, self.rain_length)
             #self.evapdata = ubseries.loadClimateFile(self.evapfile, "csv", self.evap_dt, 1440, self.rain_length)
 
-            self.evapscale = ubseries.convertClimateToScalars(self.evapdata)
+            self.evapscale = ubseries.convertClimateToScalars(self.evapdata, "SUB", 0)
 
             #self.evapscale = ubseries.convertVectorToScalingFactors(self.evapdata)
             #self.raindata = ubseries.removeDateStampFromSeries(self.raindata, 2)             #Remove the date stamps
