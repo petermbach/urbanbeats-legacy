@@ -460,6 +460,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         fielddefmatrix.append(ogr.FieldDefn("wd_PubOUT", ogr.OFTReal))
         fielddefmatrix.append(ogr.FieldDefn("Blk_WD", ogr.OFTReal))
         fielddefmatrix.append(ogr.FieldDefn("Blk_WD_OUT", ogr.OFTReal))
+        fielddefmatrix.append(ogr.FieldDefn("Blk_W_LOST", ogr.OFTReal))
 
         fielddefmatrix.append(ogr.FieldDefn("Blk_Kitch", ogr.OFTReal))
         fielddefmatrix.append(ogr.FieldDefn("Blk_Shower", ogr.OFTReal))
@@ -469,6 +470,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
         fielddefmatrix.append(ogr.FieldDefn("Blk_Com", ogr.OFTReal))
         fielddefmatrix.append(ogr.FieldDefn("Blk_Ind", ogr.OFTReal))
         fielddefmatrix.append(ogr.FieldDefn("Blk_PubIrr", ogr.OFTReal))
+        fielddefmatrix.append(ogr.FieldDefn("Blk_Losses", ogr.OFTReal))
 
         fielddefmatrix.append(ogr.FieldDefn("ServedIA", ogr.OFTReal))
 
@@ -763,6 +765,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
             feature.SetField("wd_PubOUT", currentAttList.getAttribute("wd_PubOUT"))
             feature.SetField("Blk_WD", currentAttList.getAttribute("Blk_WD"))
             feature.SetField("Blk_WD_OUT", currentAttList.getAttribute("Blk_WD_OUT"))
+            feature.SetField("Blk_W_LOST", currentAttList.getAttribute("Blk_W_LOST"))
 
             feature.SetField("Blk_Kitch", currentAttList.getAttribute("Blk_kitchen"))
             feature.SetField("Blk_Shower", currentAttList.getAttribute("Blk_shower"))
@@ -772,6 +775,7 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
             feature.SetField("Blk_Com", currentAttList.getAttribute("Blk_com"))
             feature.SetField("Blk_Ind", currentAttList.getAttribute("Blk_ind"))
             feature.SetField("Blk_PubIrr", currentAttList.getAttribute("Blk_publicirri"))
+            feature.SetField("Blk_Losses", currentAttList.getAttribute("Blk_losses"))
 
             feature.SetField("ServedIA", currentAttList.getAttribute("ServedIA"))
 

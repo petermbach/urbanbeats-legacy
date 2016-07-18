@@ -247,6 +247,11 @@ class Techplacement(UBModule):
         self.public_irr_wq = "SW"       #PO = potable, NP = non-potable, RW = rainwater, SW = stormwater, GW = greywater
         
         #WATER EFFICIENCY
+        self.createParameter("LOSS_status", BOOL, "")
+        self.createParameter("LOSS_amount", DOUBLE, "")
+        self.LOSS_status = 0
+        self.LOSS_amount = 10.0     #% of losses from system (from total demand)
+
         self.createParameter("WEFstatus", BOOL,"")
         self.WEFstatus = 0
         
@@ -882,6 +887,7 @@ class Techplacement(UBModule):
             currentAttList.addAttribute("wd_PubOUT", wdDict["TotalOutdoorPublicWD"]) #[kL/yr]
             currentAttList.addAttribute("Blk_WD", wdDict["TotalBlockWD"])       #[kL/yr]
             currentAttList.addAttribute("Blk_WD_OUT", wdDict["TotalOutdoorWD"]) #[kL/yr]
+            currentAttList.addAttribute("Blk_W_LOST", wdDict["TotalLosses"])   #[kL/yr]
 
             currentAttList.addAttribute("Blk_kitchen", wdDict["Blk_kitchen"])   #[kL/day]
             currentAttList.addAttribute("Blk_shower", wdDict["Blk_shower"])     #[kL/day]
@@ -891,6 +897,7 @@ class Techplacement(UBModule):
             currentAttList.addAttribute("Blk_com", wdDict["Blk_com"])           #[kL/day]
             currentAttList.addAttribute("Blk_ind", wdDict["Blk_ind"])           #[kL/day]
             currentAttList.addAttribute("Blk_publicirri", wdDict["Blk_publicirri"])     #[kL/day]
+            currentAttList.addAttribute("Blk_losses", wdDict["Blk_losses"])  #[kL/day]
 
             self.readjustLandCoverProportions(currentAttList)
 
@@ -1671,6 +1678,10 @@ class Techplacement(UBModule):
         waterDemandDict["TotalOutdoorWD"] = block_TOutWD
         waterDemandDict["TotalBlockWD"] = block_TotalWD
 
+        # Losses
+        totalLosses = float(self.LOSS_amount / 100.0) * self.LOSS_status * waterDemandDict["TotalBlockWD"]
+        waterDemandDict["TotalLosses"] = totalLosses
+
         waterDemandDict["Blk_kitchen"] = blockKitchen
         waterDemandDict["Blk_shower"] = blockShower
         waterDemandDict["Blk_toilet"] = blockToilet
@@ -1679,6 +1690,7 @@ class Techplacement(UBModule):
         waterDemandDict["Blk_com"] = blockCom
         waterDemandDict["Blk_ind"] = blockInd
         waterDemandDict["Blk_publicirri"] = blockPubIrr
+        waterDemandDict["Blk_losses"] = totalLosses/ 365.0  # Convert to [kL/day]
         return waterDemandDict
 
 

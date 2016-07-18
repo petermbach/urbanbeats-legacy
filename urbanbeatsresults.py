@@ -481,8 +481,8 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
 
     def getDemandPatternsBlock(self, blockdata, plotunits):
         map_attr = self.module.getAssetWithName("MapAttributes")
-        enduses = ["kitchen", "shower", "toilet", "laundry", "irrigation", "com", "ind", "publicirri"]
-        plotlabels = ["Kitchen", "Shower", "Toilet", "Laundry", "Garden", "Commercial", "Industrial", "Public Irrigation"]
+        enduses = ["kitchen", "shower", "toilet", "laundry", "irrigation", "com", "ind", "publicirri", "losses"]
+        plotlabels = ["Kitchen", "Shower", "Toilet", "Laundry", "Garden", "Commercial", "Industrial", "Public Irrigation", "Losses"]
         patterndict = {}
         if plotunits == "L/sec":
             conversionfactor = float(1.0/(24.0*3600.0))

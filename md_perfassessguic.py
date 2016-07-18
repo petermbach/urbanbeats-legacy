@@ -251,6 +251,9 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.dp_ind_custom, QtCore.SIGNAL("clicked()"), lambda enduse="ind": self.callPatternGui(enduse))
         QtCore.QObject.connect(self.ui.dp_pubirr_custom, QtCore.SIGNAL("clicked()"), lambda enduse="publicirri": self.callPatternGui(enduse))
 
+        self.ui.wsd_run_fullTSSim.setChecked(int(self.module.getParameter("run_fullTSSim")))
+        QtCore.QObject.connect(self.ui.wsd_run_fullTSSim, QtCore.SIGNAL("clicked()"), self.enableDisableDynamicWaterSupplyParams)
+
         self.setupScaleDataCombo(self.activesim.showDataArchive()["Evapotranspiration"], self.activesim.showDataArchive()["Solar Radiation"], [])
         self.ui.wsd_numyears_spin.setValue(self.module.getParameter("scaleyears"))
         self.ui.wsd_globalavg_box.setText(str(self.module.getParameter("globalaverage")))
@@ -328,6 +331,8 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.ui.epanetsim_trials_box.setText(str(self.module.getParameter("epanetsim_trials")))
         self.ui.epanetsim_acc_box.setText(str(self.module.getParameter("epanetsim_accuracy")))
         self.ui.epanetsim_demmult_box.setText(str(self.module.getParameter("epanetsim_demmult")))
+
+        self.enableDisableDynamicWaterSupplyParams()
 
         #----------------------------------------------------------------------#
         #-------- INTEGRATED WATER CYCLE MODEL  -------------------------------#
@@ -453,6 +458,43 @@ class PerfAssessGUILaunch(QtGui.QDialog):
             self.ui.wsd_globalavg_box.setEnabled(0)
         else:
             self.ui.wsd_globalavg_box.setEnabled(1)
+
+    def enableDisableDynamicWaterSupplyParams(self):
+        if self.ui.wsd_run_fullTSSim.isChecked():
+            self.ui.wsd_scaledata_combo.setEnabled(1)
+            self.ui.wsd_numyears_spin.setEnabled(1)
+            self.ui.wsd_globalavg_check.setEnabled(1)
+            self.ui.wsd_globalavg_box.setEnabled(not(self.ui.wsd_globalavg_check.isChecked()))
+            self.ui.wsd_reducenres_check.setEnabled(1)
+            self.ui.wsd_reducenres_spin.setEnabled(self.ui.wsd_reducenres_check.isChecked())
+            self.ui.wsd_increaseres_check.setEnabled(1)
+            self.ui.wsd_increaseres_spin.setEnabled(self.ui.wsd_increaseres_check.isChecked())
+            self.ui.wsd_noirrigaterain_check.setEnabled(1)
+            self.ui.wsd_irrigateresume_spin.setEnabled(self.ui.wsd_noirrigaterain_check.isChecked())
+            self.ui.wsd_init_store_spin.setEnabled(1)
+            self.ui.wsd_priority_pubirri.setEnabled(1)
+            self.ui.wsd_priority_privirri.setEnabled(1)
+            self.ui.wsd_priority_privinnocontact.setEnabled(1)
+            self.ui.wsd_priority_privincontact.setEnabled(1)
+            self.ui.wsd_regionsupply_combo.setEnabled(1)
+        else:
+            self.ui.wsd_scaledata_combo.setEnabled(0)
+            self.ui.wsd_numyears_spin.setEnabled(0)
+            self.ui.wsd_globalavg_check.setEnabled(0)
+            self.ui.wsd_globalavg_box.setEnabled(0)
+            self.ui.wsd_reducenres_check.setEnabled(0)
+            self.ui.wsd_reducenres_spin.setEnabled(0)
+            self.ui.wsd_increaseres_check.setEnabled(0)
+            self.ui.wsd_increaseres_spin.setEnabled(0)
+            self.ui.wsd_noirrigaterain_check.setEnabled(0)
+            self.ui.wsd_irrigateresume_spin.setEnabled(0)
+            self.ui.wsd_init_store_spin.setEnabled(0)
+            self.ui.wsd_priority_pubirri.setEnabled(0)
+            self.ui.wsd_priority_privirri.setEnabled(0)
+            self.ui.wsd_priority_privinnocontact.setEnabled(0)
+            self.ui.wsd_priority_privincontact.setEnabled(0)
+            self.ui.wsd_regionsupply_combo.setEnabled(0)
+
 
     def enabledisableIrrigateRain(self):
         self.ui.wsd_irrigateresume_spin.setEnabled(self.ui.wsd_noirrigaterain_check.isChecked())
@@ -704,6 +746,8 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.module.setParameter("publicirripat", self.patterncomboindex[self.ui.dp_pubirr_combo.currentIndex()])
 
         #Long Term Dynamics
+        self.module.setParameter("run_fullTSSim", int(self.ui.wsd_run_fullTSSim.isChecked()))
+
         filename = self.scaledatafiles[int(self.ui.wsd_scaledata_combo.currentIndex())]
         print filename
         self.module.setParameter("scalefile", str(filename))

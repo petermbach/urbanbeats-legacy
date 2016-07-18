@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 import datetime
 import dateutil.parser as dtparse
 
-ENDUSE_NAMES = ["kitchen", "toilet", "shower", "laundry", "irrigation", "com", "ind", "publicirri"]
+ENDUSE_NAMES = ["kitchen", "toilet", "shower", "laundry", "irrigation", "com", "ind", "publicirri", "losses"]
 
 def UB_BlockDemand(t_current, rain, evap, seasonFact, temporal_params, blockdata):
     """ Runs through the full water demand calculation for a single block based on
@@ -67,8 +67,10 @@ def UB_BlockDemand(t_current, rain, evap, seasonFact, temporal_params, blockdata
             allDemands[d] = allDemands[d] * patscale * seasonFact * wkd_res
         elif d in ["com", "ind"]:
             allDemands[d] = allDemands[d] * patscale * seasonFact * wkd_nres
-        else:
+        elif d in ["publicirri"]:
             allDemands[d] = allDemands[d] * patscale * seasonFact   #Public irrigation still continues
+        elif d in ["losses"]:
+            allDemands[d] = allDemands[d]
 
     return allDemands
 

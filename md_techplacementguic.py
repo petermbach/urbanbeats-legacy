@@ -367,6 +367,8 @@ class TechplacementGUILaunch(QtGui.QDialog):
 
         #--> Water Efficiency
         ### NOTE: Not linking Rating System Combo box, AS6400 the only available system currently
+        self.ui.LOSS_status.setChecked(self.module.getParameter("LOSS_status"))
+        self.ui.LOSS_spin.setValue(float(self.module.getParameter("LOSS_amount")))
 
         if self.module.getParameter("WEF_loc_house") == 1:
             self.ui.WEF_loc_house_check.setChecked(1)
@@ -1346,6 +1348,9 @@ class TechplacementGUILaunch(QtGui.QDialog):
         self.module.setParameter("public_irr_wq", str(ffp_matrix[self.ui.public_irr_wq.currentIndex()]))
 
         #--> Water Efficiency
+        self.module.setParameter("LOSS_status", int(self.ui.LOSS_status.isChecked()))
+        self.module.setParameter("LOSS_amount", float(self.ui.LOSS_spin.value()))
+
         self.module.setParameter("WEFstatus", int(self.ui.WEF_consider.isChecked()))
         ###NOTE: NOT LINKING COMBO BOX WITH RATING SYSTEM, AS6400 the only one for now
 

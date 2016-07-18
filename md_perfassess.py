@@ -266,6 +266,9 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.cp_publicirri = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
 
         #Long Term Water Supply Dynamics
+        self.createParameter("run_fullTSSim", BOOL, "")
+        self.run_fullTSSim = 0
+
         self.createParameter("scalefile", STRING, "Filepath to the climate data to be used for scaling")
         self.createParameter("scaleyears", DOUBLE, "Number of years of continuous scaling data to use")
         self.createParameter("globalaverage", DOUBLE, "Global average to base the scaling upon")
@@ -779,8 +782,12 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.notify("Total Strategies: "+str(strats))
 
         #(1) - Demand Downscaling Data
-        enduses = ["kitchen", "shower", "toilet", "laundry", "irrigation", "com", "ind", "publicirri"]
+        enduses = ["kitchen", "shower", "toilet", "laundry", "irrigation", "com", "ind", "publicirri", "losses"]
         for i in enduses:
+            if i == "losses":
+                map_attr.addAttribute("wdp_losses", self.cdp)   #Constant pattern for losses
+                params["losses_pat"] = self.cdp
+                continue
             if eval("self."+i+"pat") == "SDD":
                 map_attr.addAttribute("wdp_"+i, self.sdd)
                 params[i+"_pat"] = self.sdd     #Save patterns to the parameter file
@@ -797,9 +804,11 @@ class PerformanceAssess(UBModule):      #UBCORE
                 map_attr.addAttribute("wdp_"+i, eval("self.cp_"+i))
                 params[i + "_pat"] = eval("self.cp_"+i)
 
+
+
         # (2) - Integrated Water Supply Balance Simulation
         #Check if an IWBS is needed...
-        if self.epanet_simtype != "STS":            #Introduce something for simplified 24-hr sim
+        if self.epanet_simtype != "STS" and self.run_fullTSSim:            #Introduce something for simplified 24-hr sim
             self.notify("Conducting Integrated Water Supply Balance")
 
             #Scaling Rules for temporal file
@@ -830,8 +839,6 @@ class PerformanceAssess(UBModule):      #UBCORE
             else:
                 scalefilefact = ubseries.convertClimateToScalars(scalefiledata, "REL", self.globalaverage)
 
-            #Avoid running through time series as many times as possible.
-
             #Retrieve the basin structure and set up a dictionary to track demands each time step
             block_track = {}
             basin_structure = {}
@@ -845,7 +852,10 @@ class PerformanceAssess(UBModule):      #UBCORE
                 for j in range(len(idflow_order)):
                     block_track[idflow_order[j]] = []
 
+                #strats = self.getStrategiesInIDFlowOrder(idflow_order)
+
             #Proceed to Do Water Balance
+            #Avoid running through time series as many times as possible.
 
             # Debugger to only run a certain number of time steps
             debugStopper = 4    #DEBUG: how many time steps to work with
@@ -857,6 +867,12 @@ class PerformanceAssess(UBModule):      #UBCORE
                 for j in enduses:
                     headerstring+= str(i)+"_"+str(j)+","
             f.write(headerstring+"\n")
+
+            # sb_labels = ["StoreInit", "Inflow", "Spill", "OtherLoss", "Demand", "Supply", "StoreFinal"]
+            # g = open("C:/Users/Peter Bach/Documents/Coding Projects/TimeSeriesStorages.csv", 'w')
+            # headerstring = "Time,Rain[mm],Evap[mm],"
+            # for i in wsud_track.keys():
+            #     for j in
 
             scaledaytracker = 0
             scaledaytrackermax = len(scalefilefact)
@@ -1031,7 +1047,8 @@ class PerformanceAssess(UBModule):      #UBCORE
                         "PGarden": self.createPatternString(map_attr.getAttribute("wdp_irrigation")),
                         "PCom": self.createPatternString(map_attr.getAttribute("wdp_com")),
                         "PInd": self.createPatternString(map_attr.getAttribute("wdp_ind")),
-                        "PPubIrr": self.createPatternString(map_attr.getAttribute("wdp_publicirri"))}
+                        "PPubIrr": self.createPatternString(map_attr.getAttribute("wdp_publicirri")),
+                        "PLosses": self.createPatternString(map_attr.getAttribute("wdp_losses"))}
 
             dem_list = self.adjustEPANETdemands(rev_node_list, nbrelation)
             #print dem_list
@@ -1047,6 +1064,20 @@ class PerformanceAssess(UBModule):      #UBCORE
         #Run the EPANET Simulations
         self.runEPANETsim()
         return True
+
+    def getStrategiesInIDFlowOrder(self, idorder):
+        """Runs through the WSUD strategies and returns all systems that are 'relevant' i.e.
+                - with storage
+                - at the appropriate scales
+            in the block flow order specified.
+
+        :param idorder: Array of block IDs in the order upstream to downstream
+        :return: assets of relevant WSUD systems at the Lot, Neighbourhood and Basin scales
+        """
+        stratlist = []
+
+        return stratlist
+
 
     def applyNetworkJunctionOffsets(self, nodelist):
         """Applies a custom offset to the entire EPANET node list coordinates. This offset allows alignment of GIS
@@ -1140,9 +1171,9 @@ class PerformanceAssess(UBModule):      #UBCORE
         """
         self.notify("Layering Junction Demand Patterns...")
         enduse_atts = ["Blk_kitchen", "Blk_shower", "Blk_toilet", "Blk_laundry", "Blk_irrigation",
-                        "Blk_com", "Blk_ind","Blk_publicirri"]
+                        "Blk_com", "Blk_ind","Blk_publicirri", "Blk_losses"]
         pattern_names = ["PKitch", "PShower", "PToilet", "PLaundry", "PGarden",
-                         "PCom", "PInd", "PPubIrr"]
+                         "PCom", "PInd", "PPubIrr", "PLosses"]
 
         new_demand_data = []
 
@@ -1182,7 +1213,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         if enduse in ["Blk_WD"]:
             cf = float(1000.0/(365.0*24.0*3600.0)) #kL/yr into L/sec
         elif enduse in ["Blk_kitchen", "Blk_shower", "Blk_toilet", "Blk_laundry", "Blk_irrigation",
-                        "Blk_com", "Blk_ind", "Blk_publicirri"]:
+                        "Blk_com", "Blk_ind", "Blk_publicirri", "Blk_losses"]:
             cf = float(1000.0/(24.0*3600.0))     #kL/day into L/sec
 
         nodedemand = 0
