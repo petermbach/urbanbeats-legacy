@@ -105,3 +105,108 @@ def Drainage_Lot(self, block, params):
     :param params: A dictionary of lot drainage parameters
     :return:
     """
+
+class Storage_Sim(object):
+    def __init__(self, obID, storeType, location, scale, quantity, impT, unitcapacity):
+        self.__storageID = obID
+        self.__storageType = storeType
+        self.__storageLocation = location
+        self.__storageScale = scale
+        self.__storageQuantities = quantity
+        self.__upstreamImp = impT
+        self.__capacity = unitcapacity
+        self.__capacityTotal = unitcapacity * quantity
+        self.__currentV = 0.0
+        self.__initcapacity = 0.0
+
+        self.__routedt = 0
+        self.__virtual_space = []
+
+    def setRoutingTime(self, dt):
+        self.__routedt = dt     #time steps for reusable purpose
+
+    def initialiseStorageVol(self, init_cap):
+        """Initialises the storage volume based on an initial-capacity input [%], the current
+        storage initial condition is dependent on the system's total capacity.
+
+        :param init_cap: initial capacity [%] or [] proportion.
+        """
+        if init_cap > 1.0:
+            self.__currentV = float(self.__capacitytotal * init_cap / 100.0)
+            self.__initcapacity = self.__currentV
+        else:
+            self.__currentV = float(self.__capacitytotal * init_cap)
+            self.__initcapacity = self.__currentV
+
+    def resetStorage_Sim(self):
+        """Resets the virtual storage for routing back to zeros, resets the current volume to
+        initial capacity.
+        """
+        self.__virtual_space = [0]*self.__routedt       #Reset the routing array
+        self.__currentV = self.__initcapacity           #Reset initial capacity
+
+    def calculateStorageBehaviour(self, rain, evap, demands):
+        """Simulates one single time step of storage-behaviour water balance. Inputs are used
+        to update the storage conditions of the system as well, what the current volume is.
+
+        :param rain: Input rainfall [mm]
+        :param evap: Input evapotranspiration [mm]
+        :param demands: Demand array, the ordered demands based on priority for that
+                        time step, e.g. if priority is (1) outdoor, (2) indoor non-contact,...
+                        then array will be [x kL, y kL, z kL]. The array is fed back as output
+        :return: An array of water balance data for writing into a file
+                [initial Volume, inflow for that dt, spill from system, other losses, total demand, total supplied,
+                updated demand list, final volume]
+        """
+        #(1) Inflow and current Volume
+        newinflow = rain/1000 * self.__upstreamImp     #[kL]
+        initV = self.__currentV
+        self.__virtual_space.append(newinflow)
+
+        inflow = self.__virtual_space[0]    #Routing - add newest inflow to the end of the array
+        self.__virtual_space.pop(0)         #Pop the current 0th index of the array
+        self.__currentV += inflow           #Add that inflow to the system
+
+        #(2) Spills and Losses from system (yield after spill order)
+        spill = max(self.__currentV - self.__capacityTotal, 0)  #calculate spill
+        otherloss = 0
+        self.__currentV -= spill
+        if self.__storageType in ["PB", "WSUR"] and rain == 0:
+            pass        #Remove water through evaporation
+            otherloss += 0
+
+        #(3) Supply Demand and Update Storage
+        totalDemand = sum(demands)
+        totalSupply = 0
+        while self.__currentV > 0:
+            #Supply demands one by one
+            pass
+            totalSupply += 0
+
+        return [initV, inflow, spill, otherloss, totalDemand, totalSupply, demands, self.__currentV]
+
+    def emptyStorageVol(self, flowrate, simdt):
+        """Orders the storage system to drain its current storage volume based on a pre-defined
+        flow-rate [L/sec], if this is called in a time step, the storage will slowly empty its
+        capacity downstream.
+
+        :param flowrate: in [L/sec]
+        :param simdt: simulation time step to work out volume reduction [mins]
+        :return: simply updates the current Volume, affects supply
+        """
+        flowrate = flowrate * 60.0 / 1000.0    #[kL/min]
+        emptiedVol = flowrate * simdt
+        self.__currentV = max(self.__currentV - emptiedVol, 0)  #empty the store
+        return True
+
+    def getStoreID(self):
+        return self.__storageID
+
+    def getStoreLocation(self):
+        return self.__storageLocation
+
+    def getStoreType(self):
+        return self.__storeType
+
+    def getStoreScale(self):
+        return self.__storageScale
