@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perfassessgui.ui'
 #
-# Created: Mon Jul 18 14:43:04 2016
+# Created: Fri Aug 12 10:26:10 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -617,7 +617,7 @@ class Ui_Perfconfig_Dialog(object):
         self.scrollArea_7.setWidgetResizable(True)
         self.scrollArea_7.setObjectName(_fromUtf8("scrollArea_7"))
         self.scrollAreaWidgetContents_7 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_7.setGeometry(QtCore.QRect(0, 0, 463, 804))
+        self.scrollAreaWidgetContents_7.setGeometry(QtCore.QRect(0, 0, 463, 864))
         self.scrollAreaWidgetContents_7.setObjectName(_fromUtf8("scrollAreaWidgetContents_7"))
         self.verticalLayout_12 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_7)
         self.verticalLayout_12.setObjectName(_fromUtf8("verticalLayout_12"))
@@ -627,7 +627,7 @@ class Ui_Perfconfig_Dialog(object):
         self.musicsimconfig_lbl.setObjectName(_fromUtf8("musicsimconfig_lbl"))
         self.verticalLayout_12.addWidget(self.musicsimconfig_lbl)
         self.simulationconfig_widget = QtGui.QWidget(self.scrollAreaWidgetContents_7)
-        self.simulationconfig_widget.setMinimumSize(QtCore.QSize(0, 140))
+        self.simulationconfig_widget.setMinimumSize(QtCore.QSize(0, 200))
         self.simulationconfig_widget.setObjectName(_fromUtf8("simulationconfig_widget"))
         self.music_browse_pathbox = QtGui.QLineEdit(self.simulationconfig_widget)
         self.music_browse_pathbox.setGeometry(QtCore.QRect(130, 70, 201, 20))
@@ -652,6 +652,18 @@ class Ui_Perfconfig_Dialog(object):
         self.musicsplit_check = QtGui.QCheckBox(self.simulationconfig_widget)
         self.musicsplit_check.setGeometry(QtCore.QRect(10, 40, 381, 17))
         self.musicsplit_check.setObjectName(_fromUtf8("musicsplit_check"))
+        self.music_model_concept = QtGui.QLabel(self.simulationconfig_widget)
+        self.music_model_concept.setGeometry(QtCore.QRect(10, 130, 191, 20))
+        self.music_model_concept.setObjectName(_fromUtf8("music_model_concept"))
+        self.music_concept_linear = QtGui.QRadioButton(self.simulationconfig_widget)
+        self.music_concept_linear.setGeometry(QtCore.QRect(210, 130, 151, 17))
+        self.music_concept_linear.setObjectName(_fromUtf8("music_concept_linear"))
+        self.music_concept_nonlinear = QtGui.QRadioButton(self.simulationconfig_widget)
+        self.music_concept_nonlinear.setGeometry(QtCore.QRect(210, 150, 211, 17))
+        self.music_concept_nonlinear.setObjectName(_fromUtf8("music_concept_nonlinear"))
+        self.music_concept_both = QtGui.QRadioButton(self.simulationconfig_widget)
+        self.music_concept_both.setGeometry(QtCore.QRect(210, 170, 191, 17))
+        self.music_concept_both.setObjectName(_fromUtf8("music_concept_both"))
         self.verticalLayout_12.addWidget(self.simulationconfig_widget)
         self.musiccatchment_lbl = QtGui.QLabel(self.scrollAreaWidgetContents_7)
         self.musiccatchment_lbl.setMinimumSize(QtCore.QSize(445, 16))
@@ -2223,6 +2235,14 @@ class Ui_Perfconfig_Dialog(object):
         self.music_version_combo.setItemText(1, _translate("Perfconfig_Dialog", "eWater MUSIC Version 6", None))
         self.musicsplit_check_2.setText(_translate("Perfconfig_Dialog", "Use Selected Project Climate Data", None))
         self.musicsplit_check.setText(_translate("Perfconfig_Dialog", "Write a separate simulation file for each basin", None))
+        self.music_model_concept.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Conceptualisation of MUSIC Model:</p></body></html>", None))
+        self.music_concept_linear.setText(_translate("Perfconfig_Dialog", "Linear (conservative)", None))
+        self.music_concept_nonlinear.setText(_translate("Perfconfig_Dialog", "Non-linear", None))
+        self.music_concept_both.setText(_translate("Perfconfig_Dialog", "Both (results as bandwidth)", None))
         self.musiccatchment_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

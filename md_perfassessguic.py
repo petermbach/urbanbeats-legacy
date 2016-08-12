@@ -108,6 +108,19 @@ class PerfAssessGUILaunch(QtGui.QDialog):
 
         self.ui.musicsplit_check.setChecked(self.module.getParameter("musicseparatebasin"))
 
+        if self.module.getParameter("music_concept") == "linear":
+            self.ui.music_concept_linear.setChecked(1)
+            self.ui.music_concept_nonlinear.setChecked(0)
+            self.ui.music_concept_both.setChecked(0)
+        elif self.module.getParameter("music_concept") == "nonlinear":
+            self.ui.music_concept_linear.setChecked(0)
+            self.ui.music_concept_nonlinear.setChecked(1)
+            self.ui.music_concept_both.setChecked(0)
+        else:
+            self.ui.music_concept_linear.setChecked(0)
+            self.ui.music_concept_nonlinear.setChecked(0)
+            self.ui.music_concept_both.setChecked(1)
+
         self.ui.include_pervious.setChecked(self.module.getParameter("include_pervious"))
         self.ui.musicRR_soil_box.setText(str(self.module.getParameter("musicRR_soil")))
         self.ui.musicRR_field_box.setText(str(self.module.getParameter("musicRR_field")))
@@ -665,6 +678,14 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.module.setParameter("musicversion", self.versioncombo[int(self.ui.music_version_combo.currentIndex())])
         self.module.setParameter("musicclimatefile", self.ui.music_browse_pathbox.text())
         self.module.setParameter("musicseparatebasin", int(self.ui.musicsplit_check.isChecked()))
+
+        if self.ui.music_concept_linear.isChecked():
+            self.module.setParameter("music_concept", "linear")
+        elif self.ui.music_concept_nonlinear.isChecked():
+            self.module.setParameter("music_concept", "nonlinear")
+        else:
+            self.module.setParameter("music_concept", "both")
+
         self.module.setParameter("include_pervious", int(self.ui.include_pervious.isChecked()))
         self.module.setParameter("musicRR_soil", float(self.ui.musicRR_soil_box.text()))
         self.module.setParameter("musicRR_field", float(self.ui.musicRR_field_box.text()))
