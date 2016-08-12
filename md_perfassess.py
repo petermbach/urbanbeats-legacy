@@ -113,6 +113,9 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.musicclimatefile = ""
         self.musicseparatebasin = 1
 
+        self.createParameter("music_concept", STRING, "The method to be used for creating the MUSIC file")
+        self.music_concept = "linear"   #linear, nonlinear, both
+
         self.createParameter("include_pervious", BOOL, "Include pervious areas in simulation?")
         self.createParameter("musicRR_soil", DOUBLE, "MUSIC soil storage capacity")
         self.createParameter("musicRR_field", DOUBLE, "MUSIC field storage capacity")
@@ -376,10 +379,8 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.totalbasins = map_attr.getAttribute("TotalBasins")
         self.strats = map_attr.getAttribute("OutputStrats")
 
-
-
         #If necessary: Load climate data and scale it according to factors
-        if self.perf_MUSIC or self.perf_EPANET or self.perf_CD3:
+        if self.perf_EPANET or self.perf_CD3:       #Add perf_MUSIC next time
             self.raindata = ubseries.loadClimate(self.rainfile, self.analysis_dt, self.rainyears)
             self.evapdata = ubseries.loadClimate(self.evapfile, 1440, self.rainyears)   #Extract PET at daily
             #self.solardata = ubseries.loadClimate(self.solarfile, 1440, self.rainyears)    #Solar Radiation data
