@@ -547,7 +547,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, scalekeys[s], ncount,
                             (blockX - self.blocks_size * catchxoffset) * scalar,
                             (blockY - self.blocks_size/ 2.0 + yoffsets[s]*self.blocks_size) * scalar,
-                            treatImp, total_catch_EIF, catchment_parameter_list)
+                            treatImp/10000.0, total_catch_EIF, catchment_parameter_list)
 
                     musicnodedb["BlockID"+str(currentID)]["C_"+scalekeys[s]] = ncount
                     nodelink.append(ncount)
@@ -608,7 +608,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                         blockcatchmentTracker["BlockID" + str(upIDs[j])] = 0 # Set all areas to zero
                 else:
                     for j in range(len(upIDs)):     #Calculate the proportions of each block relevant to the total area
-                        upPs.append(upAreas[j] / sum(upAreas[j]))   #and then check what the leftover area is
+                        upPs.append(upAreas[j] / sum(upAreas))   #and then check what the leftover area is
                         Atreat = min(upPs[j] * catchImp, upAreas[j])
                         Anew = max(upAreas[j] - Atreat, 0)
                         blockcatchmentTracker["BlockID" + str(upIDs[j])] = Anew
@@ -616,8 +616,8 @@ class PerformanceAssess(UBModule):      #UBCORE
                         #Write the catchment node
                 ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "B", ncount,
                                                      (blockX + self.blocks_size * catchxoffset) * scalar,
-                                                     (blockY + self.blocks_size / 2.0 + 4.0/5.0 * self.blocks_size) * scalar,
-                                                     catchImp, total_catch_EIF, catchment_parameter_list)
+                                                     (blockY - self.blocks_size / 2.0 + 4.0/5.0 * self.blocks_size) * scalar,
+                                                     catchImp/10000.0, total_catch_EIF, catchment_parameter_list)
 
                 musicnodedb["BlockID" + str(currentID)]["C_B"] = ncount
                 nodelink.append(ncount)
@@ -645,10 +645,10 @@ class PerformanceAssess(UBModule):      #UBCORE
                 blockX = currentAttList.getAttribute("CentreX")
                 blockY = currentAttList.getAttribute("CentreY")
 
-                if blockcatchmentTracker["BlockID"+str(upstreamIDs[j])] <= 0:   #if the remaining impervious area for that
+                if blockcatchmentTracker["BlockID"+str(currentID)] <= 0:   #if the remaining impervious area for that
                     continue        #block is equal to zero, then skip it, no remaining catchment node needed
 
-                catchImp = blockcatchmentTracker["BlockID"+str(upstreamIDs[j])]
+                catchImp = blockcatchmentTracker["BlockID"+str(currentID)]
                 catchment_parameter_list = [1, 120, 30, 80, 200, 1, 10, 25, 5, 0]
                 total_catch_EIF = 1
                 catchxoffset = 0.25
@@ -657,7 +657,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "REST", ncount,
                                                      (blockX - self.blocks_size * catchxoffset) * scalar,
                                                      (blockY - self.blocks_size / 2.0 + 1.0/5.0 * self.blocks_size) * scalar,
-                                                     catchImp, total_catch_EIF, catchment_parameter_list)
+                                                     catchImp/10000.0, total_catch_EIF, catchment_parameter_list)
 
                 musicnodedb["BlockID" + str(currentID)]["C_REST"] = ncount
                 nodelink.append(ncount)
@@ -666,7 +666,7 @@ class PerformanceAssess(UBModule):      #UBCORE
             # LOOP 4 - Write all junctions and connect up the remaining in-block systems
             for i in basinblockIDs:
                 currentID = i
-                currentAttList = self.activesim.getAssetWithName("BlockID"+(currentID))
+                currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
                 blockX = currentAttList.getAttribute("CentreX")
                 blockY = currentAttList.getAttribute("CentreY")
 
@@ -687,7 +687,7 @@ class PerformanceAssess(UBModule):      #UBCORE
             internal_keys = ["S_L_RES", "S_L_HDR", "S_L_COM", "S_L_ORC", "S_L_LI", "S_L_HI", "S_S", "S_N", "S_B", "C_REST"]
             for i in basinblockIDs:
                 currentID = i
-                currentAttList = self.activesim.getAssetWithName("BlockID" + (currentID))
+                currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
                 #Internal Connections - all WSUD systems to the junction node and REST node with junction
                 for j in internal_keys:
                     if musicnodedb["BlockID"+str(currentID)].has_key(j): #Write the link
