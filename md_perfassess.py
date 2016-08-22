@@ -660,34 +660,64 @@ class PerformanceAssess(UBModule):      #UBCORE
                                                      catchImp/10000.0, total_catch_EIF, catchment_parameter_list)
 
                 musicnodedb["BlockID" + str(currentID)]["C_REST"] = ncount
-                nodelink.append(ncount)
                 ncount += 1
 
-            # LOOP 4 - Write all junctions and connect up the remaining in-block systems
-            for i in basinblockIDs:
-                currentID = i
-                currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-                blockX = currentAttList.getAttribute("CentreX")
-                blockY = currentAttList.getAttribute("CentreY")
+            #LOOP 3.5 - Write all pervious catchment area if this is wanted
+            if self.include_pervious:
+                for i in basinblockIDs:
+                    currentID = i
+                    currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
+                    blockX = currentAttList.getAttribute("CentreX")
+                    blockY = currentAttList.getAttribute("CentreY")
+                    catchment_parameter_list = [1, self.musicRR_soil, 0, self.musicRR_field, 200, 1, 10,
+                                                self.musicRR_rcr, self.musicRR_bfr, self.musicRR_dsr]
+                    catchxoffset = 0.25
 
-                if int(currentAttList.getAttribute("Outlet")) == 1:
-                    self.notify("GOT AN OUTLET at BlockID"+str(currentID))
-                    basinID = int(currentAttList.getAttribute("BasinID"))
-                    jname = "OUT_Bas" + str(basinID) + "-BlkID" + str(currentID)
-                else:
-                    jname = "BlockID"+str(currentID)+"J"
+                    pervArea = max((self.blocks_size * self.blocks_size) - currentAttList.getAttribute("Blk_EIA"),0)
+                    if pervArea == 0:
+                        continue
 
-                ubmusicwrite.writeMUSICjunction(ufile, jname, ncount, (blockX + self.blocks_size * 0.25)*scalar,
-                                                (blockY - self.blocks_size/2.0 + self.blocks_size * 1.0/5.0) * scalar)
+                    ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "PERV", ncount,
+                                                         (blockX - self.blocks_size * catchxoffset)*scalar,
+                                                         (blockY - self.blocks_size / 2.0 + 0.8/5.0 * self.blocks_size)*scalar,
+                                                         pervArea/10000.0, 0.0, catchment_parameter_list)
+                    musicnodedb["BlockID"+str(currentID)]["C_PERV"] = ncount
+                    ncount += 1
 
-                musicnodedb["BlockID"+str(currentID)]["JUNCTION"] = ncount
-                ncount += 1
-
-            # FINAL PASS - connect all junctions
-            internal_keys = ["S_L_RES", "S_L_HDR", "S_L_COM", "S_L_ORC", "S_L_LI", "S_L_HI", "S_S", "S_N", "S_B", "C_REST"]
+            # LOOP 4 - Write Junction nodes
             for i in basinblockIDs:
                 currentID = i
                 currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
+                blockX = currentAttList.getAttribute("CentreX")
+                blockY = currentAttList.getAttribute("CentreY")
+
+                if len(musicnodedb["BlockID"+str(currentID)]) == 0: #If there are no nodes in this block, skip the junction
+                    musicnodedb["BlockID" + str(currentID)]["JUNCTION"] = -9999  # Do not create a junction
+                    continue
+
+                if int(currentAttList.getAttribute("Outlet")) == 1:
+                    self.notify("GOT AN OUTLET at BlockID" + str(currentID))
+                    basinID = int(currentAttList.getAttribute("BasinID"))
+                    jname = "OUT_Bas" + str(basinID) + "-BlkID" + str(currentID)
+                else:
+                    jname = "BlockID" + str(currentID) + "J"
+
+                ubmusicwrite.writeMUSICjunction(ufile, jname, ncount, (blockX + self.blocks_size * 0.25) * scalar,
+                                                (blockY - self.blocks_size / 2.0 + self.blocks_size * 1.0 / 5.0) * scalar)
+
+                musicnodedb["BlockID" + str(currentID)]["JUNCTION"] = ncount
+                ncount += 1
+
+            # FINAL PASS - connect all nodes
+            internal_keys = ["S_L_RES", "S_L_HDR", "S_L_COM", "S_L_ORC", "S_L_LI", "S_L_HI", "S_S", "S_N", "S_B", "C_REST", "C_PERV"]
+            for i in basinblockIDs:
+                currentID = i
+                currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
+                if musicnodedb["BlockID" + str(currentID)]["JUNCTION"] == -9999:
+                    print "Junction Node with -9999 ID found"
+                    print musicnodedb["BlockID" + str(currentID)]
+                    continue
+
                 #Internal Connections - all WSUD systems to the junction node and REST node with junction
                 for j in internal_keys:
                     if musicnodedb["BlockID"+str(currentID)].has_key(j): #Write the link
@@ -697,14 +727,24 @@ class PerformanceAssess(UBModule):      #UBCORE
                 #External Connection - Junction Node to Junction Node
                 if int(currentAttList.getAttribute("Outlet")) == 1:
                     continue
-                downID = int(currentAttList.getAttribute("downID"))
-                if downID == -1 or downID == 0:
-                    downID = int(currentAttList.getAttribute("drainID"))
-                if downID == -1 or downID == 0:
-                    continue
-                else:
-                    ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID"+str(currentID)]["JUNCTION"],
+
+                junction_found = 0
+                downAtt = currentAttList
+                while junction_found == 0:
+                    downID = int(downAtt.getAttribute("downID"))
+                    if downID == -1 or downID == 0:
+                        downID = int(downAtt.getAttribute("drainID"))
+                    if downID == -1 or downID == 0:
+                        print "SHOULD NOT HAPPEN!"
+                        junction_found = 1
+                    else:
+                        if musicnodedb["BlockID"+str(downID)]["JUNCTION"] != -9999:
+                            ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID"+str(currentID)]["JUNCTION"],
                                                 musicnodedb["BlockID"+str(downID)]["JUNCTION"], routeparams)
+                            junction_found = 1
+                        else:
+                            #Assign the downstream block as the next block to check (skip that junction but go down the chain)
+                            downAtt = self.activesim.getAssetWithName("BlockID"+str(downID))
 
             #Write the footer for the file.
             ubmusicwrite.writeMUSICfooter(ufile)
