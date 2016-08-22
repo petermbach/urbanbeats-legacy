@@ -557,22 +557,29 @@ class PerformanceAssess(UBModule):      #UBCORE
                     systype = curwsud.getAttribute("Type")
                     sysKexfil = curwsud.getAttribute("Exfil")
 
-                    #Is there integrated storage?
-
-                    parameter_list = eval(
-                        "self.prepareParameters" + str(systype) + "(curwsud, sysKexfil)")
-                    eval("ubmusicwrite.writeMUSICnode"+str(
-                        systype)+ "(ufile, currentID, scalekeys[s], ncount, blockX * scalar," +
+                    parameter_list = eval("self.prepareParameters" + str(systype) + "(curwsud, sysKexfil)")
+                    eval("ubmusicwrite.writeMUSICnode"+str(systype)+ "(ufile, currentID, scalekeys[s], ncount, blockX * scalar," +
                                   "(blockY - self.blocks_size/2.0 + yoffsets[s]*self.blocks_size)*scalar, parameter_list)")
                     musicnodedb["BlockID"+str(currentID)]["S_"+scalekeys[s]] = ncount
                     nodelink.append(ncount)
                     ncount += 1
 
-                    #If there is a Harvest Node, write the harvest node
-
-
-
                     #Write the link to connect these two nodes
+                    ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+                    technodeID = nodelink[1]
+                    nodelink = [technodeID]
+
+                    # If there is a Storage System Node that isn't integrated, write the node
+                    if curwsud.getAttribute("StoreType") == "NA" or curwsud.getAttribute("IntegStore") == 1:
+                        continue
+                    storeType = curwsud.getAttribute("StoreType")
+                    parameter_list = eval("self.prepareParameters" + str(storeType) + "Store(curwsud, sysKexfil)")
+                    eval("ubmusicwrite.writeMUSICnode"+str(storeType)+ "(ufile, currentID, scalekeys[s], ncount, (blockX + (self.blocks_size/8.0)) * scalar,"+
+                         "(blockY - self.blocks_size/2.0 + yoffsets[s]*self.blocks_size)*scalar, parameter_list)")
+                    musicnodedb["BlockID"+str(currentID)]["ST_"+scalekeys[s]] = ncount
+                    nodelink.append(ncount)
+                    ncount += 1
+
                     ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
 
             # LOOP 2 - Write all basin-scale systems
@@ -636,13 +643,29 @@ class PerformanceAssess(UBModule):      #UBCORE
                 parameter_list = eval(
                     "self.prepareParameters" + str(systype) + "(curwsud, sysKexfil)")
                 eval("ubmusicwrite.writeMUSICnode" + str(
-                    systype) + "(ufile, currentID, scalekeys[s], ncount, (blockX + self.blocks_size * catchxoffset) * scalar," +
+                    systype) + "(ufile, currentID, \"B\", ncount, (blockX + self.blocks_size * catchxoffset) * scalar," +
                      "(blockY - self.blocks_size/2.0 + 3.0/5.0*self.blocks_size)*scalar, parameter_list)")
                 musicnodedb["BlockID" + str(currentID)]["S_B"] = ncount
                 nodelink.append(ncount)
                 ncount += 1
 
                 # Write the link to connect these two nodes
+                ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+                technodeID = nodelink[1]
+                nodelink = [technodeID]
+
+                # If there is a Storage System Node that isn't integrated, write the node
+                if curwsud.getAttribute("StoreType") == "NA" or curwsud.getAttribute("IntegStore") == 1:
+                    continue
+                storeType = curwsud.getAttribute("StoreType")
+                parameter_list = eval("self.prepareParameters" + str(storeType) + "Store(curwsud, sysKexfil)")
+                eval("ubmusicwrite.writeMUSICnode" + str(
+                    storeType) + "(ufile, currentID, \"B\", ncount, (blockX + self.blocks_size * catchxoffset) * scalar," +
+                     "(blockY - self.blocks_size/2.0 + 2.0/5.0*self.blocks_size)*scalar, parameter_list)")
+                musicnodedb["BlockID" + str(currentID)]["ST_B"] = ncount
+                nodelink.append(ncount)
+                ncount += 1
+
                 ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
 
             # LOOP 3 - Write all remaining area catchments
@@ -717,6 +740,7 @@ class PerformanceAssess(UBModule):      #UBCORE
 
             # FINAL PASS - connect all nodes
             internal_keys = ["S_L_RES", "S_L_HDR", "S_L_COM", "S_L_ORC", "S_L_LI", "S_L_HI", "S_S", "S_N", "S_B", "C_REST", "C_PERV"]
+            harvest_keys = ["ST_L_RES", "ST_L_HDR", "ST_L_COM", "ST_L_ORC", "ST_L_LI", "ST_L_HI", "ST_S", "ST_N", "ST_B", "ST_REST", "ST_PERV"]
             for i in basinblockIDs:
                 currentID = i
                 currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
@@ -726,10 +750,16 @@ class PerformanceAssess(UBModule):      #UBCORE
                     continue
 
                 #Internal Connections - all WSUD systems to the junction node and REST node with junction
-                for j in internal_keys:
-                    if musicnodedb["BlockID"+str(currentID)].has_key(j): #Write the link
-                        ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID"+str(currentID)][j],
+                for j in range(len(internal_keys)):
+                    ckey = internal_keys[j]
+                    hkey = harvest_keys[j]
+                    # Write the link
+                    if musicnodedb["BlockID"+str(currentID)].has_key(hkey): #If the block has a storage system
+                        ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID"+str(currentID)][hkey],
                                                     musicnodedb["BlockID"+str(currentID)]["JUNCTION"], routeparams)
+                    elif musicnodedb["BlockID"+str(currentID)].has_key(ckey):
+                        ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID" + str(currentID)][ckey],
+                                                    musicnodedb["BlockID" + str(currentID)]["JUNCTION"], routeparams)
 
                 #External Connection - Junction Node to Junction Node
                 if int(currentAttList.getAttribute("Outlet")) == 1:
@@ -2095,7 +2125,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         sysarea = self.getEffectiveSystemArea(curSys)*sysqty
         sysedd = float(curSys.getAttribute("WDepth"))
         try:
-            parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000.0*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd)))), 72.0]
+            parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000.0*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd))))]
         except TypeError as e:
             print e
             print "SysArea", type(sysarea)
@@ -2107,6 +2137,12 @@ class PerformanceAssess(UBModule):      #UBCORE
             print "Part 3", numpy.sqrt(2*9.81*sysedd)
             print "Big Thing", 1000.0*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd))))
 
+        if curSys.getAttribute("IntegStore") == 1 and curSys.getAttribute("StoreVol") != 0:
+            parameter_list.append(0)
+            parameter_list.append(curSys.getAttribute("SvRec_Supp"))
+        else:
+            parameter_list.append(1)
+            parameter_list.append(-9999)
         return parameter_list
 
     def prepareParametersPB(self, curSys, current_soilK):
@@ -2115,7 +2151,14 @@ class PerformanceAssess(UBModule):      #UBCORE
         sysqty = self.getSystemQuantity(curSys)
         sysarea = self.getEffectiveSystemArea(curSys)*sysqty
         sysedd = float(curSys.getAttribute("WDepth"))      #The mean depth
-        parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd)))), 72.0]
+        parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd))))]
+
+        if curSys.getAttribute("IntegStore") == 1 and curSys.getAttribute("StoreVol") != 0:
+            parameter_list.append(0)    #Use stored water for irrigation or other uses? 0=Yes, 1=No
+            parameter_list.append(curSys.getAttribute("SvRec_Supp"))
+        else:
+            parameter_list.append(1)        #No storage reuse
+            parameter_list.append(-9999)
         return parameter_list
 
     def prepareParametersSW(self, curSys, current_soilK):
@@ -2126,17 +2169,21 @@ class PerformanceAssess(UBModule):      #UBCORE
         parameter_list = [sysarea/4, 5, 2, 6, float(1.0/3.0),0.05, current_soilK]
         return parameter_list
 
+    def prepareParametersRT(self, curSys, current_soilK):
+        """Calls prepareParametersRTStore() since it is identical for Rainwater Tanks"""
+        return self.prepareParametersRTStore(curSys, current_soilK)
+
     def prepareParametersRTStore(self, curSys, current_soilK):
         """Function to setup the parameter list vectr for raintanks"""
         #parameter_list = [annualdemand, numtanks, surfarea, totVol, initvol, overflowpipediam]
         numtanks = self.getSystemQuantity(curSys)
-        storeVol = float(curSys.getAttribute("StoreVol"))
+        storeVol = float(curSys.getAttribute("StoreVol")) * numtanks
         storeDepth = float(curSys.getAttribute("ST_Depth"))
         surfarea = float(storeVol / storeDepth)
         totVol = storeVol + float(surfarea*curSys.getAttribute("ST_Dead")) #store Volume + dead storage
         annualdemand = float(curSys.getAttribute("SvRec_Supp"))/1000.0   #kL/yr --> ML/yr
         initvol = 0
-        overflowpipediam = 100.0
+        overflowpipediam = math.sqrt(math.pow(100.0/2.0,2)*numtanks)*2.0    #Rescale Raintank Diameter
 
         parameter_list = [annualdemand, numtanks, surfarea, totVol, initvol, overflowpipediam]
         return parameter_list
@@ -2149,8 +2196,9 @@ class PerformanceAssess(UBModule):      #UBCORE
         storeDepth = float(curSys.getAttribute("ST_Depth"))
         surfarea = float(sysvol / storeDepth)
         ppd = float(curSys.getAttribute("ST_Dead"))
+        annualdemand = float(curSys.getAttribute("SvRec_Supp"))
         parameter_list = [surfarea, storeDepth, surfarea * 0.2, current_soilK, 1000 * numpy.sqrt(
-            ((0.895 * surfarea * storeDepth) / (72 * 3600 * 0.6 * 0.25 * numpy.pi * numpy.sqrt(2 * 9.81 * storeDepth)))), 72.0]
+            ((0.895 * surfarea * storeDepth) / (72 * 3600 * 0.6 * 0.25 * numpy.pi * numpy.sqrt(2 * 9.81 * storeDepth)))), 0, annualdemand]
         return parameter_list
 
     def getEffectiveSystemArea(self, curSys):

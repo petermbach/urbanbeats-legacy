@@ -4404,8 +4404,11 @@ class Techplacement(UBModule):
                 #Transfer the key system specs
                 if current_wsud.getType() in ["BF", "IS", "WSUR"]:
                     loc.addAttribute("WDepth", eval("self."+str(current_wsud.getType())+"spec_EDD"))
-                if current_wsud.getType() in ["PB"]:
+                elif current_wsud.getType() in ["PB"]:
                     loc.addAttribute("WDepth", float(eval("self."+str(current_wsud.getType())+"spec_MD")))
+                elif current_wsud.getType() in ["RT"]:
+                    loc.addAttribute("WDepth", float(eval("self." + str(current_wsud.getType()) + "_maxdepth")))
+
                 if current_wsud.getType() in ["BF", "IS"]:
                     loc.addAttribute("FDepth", eval("self."+str(current_wsud.getType())+"spec_FD"))
                 if current_wsud.getType() in ["BF", "SW", "IS", "WSUR", "PB"]:
@@ -4470,6 +4473,9 @@ class Techplacement(UBModule):
                     loc.addAttribute("WDepth", eval("self."+str(outblock_strat.getType())+"spec_EDD"))
                 elif outblock_strat.getType() in ["PB"]:
                     loc.addAttribute("WDepth", float(eval("self."+str(outblock_strat.getType())+"spec_MD")))
+                elif outblock_strat.getType() in ["RT"]:
+                    loc.addAttribute("WDepth", float(eval("self." + str(outblock_strat.getType()) + "_maxdepth")))
+
                 if outblock_strat.getType() in ["BF", "IS"]:
                     loc.addAttribute("FDepth", eval("self."+str(outblock_strat.getType())+"spec_FD"))
                 if outblock_strat.getType() in ["BF", "SW", "IS", "WSUR", "PB"]:
@@ -4478,13 +4484,13 @@ class Techplacement(UBModule):
                     loc.addAttribute("Exfil", 0)
 
                 # Transfer storage properties to outputs
-                if current_wsud.isStoreIntegrated() == 0 and current_wsud.getRecycledStorageType() in ["RT"]:  # Tank storages
-                    loc.addAttribute("ST_Depth", eval("self." + str(current_wsud.getRecycledStorageType()+"_maxdepth")))
-                    loc.addAttribute("ST_Dead",  eval("self." + str(current_wsud.getRecycledStorageType()+"_mindead")))
-                elif current_wsud.isStoreIntegrated() == 0 and current_wsud.getRecycledStorageType() in ["PB"]:  # Pond storages
-                    loc.addAttribute("ST_Depth", eval("self." + str(current_wsud.getRecycledStorageType()+"spec_MD")))
+                if outblock_strat.isStoreIntegrated() == 0 and outblock_strat.getRecycledStorageType() in ["RT"]:  # Tank storages
+                    loc.addAttribute("ST_Depth", eval("self." + str(outblock_strat.getRecycledStorageType()+"_maxdepth")))
+                    loc.addAttribute("ST_Dead",  eval("self." + str(outblock_strat.getRecycledStorageType()+"_mindead")))
+                elif outblock_strat.isStoreIntegrated() == 0 and outblock_strat.getRecycledStorageType() in ["PB"]:  # Pond storages
+                    loc.addAttribute("ST_Depth", eval("self." + str(outblock_strat.getRecycledStorageType()+"spec_MD")))
                     loc.addAttribute("ST_Dead", 0.2)  # Currently assume standard PPD as dead storage for the pond
-                elif current_wsud.isStoreIntegrated():
+                elif outblock_strat.isStoreIntegrated():
                     loc.addAttribute("ST_Depth", loc.getAttribute("WDepth"))
                     loc.addAttribute("ST_Dead", 0.2)
                 else:
