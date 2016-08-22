@@ -338,6 +338,55 @@ def writeMUSICnodeSW(f, ID, nodepart, ncount, x, y, parameter_list):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
+def writeMUSICnodeRT(f, ID, nodename, ncount, x, y, parameter_list):
+    f.write("Node Type,RainWaterTankNode,{Node Type}\n")
+    f.write("Node Name,RT"+str(ID)+str(nodename)+",{Node Name}\n")
+    f.write("Node ID,"+str(ncount)+",{Node ID}\n")
+    f.write("Coordinates,"+str(x)+":"+str(y)+",{Coordinates}{X:Y}\n")
+    f.write("General - Location,RT+"+str(ID)+str(nodename)+",\n")
+    f.write("General - Notes,,\n")
+    f.write("General - Fluxes,,\n")
+    f.write("General - Flux File Timestep (in seconds),360,{in seconds}\n")
+
+    f.write("Reuse Properties - Reuse Enabled,0,\n")
+    f.write("Reuse Properties - Annual Demand Enabled,0,\n")
+    f.write("Reuse Properties - Annual Demand Value (ML/year),"+str(parameter_list[0])+",{ML/year}\n")
+    f.write("Reuse Properties - Annual Demand Distribution,0,{Index from 0 to 2 for \"PET\" | \"PET - Rain\" | \"Monthly\"}\n")
+
+    f.write("Reuse Properties - Monthly Distribution Values,8.33;8.33;8.33;8.33;8.33;8.33;8.33;8.33;8.33;8.33;8.33;8.33,\n")
+    f.write("Reuse Properties - Daily Demand Enabled,1,\n")
+    f.write("Reuse Properties - Daily Demand Value (ML/day),0,{ML/day}\n")
+    f.write("Reuse Properties - Custom Demand Enabled,1,\n")
+    f.write("Reuse Properties - Custom Demand Time Series File,,\n")
+    f.write("Reuse Properties - Custom Demand Time Series Units,5,{Index from 0 to 11 for \"ML\" | \"kL\" | \"L\" | \"mL\" | \"ML/s\" | \"m3/s\" | \"L/s\" | \"mL/s\" | \"ML/day\" | \"kL/day\" | \"L/day\" | \"mL/day\"}\n")
+    f.write("Reuse Properties - Minimum Draw down height,0,\n")
+    f.write("Inlet Properties - Low Flow By-pass (cubic metres per sec),0,{cubic metres per sec}\n")
+    f.write("Inlet Properties - High Flow By-pass (cubic metres per sec),100,{cubic metres per sec}\n")
+
+    f.write("Storage Properties - NumTanks,"+str(parameter_list[1])+",\n")
+    f.write("Storage Properties - Surface Area (square metres),"+str(parameter_list[2])+",{square metres}\n")
+    f.write("Storage Properties - Depth above overflow (metres),0.2,{metres}\n")
+    f.write("Storage Properties - Volume below overflow pipe (kL),"+str(parameter_list[3])+",{kL}\n")
+    f.write("Storage Properties - Initial Volume,"+str(parameter_list[4])+",\n")
+    f.write("Outlet Properties - Overflow Pipe Diameter (mm),"+str(parameter_list[5])+",{mm}\n")
+
+    f.write("Advanced Properties - Orifice Discharge Coefficient,0.6,\n")
+    f.write("Advanced Properties - Number of CSTR Cells,2,\n")
+    f.write("Advanced Properties - Total Suspended Solids - k (m/yr),400,{m/yr}\n")
+    f.write("Advanced Properties - Total Suspended Solids - C* (mg/L),12,{mg/L}\n")
+    f.write("Advanced Properties - Total Suspended Solids - C** (mg/L),12,{mg/L}\n")
+    f.write("Advanced Properties - Total Phosphorus - k (m/yr),300,{m/yr}\n")
+    f.write("Advanced Properties - Total Phosphorus - C* (mg/L),0.13,{mg/L}\n")
+    f.write("Advanced Properties - Total Phosphorus - C** (mg/L),0.13,{mg/L}\n")
+    f.write("Advanced Properties - Total Nitrogen - k (m/yr),40,{m/yr}\n")
+    f.write("Advanced Properties - Total Nitrogen - C* (mg/L),1.4,{mg/L}\n")
+    f.write("Advanced Properties - Total Nitrogen - C** (mg/L),1.4,{mg/L}\n")
+    f.write("Advanced Properties - Threshold Hydraulic Loading for C** (m/yr),3500,{m/yr}\n")
+    f.write("Advanced Properties - User Defined Storage-Discharge-Height,,\n")
+    f.write("------------------------------------------------------------------------------------\n")
+    return True
+
+
 def writeMUSIClink(f, upN, downN, routeparams):
     f.write("Link Name,Drainage Link,\n")
     f.write("Source Node ID,"+str(upN)+",{The is the ID of the upstream node}\n")
