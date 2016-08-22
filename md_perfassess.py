@@ -556,6 +556,9 @@ class PerformanceAssess(UBModule):      #UBCORE
                     #Write the treatment node
                     systype = curwsud.getAttribute("Type")
                     sysKexfil = curwsud.getAttribute("Exfil")
+
+                    #Is there integrated storage?
+
                     parameter_list = eval(
                         "self.prepareParameters" + str(systype) + "(curwsud, sysKexfil)")
                     eval("ubmusicwrite.writeMUSICnode"+str(
@@ -564,6 +567,10 @@ class PerformanceAssess(UBModule):      #UBCORE
                     musicnodedb["BlockID"+str(currentID)]["S_"+scalekeys[s]] = ncount
                     nodelink.append(ncount)
                     ncount += 1
+
+                    #If there is a Harvest Node, write the harvest node
+
+
 
                     #Write the link to connect these two nodes
                     ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
@@ -2119,10 +2126,31 @@ class PerformanceAssess(UBModule):      #UBCORE
         parameter_list = [sysarea/4, 5, 2, 6, float(1.0/3.0),0.05, current_soilK]
         return parameter_list
 
-    def prepareParametersRT(self, curSys, current_soilK):
+    def prepareParametersRTStore(self, curSys, current_soilK):
         """Function to setup the parameter list vectr for raintanks"""
-        #>>>FUTURE
-        parameter_list = []
+        #parameter_list = [annualdemand, numtanks, surfarea, totVol, initvol, overflowpipediam]
+        numtanks = self.getSystemQuantity(curSys)
+        storeVol = float(curSys.getAttribute("StoreVol"))
+        storeDepth = float(curSys.getAttribute("ST_Depth"))
+        surfarea = float(storeVol / storeDepth)
+        totVol = storeVol + float(surfarea*curSys.getAttribute("ST_Dead")) #store Volume + dead storage
+        annualdemand = float(curSys.getAttribute("SvRec_Supp"))/1000.0   #kL/yr --> ML/yr
+        initvol = 0
+        overflowpipediam = 100.0
+
+        parameter_list = [annualdemand, numtanks, surfarea, totVol, initvol, overflowpipediam]
+        return parameter_list
+
+    def prepareParametersPBStore(self, curSys, current_soilK):
+        """Function to setup the parameter list vector for ponds as a storage system"""
+        #Parameter List = [
+        sysqty = self.getSystemQuantity(curSys)
+        sysvol = float(curSys.getAttribute("StoreVol"))
+        storeDepth = float(curSys.getAttribute("ST_Depth"))
+        surfarea = float(sysvol / storeDepth)
+        ppd = float(curSys.getAttribute("ST_Dead"))
+        parameter_list = [surfarea, storeDepth, surfarea * 0.2, current_soilK, 1000 * numpy.sqrt(
+            ((0.895 * surfarea * storeDepth) / (72 * 3600 * 0.6 * 0.25 * numpy.pi * numpy.sqrt(2 * 9.81 * storeDepth)))), 72.0]
         return parameter_list
 
     def getEffectiveSystemArea(self, curSys):
