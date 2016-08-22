@@ -4413,6 +4413,20 @@ class Techplacement(UBModule):
                 else:
                     loc.addAttribute("Exfil", 0)
 
+                # Transfer storage properties to outputs
+                if current_wsud.isStoreIntegrated() == 0 and current_wsud.getRecycledStorageType() in ["RT"]:  # Tank storages
+                    loc.addAttribute("ST_Depth", eval("self." + str(current_wsud.getRecycledStorageType() + "_maxdepth")))
+                    loc.addAttribute("ST_Dead", eval("self." + str(current_wsud.getRecycledStorageType() + "_mindead")))
+                elif current_wsud.isStoreIntegrated() == 0 and current_wsud.getRecycledStorageType() in ["PB"]:  # Pond storages
+                    loc.addAttribute("ST_Depth", eval("self." + str(current_wsud.getRecycledStorageType() + "spec_MD")))
+                    loc.addAttribute("ST_Dead", 0.2)  # Currently assume standard PPD as dead storage for the pond
+                elif current_wsud.isStoreIntegrated():
+                    loc.addAttribute("ST_Depth", loc.getAttribute("WDepth"))
+                    loc.addAttribute("ST_Dead", 0.2)
+                else:
+                    loc.addAttribute("ST_Depth", 0.0)
+                    loc.addAttribute("ST_Dead", 0.0)
+
                 sysID = len(self.activesim.getAssetsWithIdentifier("SysID"))+1
                 self.activesim.addAsset("SysID"+str(sysID), loc)
 
@@ -4454,7 +4468,7 @@ class Techplacement(UBModule):
                 #Transfer the key system specs
                 if outblock_strat.getType() in ["BF", "IS", "WSUR"]:
                     loc.addAttribute("WDepth", eval("self."+str(outblock_strat.getType())+"spec_EDD"))
-                if outblock_strat.getType() in ["PB"]:
+                elif outblock_strat.getType() in ["PB"]:
                     loc.addAttribute("WDepth", float(eval("self."+str(outblock_strat.getType())+"spec_MD")))
                 if outblock_strat.getType() in ["BF", "IS"]:
                     loc.addAttribute("FDepth", eval("self."+str(outblock_strat.getType())+"spec_FD"))
@@ -4462,6 +4476,20 @@ class Techplacement(UBModule):
                     loc.addAttribute("Exfil", eval("self."+str(outblock_strat.getType())+"exfil"))
                 else:
                     loc.addAttribute("Exfil", 0)
+
+                # Transfer storage properties to outputs
+                if current_wsud.isStoreIntegrated() == 0 and current_wsud.getRecycledStorageType() in ["RT"]:  # Tank storages
+                    loc.addAttribute("ST_Depth", eval("self." + str(current_wsud.getRecycledStorageType()+"_maxdepth")))
+                    loc.addAttribute("ST_Dead",  eval("self." + str(current_wsud.getRecycledStorageType()+"_mindead")))
+                elif current_wsud.isStoreIntegrated() == 0 and current_wsud.getRecycledStorageType() in ["PB"]:  # Pond storages
+                    loc.addAttribute("ST_Depth", eval("self." + str(current_wsud.getRecycledStorageType()+"spec_MD")))
+                    loc.addAttribute("ST_Dead", 0.2)  # Currently assume standard PPD as dead storage for the pond
+                elif current_wsud.isStoreIntegrated():
+                    loc.addAttribute("ST_Depth", loc.getAttribute("WDepth"))
+                    loc.addAttribute("ST_Dead", 0.2)
+                else:
+                    loc.addAttribute("ST_Depth", 0.0)
+                    loc.addAttribute("ST_Dead", 0.0)
 
                 sysID = len(self.activesim.getAssetsWithIdentifier("SysID"))+1
                 self.activesim.addAsset("SysID"+str(sysID), loc)
@@ -4507,6 +4535,8 @@ class Techplacement(UBModule):
             loc.addAttribute("WDepth", curSys.getAttribute("WDepth"))
             loc.addAttribute("FDepth", curSys.getAttribute("FDepth"))
             loc.addAttribute("Exfil", curSys.getAttribute("Exfil"))
+            loc.addAttribute("ST_Depth", curSys.getAttribute("ST_Depth"))
+            loc.addAttribute("ST_Dead", curSys.getAttribute("ST_Dead"))
             sysID = len(self.activesim.getAssetsWithIdentifier("SysID"))+1
             self.activesim.addAsset("SysID"+str(sysID), loc)
         return True

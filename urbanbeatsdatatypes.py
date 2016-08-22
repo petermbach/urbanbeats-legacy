@@ -1055,6 +1055,8 @@ def exportPlannedWSUD(filename, assets, miscoptions, map_attr, kmlbool):
         fielddefmatrix.append(ogr.FieldDefn("WDepth", ogr.OFTReal))
         fielddefmatrix.append(ogr.FieldDefn("FDepth", ogr.OFTReal))
         fielddefmatrix.append(ogr.FieldDefn("Exfil", ogr.OFTReal))
+        fielddefmatrix.append(ogr.FieldDefn("ST_Depth", ogr.OFTReal))
+        fielddefmatrix.append(ogr.FieldDefn("ST_Dead", ogr.OFTReal))
 
         for field in fielddefmatrix:
             layer.CreateField(field)
@@ -1103,6 +1105,8 @@ def exportPlannedWSUD(filename, assets, miscoptions, map_attr, kmlbool):
             feature.SetField("WDepth", currentAttList.getAttribute("WDepth"))
             feature.SetField("FDepth", currentAttList.getAttribute("FDepth"))
             feature.SetField("Exfil", currentAttList.getAttribute("Exfil"))
+            feature.SetField("ST_Depth", currentAttList.getAttribute("ST_Depth"))
+            feature.SetField("ST_Dead", currentAttList.getAttribute("ST_Dead"))
             layer.CreateFeature(feature)
 
         shapefile.Destroy()
@@ -1156,6 +1160,8 @@ def exportImplementWSUD(filename, assets, miscoptions, map_attr, kmlbool):
     fielddefmatrix.append(ogr.FieldDefn("WDepth", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("FDepth", ogr.OFTReal))
     fielddefmatrix.append(ogr.FieldDefn("Exfil", ogr.OFTReal))
+    fielddefmatrix.append(ogr.FieldDefn("ST_Depth", ogr.OFTReal))
+    fielddefmatrix.append(ogr.FieldDefn("ST_Dead", ogr.OFTReal))
 
     for field in fielddefmatrix:
         layer.CreateField(field)
@@ -1200,6 +1206,8 @@ def exportImplementWSUD(filename, assets, miscoptions, map_attr, kmlbool):
         feature.SetField("WDepth", currentAttList.getAttribute("WDepth"))
         feature.SetField("FDepth", currentAttList.getAttribute("FDepth"))
         feature.SetField("Exfil", currentAttList.getAttribute("Exfil"))
+        feature.SetField("ST_Depth", currentAttList.getAttribute("ST_Depth"))
+        feature.SetField("ST_Dead", currentAttList.getAttribute("ST_Dead"))
         layer.CreateFeature(feature)
 
     shapefile.Destroy()
