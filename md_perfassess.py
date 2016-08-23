@@ -852,7 +852,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 if self.include_pervious:
                     total_lot_imparea = 0.0
                     for j in lotareas.keys():
-                        total_lot_imparea += lotareas[j] * loteifs[j] / 100
+                        total_lot_imparea += lotareas[j] * loteifs[j]
                     nonlotimparea = total_catch_imparea - total_lot_imparea
                     if nonlotarea == 0:
                         nonloteia = 0.0
@@ -860,7 +860,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                         nonloteia = nonlotimparea / nonlotarea
                 else:
                     nonlotarea = total_catch_imparea - sum(lotareas.values())
-                    nonloteia = 100
+                    nonloteia = 1
 
                 if nonlotarea == 0:
                     self.notify("ISSUE: NONLOT AREA ZERO ON BLOCK: " + str(currentID))
@@ -2003,7 +2003,7 @@ class PerformanceAssess(UBModule):      #UBCORE
     def determineCatchmentLotAreas(self, currentAttList, blocksystems):
         """Determines the areas for each of the lots, which have a system present."""
         lotareas = {"L_RES":0, "L_HDR":0, "L_LI":0, "L_HI":0, "L_COM":0, "L_ORC":0}
-        loteifs = {"L_RES":100, "L_HDR":100,"L_LI":100,"L_HI":100,"L_COM":100,"L_ORC":100}
+        loteifs = {"L_RES":1, "L_HDR":1,"L_LI":1,"L_HI":1,"L_COM":1,"L_ORC":1}
 
         #Residential Areas
         if len(blocksystems["L_RES"]) != 0:
