@@ -113,6 +113,9 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.musicclimatefile = ""
         self.musicseparatebasin = 1
 
+        self.createParameter("music_concept", STRING, "The method to be used for creating the MUSIC file")
+        self.music_concept = "linear"   #linear, nonlinear, both
+
         self.createParameter("include_pervious", BOOL, "Include pervious areas in simulation?")
         self.createParameter("musicRR_soil", DOUBLE, "MUSIC soil storage capacity")
         self.createParameter("musicRR_field", DOUBLE, "MUSIC field storage capacity")
@@ -376,10 +379,8 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.totalbasins = map_attr.getAttribute("TotalBasins")
         self.strats = map_attr.getAttribute("OutputStrats")
 
-
-
         #If necessary: Load climate data and scale it according to factors
-        if self.perf_MUSIC or self.perf_EPANET or self.perf_CD3:
+        if self.perf_EPANET or self.perf_CD3:       #Add perf_MUSIC next time
             self.raindata = ubseries.loadClimate(self.rainfile, self.analysis_dt, self.rainyears)
             self.evapdata = ubseries.loadClimate(self.evapfile, 1440, self.rainyears)   #Extract PET at daily
             #self.solardata = ubseries.loadClimate(self.solarfile, 1440, self.rainyears)    #Solar Radiation data
@@ -404,7 +405,6 @@ class PerformanceAssess(UBModule):      #UBCORE
                     self.evapdata = ubseries.scaleClimateSeries(self.evapdata, self.evapscalars)
 
             #SCALING FOR SOLAR RADIATION DATA?
-
         if self.perf_MUSIC:
             self.notify("Exporting MUSIC Simulation...")
             self.writeMUSIC()
@@ -454,170 +454,539 @@ class PerformanceAssess(UBModule):      #UBCORE
         #Begin Writing MUSIC Files
         for s in range(int(strats)):
             currentStratID = s+1
-
-            if self.musicseparatebasin:     #Determine if to write separate files or one single file
-                musicbasins = self.totalbasins
+            if self.music_concept == "nonlinear":
+                self.writeMUSICnonlinear(currentStratID, filesuffix)
+            elif self.music_concept == "linear":
+                self.writeMUSIClinear(currentStratID, filesuffix)
             else:
-                musicbasins = 1
+                self.writeMUSICnonlinear(currentStratID, filesuffix)
+                self.writeMUSIClinear(currentStratID, filesuffix)
+        return True
 
-            for b in range(int(musicbasins)):
-                if self.musicseparatebasin:
-                    systemlist = self.getWSUDSystemsForStratID(currentStratID, b+1)
-                    basinblockIDs = self.getBlocksIDsForBasinID(b+1)
-                    ufile = ubmusicwrite.createMUSICmsf(self.musicfilepathname,
-                                                   self.musicfilename+"-ID"+str(currentStratID)+"-"+str(int(b+1))+"-"+str(self.currentyear)+filesuffix)
-                else:
-                    systemlist = self.getWSUDSystemsForStratID(currentStratID, 9999)
-                    basinblockIDs = self.getBlocksIDsForBasinID(9999)
-                    ufile = ubmusicwrite.createMUSICmsf(self.musicfilepathname,
-                                                   self.musicfilename+"-ID"+str(currentStratID)+"-"+str(self.currentyear)+filesuffix)
+    def writeMUSIClinear(self, currentStratID, filesuffix):
+        """Writes the linear version of the MUSIC simulation file. This is where all systems drain separately and
+        runoff downstream is collected cumulatively across all areas. Junctions are used primarily as a collection
+        stream.
 
-                ubmusicwrite.writeMUSICheader(ufile, self.musicclimatefile)
+        :return: A MUSIC .msf file annotated with LI to denote that this is a linear model
+        """
+        concept = "LI"
+        if self.musicseparatebasin:     #Determines whether to write separate files or not
+            musicbasins = self.totalbasins
+        else:
+            musicbasins = 1
 
-                scalar = 10
-                ncount = 1
-                musicnodedb = {}       #contains the database of nodes for each Block
+        if self.include_route:
+            if self.musicRR_muskk_auto:
+                # Work out Muskingum k approximation based on block size and 1m/s flow
+                musk_K = max(int(float(self.blocks_size) / 60.0), 3)
+            else:
+                musk_K = self.musicRR_muskk
+            routeparams = ["Routed", musk_K, self.musicRR_musktheta]
+        else:
+            routeparams = ["Not Routed", 30, 0.25]  # Defaults
 
-                for i in basinblockIDs:
-                    currentID = i
-                    currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-                    musicnodedb["BlockID"+str(currentID)] = {}
-                    blocksystems = self.getBlockSystems(currentID, systemlist)
-                    #self.notify(str(blocksystems))
+        for b in range(int(musicbasins)):
+            basinID = b+1
+            if self.musicseparatebasin:
+                systemlist = self.getWSUDSystemsForStratID(currentStratID, b + 1)
+                basinblockIDs = self.getBlocksIDsForBasinID(b+1)
+                ufile = ubmusicwrite.createMUSICmsf(self.musicfilepathname,
+                                                    self.musicfilename + "-ID" + str(currentStratID) + concept + "-" + str(
+                                                        int(b + 1)) + "-" + str(self.currentyear) + filesuffix)
+            else:
+                systemlist = self.getWSUDSystemsForStratID(currentStratID, 9999)
+                basinblockIDs = self.getBlocksIDsForBasinID(9999)
+                ufile = ubmusicwrite.createMUSICmsf(self.musicfilepathname,
+                                                    self.musicfilename + "-ID" + str(currentStratID) + concept + "-" + str(
+                                                        self.currentyear) + filesuffix)
 
-                    blockX = currentAttList.getAttribute("CentreX")
-                    blockY = currentAttList.getAttribute("CentreY")
+            ubmusicwrite.writeMUSICheader(ufile, self.musicclimatefile)
 
-                    #(1) WRITE CATCHMENT NODES - maximum possibility of 7 Nodes (Lot x 6, non-lot x 1)
-                    #       Lot: RES, HDR, COM, LI, HI, ORC
-                    #       Street/Neigh: x 1
-                    if self.include_pervious:
-                        catchment_parameter_list = [1, self.musicRR_soil, self.musicRR_field, 80,200, 1, 10, self.musicRR_rcr, self.musicRR_bfr, self.musicRR_dsr]
-                        total_catch_area = (self.blocks_size * self.blocks_size) * currentAttList.getAttribute("Active") / 10000      #[ha]
-                        total_catch_imparea = currentAttList.getAttribute("Blk_EIA")/10000
-                        total_catch_EIF = (total_catch_imparea / total_catch_area)
-                    else:
-                        catchment_parameter_list = [1,120,30,80,200,1,10,25,5,0]
-                        total_catch_area = currentAttList.getAttribute("Blk_EIA")/10000      #[ha]
-                        total_catch_imparea = total_catch_area
-                        total_catch_EIF = 1     #100% impervious
+            scalar = 10
+            ncount = 1
+            musicnodedb = {}    #store the database of MUSIC nodes across Blocks
+            blockcatchmentTracker = {}
 
-                    catchnodecount = self.determineBlockCatchmentNodeCount(blocksystems)
-                    lotcount = catchnodecount - 1   #one less
-                    lotareas, loteifs = self.determineCatchmentLotAreas(currentAttList, blocksystems)
+            #LOOP 1 - Write all in-block systems with catchments and links
+            for i in basinblockIDs:
+                currentID = i
+                currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
+                musicnodedb["BlockID" + str(currentID)] = {}
+                blockcatchmentTracker["BlockID" + str(currentID)] = currentAttList.getAttribute("Blk_EIA")
+                blocksystems = self.getBlockSystems(currentID, systemlist)
 
-                    nonlotarea = total_catch_area - sum(lotareas.values())
-                    if self.include_pervious:
-                        total_lot_imparea = 0.0
-                        for j in lotareas.keys():
-                            total_lot_imparea += lotareas[j] * loteifs[j]/100
-                        nonlotimparea = total_catch_imparea - total_lot_imparea
-                        if nonlotarea == 0:
-                            nonloteia = 0.0
-                        else:
-                            nonloteia = nonlotimparea / nonlotarea
-                    else:
-                        nonlotarea = total_catch_imparea - sum(lotareas.values())
-                        nonloteia = 100
+                blockX = currentAttList.getAttribute("CentreX")
+                blockY = currentAttList.getAttribute("CentreY")
 
-                    if nonlotarea == 0:
-                        self.notify("ISSUE: NONLOT AREA ZERO ON BLOCK: "+str(currentID))
-                    ncount_list = []
+                # WRITE NODES
+                catchment_parameter_list = [1, 120, 30, 80, 200, 1, 10, 25, 5, 0]
+                total_catch_EIF = 1
 
-                    lotoffset = 0
-                    if catchnodecount > 1:
-                        for j in lotareas.keys():       #Loop over lot catchments
-                            if lotareas[j] == 0:
-                                continue
-                            ncount_list.append(ncount)
-                            ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, j, ncount, (blockX-self.blocks_size/4+(lotoffset*self.blocks_size/12))*scalar, (blockY+self.blocks_size/4+(lotoffset*self.blocks_size/12))*scalar, lotareas[j], loteifs[j], catchment_parameter_list)
-                            lotoffset += 1
-                            musicnodedb["BlockID"+str(currentID)]["C_"+j] = ncount
-                            ncount += 1
+                scalekeys = ["L_RES", "L_HDR", "L_COM", "L_LI", "L_HI", "L_ORC", "S", "N"]
+                catchxoffset = 0.25
+                yoffsets = [4.0/5.0, 4.0/5.0, 4.0/5.0, 4.0/5.0, 4.0/5.0, 4.0/5.0, 3.0/5.0, 2.0/5.0]
 
-                        #Write Street/Neigh Catchment Node
-                        ncount_list.append(ncount)
-                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount, (blockX-self.blocks_size/4)*scalar, (blockY)*scalar, nonlotarea, nonloteia, catchment_parameter_list)
-                        musicnodedb["BlockID"+str(currentID)]["C_R"] = ncount
-                        ncount += 1
-                    else:
-                        ncount_list.append(0)
-                        ncount_list.append(ncount)
-                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount, (blockX-self.blocks_size/4)*scalar, (blockY)*scalar, total_catch_area, total_catch_EIF, catchment_parameter_list)
-                        musicnodedb["BlockID"+str(currentID)]["C_R"] = ncount
-                        ncount += 1
+                for s in range(len(scalekeys)):
+                    if len(blocksystems[scalekeys[s]]) == 0:
+                        continue
+                    curwsud = blocksystems[scalekeys[s]][0]
+                    nodelink = []
+                    catchImp = curwsud.getAttribute("SvWQ_ImpT")*curwsud.getAttribute("GoalQty")
+                    availImp = blockcatchmentTracker["BlockID" + str(currentID)]
+                    treatImp = min(catchImp, availImp)
+                    blockcatchmentTracker["BlockID"+str(currentID)] -= treatImp  # Subtract the treated impervious area from block imp
+                    if treatImp == 0:
+                        print "WARNING: Planned too many systems... re-check settings"
+                        continue
 
-                    #(2) WRITE TREATMENT NODES
-                    lotoffset = -1
-                    for sys in blocksystems.keys():
-                        if len(blocksystems[sys]) == 0:
-                            continue
-                        curSys = blocksystems[sys][0]
+                    #Write the catchment node
+                    ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, scalekeys[s], ncount,
+                            (blockX - self.blocks_size * catchxoffset) * scalar,
+                            (blockY - self.blocks_size/ 2.0 + yoffsets[s]*self.blocks_size) * scalar,
+                            treatImp/10000.0, total_catch_EIF, catchment_parameter_list)
 
-                        systype = curSys.getAttribute("Type")
-                        ncount_list.append(ncount)
-                        scale = curSys.getAttribute("Scale")
-                        if "L" in scale:
-                            lotoffset += 1
-                            addOffset = lotoffset
-                        else:
-                            addOffset = 0
-                        offsets = self.getSystemOffsetXY(curSys, self.blocks_size)
-                        sysKexfil = curSys.getAttribute("Exfil")
-                        parameter_list = eval("self.prepareParameters"+str(curSys.getAttribute("Type"))+"(curSys, sysKexfil)")
-                        eval("ubmusicwrite.writeMUSICnode"+str(systype)+"(ufile, currentID, scale, ncount, (blockX+offsets[0]+(addOffset*self.blocks_size/12))*scalar, (blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list)")
-                        musicnodedb["BlockID"+str(currentID)]["S_"+scale] = ncount
-                        ncount += 1
-
-                    #(3) WRITE BLOCK JUNCTION
-                    ncount_list.append(ncount)
-                    offsets = self.getSystemOffsetXY("J", self.blocks_size)
-                    if int(currentAttList.getAttribute("Outlet")) == 1:
-                        self.notify("GOT AN OUTLET at BlockID"+str(currentID))
-                        basinID = int(currentAttList.getAttribute("BasinID"))
-                        jname = "OUT_Bas"+str(basinID)+"-BlkID"+str(currentID)
-                        #self.notify(str(jname))
-                    else:
-                        jname = "Block"+str(currentID)+"J"
-                    ubmusicwrite.writeMUSICjunction(ufile, jname, ncount, (blockX+offsets[0])*scalar, (blockY+offsets[1])*scalar)
-                    musicnodedb["BlockID"+str(currentID)]["J"] = ncount
+                    musicnodedb["BlockID"+str(currentID)]["C_"+scalekeys[s]] = ncount
+                    nodelink.append(ncount)
                     ncount += 1
 
-                    #(4) WRITE ALL LINKS WITHIN BLOCK
-                    nodelinks = self.getInBlockNodeLinks(musicnodedb["BlockID"+str(currentID)])
-                    routeparams = ["Not Routed", 30, 0.25]
-                    for link in range(len(nodelinks)):
-                        ubmusicwrite.writeMUSIClink(ufile, nodelinks[link][0], nodelinks[link][1], routeparams)
+                    #Write the treatment node
+                    systype = curwsud.getAttribute("Type")
+                    sysKexfil = curwsud.getAttribute("Exfil")
 
-                #(5) WRITE ALL LINKS BETWEEN BLOCKS
+                    parameter_list = eval("self.prepareParameters" + str(systype) + "(curwsud, sysKexfil)")
+                    eval("ubmusicwrite.writeMUSICnode"+str(systype)+ "(ufile, currentID, scalekeys[s], ncount, blockX * scalar," +
+                                  "(blockY - self.blocks_size/2.0 + yoffsets[s]*self.blocks_size)*scalar, parameter_list)")
+                    musicnodedb["BlockID"+str(currentID)]["S_"+scalekeys[s]] = ncount
+                    nodelink.append(ncount)
+                    ncount += 1
+
+                    #Write the link to connect these two nodes
+                    ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+                    technodeID = nodelink[1]
+                    nodelink = [technodeID]
+
+                    # If there is a Storage System Node that isn't integrated, write the node
+                    if curwsud.getAttribute("StoreType") == "NA" or curwsud.getAttribute("IntegStore") == 1:
+                        continue
+                    storeType = curwsud.getAttribute("StoreType")
+                    parameter_list = eval("self.prepareParameters" + str(storeType) + "Store(curwsud, sysKexfil)")
+                    eval("ubmusicwrite.writeMUSICnode"+str(storeType)+ "(ufile, currentID, scalekeys[s], ncount, (blockX + (self.blocks_size/8.0)) * scalar,"+
+                         "(blockY - self.blocks_size/2.0 + yoffsets[s]*self.blocks_size)*scalar, parameter_list)")
+                    musicnodedb["BlockID"+str(currentID)]["ST_"+scalekeys[s]] = ncount
+                    nodelink.append(ncount)
+                    ncount += 1
+
+                    ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+
+            # LOOP 2 - Write all basin-scale systems
+            for i in basinblockIDs:
+                currentID = i
+                currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
+                blocksystems = self.getBlockSystems(currentID, systemlist)
+                blockX = currentAttList.getAttribute("CentreX")
+                blockY = currentAttList.getAttribute("CentreY")
+
+                if len(blocksystems["B"]) == 0:
+                    continue
+
+                curwsud = blocksystems["B"][0]
+                nodelink = []
+                catchImp = curwsud.getAttribute("SvWQ_ImpT") + curwsud.getAttribute("GoalQty")
+
+                # WRITE NODES
+                catchment_parameter_list = [1, 120, 30, 80, 200, 1, 10, 25, 5, 0]
+                total_catch_EIF = 1
+                catchxoffset = 0.25
+
+                # Work out how much impervious area to subtract from the other blocks
+                upIDs = []
+                upAreas = []
+                upPs = []
+
+                # Get Upstream Blocks and only keep those with actively untreated impervious area
+                upstreamIDs = currentAttList.getAttribute("UpstrIDs").split(',')
+                upstreamIDs.remove('')
+                for j in range(len(upstreamIDs)):
+                    upstreamIDs[j] = int(upstreamIDs[j])
+                    if blockcatchmentTracker["BlockID" + str(upstreamIDs[j])] <= 0:  # If there is no area left to treat, remove
+                        continue
+                    upIDs.append(upstreamIDs[j])
+                    upAreas.append(blockcatchmentTracker["BlockID" + str(upstreamIDs[j])])
+                if catchImp > sum(upAreas):     #If the treated catchment impervious area is greater than the sum of untreated areas
+                    treatedImp = sum(upAreas)
+                    for j in range(len(upIDs)):
+                        blockcatchmentTracker["BlockID" + str(upIDs[j])] = 0 # Set all areas to zero
+                else:
+                    for j in range(len(upIDs)):     #Calculate the proportions of each block relevant to the total area
+                        upPs.append(upAreas[j] / sum(upAreas))   #and then check what the leftover area is
+                        Atreat = min(upPs[j] * catchImp, upAreas[j])
+                        Anew = max(upAreas[j] - Atreat, 0)
+                        blockcatchmentTracker["BlockID" + str(upIDs[j])] = Anew
+
+                        #Write the catchment node
+                ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "B", ncount,
+                                                     (blockX + self.blocks_size * catchxoffset) * scalar,
+                                                     (blockY - self.blocks_size / 2.0 + 4.0/5.0 * self.blocks_size) * scalar,
+                                                     catchImp/10000.0, total_catch_EIF, catchment_parameter_list)
+
+                musicnodedb["BlockID" + str(currentID)]["C_B"] = ncount
+                nodelink.append(ncount)
+                ncount += 1
+
+                # Write the treatment node
+                systype = curwsud.getAttribute("Type")
+                sysKexfil = curwsud.getAttribute("Exfil")
+                parameter_list = eval(
+                    "self.prepareParameters" + str(systype) + "(curwsud, sysKexfil)")
+                eval("ubmusicwrite.writeMUSICnode" + str(
+                    systype) + "(ufile, currentID, \"B\", ncount, (blockX + self.blocks_size * catchxoffset) * scalar," +
+                     "(blockY - self.blocks_size/2.0 + 3.0/5.0*self.blocks_size)*scalar, parameter_list)")
+                musicnodedb["BlockID" + str(currentID)]["S_B"] = ncount
+                nodelink.append(ncount)
+                ncount += 1
+
+                # Write the link to connect these two nodes
+                ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+                technodeID = nodelink[1]
+                nodelink = [technodeID]
+
+                # If there is a Storage System Node that isn't integrated, write the node
+                if curwsud.getAttribute("StoreType") == "NA" or curwsud.getAttribute("IntegStore") == 1:
+                    continue
+                storeType = curwsud.getAttribute("StoreType")
+                parameter_list = eval("self.prepareParameters" + str(storeType) + "Store(curwsud, sysKexfil)")
+                eval("ubmusicwrite.writeMUSICnode" + str(
+                    storeType) + "(ufile, currentID, \"B\", ncount, (blockX + self.blocks_size * catchxoffset) * scalar," +
+                     "(blockY - self.blocks_size/2.0 + 2.0/5.0*self.blocks_size)*scalar, parameter_list)")
+                musicnodedb["BlockID" + str(currentID)]["ST_B"] = ncount
+                nodelink.append(ncount)
+                ncount += 1
+
+                ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+
+            # LOOP 3 - Write all remaining area catchments
+            for i in basinblockIDs:
+                currentID = i
+                currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
+                blockX = currentAttList.getAttribute("CentreX")
+                blockY = currentAttList.getAttribute("CentreY")
+
+                if blockcatchmentTracker["BlockID"+str(currentID)] <= 0:   #if the remaining impervious area for that
+                    print "BlockID", currentID, "has no impervious area left..."
+                    continue        #block is equal to zero, then skip it, no remaining catchment node needed
+
+                catchImp = blockcatchmentTracker["BlockID"+str(currentID)]
+                catchment_parameter_list = [1, 120, 30, 80, 200, 1, 10, 25, 5, 0]
+                total_catch_EIF = 1
+                catchxoffset = 0.25
+
+                # Write the catchment node
+                ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "REST", ncount,
+                                                     (blockX - self.blocks_size * catchxoffset) * scalar,
+                                                     (blockY - self.blocks_size / 2.0 + 1.0/5.0 * self.blocks_size) * scalar,
+                                                     catchImp/10000.0, total_catch_EIF, catchment_parameter_list)
+
+                musicnodedb["BlockID" + str(currentID)]["C_REST"] = ncount
+                ncount += 1
+
+            #LOOP 3.5 - Write all pervious catchment area if this is wanted
+            if self.include_pervious:
                 for i in basinblockIDs:
                     currentID = i
-                    currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-                    downID = int(currentAttList.getAttribute("downID"))
-                    #Determine routing parameters
-                    if self.include_route:
-                        if self.musicRR_muskk_auto:
-                            #Work out Muskingum k approximation based on block size and 1m/s flow
-                            musk_K = max(int(float(self.blocks_size)/60.0), 3)
+                    currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
+                    blockX = currentAttList.getAttribute("CentreX")
+                    blockY = currentAttList.getAttribute("CentreY")
+                    catchment_parameter_list = [1, self.musicRR_soil, 0, self.musicRR_field, 200, 1, 10,
+                                                self.musicRR_rcr, self.musicRR_bfr, self.musicRR_dsr]
+                    catchxoffset = 0.25
+
+                    pervArea = max((self.blocks_size * self.blocks_size)*currentAttList.getAttribute("Active") - currentAttList.getAttribute("Blk_EIA"),0)
+                    if pervArea == 0:
+                        continue
+
+                    ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "PERV", ncount,
+                                                         (blockX - self.blocks_size * catchxoffset)*scalar,
+                                                         (blockY - self.blocks_size / 2.0 + 0.8/5.0 * self.blocks_size)*scalar,
+                                                         pervArea/10000.0, 0.0, catchment_parameter_list)
+                    musicnodedb["BlockID"+str(currentID)]["C_PERV"] = ncount
+                    ncount += 1
+
+            # LOOP 4 - Write Junction nodes
+            for i in basinblockIDs:
+                currentID = i
+                currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
+                blockX = currentAttList.getAttribute("CentreX")
+                blockY = currentAttList.getAttribute("CentreY")
+
+                if len(musicnodedb["BlockID"+str(currentID)]) == 0: #If there are no nodes in this block, skip the junction
+                    musicnodedb["BlockID" + str(currentID)]["JUNCTION"] = -9999  # Do not create a junction
+                    continue
+
+                if int(currentAttList.getAttribute("Outlet")) == 1:
+                    self.notify("GOT AN OUTLET at BlockID" + str(currentID))
+                    basinID = int(currentAttList.getAttribute("BasinID"))
+                    jname = "OUT_Bas" + str(basinID) + "-BlkID" + str(currentID)
+                else:
+                    jname = "BlockID" + str(currentID) + "J"
+
+                ubmusicwrite.writeMUSICjunction(ufile, jname, ncount, (blockX + self.blocks_size * 0.25) * scalar,
+                                                (blockY - self.blocks_size / 2.0 + self.blocks_size * 1.0 / 5.0) * scalar)
+
+                musicnodedb["BlockID" + str(currentID)]["JUNCTION"] = ncount
+                ncount += 1
+
+            # FINAL PASS - connect all nodes
+            internal_keys = ["S_L_RES", "S_L_HDR", "S_L_COM", "S_L_ORC", "S_L_LI", "S_L_HI", "S_S", "S_N", "S_B", "C_REST", "C_PERV"]
+            harvest_keys = ["ST_L_RES", "ST_L_HDR", "ST_L_COM", "ST_L_ORC", "ST_L_LI", "ST_L_HI", "ST_S", "ST_N", "ST_B", "ST_REST", "ST_PERV"]
+            for i in basinblockIDs:
+                currentID = i
+                currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
+                if musicnodedb["BlockID" + str(currentID)]["JUNCTION"] == -9999:
+                    print "Junction Node with -9999 ID found"
+                    print musicnodedb["BlockID" + str(currentID)]
+                    continue
+
+                #Internal Connections - all WSUD systems to the junction node and REST node with junction
+                for j in range(len(internal_keys)):
+                    ckey = internal_keys[j]
+                    hkey = harvest_keys[j]
+                    # Write the link
+                    if musicnodedb["BlockID"+str(currentID)].has_key(hkey): #If the block has a storage system
+                        ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID"+str(currentID)][hkey],
+                                                    musicnodedb["BlockID"+str(currentID)]["JUNCTION"], routeparams)
+                    elif musicnodedb["BlockID"+str(currentID)].has_key(ckey):
+                        ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID" + str(currentID)][ckey],
+                                                    musicnodedb["BlockID" + str(currentID)]["JUNCTION"], routeparams)
+
+                #External Connection - Junction Node to Junction Node
+                if int(currentAttList.getAttribute("Outlet")) == 1:
+                    continue
+
+                junction_found = 0
+                downAtt = currentAttList
+                while junction_found == 0:
+                    downID = int(downAtt.getAttribute("downID"))
+                    if downID == -1 or downID == 0:
+                        downID = int(downAtt.getAttribute("drainID"))
+                    if downID == -1 or downID == 0:
+                        print "SHOULD NOT HAPPEN!"
+                        junction_found = 1
+                    else:
+                        if musicnodedb["BlockID"+str(downID)]["JUNCTION"] != -9999:
+                            ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID"+str(currentID)]["JUNCTION"],
+                                                musicnodedb["BlockID"+str(downID)]["JUNCTION"], routeparams)
+                            junction_found = 1
                         else:
-                            musk_K = self.musicRR_muskk
-                        routeparams = ["Routed", musk_K, self.musicRR_musktheta]
-                    else:
-                        routeparams = ["Not Routed", 30, 0.25]  #Defaults
+                            #Assign the downstream block as the next block to check (skip that junction but go down the chain)
+                            downAtt = self.activesim.getAssetWithName("BlockID"+str(downID))
 
-                    if downID == -1 or downID == 0:
-                        downID = int(currentAttList.getAttribute("drainID"))
-                    if downID == -1 or downID == 0:
-                        continue
-                    if int(currentAttList.getAttribute("Outlet")) == 1:
-                        continue
-                    else:
-                        #print musicnodedb
-                        nodelink = self.getDownstreamNodeLink(musicnodedb["BlockID"+str(currentID)], musicnodedb["BlockID"+str(downID)])
-                        ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+            #Write the footer for the file.
+            ubmusicwrite.writeMUSICfooter(ufile)
 
-                ubmusicwrite.writeMUSICfooter(ufile)
-        return True
+    def writeMUSICnonlinear(self, currentStratID, filesuffix):
+        """Writes the non-linear version of the MUSIC simulation file. This is where all systems drain into successive
+        downstream systems. The relationship is non-linear and non-conservative meaining that all treatment systems
+        will appear as oversized in the model because the overall treatment efficiency will be greater than what is
+        predicted
+
+        :return: A MUSIC .msf file annotated with NL to denote that this is a non-linear model
+        """
+        concept = "NL"
+        if self.musicseparatebasin:  # Determine if to write separate files or one single file
+            musicbasins = self.totalbasins
+        else:
+            musicbasins = 1
+
+        for b in range(int(musicbasins)):
+            if self.musicseparatebasin:
+                systemlist = self.getWSUDSystemsForStratID(currentStratID, b + 1)
+                basinblockIDs = self.getBlocksIDsForBasinID(b + 1)
+                ufile = ubmusicwrite.createMUSICmsf(self.musicfilepathname,
+                                                    self.musicfilename + "-ID" + str(currentStratID) + concept + "-" + str(
+                                                        int(b + 1)) + "-" + str(self.currentyear) + filesuffix)
+            else:
+                systemlist = self.getWSUDSystemsForStratID(currentStratID, 9999)
+                basinblockIDs = self.getBlocksIDsForBasinID(9999)
+                ufile = ubmusicwrite.createMUSICmsf(self.musicfilepathname,
+                                                    self.musicfilename + "-ID" + str(currentStratID) + concept + "-" + str(
+                                                        self.currentyear) + filesuffix)
+
+            ubmusicwrite.writeMUSICheader(ufile, self.musicclimatefile)
+
+            scalar = 10
+            ncount = 1
+            musicnodedb = {}  # contains the database of nodes for each Block
+
+            for i in basinblockIDs:
+                currentID = i
+                currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
+                musicnodedb["BlockID" + str(currentID)] = {}
+                blocksystems = self.getBlockSystems(currentID, systemlist)
+                # self.notify(str(blocksystems))
+
+                blockX = currentAttList.getAttribute("CentreX")
+                blockY = currentAttList.getAttribute("CentreY")
+
+                # (1) WRITE CATCHMENT NODES - maximum possibility of 7 Nodes (Lot x 6, non-lot x 1)
+                #       Lot: RES, HDR, COM, LI, HI, ORC
+                #       Street/Neigh: x 1
+                if self.include_pervious:
+                    catchment_parameter_list = [1, self.musicRR_soil, self.musicRR_field, 80, 200, 1, 10,
+                                                self.musicRR_rcr, self.musicRR_bfr, self.musicRR_dsr]
+                    total_catch_area = (self.blocks_size * self.blocks_size) * currentAttList.getAttribute(
+                        "Active") / 10000  # [ha]
+                    total_catch_imparea = currentAttList.getAttribute("Blk_EIA") / 10000
+                    total_catch_EIF = (total_catch_imparea / total_catch_area)
+                else:
+                    catchment_parameter_list = [1, 120, 30, 80, 200, 1, 10, 25, 5, 0]
+                    total_catch_area = currentAttList.getAttribute("Blk_EIA") / 10000  # [ha]
+                    total_catch_imparea = total_catch_area
+                    total_catch_EIF = 1  # 100% impervious
+
+                catchnodecount = self.determineBlockCatchmentNodeCount(blocksystems)
+                lotcount = catchnodecount - 1  # one less
+                lotareas, loteifs = self.determineCatchmentLotAreas(currentAttList, blocksystems)
+
+                nonlotarea = total_catch_area - sum(lotareas.values())
+                if self.include_pervious:
+                    total_lot_imparea = 0.0
+                    for j in lotareas.keys():
+                        total_lot_imparea += lotareas[j] * loteifs[j] / 100
+                    nonlotimparea = total_catch_imparea - total_lot_imparea
+                    if nonlotarea == 0:
+                        nonloteia = 0.0
+                    else:
+                        nonloteia = nonlotimparea / nonlotarea
+                else:
+                    nonlotarea = total_catch_imparea - sum(lotareas.values())
+                    nonloteia = 100
+
+                if nonlotarea == 0:
+                    self.notify("ISSUE: NONLOT AREA ZERO ON BLOCK: " + str(currentID))
+                ncount_list = []
+
+                lotoffset = 0
+                if catchnodecount > 1:
+                    for j in lotareas.keys():  # Loop over lot catchments
+                        if lotareas[j] == 0:
+                            continue
+                        ncount_list.append(ncount)
+                        ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, j, ncount, (
+                        blockX - self.blocks_size / 4 + (lotoffset * self.blocks_size / 12)) * scalar, (
+                                                             blockY + self.blocks_size / 4 + (
+                                                             lotoffset * self.blocks_size / 12)) * scalar, lotareas[j],
+                                                             loteifs[j], catchment_parameter_list)
+                        lotoffset += 1
+                        musicnodedb["BlockID" + str(currentID)]["C_" + j] = ncount
+                        ncount += 1
+
+                    # Write Street/Neigh Catchment Node
+                    ncount_list.append(ncount)
+                    ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount,
+                                                         (blockX - self.blocks_size / 4) * scalar, (blockY) * scalar,
+                                                         nonlotarea, nonloteia, catchment_parameter_list)
+                    musicnodedb["BlockID" + str(currentID)]["C_R"] = ncount
+                    ncount += 1
+                else:
+                    ncount_list.append(0)
+                    ncount_list.append(ncount)
+                    ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount,
+                                                         (blockX - self.blocks_size / 4) * scalar, (blockY) * scalar,
+                                                         total_catch_area, total_catch_EIF, catchment_parameter_list)
+                    musicnodedb["BlockID" + str(currentID)]["C_R"] = ncount
+                    ncount += 1
+
+                # (2) WRITE TREATMENT NODES
+                lotoffset = -1
+                for sys in blocksystems.keys():
+                    nodelink = []   #in case there are harvesting systems
+                    if len(blocksystems[sys]) == 0:
+                        continue
+                    curSys = blocksystems[sys][0]
+
+                    systype = curSys.getAttribute("Type")
+                    ncount_list.append(ncount)
+                    scale = curSys.getAttribute("Scale")
+                    if "L" in scale:
+                        lotoffset += 1
+                        addOffset = lotoffset
+                    else:
+                        addOffset = 0
+                    offsets = self.getSystemOffsetXY(curSys, self.blocks_size)
+                    sysKexfil = curSys.getAttribute("Exfil")
+
+                    #Create parameter list, also accounts for integrated storage
+                    parameter_list = eval(
+                        "self.prepareParameters" + str(curSys.getAttribute("Type")) + "(curSys, sysKexfil)")
+                    eval("ubmusicwrite.writeMUSICnode" + str(
+                        systype) + "(ufile, currentID, scale, ncount, (blockX+offsets[0]+(addOffset*self.blocks_size/12))*scalar, "+
+                                   "(blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list)")
+                    musicnodedb["BlockID" + str(currentID)]["S_" + scale] = ncount
+                    nodelink.append(ncount)
+                    ncount += 1
+
+                    if curSys.getAttribute("StoreType") != "NA" and curSys.getAttribute("IntegStore") == 0:
+                        storeType = curSys.getAttribute("StoreType")
+                        parameter_list = eval("self.prepareParameters"+str(storeType)+"Store(curSys, sysKexfil)")
+                        eval("ubmusicwrite.writeMUSICnode"+str(
+                            storeType)+"(ufile, currentID, scale, ncount, (blockX+offsets[0]+(0.125*self.blocks_size)+(addOffset*self.blocks_size/12))*scalar,"+
+                             "(blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list)")
+                        musicnodedb["BlockID"+str(currentID)]["ST_"+scale] = ncount
+                        nodelink.append(ncount)
+                        ncount += 1
+                        ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)   #link the two systems
+
+                # (3) WRITE BLOCK JUNCTION
+                ncount_list.append(ncount)
+                offsets = self.getSystemOffsetXY("J", self.blocks_size)
+                if int(currentAttList.getAttribute("Outlet")) == 1:
+                    self.notify("GOT AN OUTLET at BlockID" + str(currentID))
+                    basinID = int(currentAttList.getAttribute("BasinID"))
+                    jname = "OUT_Bas" + str(basinID) + "-BlkID" + str(currentID)
+                    # self.notify(str(jname))
+                else:
+                    jname = "Block" + str(currentID) + "J"
+                ubmusicwrite.writeMUSICjunction(ufile, jname, ncount, (blockX + offsets[0]) * scalar,
+                                                (blockY + offsets[1]) * scalar)
+                musicnodedb["BlockID" + str(currentID)]["J"] = ncount
+                ncount += 1
+
+                # (4) WRITE ALL LINKS WITHIN BLOCK
+                nodelinks = self.getInBlockNodeLinks(musicnodedb["BlockID" + str(currentID)])
+                routeparams = ["Not Routed", 30, 0.25]
+                for link in range(len(nodelinks)):
+                    ubmusicwrite.writeMUSIClink(ufile, nodelinks[link][0], nodelinks[link][1], routeparams)
+
+            # (5) WRITE ALL LINKS BETWEEN BLOCKS
+            for i in basinblockIDs:
+                currentID = i
+                currentAttList = self.activesim.getAssetWithName("BlockID" + str(currentID))
+                downID = int(currentAttList.getAttribute("downID"))
+                # Determine routing parameters
+                if self.include_route:
+                    if self.musicRR_muskk_auto:
+                        # Work out Muskingum k approximation based on block size and 1m/s flow
+                        musk_K = max(int(float(self.blocks_size) / 60.0), 3)
+                    else:
+                        musk_K = self.musicRR_muskk
+                    routeparams = ["Routed", musk_K, self.musicRR_musktheta]
+                else:
+                    routeparams = ["Not Routed", 30, 0.25]  # Defaults
+
+                if downID == -1 or downID == 0:
+                    downID = int(currentAttList.getAttribute("drainID"))
+                if downID == -1 or downID == 0:
+                    continue
+                if int(currentAttList.getAttribute("Outlet")) == 1:
+                    continue
+                else:
+                    # print musicnodedb
+                    nodelink = self.getDownstreamNodeLink(musicnodedb["BlockID" + str(currentID)],
+                                                          musicnodedb["BlockID" + str(downID)])
+                    ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+
+            ubmusicwrite.writeMUSICfooter(ufile)
 
 
     def runEconomicAnalysis(self):
@@ -1706,14 +2075,19 @@ class PerformanceAssess(UBModule):      #UBCORE
         following rules:        - lot catchment to lot system           - lot RES system to street/neigh system
                                 - remain catch to stree/neigh system    - lot nonRES sys to neigh system
                                 - street sys to neigh sys               - neigh sys to junction
-                                - junction to basin sys                 - remain catchment to junction if no sys"""
+                                - junction to basin sys                 - remain catchment to junction if no sys
+                                In the case of stormwater harvesting systems, all treatment goes to storage
+                                and all storage goes to downstream treatment/storage
+                                """
         nodelinks = []
         linkmap = {"C_L_RES": ["S_L_RES"], "C_L_HDR":["S_L_HDR"], "C_L_LI": ["S_L_LI"],
                    "C_L_HI": ["S_L_HI"], "C_L_COM": ["S_L_COM"], "C_L_ORC": ["S_L_ORC"],
                    "C_R": ["S_S", "S_N", "J"], "J": ["S_B", 0],
-                   "S_L_RES": ["S_S", "S_N", "J"], "S_L_HDR": ["S_N", "J"], "S_L_LI": ["S_N", "J"],
-                   "S_L_HI": ["S_N", "J"], "S_L_COM": ["S_N", "J"], "S_L_ORC": ["S_N", "J"],
-                   "S_S": ["S_N", "J"], "S_N": ["J"], "S_B" : [0]}      #gives the order in which links can be arranged
+                   "S_L_RES": ["ST_L_RES", "S_S", "S_N", "J"], "S_L_HDR": ["ST_L_HDR", "S_N", "J"], "S_L_LI": ["ST_L_LI", "S_N", "J"],
+                   "S_L_HI": ["ST_L_HI", "S_N", "J"], "S_L_COM": ["ST_L_COM", "S_N", "J"], "S_L_ORC": ["ST_L_ORC", "S_N", "J"],
+                   "ST_L_RES" : ["S_S", "S_N", "ST_N", "J"], "ST_L_HDR": ["S_S", "S_N", "ST_N", "J"], "ST_L_LI": ["S_S", "S_N", "ST_N", "J"],
+                   "ST_L_HI" : ["S_S", "S_N", "ST_N", "J"], "ST_L_COM": ["S_S", "S_N", "ST_N", "J"], "ST_L_ORC": ["S_S", "S_N", "ST_N", "J"],
+                   "S_S": ["S_N", "ST_N", "J"], "S_N": ["ST_N", "J"], "ST_N" : ["J"], "S_B" : ["ST_B"], "ST_B" : [0]}      #gives the order in which links can be arranged
         for key in nodedb.keys():
             map = linkmap[key]
             #self.notify(str(map))
@@ -1730,7 +2104,10 @@ class PerformanceAssess(UBModule):      #UBCORE
         #Case 1: Junction to Junction
         if "S_B" not in upNodes.keys():
             nodelink = [upNodes["J"], downNodes["J"]]
-        #Case 2: Basin to Junction
+        #Case 2: Basin Storage systems to Junction
+        elif "ST_B" in upNodes.keys():
+            nodelink = [upNodes["ST_B"], downNodes["J"]]
+        #Case 3: No basin storage, just basin system to Junction
         else:
             nodelink = [upNodes["S_B"], downNodes["J"]]
         return nodelink
@@ -1780,7 +2157,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         sysarea = self.getEffectiveSystemArea(curSys)*sysqty
         sysedd = float(curSys.getAttribute("WDepth"))
         try:
-            parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000.0*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd)))), 72.0]
+            parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000.0*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd))))]
         except TypeError as e:
             print e
             print "SysArea", type(sysarea)
@@ -1792,6 +2169,12 @@ class PerformanceAssess(UBModule):      #UBCORE
             print "Part 3", numpy.sqrt(2*9.81*sysedd)
             print "Big Thing", 1000.0*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd))))
 
+        if curSys.getAttribute("IntegStore") == 1 and curSys.getAttribute("StoreVol") != 0:
+            parameter_list.append(0)
+            parameter_list.append(curSys.getAttribute("SvRec_Supp")/1000.0)
+        else:
+            parameter_list.append(1)
+            parameter_list.append(-9999)
         return parameter_list
 
     def prepareParametersPB(self, curSys, current_soilK):
@@ -1800,7 +2183,14 @@ class PerformanceAssess(UBModule):      #UBCORE
         sysqty = self.getSystemQuantity(curSys)
         sysarea = self.getEffectiveSystemArea(curSys)*sysqty
         sysedd = float(curSys.getAttribute("WDepth"))      #The mean depth
-        parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd)))), 72.0]
+        parameter_list = [sysarea, sysedd, sysarea*0.2, current_soilK, 1000*numpy.sqrt(((0.895*sysarea*sysedd)/(72*3600*0.6*0.25*numpy.pi*numpy.sqrt(2*9.81*sysedd))))]
+
+        if curSys.getAttribute("IntegStore") == 1 and curSys.getAttribute("StoreVol") != 0:
+            parameter_list.append(0)    #Use stored water for irrigation or other uses? 0=Yes, 1=No
+            parameter_list.append(curSys.getAttribute("SvRec_Supp")/1000.0)
+        else:
+            parameter_list.append(1)        #No storage reuse
+            parameter_list.append(-9999)
         return parameter_list
 
     def prepareParametersSW(self, curSys, current_soilK):
@@ -1812,9 +2202,35 @@ class PerformanceAssess(UBModule):      #UBCORE
         return parameter_list
 
     def prepareParametersRT(self, curSys, current_soilK):
+        """Calls prepareParametersRTStore() since it is identical for Rainwater Tanks"""
+        return self.prepareParametersRTStore(curSys, current_soilK)
+
+    def prepareParametersRTStore(self, curSys, current_soilK):
         """Function to setup the parameter list vectr for raintanks"""
-        #>>>FUTURE
-        parameter_list = []
+        #parameter_list = [annualdemand, numtanks, surfarea, totVol, initvol, overflowpipediam]
+        numtanks = self.getSystemQuantity(curSys)
+        storeVol = float(curSys.getAttribute("StoreVol")) * numtanks
+        storeDepth = float(curSys.getAttribute("ST_Depth"))
+        surfarea = float(storeVol / storeDepth)
+        totVol = storeVol + float(surfarea*curSys.getAttribute("ST_Dead")) #store Volume + dead storage
+        annualdemand = float(curSys.getAttribute("SvRec_Supp")*numtanks)/1000.0   #kL/yr --> ML/yr
+        initvol = 0
+        overflowpipediam = math.sqrt(math.pow(100.0/2.0,2)*numtanks)*2.0    #Rescale Raintank Diameter
+
+        parameter_list = [annualdemand, numtanks, surfarea, totVol, initvol, overflowpipediam]
+        return parameter_list
+
+    def prepareParametersPBStore(self, curSys, current_soilK):
+        """Function to setup the parameter list vector for ponds as a storage system"""
+        #Parameter List = [
+        sysqty = self.getSystemQuantity(curSys)
+        sysvol = float(curSys.getAttribute("StoreVol"))
+        storeDepth = float(curSys.getAttribute("ST_Depth"))
+        surfarea = float(sysvol / storeDepth)
+        ppd = float(curSys.getAttribute("ST_Dead"))
+        annualdemand = float(curSys.getAttribute("SvRec_Supp"))
+        parameter_list = [surfarea, storeDepth, surfarea * 0.2, current_soilK, 1000 * numpy.sqrt(
+            ((0.895 * surfarea * storeDepth) / (72 * 3600 * 0.6 * 0.25 * numpy.pi * numpy.sqrt(2 * 9.81 * storeDepth)))), 0, annualdemand]
         return parameter_list
 
     def getEffectiveSystemArea(self, curSys):
