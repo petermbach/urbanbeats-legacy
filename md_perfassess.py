@@ -804,8 +804,6 @@ class PerformanceAssess(UBModule):      #UBCORE
                 map_attr.addAttribute("wdp_"+i, eval("self.cp_"+i))
                 params[i + "_pat"] = eval("self.cp_"+i)
 
-
-
         # (2) - Integrated Water Supply Balance Simulation
         #Check if an IWBS is needed...
         if self.epanet_simtype != "STS" and self.run_fullTSSim:            #Introduce something for simplified 24-hr sim
@@ -829,18 +827,21 @@ class PerformanceAssess(UBModule):      #UBCORE
             params["priority_privin_c"] = self.priority_privin_c
             params["regional_supply_rule"] = self.regional_supply_rule
 
-            print "Params ", params
+            #print "Params ", params
 
             #Grab Scaling Data Set and create a scalar array
             scalefiledata = ubseries.loadClimate(self.scalefile, 1440, self.scaleyears)
-            print scalefiledata
+            #print scalefiledata
             if self.globalavgauto:
                 scalefilefact = ubseries.convertClimateToScalars(scalefiledata, "REL", 0)
             else:
                 scalefilefact = ubseries.convertClimateToScalars(scalefiledata, "REL", self.globalaverage)
 
             #Retrieve the basin structure and set up a dictionary to track demands each time step
+            stratlist = self.getWSUDSystemsForStratID(1, 9999)  #Get ALL WSUD assets in the strategy
+
             block_track = {}
+            block_wsud = {}
             basin_structure = {}
             for i in range(self.totalbasins):
                 # Gain an Idea of the Block Progression
@@ -851,8 +852,17 @@ class PerformanceAssess(UBModule):      #UBCORE
                 #print idflow_order
                 for j in range(len(idflow_order)):
                     block_track[idflow_order[j]] = []
+                    block_wsud[idflow_order[j]] = [None, None, None]      #[Lot, neigh, basin]
 
-                #strats = self.getStrategiesInIDFlowOrder(idflow_order)
+            wsudscales = ["L_RES", "N", "B"]
+            for i in stratlist:
+                curWSUD = i
+                blockID = curWSUD.getAttribute("Location")
+                scale = curWSUD.getAttribute("Scale")
+                if curWSUD.getAttribute("StoreVol") > 0:
+                    block_wsud[blockID][wsudscales.index(scale)] = curWSUD
+            print block_wsud
+
 
             #Proceed to Do Water Balance
             #Avoid running through time series as many times as possible.
@@ -868,10 +878,9 @@ class PerformanceAssess(UBModule):      #UBCORE
                     headerstring+= str(i)+"_"+str(j)+","
             f.write(headerstring+"\n")
 
-            # sb_labels = ["StoreInit", "Inflow", "Spill", "OtherLoss", "Demand", "Supply", "StoreFinal"]
-            # g = open("C:/Users/Peter Bach/Documents/Coding Projects/TimeSeriesStorages.csv", 'w')
-            # headerstring = "Time,Rain[mm],Evap[mm],"
-            # for i in wsud_track.keys():
+            sb_labels = ["StoreInit", "Inflow", "Spill", "OtherLoss", "Demand", "Supply", "StoreFinal"]
+            g = open("C:/Users/Peter Bach/Documents/Coding Projects/TimeSeriesStorages.csv", 'w')
+            headerstring = "Time,Rain[mm],Evap[mm],"
             #     for j in
 
             scaledaytracker = 0
@@ -1065,16 +1074,17 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.runEPANETsim()
         return True
 
-    def getStrategiesInIDFlowOrder(self, idorder):
+    def retrieveStoragesForBlock(self, blockID):
         """Runs through the WSUD strategies and returns all systems that are 'relevant' i.e.
-                - with storage
-                - at the appropriate scales
+                - with storage for the indicated block ID
+                - at the lot and neighbourhood scales
             in the block flow order specified.
 
         :param idorder: Array of block IDs in the order upstream to downstream
         :return: assets of relevant WSUD systems at the Lot, Neighbourhood and Basin scales
         """
-        stratlist = []
+        stratlist = [None, None]
+
 
         return stratlist
 
