@@ -186,6 +186,7 @@ def writeMUSICnodeBF(f, ID, nodename, ncount, x, y, surfarea, exfil, edd, fd, su
     f.write("Advanced Properties - Total Nitrogen - C* (mg/L),1.4,{mg/L}\n")
     f.write("Advanced Properties - Filter Media Soil Type,1,{Index from 0 to 4 for \"Sand\" | \"Loamy Sand\" | \"Sandy Loam\" | \"Silt Loam\" | \"Loam\"}\n")
     f.write("Advanced Properties - Weir Coefficient,1.7,\n")
+    f.write("Advanced Properties - Pet Scaling Factor,2.1,\n")
     f.write("Advanced Properties - Number of CSTR Cells,3,\n")
     f.write("Advanced Properties - Porosity of Filter Media,0.35,\n")
     f.write("Advanced Properties - Porosity of Submerged Zone,0.35,\n")
