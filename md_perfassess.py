@@ -676,6 +676,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 blockY = currentAttList.getAttribute("CentreY")
 
                 if blockcatchmentTracker["BlockID"+str(currentID)] <= 0:   #if the remaining impervious area for that
+                    print "BlockID", currentID, "has no impervious area left..."
                     continue        #block is equal to zero, then skip it, no remaining catchment node needed
 
                 catchImp = blockcatchmentTracker["BlockID"+str(currentID)]
@@ -703,7 +704,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                                                 self.musicRR_rcr, self.musicRR_bfr, self.musicRR_dsr]
                     catchxoffset = 0.25
 
-                    pervArea = max((self.blocks_size * self.blocks_size) - currentAttList.getAttribute("Blk_EIA"),0)
+                    pervArea = max((self.blocks_size * self.blocks_size)*currentAttList.getAttribute("Active") - currentAttList.getAttribute("Blk_EIA"),0)
                     if pervArea == 0:
                         continue
 
@@ -2139,7 +2140,7 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         if curSys.getAttribute("IntegStore") == 1 and curSys.getAttribute("StoreVol") != 0:
             parameter_list.append(0)
-            parameter_list.append(curSys.getAttribute("SvRec_Supp"))
+            parameter_list.append(curSys.getAttribute("SvRec_Supp")/1000.0)
         else:
             parameter_list.append(1)
             parameter_list.append(-9999)
@@ -2155,7 +2156,7 @@ class PerformanceAssess(UBModule):      #UBCORE
 
         if curSys.getAttribute("IntegStore") == 1 and curSys.getAttribute("StoreVol") != 0:
             parameter_list.append(0)    #Use stored water for irrigation or other uses? 0=Yes, 1=No
-            parameter_list.append(curSys.getAttribute("SvRec_Supp"))
+            parameter_list.append(curSys.getAttribute("SvRec_Supp")/1000.0)
         else:
             parameter_list.append(1)        #No storage reuse
             parameter_list.append(-9999)
@@ -2181,7 +2182,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         storeDepth = float(curSys.getAttribute("ST_Depth"))
         surfarea = float(storeVol / storeDepth)
         totVol = storeVol + float(surfarea*curSys.getAttribute("ST_Dead")) #store Volume + dead storage
-        annualdemand = float(curSys.getAttribute("SvRec_Supp"))/1000.0   #kL/yr --> ML/yr
+        annualdemand = float(curSys.getAttribute("SvRec_Supp")*numtanks)/1000.0   #kL/yr --> ML/yr
         initvol = 0
         overflowpipediam = math.sqrt(math.pow(100.0/2.0,2)*numtanks)*2.0    #Rescale Raintank Diameter
 
