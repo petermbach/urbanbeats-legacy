@@ -903,6 +903,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 # (2) WRITE TREATMENT NODES
                 lotoffset = -1
                 for sys in blocksystems.keys():
+                    nodelink = []   #in case there are harvesting systems
                     if len(blocksystems[sys]) == 0:
                         continue
                     curSys = blocksystems[sys][0]
@@ -917,12 +918,27 @@ class PerformanceAssess(UBModule):      #UBCORE
                         addOffset = 0
                     offsets = self.getSystemOffsetXY(curSys, self.blocks_size)
                     sysKexfil = curSys.getAttribute("Exfil")
+
+                    #Create parameter list, also accounts for integrated storage
                     parameter_list = eval(
                         "self.prepareParameters" + str(curSys.getAttribute("Type")) + "(curSys, sysKexfil)")
                     eval("ubmusicwrite.writeMUSICnode" + str(
-                        systype) + "(ufile, currentID, scale, ncount, (blockX+offsets[0]+(addOffset*self.blocks_size/12))*scalar, (blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list)")
+                        systype) + "(ufile, currentID, scale, ncount, (blockX+offsets[0]+(addOffset*self.blocks_size/12))*scalar, "+
+                                   "(blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list)")
                     musicnodedb["BlockID" + str(currentID)]["S_" + scale] = ncount
+                    nodelink.append(ncount)
                     ncount += 1
+
+                    if curSys.getAttribute("StoreType") != "NA" and curSys.getAttribute("IntegStore") == 0:
+                        storeType = curSys.getAttribute("StoreType")
+                        parameter_list = eval("self.prepareParameters"+str(storeType)+"Store(curSys, sysKexfil)")
+                        eval("ubmusicwrite.writeMUSICnode"+str(
+                            storeType)+"(ufile, currentID, scale, ncount, (blockX+offsets[0]+(0.125*self.blocks_size)+(addOffset*self.blocks_size/12))*scalar,"+
+                             "(blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list)")
+                        musicnodedb["BlockID"+str(currentID)]["ST_"+scale] = ncount
+                        nodelink.append(ncount)
+                        ncount += 1
+                        ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)   #link the two systems
 
                 # (3) WRITE BLOCK JUNCTION
                 ncount_list.append(ncount)
@@ -2052,14 +2068,19 @@ class PerformanceAssess(UBModule):      #UBCORE
         following rules:        - lot catchment to lot system           - lot RES system to street/neigh system
                                 - remain catch to stree/neigh system    - lot nonRES sys to neigh system
                                 - street sys to neigh sys               - neigh sys to junction
-                                - junction to basin sys                 - remain catchment to junction if no sys"""
+                                - junction to basin sys                 - remain catchment to junction if no sys
+                                In the case of stormwater harvesting systems, all treatment goes to storage
+                                and all storage goes to downstream treatment/storage
+                                """
         nodelinks = []
         linkmap = {"C_L_RES": ["S_L_RES"], "C_L_HDR":["S_L_HDR"], "C_L_LI": ["S_L_LI"],
                    "C_L_HI": ["S_L_HI"], "C_L_COM": ["S_L_COM"], "C_L_ORC": ["S_L_ORC"],
                    "C_R": ["S_S", "S_N", "J"], "J": ["S_B", 0],
-                   "S_L_RES": ["S_S", "S_N", "J"], "S_L_HDR": ["S_N", "J"], "S_L_LI": ["S_N", "J"],
-                   "S_L_HI": ["S_N", "J"], "S_L_COM": ["S_N", "J"], "S_L_ORC": ["S_N", "J"],
-                   "S_S": ["S_N", "J"], "S_N": ["J"], "S_B" : [0]}      #gives the order in which links can be arranged
+                   "S_L_RES": ["ST_L_RES", "S_S", "S_N", "J"], "S_L_HDR": ["ST_L_HDR", "S_N", "J"], "S_L_LI": ["ST_L_LI", "S_N", "J"],
+                   "S_L_HI": ["ST_L_HI", "S_N", "J"], "S_L_COM": ["ST_L_COM", "S_N", "J"], "S_L_ORC": ["ST_L_ORC", "S_N", "J"],
+                   "ST_L_RES" : ["S_S", "S_N", "ST_N", "J"], "ST_L_HDR": ["S_S", "S_N", "ST_N", "J"], "ST_L_LI": ["S_S", "S_N", "ST_N", "J"],
+                   "ST_L_HI" : ["S_S", "S_N", "ST_N", "J"], "ST_L_COM": ["S_S", "S_N", "ST_N", "J"], "ST_L_ORC": ["S_S", "S_N", "ST_N", "J"],
+                   "S_S": ["S_N", "ST_N", "J"], "S_N": ["ST_N", "J"], "ST_N" : ["J"], "S_B" : ["ST_B"], "ST_B" : [0]}      #gives the order in which links can be arranged
         for key in nodedb.keys():
             map = linkmap[key]
             #self.notify(str(map))
@@ -2076,7 +2097,10 @@ class PerformanceAssess(UBModule):      #UBCORE
         #Case 1: Junction to Junction
         if "S_B" not in upNodes.keys():
             nodelink = [upNodes["J"], downNodes["J"]]
-        #Case 2: Basin to Junction
+        #Case 2: Basin Storage systems to Junction
+        elif "ST_B" in upNodes.keys():
+            nodelink = [upNodes["ST_B"], downNodes["J"]]
+        #Case 3: No basin storage, just basin system to Junction
         else:
             nodelink = [upNodes["S_B"], downNodes["J"]]
         return nodelink
