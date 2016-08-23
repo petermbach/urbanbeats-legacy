@@ -405,7 +405,6 @@ class PerformanceAssess(UBModule):      #UBCORE
                     self.evapdata = ubseries.scaleClimateSeries(self.evapdata, self.evapscalars)
 
             #SCALING FOR SOLAR RADIATION DATA?
-
         if self.perf_MUSIC:
             self.notify("Exporting MUSIC Simulation...")
             self.writeMUSIC()
@@ -455,7 +454,6 @@ class PerformanceAssess(UBModule):      #UBCORE
         #Begin Writing MUSIC Files
         for s in range(int(strats)):
             currentStratID = s+1
-
             if self.music_concept == "nonlinear":
                 self.writeMUSICnonlinear(currentStratID, filesuffix)
             elif self.music_concept == "linear":
@@ -463,7 +461,6 @@ class PerformanceAssess(UBModule):      #UBCORE
             else:
                 self.writeMUSICnonlinear(currentStratID, filesuffix)
                 self.writeMUSIClinear(currentStratID, filesuffix)
-
         return True
 
     def writeMUSIClinear(self, currentStratID, filesuffix):
