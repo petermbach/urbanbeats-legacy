@@ -1015,9 +1015,10 @@ class PerformanceAssess(UBModule):      #UBCORE
             self.transferTemperatureDataToPatches(tempdict)
         elif self.assesslevel == "B":
             self.transferTemperatureDataToBlocks(tempdict)
+        elif self.assesslevel == "R":
+            self.transferTemperatureDataToRaster(tempdict)
 
-        #Perform Interpolation
-
+        #Perform Interpolation or Smoothing
 
         return True
 
@@ -1046,6 +1047,20 @@ class PerformanceAssess(UBModule):      #UBCORE
             currentPatch.addAttribute("LSTemp", patchtemp)
         return True
 
+    def transferTemperatureDataToRaster(self, tempdict):
+        """
+
+        :param tempdict:
+        :return:
+        """
+        self.notify("Transferring Temperatures to input raster")
+
+        cycledataset = self.activesim.getCycleDataSet(self.cycletype, self.tabindex)
+        landuseraster = ubdata.importRasterData(cycledataset["Land Use"])
+        cs = landuseraster.getCellSize()
+        ncols, nrows = landuseraster.getDimensions()
+
+        
 
     def transferTemperatureDataToBlocks(self, tempdict):
         """ Transfers temperature data to block Centre points for different land uses for use in
