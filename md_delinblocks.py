@@ -361,7 +361,6 @@ class Delinblocks(UBModule):      #UBCORE
         
         ### MAP ATTRIBUTES - The Global Attributes List - write present information across to this component
         map_attr = ubdata.UBComponent()         #UBCORE
-#        map_attr = Component()                  #DYNAMIND
         map_attr.addAttribute("NumBlocks", numblocks)                   #Number of blocks in the grid
         map_attr.addAttribute("WidthBlocks", widthnew)                  #Width of simulation area in # of blocks
         map_attr.addAttribute("HeightBlocks", heightnew)                #Height of simulation area in # of blocks

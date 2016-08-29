@@ -1011,17 +1011,16 @@ class PerformanceAssess(UBModule):      #UBCORE
         tempdict = self.createTemperatureDictionary(dist, mins, maxs)
 
         #Calculate equivalent LSTs at either block or patch level
-        if self.assesslevel == "P":
+        if self.assesslevel == "R":
             self.transferTemperatureDataToPatches(tempdict)
         elif self.assesslevel == "B":
             self.transferTemperatureDataToBlocks(tempdict)
-        elif self.assesslevel == "R":
+        elif self.assesslevel == "P":
             self.transferTemperatureDataToRaster(tempdict)
 
         #Perform Interpolation or Smoothing
 
         return True
-
 
     def transferTemperatureDataToPatches(self, tempdict):
         """ Transfers temperature data to patches for different land uses.
@@ -1048,19 +1047,151 @@ class PerformanceAssess(UBModule):      #UBCORE
         return True
 
     def transferTemperatureDataToRaster(self, tempdict):
-        """
+        """Transfers the temperature data to the input land use raster through the land surface cover link
 
         :param tempdict:
         :return:
         """
-        self.notify("Transferring Temperatures to input raster")
+        self.notify("Creating Temperature Raster")
 
         cycledataset = self.activesim.getCycleDataSet(self.cycletype, self.tabindex)
         landuseraster = ubdata.importRasterData(cycledataset["Land Use"])
         cs = landuseraster.getCellSize()
         ncols, nrows = landuseraster.getDimensions()
 
-        
+        blockIndex = self.createBlockMapIndex()
+        self.createBlockLUCTemperatures(tempdict)
+
+        newdata = [[-9999 for i in range(ncols)] for j in range(nrows)]     #new array of cols and rows dimensions
+
+        for row in range(nrows):
+            for col in range(ncols):
+                if landuseraster.getValue(col, row) == -9999:
+                    newdata[row][col] = -9999
+                    continue
+                curLUC = self.LUCMatrix[int(landuseraster.getValue(col, row)-1)]
+                curloc = [int((col)*cs/self.blocks_size)+1, int((row)*cs/self.blocks_size)+1]
+
+                try:
+                    blockID = blockIndex[curloc[0]][curloc[1]]
+                except KeyError:
+                    newdata[row][col] = -9999
+                    continue
+                celltemp = self.activesim.getAssetWithName("BlockID"+str(blockID)).getAttribute("LST_"+str(curLUC))
+                newdata[row][col] = celltemp
+
+        newdata = self.flipRasterData(newdata)
+
+        passes = 1
+        newdata = self.smoothRasterData(passes, newdata)
+
+        # DEBUG - WRITE TO OUTPUT RASTER
+        f = open(self.activesim.getActiveProjectPath() + "/LSTOutput.txt", 'w')
+        f.write("ncols \t" + str(ncols) + "\n")
+        f.write("nrows \t" + str(nrows) + "\n")
+        f.write("xllcorner \t" + str(landuseraster.getExtents()[0]) + "\n")
+        f.write("yllcorner \t" + str(landuseraster.getExtents()[1]) + "\n")
+        f.write("cellsize \t" + str(cs) + "\n")
+        f.write("NODATA_value \t" + str(-9999) + "\n")
+        for i in range(len(newdata)):
+            tempstring = ""
+            for j in range(len(newdata[i])):
+                tempstring += str(newdata[i][j]) + " "
+            f.write(tempstring + "\n")
+        f.close()
+
+    def smoothRasterData(self, passes, dataset):
+        nrows = len(dataset)
+        ncols = len(dataset[0])
+        finaldataset = []
+        for p in range(passes):
+            newraster = [[-9999 for i in range(ncols)] for j in range(nrows)]
+            for r in range(nrows):
+                for c in range(ncols):
+                    curval = dataset[r][c]
+                    if curval == -9999:
+                        continue
+                    newraster[r][c] = self.getAverageNeighbourValue(dataset, r, c, nrows, ncols)
+            finaldataset = newraster
+        return finaldataset
+
+
+    def getAverageNeighbourValue(self, dataset, row, col, nrows, ncols):
+        neighbourhood = []
+        xyoffsets = [-1, 0, 1]  # matrix to track the offsets and neighbours
+        for y in xyoffsets:
+            for x in xyoffsets:
+                try:
+                    neighbourhood.append(dataset[row+y][col+x])
+                except IndexError:
+                    continue
+        neighbourhood = filter(lambda x: x != -9999, neighbourhood)
+        return float(sum(neighbourhood))/float(len(neighbourhood))
+
+
+    def flipRasterData(self, dataset):
+        flipdata = []
+        currentrow = len(dataset) - 1
+        while currentrow >= 0:
+            row = dataset[currentrow]
+            for i in range(len(row)):
+                row[i] = float(row[i])
+            flipdata.append(row)
+            currentrow -= 1
+        return flipdata
+
+
+    def createBlockLUCTemperatures(self, tempdict):
+        blocklist = self.activesim.getAssetsWithIdentifier("BlockID")
+        for b in range(len(blocklist)):
+            if blocklist[b].getAttribute("Status") == 0:
+                continue
+            curblock = blocklist[b]
+            curID = curblock.getAttribute("BlockID")
+
+            for luc in self.LUCMatrix:
+                if curblock.getAttribute("pLU_"+luc) == 0:
+                    curblock.addAttribute("LST_" + luc, -9999)
+                    continue
+
+                lcoverdict = self.getLandCoverProportions(curID, luc)
+                lcoverTemp = 0
+                for i in lcoverdict.keys():
+                    lcoverTemp += float(lcoverdict[i]) * float(eval(tempdict[i]))
+
+                curblock.addAttribute("LST_"+luc, lcoverTemp)
+
+    def createBlockMapIndex(self):
+        blocklist = self.activesim.getAssetsWithIdentifier("BlockID")
+
+        blockIndex = {}
+        widths = []
+        heights = []
+
+        map_attr = self.activesim.getAssetWithName("MapAttributes")
+        width = map_attr.getAttribute("WidthBlocks")
+        height = map_attr.getAttribute("HeightBlocks")
+
+        # for i in range(len(blocklist)):
+        #     widths.append(blocklist[i].getAttribute("LocateX"))
+        #     heights.append(blocklist[i].getAttribute("LocateY"))
+        # width = max(widths)
+        # height = max(heights)
+
+        for i in range(width):
+            blockIndex[int(i+1)] = {}
+
+        for i in range(len(blocklist)):
+            curblock = blocklist[i]
+            if curblock.getAttribute("Status") == 0:
+                continue
+
+            blockIndex[int(curblock.getAttribute("LocateX"))][int(curblock.getAttribute("LocateY"))] = curblock.getAttribute("BlockID")
+            #If we query the correct X and Y, we'll get the BlockID
+
+            #Only does this for blocks, which are active
+        return blockIndex
+
 
     def transferTemperatureDataToBlocks(self, tempdict):
         """ Transfers temperature data to block Centre points for different land uses for use in
