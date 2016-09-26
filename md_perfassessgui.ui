@@ -1983,12 +1983,12 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <item>
                   <property name="text">
-                   <string>eWater MUSIC Version 5</string>
+                   <string>eWater MUSIC Version 6.1</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>eWater MUSIC Version 6</string>
+                   <string>eWater MUSIC Version 6.2</string>
                   </property>
                  </item>
                 </widget>
@@ -3591,277 +3591,10 @@ p, li { white-space: pre-wrap; }
                <x>0</x>
                <y>0</y>
                <width>463</width>
-               <height>621</height>
+               <height>563</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_13">
-              <item>
-               <widget class="QLabel" name="mc_assess_title">
-                <property name="minimumSize">
-                 <size>
-                  <width>445</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Spatial Methodology&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="mc_assess_widget" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>130</height>
-                 </size>
-                </property>
-                <widget class="QLabel" name="mc_assesslvl_lbl">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>10</y>
-                   <width>141</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Conduct assessment at:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-                <widget class="QRadioButton" name="mc_assesslvl_patch">
-                 <property name="geometry">
-                  <rect>
-                   <x>180</x>
-                   <y>10</y>
-                   <width>91</width>
-                   <height>17</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Patch Level</string>
-                 </property>
-                </widget>
-                <widget class="QRadioButton" name="mc_assesslvl_block">
-                 <property name="geometry">
-                  <rect>
-                   <x>300</x>
-                   <y>10</y>
-                   <width>82</width>
-                   <height>17</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Block Level</string>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="mc_assessinterp_lbl">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>70</y>
-                   <width>171</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Spatial Interpolation Method:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-                <widget class="QComboBox" name="mc_assessinterp_combo">
-                 <property name="geometry">
-                  <rect>
-                   <x>180</x>
-                   <y>70</y>
-                   <width>241</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>Inverse Distance Weighted (IDW)</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Kriging</string>
-                  </property>
-                 </item>
-                </widget>
-                <widget class="QCheckBox" name="mc_assessbase_check">
-                 <property name="geometry">
-                  <rect>
-                   <x>180</x>
-                   <y>100</y>
-                   <width>121</width>
-                   <height>17</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Include Base Case</string>
-                 </property>
-                </widget>
-                <widget class="QCheckBox" name="mc_assessdiff_check">
-                 <property name="geometry">
-                  <rect>
-                   <x>300</x>
-                   <y>100</y>
-                   <width>141</width>
-                   <height>17</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Include Difference Map</string>
-                 </property>
-                </widget>
-                <widget class="QComboBox" name="mc_assessunits_combo">
-                 <property name="geometry">
-                  <rect>
-                   <x>180</x>
-                   <y>40</y>
-                   <width>241</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>Equivalent Land Surface Temperature</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Likely Thermal Comfort Index</string>
-                  </property>
-                 </item>
-                </widget>
-                <widget class="QLabel" name="mc_assessunits_lbl">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>40</y>
-                   <width>171</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Assessment Units:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="interp_title">
-                <property name="minimumSize">
-                 <size>
-                  <width>445</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Interpolation Settings&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QStackedWidget" name="interp_widget">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>150</height>
-                 </size>
-                </property>
-                <property name="currentIndex">
-                 <number>1</number>
-                </property>
-                <widget class="QWidget" name="page">
-                 <widget class="QLabel" name="idw_title">
-                  <property name="geometry">
-                   <rect>
-                    <x>10</x>
-                    <y>5</y>
-                    <width>321</width>
-                    <height>20</height>
-                   </rect>
-                  </property>
-                  <property name="text">
-                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Selected Method: Inverse Distance Weighted (IDW)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="comingsoon_11">
-                  <property name="geometry">
-                   <rect>
-                    <x>50</x>
-                    <y>40</y>
-                    <width>181</width>
-                    <height>20</height>
-                   </rect>
-                  </property>
-                  <property name="text">
-                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;parameters coming soon...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                 </widget>
-                </widget>
-                <widget class="QWidget" name="page_2">
-                 <widget class="QLabel" name="krig_title">
-                  <property name="geometry">
-                   <rect>
-                    <x>10</x>
-                    <y>5</y>
-                    <width>241</width>
-                    <height>20</height>
-                   </rect>
-                  </property>
-                  <property name="text">
-                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Selected Method: Kriging&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                 </widget>
-                </widget>
-               </widget>
-              </item>
               <item>
                <widget class="QLabel" name="lst_title">
                 <property name="minimumSize">
@@ -4661,6 +4394,232 @@ p, li { white-space: pre-wrap; }
                 </widget>
                </widget>
               </item>
+              <item>
+               <widget class="QLabel" name="mc_assess_title">
+                <property name="minimumSize">
+                 <size>
+                  <width>445</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Spatial Methodology&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="mc_assess_widget" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>250</height>
+                 </size>
+                </property>
+                <widget class="QLabel" name="mc_assessinterp_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>171</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Select Spatial Method:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QComboBox" name="mc_assessinterp_combo">
+                 <property name="geometry">
+                  <rect>
+                   <x>180</x>
+                   <y>10</y>
+                   <width>241</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Mapping to Input Land Use Map</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Inverse Distance-weighted Interpolation</string>
+                  </property>
+                 </item>
+                </widget>
+                <widget class="QCheckBox" name="mc_assessbase_check">
+                 <property name="geometry">
+                  <rect>
+                   <x>180</x>
+                   <y>70</y>
+                   <width>121</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Include Base Case</string>
+                 </property>
+                </widget>
+                <widget class="QCheckBox" name="mc_assessdiff_check">
+                 <property name="geometry">
+                  <rect>
+                   <x>300</x>
+                   <y>70</y>
+                   <width>141</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Include Difference Map</string>
+                 </property>
+                </widget>
+                <widget class="QComboBox" name="mc_assessunits_combo">
+                 <property name="geometry">
+                  <rect>
+                   <x>180</x>
+                   <y>40</y>
+                   <width>241</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Equivalent Land Surface Temperature</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Likely Thermal Comfort Index</string>
+                  </property>
+                 </item>
+                </widget>
+                <widget class="QLabel" name="mc_assessunits_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>40</y>
+                   <width>171</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Assessment Units:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="mc_assesslvl_block">
+                 <property name="geometry">
+                  <rect>
+                   <x>300</x>
+                   <y>100</y>
+                   <width>82</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Block Level</string>
+                 </property>
+                </widget>
+                <widget class="QRadioButton" name="mc_assesslvl_patch">
+                 <property name="geometry">
+                  <rect>
+                   <x>180</x>
+                   <y>100</y>
+                   <width>91</width>
+                   <height>17</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>Patch Level</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="mc_assesslvl_lbl">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>100</y>
+                   <width>141</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Conduct interpolation at:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="mc_assesslvl_lbl_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>125</y>
+                   <width>201</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Apply Smoothing to Temperature Map:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+                <widget class="QSpinBox" name="spinBox_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>210</x>
+                   <y>125</y>
+                   <width>101</width>
+                   <height>16</height>
+                  </rect>
+                 </property>
+                 <property name="suffix">
+                  <string> passes</string>
+                 </property>
+                 <property name="maximum">
+                  <number>3</number>
+                 </property>
+                </widget>
+                <widget class="QLabel" name="mc_assesslvl_lbl_3">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>150</y>
+                   <width>201</width>
+                   <height>20</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Neighbourhood Size:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </widget>
+              </item>
              </layout>
             </widget>
            </widget>
@@ -4857,7 +4816,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap>noon-small.png</pixmap>
+                  <pixmap>../../../.designer/backup/noon-small.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QLabel" name="dagg_dp_morningpic_2">
@@ -4891,7 +4850,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap>morning-small.png</pixmap>
+                  <pixmap>../../../.designer/backup/morning-small.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QLabel" name="dagg_dp_nightpic_2">
@@ -4922,7 +4881,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap>night-small.png</pixmap>
+                  <pixmap>../../../.designer/backup/night-small.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QComboBox" name="dp_kitchen_combo">
@@ -6449,7 +6408,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap>noon-small.png</pixmap>
+                  <pixmap>../../../.designer/backup/noon-small.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QLabel" name="dagg_dp_morningpic_4">
@@ -6483,7 +6442,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap>morning-small.png</pixmap>
+                  <pixmap>../../../.designer/backup/morning-small.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QLabel" name="dagg_dp_nightpic_4">
@@ -6514,7 +6473,7 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap>night-small.png</pixmap>
+                  <pixmap>../../../.designer/backup/night-small.png</pixmap>
                  </property>
                 </widget>
                 <widget class="QLabel" name="epanetsim_title">
@@ -7172,6 +7131,7 @@ p, li { white-space: pre-wrap; }
  </widget>
  <resources>
   <include location="toolbaricons/guitoolbaricons.qrc"/>
+  <include location="../../../.designer/backup/toolbaricons/guitoolbaricons.qrc"/>
  </resources>
  <connections>
   <connection>
