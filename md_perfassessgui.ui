@@ -1880,7 +1880,7 @@ p, li { white-space: pre-wrap; }
                <x>0</x>
                <y>0</y>
                <width>463</width>
-               <height>864</height>
+               <height>746</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -2419,110 +2419,6 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="singleStep">
                   <double>0.010000000000000</double>
-                 </property>
-                </widget>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="musicwsudsetup_lbl">
-                <property name="minimumSize">
-                 <size>
-                  <width>445</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;WSUD Parameter Setup&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="simulationconfig_widget_2" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>90</height>
-                 </size>
-                </property>
-                <widget class="QLabel" name="musicBF_params">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>5</y>
-                   <width>151</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bioretention Parameters:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-                <widget class="QLineEdit" name="musicBF_TN_box">
-                 <property name="geometry">
-                  <rect>
-                   <x>270</x>
-                   <y>30</y>
-                   <width>61</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="musicBF_TN_lbl">
-                 <property name="geometry">
-                  <rect>
-                   <x>30</x>
-                   <y>30</y>
-                   <width>181</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;TN Content of Filter Media [mg/kg]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="musicBF_ortho_lbl">
-                 <property name="geometry">
-                  <rect>
-                   <x>30</x>
-                   <y>55</y>
-                   <width>241</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Orthophosphate Content of Filter Media [mg/kg]&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-                <widget class="QLineEdit" name="musicBF_ortho_box">
-                 <property name="geometry">
-                  <rect>
-                   <x>270</x>
-                   <y>55</y>
-                   <width>61</width>
-                   <height>20</height>
-                  </rect>
                  </property>
                 </widget>
                </widget>
@@ -7131,7 +7027,7 @@ p, li { white-space: pre-wrap; }
  </widget>
  <resources>
   <include location="toolbaricons/guitoolbaricons.qrc"/>
-  <include location="../../../.designer/backup/toolbaricons/guitoolbaricons.qrc"/>
+  <include location="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/ub_modules/dialogimg.qrc"/>
  </resources>
  <connections>
   <connection>

@@ -26,14 +26,15 @@ def createMUSICmsf(path, name):
     f = open(str(path)+"/"+str(name)+".msf", 'w')
     return f
 
-def writeMUSICheader(f,climatepath):
-    path = "C:\\Program Files\\eWater\\MUSIC 5 SL\\Template\\Melbourne 1959 6 Minute.mlb"
-    #path = climatepath
+def writeMUSICheader(f,climatepath, version):
     f.write("====================================================================================\n")
     f.write("DESCRIPTION\n")
     f.write("UrbanBEATS Output, MUSIC File Input\n")
     f.write("====================================================================================\n")
-    f.write("VersionNumber,204,{MUSIC Setup File version number}\n")
+    if version == "Version 6.1":
+        f.write("VersionNumber,204,{MUSIC Setup File version number}\n")    #Spec for V6.1
+    elif version == "Version 6.2":
+        f.write("VersionNumber,205,{MUSIC Setup File version number}\n")   #Spec for V6.2
     f.write("------------------------------------------------------------------------------------\n")
     f.write("MeteorologicalTemplate,"+climatepath+",{MLB Filename}\n")
     f.write("------------------------------------------------------------------------------------\n")
@@ -41,7 +42,7 @@ def writeMUSICheader(f,climatepath):
     f.write("------------------------------------------------------------------------------------\n")
     f.write("ConstituentName,Total Suspended Solids,{Constituent Name}\n")
     f.write("------------------------------------------------------------------------------------\n")
-    f.write("MUSIC-link Project - Enabl0ed,1,{0 = enabled | 1 = disabled}\n")
+    f.write("MUSIC-link Project - Enabled,1,{0 = enabled | 1 = disabled}\n")
     f.write("MUSIC-link - Music Version,,{The music version this was created with} \n")
     f.write("MUSIC-link - Metadata Version,,{The version of the metadata used}\n")
     f.write("MUSIC-link - Council Name,,{The name of the council}\n")
@@ -50,9 +51,11 @@ def writeMUSICheader(f,climatepath):
     f.write("====================================================================================\n")
     return True
 
-def writeMUSICcatchmentnode(f, ID, nodepart, ncount, x, y, area, imp, parameter_list):
+def writeMUSICcatchmentnode(f, ID, nodepart, ncount, x, y, area, imp, parameter_list, version):
     #f = filename variables, ID = block ID, nodepart = lot/street/treat/untreat x = x-coordinate of block, y = y-coordinate of block
     f.write("Node Type,UrbanSourceNode,{Node Type}\n")
+    if version == "Version 6.2":
+        f.write("Zoning Surface Type,Mixed,{Zoning Surface Type}\n")
     f.write("Node Name,BlockID"+str(ID)+str(nodepart)+",{Node Name}\n")
     f.write("Node ID,"+str(ncount)+",{Node ID}\n")
     f.write("Coordinates,"+str(x)+":"+str(y)+",{Coordinates}{X:Y}\n")
@@ -109,7 +112,7 @@ def writeMUSICcatchmentnode(f, ID, nodepart, ncount, x, y, area, imp, parameter_
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSICcatchmentnode2(f, ID, nodepart, ncount, x, y, area, imp, parameter_list):
+def writeMUSICcatchmentnode2(f, ID, nodepart, ncount, x, y, area, imp, parameter_list, version):
     #f = filename variables, ID = block ID, nodepart = lot/street/treat/untreat x = x-coordinate of block, y = y-coordinate of block
     f.write("Node Type,UrbanSourceNode,{Node Type}\n")
     f.write("Node Name,"+str(ID)+str(nodepart)+",{Node Name}\n")
@@ -160,7 +163,7 @@ def writeMUSICcatchmentnode2(f, ID, nodepart, ncount, x, y, area, imp, parameter
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSICnodeWSUR(f, ID, nodepart, ncount, x, y, parameter_list):
+def writeMUSICnodeWSUR(f, ID, nodepart, ncount, x, y, parameter_list, version):
     #parameter_list = [50, 1, 50, 0, 200]                #[Asurface, EDD, Perm. Pool Vol, Exfil Rate, Pipe Diameter]
     f.write("Node Type,WetlandNode,{Node Type}\n")
     f.write("Node Name,WSUR"+str(ID)+str(nodepart)+",{Node Name}\n")
@@ -210,7 +213,7 @@ def writeMUSICnodeWSUR(f, ID, nodepart, ncount, x, y, parameter_list):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSICnodePB(f, ID, nodepart, ncount, x, y, parameter_list):
+def writeMUSICnodePB(f, ID, nodepart, ncount, x, y, parameter_list, version):
     #parameter_list = [50, 2, 50, 0, 300]        #[Asurface, EDD, Perm. Pool Vol, Exfil Rate, Pipe Diameter]
     f.write("Node Type,PondNode,{Node Type}\n")
     f.write("Node Name,PB"+str(ID)+str(nodepart)+",{Node Name}\n")
@@ -259,7 +262,7 @@ def writeMUSICnodePB(f, ID, nodepart, ncount, x, y, parameter_list):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSICnodeIS(f, ID, nodepart, ncount, x, y, parameter_list):
+def writeMUSICnodeIS(f, ID, nodepart, ncount, x, y, parameter_list, version):
     #parameter_list = [10, 0.2, 10, 14, 1, 100]                  #[pond_area, EDD, filter area, unlined filter perimeter, depth, exfil rate]
     f.write("Node Type,InfiltrationSystemNodeV4,{Node Type}\n")
     f.write("Node Name,IS"+str(ID)+str(nodepart)+",{Node Name}\n")
@@ -297,7 +300,7 @@ def writeMUSICnodeIS(f, ID, nodepart, ncount, x, y, parameter_list):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSICnodeBF(f, ID, nodepart, ncount, x, y, parameter_list):
+def writeMUSICnodeBF(f, ID, nodepart, ncount, x, y, parameter_list, version):
     #parameter_list = [0.2, 10, 10, 14, 100, 0.5, 0]             #EDD, Asystem, FilterArea, UnlinedPerimeter, ksat, depth, exfil rate]
     f.write("Node Type,BioRetentionNodeV4,{Node Type}\n")
     f.write("Node Name,BF"+str(ID)+str(nodepart)+",{Node Name}\n")
@@ -324,7 +327,7 @@ def writeMUSICnodeBF(f, ID, nodepart, ncount, x, y, parameter_list):
         f.write("Lining Properties - Base Lined,1,\n")
     f.write("Vegetation Properties - Vegetation Properties,0,{Index from 0 to 2 for \"Vegetated with Effective Nutrient Removal Plants\" | \"Vegetated with Ineffective Nutrient Removal Plants\" | \"Unvegetated\"}\n")
     f.write("Outlet Properties - Overflow Weir Width (metres),2,{metres}\n")
-    f.write("Outlet Properties - Underdrain Present,1,\n")
+    f.write("Outlet Properties - Underdrain Present,0,\n")
     f.write("Outlet Properties - Submerged Zone With Carbon Present,0,\n")
     f.write("Outlet Properties - Submerged Zone Depth (metres),0.45,{metres}\n")
     f.write("Advanced Properties - Total Suspended Solids - k (m/yr),8000,{m/yr}\n")
@@ -343,7 +346,7 @@ def writeMUSICnodeBF(f, ID, nodepart, ncount, x, y, parameter_list):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSICnodeSW(f, ID, nodepart, ncount, x, y, parameter_list):
+def writeMUSICnodeSW(f, ID, nodepart, ncount, x, y, parameter_list, version):
     #parameter_list = [100,3,1,5,0.5,0.25,0]                     #[length, bedslope, Wbase, Wtop, depth, veg.height, exfilrate]
     f.write("Node Type,SwaleNode,{Node Type}\n")
     f.write("Node Name,SW"+str(ID)+str(nodepart)+",{Node Name}\n")
@@ -375,7 +378,7 @@ def writeMUSICnodeSW(f, ID, nodepart, ncount, x, y, parameter_list):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSICnodeRT(f, ID, nodename, ncount, x, y, parameter_list):
+def writeMUSICnodeRT(f, ID, nodename, ncount, x, y, parameter_list, version):
     f.write("Node Type,RainWaterTankNode,{Node Type}\n")
     f.write("Node Name,RT"+str(ID)+str(nodename)+",{Node Name}\n")
     f.write("Node ID,"+str(ncount)+",{Node ID}\n")
@@ -397,8 +400,12 @@ def writeMUSICnodeRT(f, ID, nodename, ncount, x, y, parameter_list):
     f.write("Reuse Properties - Minimum Draw down height,0,\n")
     f.write("Inlet Properties - Low Flow By-pass (cubic metres per sec),0,{cubic metres per sec}\n")
     f.write("Inlet Properties - High Flow By-pass (cubic metres per sec),100,{cubic metres per sec}\n")
-    f.write("Storage Properties - Surface Area (square metres),"+str(parameter_list[2])+",{square metres}\n")
-    f.write("Storage Properties - NumTanks," + str(int(parameter_list[1])) + ",\n")
+    if version == "Version 6.1":
+        f.write("Storage Properties - Surface Area (square metres),"+str(parameter_list[2])+",{square metres}\n")
+        f.write("Storage Properties - NumTanks," + str(int(parameter_list[1])) + ",\n")
+    elif version == "Version 6.2":
+        f.write("Storage Properties - NumTanks," + str(int(parameter_list[1])) + ",\n")
+        f.write("Storage Properties - Surface Area (square metres)," + str(parameter_list[2]) + ",{square metres}\n")
     f.write("Storage Properties - Depth above overflow (metres),0.2,{metres}\n")
     f.write("Storage Properties - Volume below overflow pipe (kL),"+str(parameter_list[3])+",{kL}\n")
     f.write("Storage Properties - Initial Volume,"+str(parameter_list[4])+",\n")
@@ -419,18 +426,19 @@ def writeMUSICnodeRT(f, ID, nodename, ncount, x, y, parameter_list):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-
-def writeMUSIClink(f, upN, downN, routeparams):
+def writeMUSIClink(f, upN, downN, routeparams, version):
     f.write("Link Name,Drainage Link,\n")
     f.write("Source Node ID,"+str(upN)+",{The is the ID of the upstream node}\n")
     f.write("Target Node ID,"+str(downN)+",{This is the ID of the downstream node}\n")
+    if version == "Version 6.2":
+        f.write("Notes,,{Notes}\n")
     f.write("Routing,"+str(routeparams[0])+",{either \"Not Routed\" or \"Routed\"}\n")
     f.write("Muskingum K,"+str(routeparams[1])+",{no value required for no routing or \"numerical value\" for routed}\n")
     f.write("Muskingum Theta,"+str(routeparams[2])+",{no value required for no routing or \"numerical value\" for routed. Must be between 0.1 and 0.49}\n")
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSIClinkToFlux(f, upN, downN):
+def writeMUSIClinkToFlux(f, upN, downN, version):
     f.write("Link Name,Drainage Link,\n")
     f.write("Source Node ID,"+str(upN)+",{The is the ID of the upstream node}\n")
     f.write("Target Node ID,"+str(downN)+",{This is the ID of the downstream node}\n")
@@ -441,7 +449,7 @@ def writeMUSIClinkToFlux(f, upN, downN):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSIClinkToInfilFlux1(f, upN, downN):
+def writeMUSIClinkToInfilFlux1(f, upN, downN, version):
     f.write("Link Name,Drainage Link,\n")
     f.write("Source Node ID,"+str(upN)+",{The is the ID of the upstream node}\n")
     f.write("Target Node ID,"+str(downN)+",{This is the ID of the downstream node}\n")
@@ -452,7 +460,7 @@ def writeMUSIClinkToInfilFlux1(f, upN, downN):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSIClinkToInfilFlux2(f, upN, downN):
+def writeMUSIClinkToInfilFlux2(f, upN, downN, version):
     f.write("Link Name,Drainage Link,\n")
     f.write("Source Node ID,"+str(upN)+",{The is the ID of the upstream node}\n")
     f.write("Target Node ID,"+str(downN)+",{This is the ID of the downstream node}\n")
@@ -463,7 +471,7 @@ def writeMUSIClinkToInfilFlux2(f, upN, downN):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSIClinkToIgnore(f,upN,downN):
+def writeMUSIClinkToIgnore(f,upN,downN, version):
     f.write("Link Name,Drainage Link,\n")
     f.write("Source Node ID,"+str(upN)+",{The is the ID of the upstream node}\n")
     f.write("Target Node ID,"+str(downN)+",{This is the ID of the downstream node}\n")
@@ -474,7 +482,7 @@ def writeMUSIClinkToIgnore(f,upN,downN):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSIClinkToFrequenzy(f,upN,downN):
+def writeMUSIClinkToFrequenzy(f,upN,downN, version):
     f.write("Link Name,Drainage Link,\n")
     f.write("Source Node ID,"+str(upN)+",{The is the ID of the upstream node}\n")
     f.write("Target Node ID,"+str(downN)+",{This is the ID of the downstream node}\n")
@@ -485,7 +493,7 @@ def writeMUSIClinkToFrequenzy(f,upN,downN):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSICjunction(f, jname, ncount, x, y):
+def writeMUSICjunction(f, jname, ncount, x, y, version):
     f.write("Node Type,JunctionNode,{Node Type}\n")
     f.write("Node Name,"+str(jname)+",{Node Name}\n")
     f.write("Node ID,"+str(ncount)+",{Node ID}\n")
@@ -495,7 +503,7 @@ def writeMUSICjunction(f, jname, ncount, x, y):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-def writeMUSICjunction2(f, ID, ncount, x, y):
+def writeMUSICjunction2(f, ID, ncount, x, y, version):
     f.write("Node Type,JunctionNode,{Node Type}\n")
     f.write("Node Name,"+str(ID)+",{Node Name}\n")
     f.write("Node ID,"+str(ncount)+",{Node ID}\n")
@@ -505,8 +513,7 @@ def writeMUSICjunction2(f, ID, ncount, x, y):
     f.write("------------------------------------------------------------------------------------\n")
     return True
 
-
-def writeMUSICreceiving(f, ID, ncount, x, y):
+def writeMUSICreceiving(f, ID, ncount, x, y, version):
     f.write("Node Type,ReceivingNode,{Node Type}\n")
     f.write("Node Name,Receiving Node,{Node Name}\n")
     f.write("Node ID,"+str(ncount)+",{Node ID}\n")

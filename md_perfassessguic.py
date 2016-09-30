@@ -100,7 +100,7 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #----------------------------------------------------------------------#
         #-------- MUSIC -------------------------------------------------------#
         #----------------------------------------------------------------------#
-        self.versioncombo = ["Version 5", "Version 6"]
+        self.versioncombo = ["Version 6.1", "Version 6.2"]  #2016-09-30 Version Numbers
         self.ui.music_version_combo.setCurrentIndex(self.versioncombo.index(self.module.getParameter("musicversion")))
 
         self.ui.music_browse_pathbox.setText(self.module.getParameter("musicclimatefile"))
@@ -135,9 +135,6 @@ class PerfAssessGUILaunch(QtGui.QDialog):
             self.ui.musicRR_muskk_custom.setChecked(1)
         self.ui.musicRR_muskk_spin.setValue(self.module.getParameter("musicRR_muskk"))
         self.ui.musicRR_musktheta_spin.setValue(self.module.getParameter("musicRR_musktheta"))
-
-        self.ui.musicBF_TN_box.setText(str(self.module.getParameter("bf_tncontent")))
-        self.ui.musicBF_ortho_box.setText(str(self.module.getParameter("bf_orthophosphate")))
 
         self.ui.musicauto_check.setChecked(self.module.getParameter("musicautorun"))
         QtCore.QObject.connect(self.ui.musicauto_check, QtCore.SIGNAL("clicked()"), self.ed_MUSIC)
@@ -555,8 +552,6 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.ui.music_browse_pathbox.setEnabled(int(self.ui.perf_MUSIC.isChecked()))
         self.ui.music_browse_button.setEnabled(int(self.ui.perf_MUSIC.isChecked()))
         self.ui.musicsplit_check.setEnabled(int(self.ui.perf_MUSIC.isChecked()))
-        self.ui.musicBF_TN_box.setEnabled(int(self.ui.perf_MUSIC.isChecked()))
-        self.ui.musicBF_ortho_box.setEnabled(int(self.ui.perf_MUSIC.isChecked()))
         # self.ui.musicauto_check.setEnabled(int(self.ui.perf_MUSIC.isChecked()))
         self.ui.musicpath_box.setEnabled(int(self.ui.perf_MUSIC.isChecked()))
         self.ui.musicpath_browse.setEnabled(int(self.ui.perf_MUSIC.isChecked()))
@@ -702,8 +697,6 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         else:
             self.module.setParameter("musicRR_muskk_auto", 0)
 
-        self.module.setParameter("bf_tncontent", float(self.ui.musicBF_TN_box.text()))
-        self.module.setParameter("bf_orthophosphate", float(self.ui.musicBF_ortho_box.text()))
         self.module.setParameter("musicautorun", int(self.ui.musicauto_check.isChecked()))
         self.module.setParameter("musicpath", self.ui.musicpath_box.text())
         self.module.setParameter("musicTTE", int(self.ui.musictte_check.isChecked()))

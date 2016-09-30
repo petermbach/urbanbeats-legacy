@@ -109,7 +109,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.createParameter("musicversion", STRING, "Active MUSIC Version for file writing")
         self.createParameter("musicclimatefile", STRING, "Path to the .mlb climate file")
         self.createParameter("musicseparatebasin", BOOL, "Write separate .msf files per basin?")
-        self.musicversion = 'Version 6'
+        self.musicversion = 'Version 6.1'       #2016-09-30: Version 6.1, Version 6.2
         self.musicclimatefile = ""
         self.musicseparatebasin = 1
 
@@ -137,11 +137,6 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.musicRR_muskk_auto = 0
         self.musicRR_muskk = 30.0
         self.musicRR_musktheta = 0.1
-
-        self.createParameter("bf_tncontent", DOUBLE, "TN content of Bioretention filter media")
-        self.createParameter("bf_orthophosphate", DOUBLE, "Orthophosphate content of filter media")
-        self.bf_tncontent = 800.0
-        self.bf_orthophosphate = 50.0
 
         self.createParameter("musicautorun", BOOL, "Auto-run MUSIC simulation?")
         self.createParameter("musicpath", STRING, "Path to the MUSIC exe file")
@@ -501,7 +496,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                                                     self.musicfilename + "-ID" + str(currentStratID) + concept + "-" + str(
                                                         self.currentyear) + filesuffix)
 
-            ubmusicwrite.writeMUSICheader(ufile, self.musicclimatefile)
+            ubmusicwrite.writeMUSICheader(ufile, self.musicclimatefile, self.musicversion)
 
             scalar = 10
             ncount = 1
@@ -544,7 +539,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, scalekeys[s], ncount,
                             (blockX - self.blocks_size * catchxoffset) * scalar,
                             (blockY - self.blocks_size/ 2.0 + yoffsets[s]*self.blocks_size) * scalar,
-                            treatImp/10000.0, total_catch_EIF, catchment_parameter_list)
+                            treatImp/10000.0, total_catch_EIF, catchment_parameter_list, self.musicversion)
 
                     musicnodedb["BlockID"+str(currentID)]["C_"+scalekeys[s]] = ncount
                     nodelink.append(ncount)
@@ -556,13 +551,13 @@ class PerformanceAssess(UBModule):      #UBCORE
 
                     parameter_list = eval("self.prepareParameters" + str(systype) + "(curwsud, sysKexfil)")
                     eval("ubmusicwrite.writeMUSICnode"+str(systype)+ "(ufile, currentID, scalekeys[s], ncount, blockX * scalar," +
-                                  "(blockY - self.blocks_size/2.0 + yoffsets[s]*self.blocks_size)*scalar, parameter_list)")
+                                  "(blockY - self.blocks_size/2.0 + yoffsets[s]*self.blocks_size)*scalar, parameter_list, self.musicversion)")
                     musicnodedb["BlockID"+str(currentID)]["S_"+scalekeys[s]] = ncount
                     nodelink.append(ncount)
                     ncount += 1
 
                     #Write the link to connect these two nodes
-                    ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+                    ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams, self.musicversion)
                     technodeID = nodelink[1]
                     nodelink = [technodeID]
 
@@ -572,12 +567,12 @@ class PerformanceAssess(UBModule):      #UBCORE
                     storeType = curwsud.getAttribute("StoreType")
                     parameter_list = eval("self.prepareParameters" + str(storeType) + "Store(curwsud, sysKexfil)")
                     eval("ubmusicwrite.writeMUSICnode"+str(storeType)+ "(ufile, currentID, scalekeys[s], ncount, (blockX + (self.blocks_size/8.0)) * scalar,"+
-                         "(blockY - self.blocks_size/2.0 + yoffsets[s]*self.blocks_size)*scalar, parameter_list)")
+                         "(blockY - self.blocks_size/2.0 + yoffsets[s]*self.blocks_size)*scalar, parameter_list, self.musicversion)")
                     musicnodedb["BlockID"+str(currentID)]["ST_"+scalekeys[s]] = ncount
                     nodelink.append(ncount)
                     ncount += 1
 
-                    ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+                    ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams, self.musicversion)
 
             # LOOP 2 - Write all basin-scale systems
             for i in basinblockIDs:
@@ -628,7 +623,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "B", ncount,
                                                      (blockX + self.blocks_size * catchxoffset) * scalar,
                                                      (blockY - self.blocks_size / 2.0 + 4.0/5.0 * self.blocks_size) * scalar,
-                                                     catchImp/10000.0, total_catch_EIF, catchment_parameter_list)
+                                                     catchImp/10000.0, total_catch_EIF, catchment_parameter_list, self.musicversion)
 
                 musicnodedb["BlockID" + str(currentID)]["C_B"] = ncount
                 nodelink.append(ncount)
@@ -641,13 +636,13 @@ class PerformanceAssess(UBModule):      #UBCORE
                     "self.prepareParameters" + str(systype) + "(curwsud, sysKexfil)")
                 eval("ubmusicwrite.writeMUSICnode" + str(
                     systype) + "(ufile, currentID, \"B\", ncount, (blockX + self.blocks_size * catchxoffset) * scalar," +
-                     "(blockY - self.blocks_size/2.0 + 3.0/5.0*self.blocks_size)*scalar, parameter_list)")
+                     "(blockY - self.blocks_size/2.0 + 3.0/5.0*self.blocks_size)*scalar, parameter_list, self.musicversion)")
                 musicnodedb["BlockID" + str(currentID)]["S_B"] = ncount
                 nodelink.append(ncount)
                 ncount += 1
 
                 # Write the link to connect these two nodes
-                ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+                ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams, self.musicversion)
                 technodeID = nodelink[1]
                 nodelink = [technodeID]
 
@@ -658,12 +653,12 @@ class PerformanceAssess(UBModule):      #UBCORE
                 parameter_list = eval("self.prepareParameters" + str(storeType) + "Store(curwsud, sysKexfil)")
                 eval("ubmusicwrite.writeMUSICnode" + str(
                     storeType) + "(ufile, currentID, \"B\", ncount, (blockX + self.blocks_size * catchxoffset) * scalar," +
-                     "(blockY - self.blocks_size/2.0 + 2.0/5.0*self.blocks_size)*scalar, parameter_list)")
+                     "(blockY - self.blocks_size/2.0 + 2.0/5.0*self.blocks_size)*scalar, parameter_list, self.musicversion)")
                 musicnodedb["BlockID" + str(currentID)]["ST_B"] = ncount
                 nodelink.append(ncount)
                 ncount += 1
 
-                ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+                ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams, self.musicversion)
 
             # LOOP 3 - Write all remaining area catchments
             for i in basinblockIDs:
@@ -685,7 +680,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "REST", ncount,
                                                      (blockX - self.blocks_size * catchxoffset) * scalar,
                                                      (blockY - self.blocks_size / 2.0 + 1.0/5.0 * self.blocks_size) * scalar,
-                                                     catchImp/10000.0, total_catch_EIF, catchment_parameter_list)
+                                                     catchImp/10000.0, total_catch_EIF, catchment_parameter_list, self.musicversion)
 
                 musicnodedb["BlockID" + str(currentID)]["C_REST"] = ncount
                 ncount += 1
@@ -708,7 +703,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "PERV", ncount,
                                                          (blockX - self.blocks_size * catchxoffset)*scalar,
                                                          (blockY - self.blocks_size / 2.0 + 0.8/5.0 * self.blocks_size)*scalar,
-                                                         pervArea/10000.0, 0.0, catchment_parameter_list)
+                                                         pervArea/10000.0, 0.0, catchment_parameter_list, self.musicversion)
                     musicnodedb["BlockID"+str(currentID)]["C_PERV"] = ncount
                     ncount += 1
 
@@ -731,7 +726,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     jname = "BlockID" + str(currentID) + "J"
 
                 ubmusicwrite.writeMUSICjunction(ufile, jname, ncount, (blockX + self.blocks_size * 0.25) * scalar,
-                                                (blockY - self.blocks_size / 2.0 + self.blocks_size * 1.0 / 5.0) * scalar)
+                                                (blockY - self.blocks_size / 2.0 + self.blocks_size * 1.0 / 5.0) * scalar, self.musicversion)
 
                 musicnodedb["BlockID" + str(currentID)]["JUNCTION"] = ncount
                 ncount += 1
@@ -754,10 +749,10 @@ class PerformanceAssess(UBModule):      #UBCORE
                     # Write the link
                     if musicnodedb["BlockID"+str(currentID)].has_key(hkey): #If the block has a storage system
                         ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID"+str(currentID)][hkey],
-                                                    musicnodedb["BlockID"+str(currentID)]["JUNCTION"], routeparams)
+                                                    musicnodedb["BlockID"+str(currentID)]["JUNCTION"], routeparams, self.musicversion)
                     elif musicnodedb["BlockID"+str(currentID)].has_key(ckey):
                         ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID" + str(currentID)][ckey],
-                                                    musicnodedb["BlockID" + str(currentID)]["JUNCTION"], routeparams)
+                                                    musicnodedb["BlockID" + str(currentID)]["JUNCTION"], routeparams, self.musicversion)
 
                 #External Connection - Junction Node to Junction Node
                 if int(currentAttList.getAttribute("Outlet")) == 1:
@@ -775,7 +770,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     else:
                         if musicnodedb["BlockID"+str(downID)]["JUNCTION"] != -9999:
                             ubmusicwrite.writeMUSIClink(ufile, musicnodedb["BlockID"+str(currentID)]["JUNCTION"],
-                                                musicnodedb["BlockID"+str(downID)]["JUNCTION"], routeparams)
+                                                musicnodedb["BlockID"+str(downID)]["JUNCTION"], routeparams, self.musicversion)
                             junction_found = 1
                         else:
                             #Assign the downstream block as the next block to check (skip that junction but go down the chain)
@@ -812,7 +807,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                                                     self.musicfilename + "-ID" + str(currentStratID) + concept + "-" + str(
                                                         self.currentyear) + filesuffix)
 
-            ubmusicwrite.writeMUSICheader(ufile, self.musicclimatefile)
+            ubmusicwrite.writeMUSICheader(ufile, self.musicclimatefile, self.musicversion)
 
             scalar = 10
             ncount = 1
@@ -876,7 +871,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                         blockX - self.blocks_size / 4 + (lotoffset * self.blocks_size / 12)) * scalar, (
                                                              blockY + self.blocks_size / 4 + (
                                                              lotoffset * self.blocks_size / 12)) * scalar, lotareas[j],
-                                                             loteifs[j], catchment_parameter_list)
+                                                             loteifs[j], catchment_parameter_list, self.musicversion)
                         lotoffset += 1
                         musicnodedb["BlockID" + str(currentID)]["C_" + j] = ncount
                         ncount += 1
@@ -885,7 +880,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     ncount_list.append(ncount)
                     ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount,
                                                          (blockX - self.blocks_size / 4) * scalar, (blockY) * scalar,
-                                                         nonlotarea, nonloteia, catchment_parameter_list)
+                                                         nonlotarea, nonloteia, catchment_parameter_list, self.musicversion)
                     musicnodedb["BlockID" + str(currentID)]["C_R"] = ncount
                     ncount += 1
                 else:
@@ -893,7 +888,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     ncount_list.append(ncount)
                     ubmusicwrite.writeMUSICcatchmentnode(ufile, currentID, "", ncount,
                                                          (blockX - self.blocks_size / 4) * scalar, (blockY) * scalar,
-                                                         total_catch_area, total_catch_EIF, catchment_parameter_list)
+                                                         total_catch_area, total_catch_EIF, catchment_parameter_list, self.musicversion)
                     musicnodedb["BlockID" + str(currentID)]["C_R"] = ncount
                     ncount += 1
 
@@ -921,7 +916,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                         "self.prepareParameters" + str(curSys.getAttribute("Type")) + "(curSys, sysKexfil)")
                     eval("ubmusicwrite.writeMUSICnode" + str(
                         systype) + "(ufile, currentID, scale, ncount, (blockX+offsets[0]+(addOffset*self.blocks_size/12))*scalar, "+
-                                   "(blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list)")
+                                   "(blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list, self.musicversion)")
                     musicnodedb["BlockID" + str(currentID)]["S_" + scale] = ncount
                     nodelink.append(ncount)
                     ncount += 1
@@ -931,11 +926,11 @@ class PerformanceAssess(UBModule):      #UBCORE
                         parameter_list = eval("self.prepareParameters"+str(storeType)+"Store(curSys, sysKexfil)")
                         eval("ubmusicwrite.writeMUSICnode"+str(
                             storeType)+"(ufile, currentID, scale, ncount, (blockX+offsets[0]+(0.125*self.blocks_size)+(addOffset*self.blocks_size/12))*scalar,"+
-                             "(blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list)")
+                             "(blockY+offsets[1]+(addOffset*self.blocks_size/12))*scalar, parameter_list, self.musicversion)")
                         musicnodedb["BlockID"+str(currentID)]["ST_"+scale] = ncount
                         nodelink.append(ncount)
                         ncount += 1
-                        ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)   #link the two systems
+                        ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams, self.musicversion)   #link the two systems
 
                 # (3) WRITE BLOCK JUNCTION
                 ncount_list.append(ncount)
@@ -948,7 +943,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 else:
                     jname = "Block" + str(currentID) + "J"
                 ubmusicwrite.writeMUSICjunction(ufile, jname, ncount, (blockX + offsets[0]) * scalar,
-                                                (blockY + offsets[1]) * scalar)
+                                                (blockY + offsets[1]) * scalar, self.musicversion)
                 musicnodedb["BlockID" + str(currentID)]["J"] = ncount
                 ncount += 1
 
@@ -956,7 +951,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                 nodelinks = self.getInBlockNodeLinks(musicnodedb["BlockID" + str(currentID)])
                 routeparams = ["Not Routed", 30, 0.25]
                 for link in range(len(nodelinks)):
-                    ubmusicwrite.writeMUSIClink(ufile, nodelinks[link][0], nodelinks[link][1], routeparams)
+                    ubmusicwrite.writeMUSIClink(ufile, nodelinks[link][0], nodelinks[link][1], routeparams, self.musicversion)
 
             # (5) WRITE ALL LINKS BETWEEN BLOCKS
             for i in basinblockIDs:
@@ -984,7 +979,7 @@ class PerformanceAssess(UBModule):      #UBCORE
                     # print musicnodedb
                     nodelink = self.getDownstreamNodeLink(musicnodedb["BlockID" + str(currentID)],
                                                           musicnodedb["BlockID" + str(downID)])
-                    ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams)
+                    ubmusicwrite.writeMUSIClink(ufile, nodelink[0], nodelink[1], routeparams, self.musicversion)
 
             ubmusicwrite.writeMUSICfooter(ufile)
 

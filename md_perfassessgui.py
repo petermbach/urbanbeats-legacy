@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_perfassessgui.ui'
 #
-# Created: Fri Aug 12 10:26:10 2016
+# Created: Fri Sep 30 10:23:47 2016
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -617,7 +617,7 @@ class Ui_Perfconfig_Dialog(object):
         self.scrollArea_7.setWidgetResizable(True)
         self.scrollArea_7.setObjectName(_fromUtf8("scrollArea_7"))
         self.scrollAreaWidgetContents_7 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_7.setGeometry(QtCore.QRect(0, 0, 463, 864))
+        self.scrollAreaWidgetContents_7.setGeometry(QtCore.QRect(0, 0, 463, 746))
         self.scrollAreaWidgetContents_7.setObjectName(_fromUtf8("scrollAreaWidgetContents_7"))
         self.verticalLayout_12 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_7)
         self.verticalLayout_12.setObjectName(_fromUtf8("verticalLayout_12"))
@@ -744,30 +744,6 @@ class Ui_Perfconfig_Dialog(object):
         self.musicRR_musktheta_spin.setSingleStep(0.01)
         self.musicRR_musktheta_spin.setObjectName(_fromUtf8("musicRR_musktheta_spin"))
         self.verticalLayout_12.addWidget(self.musiccatchment_widget)
-        self.musicwsudsetup_lbl = QtGui.QLabel(self.scrollAreaWidgetContents_7)
-        self.musicwsudsetup_lbl.setMinimumSize(QtCore.QSize(445, 16))
-        self.musicwsudsetup_lbl.setMaximumSize(QtCore.QSize(16777215, 16))
-        self.musicwsudsetup_lbl.setObjectName(_fromUtf8("musicwsudsetup_lbl"))
-        self.verticalLayout_12.addWidget(self.musicwsudsetup_lbl)
-        self.simulationconfig_widget_2 = QtGui.QWidget(self.scrollAreaWidgetContents_7)
-        self.simulationconfig_widget_2.setMinimumSize(QtCore.QSize(0, 90))
-        self.simulationconfig_widget_2.setObjectName(_fromUtf8("simulationconfig_widget_2"))
-        self.musicBF_params = QtGui.QLabel(self.simulationconfig_widget_2)
-        self.musicBF_params.setGeometry(QtCore.QRect(10, 5, 151, 20))
-        self.musicBF_params.setObjectName(_fromUtf8("musicBF_params"))
-        self.musicBF_TN_box = QtGui.QLineEdit(self.simulationconfig_widget_2)
-        self.musicBF_TN_box.setGeometry(QtCore.QRect(270, 30, 61, 20))
-        self.musicBF_TN_box.setObjectName(_fromUtf8("musicBF_TN_box"))
-        self.musicBF_TN_lbl = QtGui.QLabel(self.simulationconfig_widget_2)
-        self.musicBF_TN_lbl.setGeometry(QtCore.QRect(30, 30, 181, 20))
-        self.musicBF_TN_lbl.setObjectName(_fromUtf8("musicBF_TN_lbl"))
-        self.musicBF_ortho_lbl = QtGui.QLabel(self.simulationconfig_widget_2)
-        self.musicBF_ortho_lbl.setGeometry(QtCore.QRect(30, 55, 241, 20))
-        self.musicBF_ortho_lbl.setObjectName(_fromUtf8("musicBF_ortho_lbl"))
-        self.musicBF_ortho_box = QtGui.QLineEdit(self.simulationconfig_widget_2)
-        self.musicBF_ortho_box.setGeometry(QtCore.QRect(270, 55, 61, 20))
-        self.musicBF_ortho_box.setObjectName(_fromUtf8("musicBF_ortho_box"))
-        self.verticalLayout_12.addWidget(self.simulationconfig_widget_2)
         self.musicwsudsetup_lbl_2 = QtGui.QLabel(self.scrollAreaWidgetContents_7)
         self.musicwsudsetup_lbl_2.setMinimumSize(QtCore.QSize(445, 16))
         self.musicwsudsetup_lbl_2.setMaximumSize(QtCore.QSize(16777215, 16))
@@ -1118,74 +1094,10 @@ class Ui_Perfconfig_Dialog(object):
         self.scrollArea_8.setWidgetResizable(True)
         self.scrollArea_8.setObjectName(_fromUtf8("scrollArea_8"))
         self.scrollAreaWidgetContents_8 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_8.setGeometry(QtCore.QRect(0, 0, 463, 621))
+        self.scrollAreaWidgetContents_8.setGeometry(QtCore.QRect(0, 0, 463, 563))
         self.scrollAreaWidgetContents_8.setObjectName(_fromUtf8("scrollAreaWidgetContents_8"))
         self.verticalLayout_13 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_8)
         self.verticalLayout_13.setObjectName(_fromUtf8("verticalLayout_13"))
-        self.mc_assess_title = QtGui.QLabel(self.scrollAreaWidgetContents_8)
-        self.mc_assess_title.setMinimumSize(QtCore.QSize(445, 16))
-        self.mc_assess_title.setMaximumSize(QtCore.QSize(16777215, 16))
-        self.mc_assess_title.setObjectName(_fromUtf8("mc_assess_title"))
-        self.verticalLayout_13.addWidget(self.mc_assess_title)
-        self.mc_assess_widget = QtGui.QWidget(self.scrollAreaWidgetContents_8)
-        self.mc_assess_widget.setMinimumSize(QtCore.QSize(0, 130))
-        self.mc_assess_widget.setObjectName(_fromUtf8("mc_assess_widget"))
-        self.mc_assesslvl_lbl = QtGui.QLabel(self.mc_assess_widget)
-        self.mc_assesslvl_lbl.setGeometry(QtCore.QRect(10, 10, 141, 20))
-        self.mc_assesslvl_lbl.setObjectName(_fromUtf8("mc_assesslvl_lbl"))
-        self.mc_assesslvl_patch = QtGui.QRadioButton(self.mc_assess_widget)
-        self.mc_assesslvl_patch.setGeometry(QtCore.QRect(180, 10, 91, 17))
-        self.mc_assesslvl_patch.setObjectName(_fromUtf8("mc_assesslvl_patch"))
-        self.mc_assesslvl_block = QtGui.QRadioButton(self.mc_assess_widget)
-        self.mc_assesslvl_block.setGeometry(QtCore.QRect(300, 10, 82, 17))
-        self.mc_assesslvl_block.setObjectName(_fromUtf8("mc_assesslvl_block"))
-        self.mc_assessinterp_lbl = QtGui.QLabel(self.mc_assess_widget)
-        self.mc_assessinterp_lbl.setGeometry(QtCore.QRect(10, 70, 171, 20))
-        self.mc_assessinterp_lbl.setObjectName(_fromUtf8("mc_assessinterp_lbl"))
-        self.mc_assessinterp_combo = QtGui.QComboBox(self.mc_assess_widget)
-        self.mc_assessinterp_combo.setGeometry(QtCore.QRect(180, 70, 241, 16))
-        self.mc_assessinterp_combo.setObjectName(_fromUtf8("mc_assessinterp_combo"))
-        self.mc_assessinterp_combo.addItem(_fromUtf8(""))
-        self.mc_assessinterp_combo.addItem(_fromUtf8(""))
-        self.mc_assessbase_check = QtGui.QCheckBox(self.mc_assess_widget)
-        self.mc_assessbase_check.setGeometry(QtCore.QRect(180, 100, 121, 17))
-        self.mc_assessbase_check.setObjectName(_fromUtf8("mc_assessbase_check"))
-        self.mc_assessdiff_check = QtGui.QCheckBox(self.mc_assess_widget)
-        self.mc_assessdiff_check.setGeometry(QtCore.QRect(300, 100, 141, 17))
-        self.mc_assessdiff_check.setObjectName(_fromUtf8("mc_assessdiff_check"))
-        self.mc_assessunits_combo = QtGui.QComboBox(self.mc_assess_widget)
-        self.mc_assessunits_combo.setGeometry(QtCore.QRect(180, 40, 241, 16))
-        self.mc_assessunits_combo.setObjectName(_fromUtf8("mc_assessunits_combo"))
-        self.mc_assessunits_combo.addItem(_fromUtf8(""))
-        self.mc_assessunits_combo.addItem(_fromUtf8(""))
-        self.mc_assessunits_lbl = QtGui.QLabel(self.mc_assess_widget)
-        self.mc_assessunits_lbl.setGeometry(QtCore.QRect(10, 40, 171, 20))
-        self.mc_assessunits_lbl.setObjectName(_fromUtf8("mc_assessunits_lbl"))
-        self.verticalLayout_13.addWidget(self.mc_assess_widget)
-        self.interp_title = QtGui.QLabel(self.scrollAreaWidgetContents_8)
-        self.interp_title.setMinimumSize(QtCore.QSize(445, 16))
-        self.interp_title.setMaximumSize(QtCore.QSize(16777215, 16))
-        self.interp_title.setObjectName(_fromUtf8("interp_title"))
-        self.verticalLayout_13.addWidget(self.interp_title)
-        self.interp_widget = QtGui.QStackedWidget(self.scrollAreaWidgetContents_8)
-        self.interp_widget.setMinimumSize(QtCore.QSize(0, 150))
-        self.interp_widget.setObjectName(_fromUtf8("interp_widget"))
-        self.page = QtGui.QWidget()
-        self.page.setObjectName(_fromUtf8("page"))
-        self.idw_title = QtGui.QLabel(self.page)
-        self.idw_title.setGeometry(QtCore.QRect(10, 5, 321, 20))
-        self.idw_title.setObjectName(_fromUtf8("idw_title"))
-        self.comingsoon_11 = QtGui.QLabel(self.page)
-        self.comingsoon_11.setGeometry(QtCore.QRect(50, 40, 181, 20))
-        self.comingsoon_11.setObjectName(_fromUtf8("comingsoon_11"))
-        self.interp_widget.addWidget(self.page)
-        self.page_2 = QtGui.QWidget()
-        self.page_2.setObjectName(_fromUtf8("page_2"))
-        self.krig_title = QtGui.QLabel(self.page_2)
-        self.krig_title.setGeometry(QtCore.QRect(10, 5, 241, 20))
-        self.krig_title.setObjectName(_fromUtf8("krig_title"))
-        self.interp_widget.addWidget(self.page_2)
-        self.verticalLayout_13.addWidget(self.interp_widget)
         self.lst_title = QtGui.QLabel(self.scrollAreaWidgetContents_8)
         self.lst_title.setMinimumSize(QtCore.QSize(445, 16))
         self.lst_title.setMaximumSize(QtCore.QSize(16777215, 16))
@@ -1396,6 +1308,56 @@ class Ui_Perfconfig_Dialog(object):
         self.lst_head1.setGeometry(QtCore.QRect(20, 35, 61, 16))
         self.lst_head1.setObjectName(_fromUtf8("lst_head1"))
         self.verticalLayout_13.addWidget(self.lst_widget)
+        self.mc_assess_title = QtGui.QLabel(self.scrollAreaWidgetContents_8)
+        self.mc_assess_title.setMinimumSize(QtCore.QSize(445, 16))
+        self.mc_assess_title.setMaximumSize(QtCore.QSize(16777215, 16))
+        self.mc_assess_title.setObjectName(_fromUtf8("mc_assess_title"))
+        self.verticalLayout_13.addWidget(self.mc_assess_title)
+        self.mc_assess_widget = QtGui.QWidget(self.scrollAreaWidgetContents_8)
+        self.mc_assess_widget.setMinimumSize(QtCore.QSize(0, 250))
+        self.mc_assess_widget.setObjectName(_fromUtf8("mc_assess_widget"))
+        self.mc_assessinterp_lbl = QtGui.QLabel(self.mc_assess_widget)
+        self.mc_assessinterp_lbl.setGeometry(QtCore.QRect(10, 10, 171, 20))
+        self.mc_assessinterp_lbl.setObjectName(_fromUtf8("mc_assessinterp_lbl"))
+        self.mc_assessinterp_combo = QtGui.QComboBox(self.mc_assess_widget)
+        self.mc_assessinterp_combo.setGeometry(QtCore.QRect(180, 10, 241, 16))
+        self.mc_assessinterp_combo.setObjectName(_fromUtf8("mc_assessinterp_combo"))
+        self.mc_assessinterp_combo.addItem(_fromUtf8(""))
+        self.mc_assessinterp_combo.addItem(_fromUtf8(""))
+        self.mc_assessbase_check = QtGui.QCheckBox(self.mc_assess_widget)
+        self.mc_assessbase_check.setGeometry(QtCore.QRect(180, 70, 121, 17))
+        self.mc_assessbase_check.setObjectName(_fromUtf8("mc_assessbase_check"))
+        self.mc_assessdiff_check = QtGui.QCheckBox(self.mc_assess_widget)
+        self.mc_assessdiff_check.setGeometry(QtCore.QRect(300, 70, 141, 17))
+        self.mc_assessdiff_check.setObjectName(_fromUtf8("mc_assessdiff_check"))
+        self.mc_assessunits_combo = QtGui.QComboBox(self.mc_assess_widget)
+        self.mc_assessunits_combo.setGeometry(QtCore.QRect(180, 40, 241, 16))
+        self.mc_assessunits_combo.setObjectName(_fromUtf8("mc_assessunits_combo"))
+        self.mc_assessunits_combo.addItem(_fromUtf8(""))
+        self.mc_assessunits_combo.addItem(_fromUtf8(""))
+        self.mc_assessunits_lbl = QtGui.QLabel(self.mc_assess_widget)
+        self.mc_assessunits_lbl.setGeometry(QtCore.QRect(10, 40, 171, 20))
+        self.mc_assessunits_lbl.setObjectName(_fromUtf8("mc_assessunits_lbl"))
+        self.mc_assesslvl_block = QtGui.QRadioButton(self.mc_assess_widget)
+        self.mc_assesslvl_block.setGeometry(QtCore.QRect(300, 100, 82, 17))
+        self.mc_assesslvl_block.setObjectName(_fromUtf8("mc_assesslvl_block"))
+        self.mc_assesslvl_patch = QtGui.QRadioButton(self.mc_assess_widget)
+        self.mc_assesslvl_patch.setGeometry(QtCore.QRect(180, 100, 91, 17))
+        self.mc_assesslvl_patch.setObjectName(_fromUtf8("mc_assesslvl_patch"))
+        self.mc_assesslvl_lbl = QtGui.QLabel(self.mc_assess_widget)
+        self.mc_assesslvl_lbl.setGeometry(QtCore.QRect(10, 100, 141, 20))
+        self.mc_assesslvl_lbl.setObjectName(_fromUtf8("mc_assesslvl_lbl"))
+        self.mc_assesslvl_lbl_2 = QtGui.QLabel(self.mc_assess_widget)
+        self.mc_assesslvl_lbl_2.setGeometry(QtCore.QRect(10, 125, 201, 20))
+        self.mc_assesslvl_lbl_2.setObjectName(_fromUtf8("mc_assesslvl_lbl_2"))
+        self.spinBox_2 = QtGui.QSpinBox(self.mc_assess_widget)
+        self.spinBox_2.setGeometry(QtCore.QRect(210, 125, 101, 16))
+        self.spinBox_2.setMaximum(3)
+        self.spinBox_2.setObjectName(_fromUtf8("spinBox_2"))
+        self.mc_assesslvl_lbl_3 = QtGui.QLabel(self.mc_assess_widget)
+        self.mc_assesslvl_lbl_3.setGeometry(QtCore.QRect(10, 150, 201, 20))
+        self.mc_assesslvl_lbl_3.setObjectName(_fromUtf8("mc_assesslvl_lbl_3"))
+        self.verticalLayout_13.addWidget(self.mc_assess_widget)
         self.scrollArea_8.setWidget(self.scrollAreaWidgetContents_8)
         self.verticalLayout_16.addWidget(self.scrollArea_8)
         self.horizontalLayout.addWidget(self.general_params_2)
@@ -1476,18 +1438,18 @@ class Ui_Perfconfig_Dialog(object):
         self.dagg_dp_noonpic_2 = QtGui.QLabel(self.dp_config_widget)
         self.dagg_dp_noonpic_2.setGeometry(QtCore.QRect(155, 175, 41, 41))
         self.dagg_dp_noonpic_2.setText(_fromUtf8(""))
-        self.dagg_dp_noonpic_2.setPixmap(QtGui.QPixmap(_fromUtf8("noon-small.png")))
+        self.dagg_dp_noonpic_2.setPixmap(QtGui.QPixmap(_fromUtf8("../../../.designer/backup/noon-small.png")))
         self.dagg_dp_noonpic_2.setObjectName(_fromUtf8("dagg_dp_noonpic_2"))
         self.dagg_dp_morningpic_2 = QtGui.QLabel(self.dp_config_widget)
         self.dagg_dp_morningpic_2.setEnabled(True)
         self.dagg_dp_morningpic_2.setGeometry(QtCore.QRect(55, 175, 41, 41))
         self.dagg_dp_morningpic_2.setText(_fromUtf8(""))
-        self.dagg_dp_morningpic_2.setPixmap(QtGui.QPixmap(_fromUtf8("morning-small.png")))
+        self.dagg_dp_morningpic_2.setPixmap(QtGui.QPixmap(_fromUtf8("../../../.designer/backup/morning-small.png")))
         self.dagg_dp_morningpic_2.setObjectName(_fromUtf8("dagg_dp_morningpic_2"))
         self.dagg_dp_nightpic_2 = QtGui.QLabel(self.dp_config_widget)
         self.dagg_dp_nightpic_2.setGeometry(QtCore.QRect(355, 175, 41, 41))
         self.dagg_dp_nightpic_2.setText(_fromUtf8(""))
-        self.dagg_dp_nightpic_2.setPixmap(QtGui.QPixmap(_fromUtf8("night-small.png")))
+        self.dagg_dp_nightpic_2.setPixmap(QtGui.QPixmap(_fromUtf8("../../../.designer/backup/night-small.png")))
         self.dagg_dp_nightpic_2.setObjectName(_fromUtf8("dagg_dp_nightpic_2"))
         self.dp_kitchen_combo = QtGui.QComboBox(self.dp_config_widget)
         self.dp_kitchen_combo.setGeometry(QtCore.QRect(110, 40, 191, 16))
@@ -1858,18 +1820,18 @@ class Ui_Perfconfig_Dialog(object):
         self.dagg_dp_noonpic_4 = QtGui.QLabel(self.wsnetwork_config_widget_2)
         self.dagg_dp_noonpic_4.setGeometry(QtCore.QRect(155, 175, 41, 41))
         self.dagg_dp_noonpic_4.setText(_fromUtf8(""))
-        self.dagg_dp_noonpic_4.setPixmap(QtGui.QPixmap(_fromUtf8("noon-small.png")))
+        self.dagg_dp_noonpic_4.setPixmap(QtGui.QPixmap(_fromUtf8("../../../.designer/backup/noon-small.png")))
         self.dagg_dp_noonpic_4.setObjectName(_fromUtf8("dagg_dp_noonpic_4"))
         self.dagg_dp_morningpic_4 = QtGui.QLabel(self.wsnetwork_config_widget_2)
         self.dagg_dp_morningpic_4.setEnabled(True)
         self.dagg_dp_morningpic_4.setGeometry(QtCore.QRect(55, 175, 41, 41))
         self.dagg_dp_morningpic_4.setText(_fromUtf8(""))
-        self.dagg_dp_morningpic_4.setPixmap(QtGui.QPixmap(_fromUtf8("morning-small.png")))
+        self.dagg_dp_morningpic_4.setPixmap(QtGui.QPixmap(_fromUtf8("../../../.designer/backup/morning-small.png")))
         self.dagg_dp_morningpic_4.setObjectName(_fromUtf8("dagg_dp_morningpic_4"))
         self.dagg_dp_nightpic_4 = QtGui.QLabel(self.wsnetwork_config_widget_2)
         self.dagg_dp_nightpic_4.setGeometry(QtCore.QRect(355, 175, 41, 41))
         self.dagg_dp_nightpic_4.setText(_fromUtf8(""))
-        self.dagg_dp_nightpic_4.setPixmap(QtGui.QPixmap(_fromUtf8("night-small.png")))
+        self.dagg_dp_nightpic_4.setPixmap(QtGui.QPixmap(_fromUtf8("../../../.designer/backup/night-small.png")))
         self.dagg_dp_nightpic_4.setObjectName(_fromUtf8("dagg_dp_nightpic_4"))
         self.epanetsim_title = QtGui.QLabel(self.wsnetwork_config_widget_2)
         self.epanetsim_title.setGeometry(QtCore.QRect(10, 10, 171, 16))
@@ -2097,7 +2059,6 @@ class Ui_Perfconfig_Dialog(object):
         self.retranslateUi(Perfconfig_Dialog)
         self.main_input_widget.setCurrentIndex(0)
         self.stackedWidget.setCurrentIndex(0)
-        self.interp_widget.setCurrentIndex(1)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), Perfconfig_Dialog.accept)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), Perfconfig_Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Perfconfig_Dialog)
@@ -2231,8 +2192,8 @@ class Ui_Perfconfig_Dialog(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Select MUSIC Version:</span></p></body></html>", None))
-        self.music_version_combo.setItemText(0, _translate("Perfconfig_Dialog", "eWater MUSIC Version 5", None))
-        self.music_version_combo.setItemText(1, _translate("Perfconfig_Dialog", "eWater MUSIC Version 6", None))
+        self.music_version_combo.setItemText(0, _translate("Perfconfig_Dialog", "eWater MUSIC Version 6.1", None))
+        self.music_version_combo.setItemText(1, _translate("Perfconfig_Dialog", "eWater MUSIC Version 6.2", None))
         self.musicsplit_check_2.setText(_translate("Perfconfig_Dialog", "Use Selected Project Climate Data", None))
         self.musicsplit_check.setText(_translate("Perfconfig_Dialog", "Write a separate simulation file for each basin", None))
         self.music_model_concept.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -2300,26 +2261,6 @@ class Ui_Perfconfig_Dialog(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">mins</span></p></body></html>", None))
-        self.musicwsudsetup_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">WSUD Parameter Setup</span></p></body></html>", None))
-        self.musicBF_params.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Bioretention Parameters:</span></p></body></html>", None))
-        self.musicBF_TN_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">TN Content of Filter Media [mg/kg]</span></p></body></html>", None))
-        self.musicBF_ortho_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Orthophosphate Content of Filter Media [mg/kg]</span></p></body></html>", None))
         self.musicwsudsetup_lbl_2.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -2400,54 +2341,6 @@ class Ui_Perfconfig_Dialog(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Undertake life cycle costing of the WSUD options and assess the financial implications.</span></p></body></html>", None))
         self.main_input_widget.setTabText(self.main_input_widget.indexOf(self.tab_4), _translate("Perfconfig_Dialog", "Economics", None))
-        self.mc_assess_title.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Spatial Methodology</span></p></body></html>", None))
-        self.mc_assesslvl_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Conduct assessment at:</p></body></html>", None))
-        self.mc_assesslvl_patch.setText(_translate("Perfconfig_Dialog", "Patch Level", None))
-        self.mc_assesslvl_block.setText(_translate("Perfconfig_Dialog", "Block Level", None))
-        self.mc_assessinterp_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Spatial Interpolation Method:</p></body></html>", None))
-        self.mc_assessinterp_combo.setItemText(0, _translate("Perfconfig_Dialog", "Inverse Distance Weighted (IDW)", None))
-        self.mc_assessinterp_combo.setItemText(1, _translate("Perfconfig_Dialog", "Kriging", None))
-        self.mc_assessbase_check.setText(_translate("Perfconfig_Dialog", "Include Base Case", None))
-        self.mc_assessdiff_check.setText(_translate("Perfconfig_Dialog", "Include Difference Map", None))
-        self.mc_assessunits_combo.setItemText(0, _translate("Perfconfig_Dialog", "Equivalent Land Surface Temperature", None))
-        self.mc_assessunits_combo.setItemText(1, _translate("Perfconfig_Dialog", "Likely Thermal Comfort Index", None))
-        self.mc_assessunits_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Assessment Units:</p></body></html>", None))
-        self.interp_title.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Interpolation Settings</span></p></body></html>", None))
-        self.idw_title.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600; font-style:italic;\">Selected Method: Inverse Distance Weighted (IDW)</span></p></body></html>", None))
-        self.comingsoon_11.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-style:italic;\">parameters coming soon...</span></p></body></html>", None))
-        self.krig_title.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600; font-style:italic;\">Selected Method: Kriging</span></p></body></html>", None))
         self.lst_title.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -2499,6 +2392,45 @@ class Ui_Perfconfig_Dialog(object):
         self.lst_head2.setText(_translate("Perfconfig_Dialog", "<html><head/><body><p><span style=\" font-weight:600;\">Distribution Shape</span></p></body></html>", None))
         self.lst_head3.setText(_translate("Perfconfig_Dialog", "<html><head/><body><p><span style=\" font-weight:600;\">Temperature(s)</span></p></body></html>", None))
         self.lst_head1.setText(_translate("Perfconfig_Dialog", "<html><head/><body><p><span style=\" font-weight:600;\">Type</span></p></body></html>", None))
+        self.mc_assess_title.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Spatial Methodology</span></p></body></html>", None))
+        self.mc_assessinterp_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Select Spatial Method:</p></body></html>", None))
+        self.mc_assessinterp_combo.setItemText(0, _translate("Perfconfig_Dialog", "Mapping to Input Land Use Map", None))
+        self.mc_assessinterp_combo.setItemText(1, _translate("Perfconfig_Dialog", "Inverse Distance-weighted Interpolation", None))
+        self.mc_assessbase_check.setText(_translate("Perfconfig_Dialog", "Include Base Case", None))
+        self.mc_assessdiff_check.setText(_translate("Perfconfig_Dialog", "Include Difference Map", None))
+        self.mc_assessunits_combo.setItemText(0, _translate("Perfconfig_Dialog", "Equivalent Land Surface Temperature", None))
+        self.mc_assessunits_combo.setItemText(1, _translate("Perfconfig_Dialog", "Likely Thermal Comfort Index", None))
+        self.mc_assessunits_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Assessment Units:</p></body></html>", None))
+        self.mc_assesslvl_block.setText(_translate("Perfconfig_Dialog", "Block Level", None))
+        self.mc_assesslvl_patch.setText(_translate("Perfconfig_Dialog", "Patch Level", None))
+        self.mc_assesslvl_lbl.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Conduct interpolation at:</p></body></html>", None))
+        self.mc_assesslvl_lbl_2.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Apply Smoothing to Temperature Map:</p></body></html>", None))
+        self.spinBox_2.setSuffix(_translate("Perfconfig_Dialog", " passes", None))
+        self.mc_assesslvl_lbl_3.setText(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Neighbourhood Size:</p></body></html>", None))
         self.general_descr_2.setHtml(_translate("Perfconfig_Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -2753,3 +2685,4 @@ class Ui_Perfconfig_Dialog(object):
         self.pushButton.setText(_translate("Perfconfig_Dialog", "Help", None))
 
 import guitoolbaricons_rc
+import dialogimg_rc
