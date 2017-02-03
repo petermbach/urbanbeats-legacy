@@ -35,6 +35,7 @@ import pymusic, ubmusicwrite, ubepanet
 import urbanbeatsdatatypes as ubdata
 import ubseriesread as ubseries
 import md_perf_waterbalance as ubwaterbal
+import ubeconomics as ubecon
 
 from urbanbeatsmodule import *
 
@@ -1038,8 +1039,29 @@ class PerformanceAssess(UBModule):      #UBCORE
 
     def runEconomicAnalysis(self):
         """Conducts an economic analysis of the life cycle costs and a number of other factors based
-        on the planned options
+        on the planned options exported from the Technology Planning Module (note that this is NOT the benchmark version)
         """
+
+        #PREPARE drate and irate vectors using available inputs
+
+
+        #Define conversion factor if any
+
+
+
+        #GET WSUD Object
+            #For each system in that object
+                #--> Get system Type and Size or the most relevant parameter for the costing
+                #--> Create the Spec using the LCC library
+                #--> Convert to real-cost matrix by using varioous rules including
+                        # - Maintenance every year?
+                        # - Decommissioning at the end?
+                        # - The Life Span Rule
+                #--> Subject the real-cost matrix to LCC
+
+
+
+
         pass
 
         return True
@@ -1066,7 +1088,7 @@ class PerformanceAssess(UBModule):      #UBCORE
             self.transferTemperatureDataToRaster(tempdict)
 
         #Perform Interpolation or Smoothing
-
+        #COMING SOON!
         return True
 
     def transferTemperatureDataToPatches(self, tempdict):
