@@ -160,6 +160,58 @@ class PerformanceAssess(UBModule):      #UBCORE
 
 
         #ECONOMICS TAB
+        self.createParameter("assessyears", DOUBLE, "")
+        self.createParameter("assessonlycapital", BOOL, "")
+        self.createParameter("rateconstant", BOOL, "")
+        self.createParameter("drate", DOUBLE, "")
+        self.createParameter("irate", DOUBLE, "")
+        self.createParameter("ratefile", STRING, "")
+        self.createParameter("currency", STRING, "")
+        self.createParameter("currencyconv", DOUBLE, "")
+        self.createParameter("convagainst", STRING, "")
+        self.createParameter("allocatecost", BOOL, "")
+        self.assessyears = 50.0
+        self.assessonlycapital = False
+        self.rateconstant = True
+        self.drate = 4.00
+        self.irate = 1.55
+        self.ratefile = "< no file selected >"
+        self.currency = "AUD"
+        self.currencyconv = 1.00
+        self.convagainst = "AUD"
+        self.allocatecost = False
+
+        self.createParameter("LCCtemplate", STRING, "")
+        self.createParameter("useDecom", BOOL, "")
+        self.createParameter("includeMaintain", BOOL, "")
+        self.createParameter("ignoreLifeSpan", BOOL, "")
+        self.LCCtemplate = "MELBW"  #MELBW, MUSIC, CUSTO
+        self.useDecom = True
+        self.includeMaintain = True
+        self.ignoreLifeSpan = False
+
+        self.createParameter("otherecon", BOOL, "")
+        self.createParameter("econ_bulkwater", BOOL, "")
+        self.createParameter("econ_bulkwater_price", DOUBLE, "")
+        self.createParameter("econ_wwtp", BOOL, "")
+        self.createParameter("econ_wwtp_price", DOUBLE, "")
+        self.createParameter("econ_nutrients", BOOL, "")
+        self.createParameter("econ_nurtienrs_price", DOUBLE, "")
+        self.createParameter("econ_landplan", BOOL, "")
+        self.createParameter("econ_landplan_price", DOUBLE, "")
+        self.createParameter("econ_energy", BOOL, "")
+        self.createParameter("econ_energy_price", DOUBLE, "")
+        self.otherecon = False
+        self.econ_bulkwater = False
+        self.econ_bulkwater_price = 0.00
+        self.econ_wwtp = False
+        self.econ_wwtp_price = 0.00
+        self.econ_nutrients = False
+        self.econ_nutrients_price = 0.00
+        self.econ_landplan = False
+        self.econ_landplan_price = 0.00
+        self.econ_energy = False
+        self.econ_energy_price = 0.00
 
         #MICROCLIMATE TAB
         self.createParameter("assesslevel", STRING, "")

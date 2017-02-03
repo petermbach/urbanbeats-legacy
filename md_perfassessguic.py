@@ -5,8 +5,8 @@
 @version 0.5
 @section LICENSE
 
-This file is part of VIBe2
-Copyright (C) 2011  Peter M Bach
+This file is part of UrbanBEATS
+Copyright (C) 2017  Peter M Bach
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from md_perfassessgui import Ui_Perfconfig_Dialog
 from md_perf_custompattern import Ui_CustomPatternDialog
+from md_perf_stakeholdercost import Ui_AllocateStakeholders_Dialog
 from PyQt4 import QtGui, QtCore
 import os
 
@@ -56,13 +57,13 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         self.ui.perf_CD3.setChecked(self.module.getParameter("perf_CD3"))
 
         self.ed_MUSIC()
-        #self.ed_Economics()
+        self.ed_Economics()
         #self.ed_Microclimate()
         self.ed_EPANET()
         #self.ed_CD3()
 
         QtCore.QObject.connect(self.ui.perf_MUSIC, QtCore.SIGNAL("clicked()"), self.ed_MUSIC)
-        # QtCore.QObject.connect(self.ui.perf_Economics, QtCore.SIGNAL("clicked()"), self.ed_Economics)
+        QtCore.QObject.connect(self.ui.perf_Economics, QtCore.SIGNAL("clicked()"), self.ed_Economics)
         # QtCore.QObject.connect(self.ui.perf_Microclimate, QtCore.SIGNAL("clicked()"), self.ed_Microclimate)
         QtCore.QObject.connect(self.ui.perf_EPANET, QtCore.SIGNAL("clicked()"), self.ed_EPANET)
         # QtCore.QObject.connect(self.ui.perf_CD3, QtCore.SIGNAL("clicked()"), self.ed_CD3)
@@ -153,7 +154,65 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #----------------------------------------------------------------------#
         #-------- ECONOMICS ---------------------------------------------------#
         #----------------------------------------------------------------------#
+        #GENERAL SETTINGS
+        self.ui.econ_years_spin.setValue(self.module.getParameter("assessyears"))
+        self.ui.econ_capital_check.setChecked(self.module.getParameter("assessonlycapital"))
 
+        QtCore.QObject.connect(self.ui.econ_capital_check, QtCore.SIGNAL("clicked()"), self.enableDisableEconomicParams)
+
+        if self.module.getParameter("rateconstant") == True:
+            self.ui.econ_rateconstant_radio.setChecked(1)
+        else:
+            self.ui.econ_ratedyn_radio.setChecked(1)
+
+        QtCore.QObject.connect(self.ui.econ_rateconstant_radio, QtCore.SIGNAL("clicked()"), self.enableDisableEconomicParams)
+        QtCore.QObject.connect(self.ui.econ_ratedyn_radio, QtCore.SIGNAL("clicked()"), self.enableDisableEconomicParams)
+
+        self.ui.econ_dc_spin.setValue(self.module.getParameter("drate"))
+        self.ui.econ_ir_spin.setValue(self.module.getParameter("irate"))
+        self.ui.econ_ratefile_box.setText(self.module.getParameter("ratefile"))
+
+        QtCore.QObject.connect(self.ui.econ_ratefile_browse, QtCore.SIGNAL("clicked()"), self.getEconomicRateFile)
+
+        self.currencies = ["AUD", "RMB", "EUR", "USD", "OTH"]
+        self.currency_conv = ["AUD", "USD"]
+        self.ui.econ_currency_combo.setCurrentIndex(self.currencies.index(self.module.getParameter("currency")))
+        self.ui.econ_conv_box.setText(str(self.module.getParameter("currencyconv")))
+        self.ui.econ_conv_combo.setCurrentIndex(self.currency_conv.index(self.module.getParameter("convagainst")))
+
+        QtCore.QObject.connect(self.ui.econ_currency_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.enableDisableEconomicParams)
+        QtCore.QObject.connect(self.ui.econ_conv_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.enableDisableEconomicParams)
+
+        self.ui.econ_alloc_check.setChecked(self.module.getParameter("allocatecost"))
+        QtCore.QObject.connect(self.ui.econ_alloc_check, QtCore.SIGNAL("clicked()"), self.enableDisableEconomicParams)
+        QtCore.QObject.connect(self.ui.econ_alloc_customize, QtCore.SIGNAL("clicked()"), self.callStakeholderGui)
+
+        #WSUD LCC Costing Settings
+        self.LCCtemplates = ["MELBW", "MUSIC", "CUSTOM"]
+        self.ui.econ_LCC_combo.setCurrentIndex(self.LCCtemplates.index(self.module.getParameter("LCCtemplate")))
+        QtCore.QObject.connect(self.ui.econ_LCC_button, QtCore.SIGNAL("clicked()"), self.callLCCCostGui)
+        QtCore.QObject.connect(self.ui.econ_LCC_combo, QtCore.SIGNAL("currentIndexChanged(int)"), self.enableDisableEconomicParams)
+
+        self.ui.econ_LCC_decom_check.setChecked(self.module.getParameter("useDecom"))
+        self.ui.econ_LCC_maint_check.setChecked(self.module.getParameter("includeMaintain"))
+        self.ui.econ_LCC_lifespan_check.setChecked(self.module.getParameter("ignoreLifeSpan"))
+
+        #OTHER COSTING
+        self.ui.econ_other_check.setChecked(self.module.getParameter("otherecon"))
+        self.ui.econ_bulkwater_check.setChecked(self.module.getParameter("econ_bulkwater"))
+        self.ui.econ_bulkwater_box.setText(str(self.module.getParameter("econ_bulkwater_price")))
+        self.ui.econ_wwtp_check.setChecked(self.module.getParameter("econ_wwtp"))
+        self.ui.econ_wwtp_box.setText(str(self.module.getParameter("econ_wwtp_price")))
+        self.ui.econ_nutrients_check.setChecked(self.module.getParameter("econ_nutrients"))
+        self.ui.econ_nutrients_box.setText(str(self.module.getParameter("econ_nutrients_price")))
+        self.ui.econ_landplan_check.setChecked(self.module.getParameter("econ_landplan"))
+        self.ui.econ_landplan_box.setText(str(self.module.getParameter("econ_landplan_price")))
+        self.ui.econ_energy_check.setChecked(self.module.getParameter("econ_energy"))
+        self.ui.econ_energy_box.setText(str(self.module.getParameter("econ_energy_price")))
+
+        QtCore.QObject.connect(self.ui.econ_other_check, QtCore.SIGNAL("clicked()"), self.enableDisableEconomicParams)
+
+        self.enableDisableEconomicParams()
 
         #----------------------------------------------------------------------#
         #-------- MICROCLIMATE ------------------------------------------------#
@@ -351,6 +410,113 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #-------------
 
         QtCore.QObject.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
+
+    def enableDisableEconomicParams(self):
+        if self.ui.perf_Economics.isChecked():
+            self.ui.econ_general_widget.setEnabled(1)
+            self.ui.econ_LCC_widget1.setEnabled(1)
+            self.ui.econ_LCC_widget2.setEnabled(1)
+            self.ui.econ_others_widget.setEnabled(1)
+
+            if self.ui.econ_capital_check.isChecked():
+                self.ui.econ_years_spin.setEnabled(0)
+                self.ui.econ_rateconstant_radio.setEnabled(0)
+                self.ui.econ_ratedyn_radio.setEnabled(0)
+                self.ui.econ_ratefile_box.setEnabled(0)
+                self.ui.econ_ratefile_browse.setEnabled(0)
+                self.ui.econ_dc_spin.setEnabled(0)
+                self.ui.econ_ir_spin.setEnabled(0)
+            else:
+                self.ui.econ_years_spin.setEnabled(1)
+                self.ui.econ_rateconstant_radio.setEnabled(1)
+                self.ui.econ_ratedyn_radio.setEnabled(1)
+                if self.ui.econ_rateconstant_radio.isChecked():
+                    self.ui.econ_dc_spin.setEnabled(1)
+                    self.ui.econ_ir_spin.setEnabled(1)
+                    self.ui.econ_ratefile_box.setEnabled(0)
+                    self.ui.econ_ratefile_browse.setEnabled(0)
+                else:
+                    self.ui.econ_dc_spin.setEnabled(0)
+                    self.ui.econ_ir_spin.setEnabled(0)
+                    self.ui.econ_ratefile_box.setEnabled(1)
+                    self.ui.econ_ratefile_browse.setEnabled(1)
+
+            if self.ui.econ_currency_combo.currentIndex() != 4:
+                self.ui.econ_conv_box.setEnabled(0)
+                self.ui.econ_conv_combo.setEnabled(0)
+            else:
+                self.ui.econ_conv_box.setEnabled(1)
+                self.ui.econ_conv_combo.setEnabled(1)
+
+            if self.ui.econ_alloc_check.isChecked():
+                self.ui.econ_alloc_customize.setEnabled(1)
+            else:
+                self.ui.econ_alloc_customize.setEnabled(0)
+
+            if self.ui.econ_LCC_combo.currentIndex() != 2:
+                self.ui.econ_LCC_button.setEnabled(0)
+            else:
+                self.ui.econ_LCC_button.setEnabled(1)
+
+            if self.ui.econ_other_check.isChecked():
+                self.ui.econ_bulkwater_check.setEnabled(1)
+                self.ui.econ_bulkwater_box.setEnabled(1)
+                self.ui.econ_wwtp_check.setEnabled(1)
+                self.ui.econ_wwtp_box.setEnabled(1)
+                self.ui.econ_nutrients_check.setEnabled(1)
+                self.ui.econ_nutrients_box.setEnabled(1)
+                self.ui.econ_landplan_box.setEnabled(1)
+                self.ui.econ_landplan_check.setEnabled(1)
+                self.ui.econ_energy_box.setEnabled(1)
+                self.ui.econ_energy_check.setEnabled(1)
+            else:
+                self.ui.econ_bulkwater_check.setEnabled(0)
+                self.ui.econ_bulkwater_box.setEnabled(0)
+                self.ui.econ_wwtp_check.setEnabled(0)
+                self.ui.econ_wwtp_box.setEnabled(0)
+                self.ui.econ_nutrients_check.setEnabled(0)
+                self.ui.econ_nutrients_box.setEnabled(0)
+                self.ui.econ_landplan_box.setEnabled(0)
+                self.ui.econ_landplan_check.setEnabled(0)
+                self.ui.econ_energy_box.setEnabled(0)
+                self.ui.econ_energy_check.setEnabled(0)
+        else:
+            self.ui.econ_general_widget.setEnabled(0)
+            self.ui.econ_LCC_widget1.setEnabled(0)
+            self.ui.econ_LCC_widget2.setEnabled(0)
+            self.ui.econ_others_widget.setEnabled(0)
+
+
+    def getEconomicRateFile(self):
+        fname = QtGui.QFileDialog.getOpenFileName(self, "Locate Economic Discount/Inflation Rate File...", os.curdir,
+                                                  str("CSV File (*.csv)"))
+        if fname:
+            if self.checkRateFileConsistency():
+                self.ui.econ_ratefile_box.setText(fname)
+            else:
+                pass    #Call a message box to tell user the file is invalid (option to change file, cancel or proceed)
+
+        return True
+
+    def checkRateFileConsistency(self):
+        #Checks the consistency of the economic rate file, several cases:
+            #Case 1 - the file contains no readable data
+            # --> SKIP and make the user redo
+            #Case 2 - the file contains at least one line of readable data with values that are not negative nor too high
+            # --> Warn the user about this, say you'll only take the first value of each and do static
+            #Case 3 - the file contains an array of data, but is not the same length as the periods [> half the length]
+            # --> Warn the user about this, and say that you'll just assume the last value in the array will remain the same
+
+        return True
+
+    def callStakeholderGui(self):
+        stakeholderguic = StakeholderGUILaunch(self.module)
+        stakeholderguic.exec_()
+        return True
+
+    def callLCCCostGui(self):
+        print "Calling LCC Cost Config"
+        return True
 
 
     def changeRainscalars(self):
@@ -577,6 +743,7 @@ class PerfAssessGUILaunch(QtGui.QDialog):
             self.ui.musicpath_box.setText(fname)
 
     def ed_Economics(self):
+        self.enableDisableEconomicParams()
         return True
 
 
@@ -705,6 +872,33 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #----------------------------------------------------------------------#
         #-------- ECONOMICS ---------------------------------------------------#
         #----------------------------------------------------------------------#
+        self.module.setParameter("assessyears", float(self.ui.econ_years_spin.value()))
+        self.module.setParameter("assessonlycapital", bool(self.ui.econ_capital_check.isChecked()))
+        self.module.setParameter("rateconstant", bool(self.ui.econ_rateconstant_radio.isChecked()))
+        self.module.setParameter("drate", float(self.ui.econ_dc_spin.value()))
+        self.module.setParameter("irate", float(self.ui.econ_ir_spin.value()))
+        self.module.setParameter("ratefile", str(self.ui.econ_ratefile_box.text()))
+        self.module.setParameter("currency", self.currencies[self.ui.econ_currency_combo.currentIndex()])
+        self.module.setParameter("currencyconv", float(self.ui.econ_conv_box.text()))
+        self.module.setParameter("convagainst", self.currency_conv[self.ui.econ_conv_combo.currentIndex()])
+        self.module.setParameter("allocatecost", bool(self.ui.econ_alloc_check.isChecked()))
+
+        self.module.setParameter("LCCtemplate", self.LCCtemplates[self.ui.econ_LCC_combo.currentIndex()])
+        self.module.setParameter("useDecom", bool(self.ui.econ_LCC_decom_check.isChecked()))
+        self.module.setParameter("includeMaintain", bool(self.ui.econ_LCC_maint_check.isChecked()))
+        self.module.setParameter("ignoreLifeSpan", bool(self.ui.econ_LCC_lifespan_check.isChecked()))
+
+        self.module.setParameter("otherecon", bool(self.ui.econ_other_check.isChecked()))
+        self.module.setParameter("econ_bulkwater", bool(self.ui.econ_bulkwater_check.isChecked()))
+        self.module.setParameter("econ_bulkwater_price", float(self.ui.econ_bulkwater_box.text()))
+        self.module.setParameter("econ_wwtp", bool(self.ui.econ_wwtp_check.isChecked()))
+        self.module.setParameter("econ_wwtp_price", float(self.ui.econ_wwtp_box.text()))
+        self.module.setParameter("econ_nutrients", bool(self.ui.econ_nutrients_check.isChecked()))
+        self.module.setParameter("econ_nutrients_price", float(self.ui.econ_nutrients_box.text()))
+        self.module.setParameter("econ_landplan", bool(self.ui.econ_landplan_check.isChecked()))
+        self.module.setParameter("econ_landplan_price", float(self.ui.econ_landplan_box.text()))
+        self.module.setParameter("econ_energy", bool(self.ui.econ_energy_check.isChecked()))
+        self.module.setParameter("econ_energy_price", float(self.ui.econ_energy_box.text()))
 
         #----------------------------------------------------------------------#
         #-------- MICROCLIMATE ------------------------------------------------#
@@ -827,6 +1021,16 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         #-------- INTEGRATED WATER CYCLE MODEL  -------------------------------#
         #----------------------------------------------------------------------#
 
+class StakeholderGUILaunch(QtGui.QDialog):
+    def __init__(self, activesim, parent = None):
+        QtGui.QDialog.__init__(self, parent)
+        self.ui = Ui_AllocateStakeholders_Dialog()
+        self.ui.setupUi(self)
+        self.module = activesim
+
+    def save_values(self):
+        #self.module = something...
+        return True
 
 class CustomPatternGUILaunch(QtGui.QDialog):
     def __init__(self, activesim, enduse, parent = None):
