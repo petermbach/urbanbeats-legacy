@@ -6,7 +6,7 @@
 @section LICENSE
 
 This file is part of UrbanBEATS (www.urbanbeatsmodel.com)
-Copyright (C) 2011, 2012, 2013  Peter M Bach
+Copyright (C) 2016  Peter M Bach
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
