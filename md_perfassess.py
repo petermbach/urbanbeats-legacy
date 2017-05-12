@@ -197,7 +197,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.createParameter("econ_wwtp", BOOL, "")
         self.createParameter("econ_wwtp_price", DOUBLE, "")
         self.createParameter("econ_nutrients", BOOL, "")
-        self.createParameter("econ_nurtienrs_price", DOUBLE, "")
+        self.createParameter("econ_nutrients_price", DOUBLE, "")
         self.createParameter("econ_landplan", BOOL, "")
         self.createParameter("econ_landplan_price", DOUBLE, "")
         self.createParameter("econ_energy", BOOL, "")
