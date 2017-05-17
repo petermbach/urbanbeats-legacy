@@ -538,8 +538,13 @@ class MainWindow(QtGui.QMainWindow):
                 self.disable_select_guis("techplan")
             else:
                 self.disable_select_guis("basic")
-        elif activesim.getParameter("simtype") == "D" and activesim.getParameter("df_perfinclude") == 0:
-            self.disable_select_guis("techimpl")
+        elif activesim.getParameter("simtype") == "D":
+            if activesim.getParameter("df_perfinclude") == 1:
+                self.disable_select_guis("all")
+            elif activesim.getParameter("df_perfinclude") == 0:
+                self.disable_select_guis("techimpl")
+
+
 
     def updateNewProject(self):
         self.processSetupParameters()
