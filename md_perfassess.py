@@ -151,12 +151,10 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.createParameter("musicfilepathname", STRING, "")
         self.createParameter("musicfilename", STRING, "")
         self.createParameter("currentyear", DOUBLE, "")
-        self.createParameter("masterplanmodel", BOOL, "")
         #self.createParameter("include_secondary_links", BOOL, "")
         self.musicfilepathname = "D:\\"
         self.musicfilename = "ubeatsMUSIC"
         self.currentyear = 9999
-        self.masterplanmodel = 1
         #self.include_secondary_links = 0
 
 
@@ -172,24 +170,24 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.createParameter("convagainst", STRING, "")
         self.createParameter("allocatecost", BOOL, "")
         self.assessyears = 50.0
-        self.assessonlycapital = False
-        self.rateconstant = True
+        self.assessonlycapital = 0
+        self.rateconstant = 1
         self.drate = 4.00
         self.irate = 1.55
         self.ratefile = "< no file selected >"
         self.currency = "AUD"
         self.currencyconv = 1.00
         self.convagainst = "AUD"
-        self.allocatecost = False
+        self.allocatecost = 0
 
         self.createParameter("LCCtemplate", STRING, "")
         self.createParameter("useDecom", BOOL, "")
         self.createParameter("includeMaintain", BOOL, "")
         self.createParameter("ignoreLifeSpan", BOOL, "")
         self.LCCtemplate = "MELBW"  #MELBW, MUSIC, CUSTO
-        self.useDecom = True
-        self.includeMaintain = True
-        self.ignoreLifeSpan = False
+        self.useDecom = 1
+        self.includeMaintain = 1
+        self.ignoreLifeSpan = 0
 
         self.createParameter("otherecon", BOOL, "")
         self.createParameter("econ_bulkwater", BOOL, "")
@@ -202,16 +200,16 @@ class PerformanceAssess(UBModule):      #UBCORE
         self.createParameter("econ_landplan_price", DOUBLE, "")
         self.createParameter("econ_energy", BOOL, "")
         self.createParameter("econ_energy_price", DOUBLE, "")
-        self.otherecon = False
-        self.econ_bulkwater = False
+        self.otherecon = 0
+        self.econ_bulkwater = 0
         self.econ_bulkwater_price = 0.00
-        self.econ_wwtp = False
+        self.econ_wwtp = 0
         self.econ_wwtp_price = 0.00
-        self.econ_nutrients = False
+        self.econ_nutrients = 0
         self.econ_nutrients_price = 0.00
-        self.econ_landplan = False
+        self.econ_landplan = 0
         self.econ_landplan_price = 0.00
-        self.econ_energy = False
+        self.econ_energy = 0
         self.econ_energy_price = 0.00
 
         #MICROCLIMATE TAB
@@ -483,7 +481,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         to create a number of MUSIC files to the export directory with the given block attributes
         system options and parameters.
         """
-        if self.masterplanmodel:    #differentiate between planning and implementation models
+        if self.cycletype == "pc":    #differentiate between planning and implementation models
             filesuffix = "PC"
             strats = self.strats
         else:
@@ -1355,7 +1353,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         map_attr = self.activesim.getAssetWithName("MapAttributes")     #fetches global map attributes
         params = {}     #Dictionary containing all relevant data for integrated water supply balance sim
 
-        if self.masterplanmodel:    #differentiate between planning and implementation models
+        if self.cycletype == "pc":    #differentiate between planning and implementation models
             filesuffix = "PC"
             strats = self.strats
         else:
@@ -2459,7 +2457,7 @@ class PerformanceAssess(UBModule):      #UBCORE
         """Gets the number of systems present in the plan. This is most relevant for lot-scale
         systems as these occur in multiple quantities. Systems are summed up in the MUSIC file
         as a single equivalent node for that scale."""
-        if self.masterplanmodel:
+        if self.cycletype == "pc":
             return float(int(curSys.getAttribute("GoalQty")))
         else:
             return float(int(curSys.getAttribute("Qty")))
