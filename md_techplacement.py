@@ -112,11 +112,11 @@ class Techplacement(UBModule):
         self.createParameter("targets_TP", DOUBLE,"")
         self.createParameter("targets_TN", DOUBLE,"")
         self.createParameter("targets_reliability", DOUBLE, "")
-        self.targets_runoff = 80.0            #Runoff reduction target [%]
-        self.targets_TSS = 70.0               #TSS Load reduction target [%]
-        self.targets_TP = 30.0                #TP Load reduction target [%]
-        self.targets_TN = 30.0                #TN Load reduction target [%]
-        self.targets_reliability = 80.0       #required reliability of harvesting systems
+        self.targets_runoff = 30.0            #Runoff reduction target [%]
+        self.targets_TSS = 80.0               #TSS Load reduction target [%]
+        self.targets_TP = 45.0                #TP Load reduction target [%]
+        self.targets_TN = 45.0                #TN Load reduction target [%]
+        self.targets_reliability = 70.0       #required reliability of harvesting systems
         
         self.system_tarQ = 0            #INITIALIZE THESE VARIABLES
         self.system_tarTSS = 0
@@ -136,7 +136,7 @@ class Techplacement(UBModule):
         self.createParameter("service_hi", BOOL, "")
         self.createParameter("service_redundancy", DOUBLE, "")
         self.service_swmQty = 50.0                #required service level for stormwater management
-        self.service_swmWQ = 80.0                 #required service level for stormwater management
+        self.service_swmWQ = 50.0                 #required service level for stormwater management
         self.service_rec = 50.0                   #required service level for substituting potable water demand through recycling
         self.service_res = 1
         self.service_hdr = 1

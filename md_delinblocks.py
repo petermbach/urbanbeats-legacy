@@ -115,7 +115,7 @@ class Delinblocks(UBModule):      #UBCORE
         #General Simulation Parameters
         self.createParameter("BlockSize", DOUBLE, "Block Size")
         self.createParameter("blocksize_auto", BOOL, "Autosize Blocks?")
-        self.BlockSize = float(400)                    #size of the blocks (in m)
+        self.BlockSize = float(500)                    #size of the blocks (in m)
         self.blocksize_auto = 0             #should the size be chosen automatically?
 
         self.createParameter("popdatatype", STRING, "Population Data Format")         #DYNAMIND
@@ -144,7 +144,7 @@ class Delinblocks(UBModule):      #UBCORE
         self.createParameter("spatialmetrics", BOOL, "Calculate Spatial Metrics?")
 
         self.popdatatype = "D"                  #population data type: D = density, C = count
-        self.soildatatype = "I"                 #I = infiltration rates, C = classification
+        self.soildatatype = "C"                 #I = infiltration rates, C = classification
         self.soildataunits = "hrs"              #sec = m/s, hrs = mm/hr
         self.elevdatadatum = "S"                #S = sea level, C = custom
         self.elevdatacustomref = float(0.0)              #reference above sea level for custom elevation

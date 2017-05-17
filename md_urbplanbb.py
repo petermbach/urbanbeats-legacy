@@ -366,7 +366,7 @@ class Urbplanbb(UBModule):
         self.createParameter("pgsq_distribution", STRING, "")
         self.createParameter("pg_unused_space", DOUBLE, "")
         self.createParameter("pg_restrict", BOOL, "")
-        self.pg_greengrey_ratio = float(0.0)
+        self.pg_greengrey_ratio = float(10.0)
         self.pgsq_distribution = "S"    #S = separate, C = combined
         self.pg_unused_space = float(40.0)       #% of space in park not used for anything else
         self.pg_restrict = 0        #Prohibit the use of park space 
