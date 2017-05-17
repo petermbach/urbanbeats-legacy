@@ -829,7 +829,7 @@ class Techplacement(UBModule):
             self.swhbenefitstable = dcv.initializeSWHbenefitsTable(self.ubeatsdir+"/ancillary")
 
         #PROCESS MCA PARAMETERS AND SCORING DETAILS
-        self.mca_techlist, self.mca_tech, self.mca_env, self.mca_ecn, self.mca_soc = self.retrieveMCAscoringmatrix()
+        self.mca_techlist, self.Fmca_tech, self.mca_env, self.mca_ecn, self.mca_soc = self.retrieveMCAscoringmatrix()
         self.notify(self.mca_techlist)
         self.notify(self.mca_tech)
         self.notify(self.mca_env)
@@ -1884,9 +1884,13 @@ class Techplacement(UBModule):
         
         #Calculate the maximum degree of lot implementation allowed (no. of houses)
         allotments = currentAttList.getAttribute("ResAllots")
-        Aimplot = currentAttList.getAttribute("ResLotEIA")
-        self.notify("Allotments = "+str(allotments)+" of each "+str(Aimplot)+" sqm impervious")
-        max_houses = min((inblock_impdeficit/Aimplot)/allotments, 1)
+        if allotments == 0:
+            max_houses = 0
+            self.notify("There are no houses in this Block, therefore no lot-scale systems can be implemented")
+        else:
+            Aimplot = currentAttList.getAttribute("ResLotEIA")
+            self.notify("Allotments = "+str(allotments)+" of each "+str(Aimplot)+" sqm impervious")
+            max_houses = min((inblock_impdeficit/Aimplot)/allotments, 1)
         self.notify("A Lot Strategy in this Block would permit a maximum implementation in: "+str(max_houses*100)+"% of houses")
         currentAttList.addAttribute("MaxLotDeg", max_houses)
         
@@ -1998,11 +2002,15 @@ class Techplacement(UBModule):
         currentAttList.addAttribute("DeficitIA", inblock_impdeficit)
         
         allotments = currentAttList.getAttribute("ResAllots")
-        Aimplot = currentAttList.getAttribute("ResLotEIA")
-        self.notify("Allotments = "+str(allotments)+" of each "+str(Aimplot)+" sqm impervious")
-        max_houses = min((inblock_impdeficit/Aimplot)/allotments, 1)
-        self.notify("A Lot Strategy in this Block would permit a maximum implementation in: "+str(max_houses*100)+"% of houses")
-        currentAttList.addAttribute("MaxLotDeg", max_houses)
+        if allotments != 0:
+            Aimplot = currentAttList.getAttribute("ResLotEIA")
+            self.notify("Allotments = "+str(allotments)+" of each "+str(Aimplot)+" sqm impervious")
+            max_houses = min((inblock_impdeficit/Aimplot)/allotments, 1)
+            self.notify("A Lot Strategy in this Block would permit a maximum implementation in: "+str(max_houses*100)+"% of houses")
+            currentAttList.addAttribute("MaxLotDeg", max_houses)
+        else:
+            self.notify("No houses in this block")
+            currentAttList.addAttribute("MaxLotDeg", 0)
         
         #SUBBASIN
         sys_descr = self.locatePlannedSystems(sys_implement, "B")
@@ -2284,7 +2292,6 @@ class Techplacement(UBModule):
         """
         #Determine impervious area to deal with depending on scale
         currentAttList = self.activesim.getAssetWithName("BlockID"+str(ID))
-        #currentAttList = self.getBlockUUID(ID,city)
         ksat = currentAttList.getAttribute("Soil_k")
         sysexfil = sys_descr.getAttribute("Exfil")
         Asyseff = sys_descr.getAttribute("SysArea")/sys_descr.getAttribute("EAFact")
