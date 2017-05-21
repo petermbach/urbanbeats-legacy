@@ -171,7 +171,8 @@ class Techimplement(UBModule):
             ### QUIT CONDITION #3 - DYNAMIC-MODE = Block-based and DEVELOPMENT < Threshold ###
             if self.dynamic_rule == "B":
                 block_skip = self.skipIfBelowBlockThreshold(currentID, float(self.block_based_thresh/100))
-                #use block_skip to determine whether to skip the next few steps
+                if block_skip:
+                    continue
  
             self.notify("BlockID"+str(currentID)+" has systems to be implemented")
             
@@ -239,16 +240,23 @@ class Techimplement(UBModule):
         return 0
     
     def skipIfBelowBlockThreshold(self, ID, threshold):
+        """Assesses whether the Block ID's total developed land is below the threshold.
+
+        :param ID:
+        :param threshold:
+        :return: Boolean, if True, skips implementation, if False, allows implementation
+        """
         undevland = self.activesim.getAssetWithName("BlockID"+str(ID)).getAttribute("pLU_UND")
         undevprev = self.activesim.getAssetWithName("PrevID"+str(ID)).getAttribute("pLU_UND")
-        #undevland = self.getBlockUUID(ID, city).getAttribute("pLU_UND")
-        #undevprev = self.getPrevBlockUUID(ID, city).getAttribute("pLU_UND") #This is the final value
-        devtot = 1 - undevprev  #Developed = Masterplan, i.e. once 1-%UND has been developed
-        if ((1-undevland)/devtot) < threshold:
-            #If the developmed land (according to masterplan) has reached a threshold for development, implement
+        devtotmast = 1 - undevprev  #Developed = Masterplan, i.e. once 1-%UND has been developed
+        if devtotmast == 0:     #Should NOT enter this case, but catching it anyway!
+            print "Entered a strange condition... alert the developer (SkipIfBelowThreshold)"
             return True
+        if ((1-undevland)/devtotmast) >= threshold:
+            #If the developed land (according to masterplan) has reached a threshold for development, implement
+            return False
         else:
-            return False        #Otherwise skip
+            return True        #Otherwise skip = True = Yes
     
     def writeSystemAttributesToOutput(self, sys, year, qty, currentImpT, currentAttList, block_size):
         """Writes the attributes to module output of the systems implemented"""
