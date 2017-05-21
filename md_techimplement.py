@@ -167,12 +167,6 @@ class Techimplement(UBModule):
                 continue
 
             masterplanAttList = self.activesim.getAssetWithName("PrevID"+str(currentID))
-
-            ### QUIT CONDITION #3 - DYNAMIC-MODE = Block-based and DEVELOPMENT < Threshold ###
-            if self.dynamic_rule == "B":
-                block_skip = self.skipIfBelowBlockThreshold(currentID, float(self.block_based_thresh/100))
-                if block_skip:
-                    continue
  
             self.notify("BlockID"+str(currentID)+" has systems to be implemented")
             
@@ -426,7 +420,8 @@ class Techimplement(UBModule):
                 curImpT = sys.getAttribute("ImpTWQ")
                 return curImpT, year
         elif sys.getAttribute("Scale") == "N":
-            #Develop. Have already checked the block threshold for the Neighbourhood
+            if self.skipIfBelowBlockThreshold(currentAttList.getAttribute("BlockID"), float(self.block_based_thresh / 100)):
+                return 0,0  #Check if we are skipping because dev area < threshold
             year = self.currentyear
             curImpT = sys.getAttribute("SvWQ_ImpT")
             return curImpT, year
@@ -457,7 +452,7 @@ class Techimplement(UBModule):
         #CRITERIA 2 - Check development status of upstream area
         curUD, mastUD = self.retrieveUndevelopedAreas(currentAttList, masterAttList, "upstream")
         if self.prec_dev_threshold == True: 
-            if (1-curUD)/(1-mastUD) < float(self.prec_dev_percent/100):
+            if (1-curUD)/(1-mastUD) < float(self.prec_dev_percent/100.0):
                 #self.notify("Upstream area not developed enough, skipping..."
                 return 0,0
         
