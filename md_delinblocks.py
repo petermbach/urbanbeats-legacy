@@ -255,7 +255,7 @@ class Delinblocks(UBModule):      #UBCORE
     def loadRaster(self, dataset, dtype):       #UBCORE FUNCTION
         self.notify("Loading "+str(dtype))
         rasterload = ubdata.importRasterData(dataset[str(dtype)])
-        self.notify("Load "+str(dtype)+" Complete")
+        self.notify("Load "+str(dtype)+" "+dataset[str(dtype)]+" Complete")
         return rasterload
     
     def run(self):

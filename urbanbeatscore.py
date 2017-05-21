@@ -728,7 +728,7 @@ class UrbanBeatsSim(threading.Thread):
             #(2) Delinblocks
             self.updateObservers("PROGRESSUPDATE||"+str(int(10.0*progressincrement+incrementcount)))
             delinblocks = self.getModuleDelinblocks()
-            delinblocks.setParameter("curcycle", "pc")
+            delinblocks.setParameter("cycletype", "pc")
             delinblocks.setParameter("tabindex", tab)
             delinblocks.attach(self.__observers)   #Register the observer
             delinblocks.run()
