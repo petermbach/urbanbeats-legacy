@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #------ IMPORTS --------------
 #Regular imports
-import threading, gc, os
+import threading, gc, os, tempfile
 
 #Dependencies
 import urbanbeatsdatatypes as ubdata
@@ -682,6 +682,24 @@ class UrbanBeatsSim(threading.Thread):
 
         self.updateObservers("Starting Simulation")
         global_options = ubfiles.readGlobalOptionsConfig(self.__options_root)
+        if global_options["default_path"] == 1:
+            temp_directory = tempfile.gettempdir() + "\\ubeats"
+            if os.path.exists(temp_directory):
+                pass
+            else:
+                os.mkdir(temp_directory)
+        else:
+            temp_directory = global_options["temp_dir"]
+            if os.path.exists(temp_directory):
+                pass
+            else:
+                print "Error, temp directory does not exist"
+                temp_directory = tempfile.gettempdir() + "\\ubeats"
+                if os.path.exists(temp_directory):
+                    pass
+                else:
+                    os.mkdir(temp_directory)
+
         if len(self.__techimplement) == 0:
             progressincrement = 1.0/float(self.__tabs)   #1 divided by number of tabs e.g. 4 tabs, each tab will be 25% of progress bar
         else:
@@ -772,6 +790,7 @@ class UrbanBeatsSim(threading.Thread):
                 techplacement.setParameter("num_output_strats", global_options["numstrats"])
                 techplacement.setParameter("maxMCiterations", global_options["iterations"])
                 techplacement.setParameter("defaultdecision", global_options["decisiontype"])
+                techplacement.setParameter("temp_dir", temp_directory)
                 techplacement.setParameter("currentyear", current)
                 techplacement.setParameter("startyear", startyear)
                 techplacement.setParameter("prevyear", int(current) - int(timestep))

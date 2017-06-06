@@ -68,9 +68,18 @@ class MainWindow(QtGui.QMainWindow):
         #ATTRIBUTES
         self.__activeSimulationObject = None
         self.__activeprojectpath = "C:\\"
-        self.__global_options = {"defaultmodeller": "", "defaultaffil":"", "iterations":1000, "city": "Melbourne",
-                                "decisiontype":"H", "numstrats":5, "MUSICauto":0, "MUSICpath":"", "MUSICver":"Version5", "MUSICtte":0,
-                                "MUSICflux":0, "mapstyle":"Style1", "tileserverURL":"", "gearth_path": "", "gearth_auto": 0 }
+        self.__global_options = {"numstrats":5,
+                                 "city": "Melbourne",
+                                 "mapstyle": "Style1",
+                                 "tileserverURL": "",
+                                 "gearth_path": "",
+                                 "defaultmodeller": "",
+                                 "decisiontype": "H",
+                                 "iterations": 1000,
+                                 "defaultaffil":"",
+                                 "gearth_auto": 0 ,
+                                 "default_path":1,
+                                 "temp_dir": ""}
         
         ###########################################
         ### GUI Signals & Slots                 ###

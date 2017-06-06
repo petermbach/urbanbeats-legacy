@@ -403,5 +403,15 @@ def resetGlobalOptions(root_directory):
     f.close()
     return True
 
-default_global_options = {"defaultmodeller": "<none>", "defaultaffil":"<none>", "iterations":1000, "city": "Melbourne",
-                      "decisiontype":"H", "numstrats":5, "mapstyle":"Style1", "tileserverURL":"", "gearth_path": "", "gearth_auto": 0}
+default_global_options = {"numstrats":5,
+                         "city": "Melbourne",
+                         "mapstyle": "Style1",
+                         "tileserverURL": "",
+                         "gearth_path": "",
+                         "defaultmodeller": "<none>",
+                         "decisiontype": "H",
+                         "iterations": 1000,
+                         "defaultaffil":"<none>",
+                         "gearth_auto": 0 ,
+                         "default_path":1,
+                         "temp_dir": "<none>"}
