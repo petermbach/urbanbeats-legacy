@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'preferencesdialog.ui'
 #
-# Created: Mon Feb 23 22:20:42 2015
-#      by: PyQt4 UI code generator 4.8.6
+# Created: Tue Jun 06 13:19:28 2017
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,13 +12,21 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_PreferencesDialog(object):
     def setupUi(self, PreferencesDialog):
         PreferencesDialog.setObjectName(_fromUtf8("PreferencesDialog"))
         PreferencesDialog.resize(480, 640)
-        PreferencesDialog.setWindowTitle(QtGui.QApplication.translate("PreferencesDialog", "Preferences", None, QtGui.QApplication.UnicodeUTF8))
         self.verticalLayout = QtGui.QVBoxLayout(PreferencesDialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.widget = QtGui.QWidget(PreferencesDialog)
@@ -39,11 +47,9 @@ class Ui_PreferencesDialog(object):
         font.setBold(True)
         font.setWeight(75)
         self.dbtitle.setFont(font)
-        self.dbtitle.setText(QtGui.QApplication.translate("PreferencesDialog", "Preferences", None, QtGui.QApplication.UnicodeUTF8))
         self.dbtitle.setObjectName(_fromUtf8("dbtitle"))
         self.dbsubtitle = QtGui.QLabel(self.widget)
-        self.dbsubtitle.setGeometry(QtCore.QRect(55, 25, 361, 20))
-        self.dbsubtitle.setText(QtGui.QApplication.translate("PreferencesDialog", "Configure the program, simulation options, paths and export options.", None, QtGui.QApplication.UnicodeUTF8))
+        self.dbsubtitle.setGeometry(QtCore.QRect(55, 25, 401, 20))
         self.dbsubtitle.setObjectName(_fromUtf8("dbsubtitle"))
         self.verticalLayout.addWidget(self.widget)
         self.main_preferences_widget = QtGui.QWidget(PreferencesDialog)
@@ -69,27 +75,35 @@ class Ui_PreferencesDialog(object):
         self.widget_2 = QtGui.QWidget(self.scrollAreaWidgetContents)
         self.widget_2.setObjectName(_fromUtf8("widget_2"))
         self.projinfo_options = QtGui.QLabel(self.widget_2)
-        self.projinfo_options.setGeometry(QtCore.QRect(10, 10, 141, 16))
-        self.projinfo_options.setText(QtGui.QApplication.translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Project Details</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.projinfo_options.setGeometry(QtCore.QRect(10, 10, 361, 16))
         self.projinfo_options.setObjectName(_fromUtf8("projinfo_options"))
         self.modeller_name_lbl = QtGui.QLabel(self.widget_2)
         self.modeller_name_lbl.setGeometry(QtCore.QRect(20, 40, 141, 16))
-        self.modeller_name_lbl.setText(QtGui.QApplication.translate("PreferencesDialog", "Default Modeller Name:", None, QtGui.QApplication.UnicodeUTF8))
         self.modeller_name_lbl.setObjectName(_fromUtf8("modeller_name_lbl"))
         self.modeller_name_box = QtGui.QLineEdit(self.widget_2)
         self.modeller_name_box.setGeometry(QtCore.QRect(160, 40, 181, 20))
         self.modeller_name_box.setObjectName(_fromUtf8("modeller_name_box"))
         self.modeller_affil_lbl = QtGui.QLabel(self.widget_2)
         self.modeller_affil_lbl.setGeometry(QtCore.QRect(20, 70, 141, 16))
-        self.modeller_affil_lbl.setText(QtGui.QApplication.translate("PreferencesDialog", "Default Affiliation:", None, QtGui.QApplication.UnicodeUTF8))
         self.modeller_affil_lbl.setObjectName(_fromUtf8("modeller_affil_lbl"))
         self.modeller_affil_box = QtGui.QLineEdit(self.widget_2)
         self.modeller_affil_box.setGeometry(QtCore.QRect(160, 70, 181, 20))
         self.modeller_affil_box.setObjectName(_fromUtf8("modeller_affil_box"))
+        self.projinfo_temp_title = QtGui.QLabel(self.widget_2)
+        self.projinfo_temp_title.setGeometry(QtCore.QRect(10, 110, 361, 16))
+        self.projinfo_temp_title.setObjectName(_fromUtf8("projinfo_temp_title"))
+        self.projinfo_temp_lbl = QtGui.QLabel(self.widget_2)
+        self.projinfo_temp_lbl.setGeometry(QtCore.QRect(20, 140, 351, 16))
+        self.projinfo_temp_lbl.setObjectName(_fromUtf8("projinfo_temp_lbl"))
+        self.projinfo_temppath_box = QtGui.QLineEdit(self.widget_2)
+        self.projinfo_temppath_box.setGeometry(QtCore.QRect(20, 170, 261, 20))
+        self.projinfo_temppath_box.setObjectName(_fromUtf8("projinfo_temppath_box"))
+        self.projinfo_tempbrowse = QtGui.QPushButton(self.widget_2)
+        self.projinfo_tempbrowse.setGeometry(QtCore.QRect(290, 170, 75, 20))
+        self.projinfo_tempbrowse.setObjectName(_fromUtf8("projinfo_tempbrowse"))
+        self.projinfo_temp_check = QtGui.QCheckBox(self.widget_2)
+        self.projinfo_temp_check.setGeometry(QtCore.QRect(20, 200, 351, 17))
+        self.projinfo_temp_check.setObjectName(_fromUtf8("projinfo_temp_check"))
         self.verticalLayout_6.addWidget(self.widget_2)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout_3.addWidget(self.scrollArea)
@@ -103,7 +117,7 @@ class Ui_PreferencesDialog(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName(_fromUtf8("scrollArea_2"))
         self.scrollAreaWidgetContents_2 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 401, 458))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 98, 218))
         self.scrollAreaWidgetContents_2.setObjectName(_fromUtf8("scrollAreaWidgetContents_2"))
         self.verticalLayout_7 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_7.setObjectName(_fromUtf8("verticalLayout_7"))
@@ -111,24 +125,16 @@ class Ui_PreferencesDialog(object):
         self.widget_5.setMinimumSize(QtCore.QSize(0, 200))
         self.widget_5.setObjectName(_fromUtf8("widget_5"))
         self.techplan_options = QtGui.QLabel(self.widget_5)
-        self.techplan_options.setGeometry(QtCore.QRect(10, 10, 141, 16))
-        self.techplan_options.setText(QtGui.QApplication.translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Technologies Planning</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.techplan_options.setGeometry(QtCore.QRect(10, 10, 361, 16))
         self.techplan_options.setObjectName(_fromUtf8("techplan_options"))
         self.techplan_city_lbl = QtGui.QLabel(self.widget_5)
         self.techplan_city_lbl.setGeometry(QtCore.QRect(20, 70, 141, 16))
-        self.techplan_city_lbl.setText(QtGui.QApplication.translate("PreferencesDialog", "Default City:", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_city_lbl.setObjectName(_fromUtf8("techplan_city_lbl"))
         self.tech_leaveempty_radio = QtGui.QRadioButton(self.widget_5)
         self.tech_leaveempty_radio.setGeometry(QtCore.QRect(220, 100, 151, 18))
-        self.tech_leaveempty_radio.setText(QtGui.QApplication.translate("PreferencesDialog", "Leave Basin Empty", None, QtGui.QApplication.UnicodeUTF8))
         self.tech_leaveempty_radio.setObjectName(_fromUtf8("tech_leaveempty_radio"))
         self.techplan_iter_spin = QtGui.QSpinBox(self.widget_5)
         self.techplan_iter_spin.setGeometry(QtCore.QRect(240, 35, 131, 22))
-        self.techplan_iter_spin.setSuffix(QtGui.QApplication.translate("PreferencesDialog", " realisations", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_iter_spin.setMinimum(500)
         self.techplan_iter_spin.setMaximum(100000)
         self.techplan_iter_spin.setSingleStep(500)
@@ -137,32 +143,22 @@ class Ui_PreferencesDialog(object):
         self.techplan_city_combo.setGeometry(QtCore.QRect(180, 65, 191, 22))
         self.techplan_city_combo.setObjectName(_fromUtf8("techplan_city_combo"))
         self.techplan_city_combo.addItem(_fromUtf8(""))
-        self.techplan_city_combo.setItemText(0, QtGui.QApplication.translate("PreferencesDialog", "Adelaide", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_city_combo.addItem(_fromUtf8(""))
-        self.techplan_city_combo.setItemText(1, QtGui.QApplication.translate("PreferencesDialog", "Brisbane", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_city_combo.addItem(_fromUtf8(""))
-        self.techplan_city_combo.setItemText(2, QtGui.QApplication.translate("PreferencesDialog", "Darwin", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_city_combo.addItem(_fromUtf8(""))
-        self.techplan_city_combo.setItemText(3, QtGui.QApplication.translate("PreferencesDialog", "Melbourne", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_city_combo.addItem(_fromUtf8(""))
-        self.techplan_city_combo.setItemText(4, QtGui.QApplication.translate("PreferencesDialog", "Perth", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_city_combo.addItem(_fromUtf8(""))
-        self.techplan_city_combo.setItemText(5, QtGui.QApplication.translate("PreferencesDialog", "Sydney", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_decision_lbl = QtGui.QLabel(self.widget_5)
         self.techplan_decision_lbl.setGeometry(QtCore.QRect(20, 100, 201, 16))
-        self.techplan_decision_lbl.setText(QtGui.QApplication.translate("PreferencesDialog", "Decision to make if no solutions found:", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_decision_lbl.setObjectName(_fromUtf8("techplan_decision_lbl"))
         self.techplan_iter_lbl = QtGui.QLabel(self.widget_5)
-        self.techplan_iter_lbl.setGeometry(QtCore.QRect(20, 40, 201, 16))
-        self.techplan_iter_lbl.setText(QtGui.QApplication.translate("PreferencesDialog", "Default Monte Carlo Iteration Count:", None, QtGui.QApplication.UnicodeUTF8))
+        self.techplan_iter_lbl.setGeometry(QtCore.QRect(20, 40, 211, 16))
         self.techplan_iter_lbl.setObjectName(_fromUtf8("techplan_iter_lbl"))
         self.tech_highest_radio = QtGui.QRadioButton(self.widget_5)
         self.tech_highest_radio.setGeometry(QtCore.QRect(220, 120, 151, 18))
-        self.tech_highest_radio.setText(QtGui.QApplication.translate("PreferencesDialog", "Choose Highest Service", None, QtGui.QApplication.UnicodeUTF8))
         self.tech_highest_radio.setObjectName(_fromUtf8("tech_highest_radio"))
         self.techplan_strats_spin = QtGui.QSpinBox(self.widget_5)
         self.techplan_strats_spin.setGeometry(QtCore.QRect(240, 145, 131, 22))
-        self.techplan_strats_spin.setSuffix(QtGui.QApplication.translate("PreferencesDialog", " strategies", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_strats_spin.setMinimum(0)
         self.techplan_strats_spin.setMaximum(100)
         self.techplan_strats_spin.setSingleStep(1)
@@ -170,11 +166,9 @@ class Ui_PreferencesDialog(object):
         self.techplan_strats_spin.setObjectName(_fromUtf8("techplan_strats_spin"))
         self.techplan_strats_lbl1 = QtGui.QLabel(self.widget_5)
         self.techplan_strats_lbl1.setGeometry(QtCore.QRect(20, 150, 201, 16))
-        self.techplan_strats_lbl1.setText(QtGui.QApplication.translate("PreferencesDialog", "Number of chosen strategies to export:", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_strats_lbl1.setObjectName(_fromUtf8("techplan_strats_lbl1"))
         self.techplan_strats_lbl2 = QtGui.QLabel(self.widget_5)
         self.techplan_strats_lbl2.setGeometry(QtCore.QRect(20, 170, 201, 16))
-        self.techplan_strats_lbl2.setText(QtGui.QApplication.translate("PreferencesDialog", "(static simulations only)", None, QtGui.QApplication.UnicodeUTF8))
         self.techplan_strats_lbl2.setObjectName(_fromUtf8("techplan_strats_lbl2"))
         self.verticalLayout_7.addWidget(self.widget_5)
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
@@ -189,7 +183,7 @@ class Ui_PreferencesDialog(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollArea_3.setObjectName(_fromUtf8("scrollArea_3"))
         self.scrollAreaWidgetContents_3 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 401, 480))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 98, 480))
         self.scrollAreaWidgetContents_3.setObjectName(_fromUtf8("scrollAreaWidgetContents_3"))
         self.verticalLayout_8 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_3)
         self.verticalLayout_8.setObjectName(_fromUtf8("verticalLayout_8"))
@@ -198,46 +192,33 @@ class Ui_PreferencesDialog(object):
         self.resultsviewer_widget.setObjectName(_fromUtf8("resultsviewer_widget"))
         self.style2_radio = QtGui.QRadioButton(self.resultsviewer_widget)
         self.style2_radio.setGeometry(QtCore.QRect(145, 160, 111, 18))
-        self.style2_radio.setText(QtGui.QApplication.translate("PreferencesDialog", "OpenStreetMap", None, QtGui.QApplication.UnicodeUTF8))
         self.style2_radio.setObjectName(_fromUtf8("style2_radio"))
         self.label_17 = QtGui.QLabel(self.resultsviewer_widget)
         self.label_17.setGeometry(QtCore.QRect(40, 80, 41, 16))
-        self.label_17.setText(QtGui.QApplication.translate("PreferencesDialog", "Style1", None, QtGui.QApplication.UnicodeUTF8))
         self.label_17.setObjectName(_fromUtf8("label_17"))
         self.results_tileserver_box = QtGui.QLineEdit(self.resultsviewer_widget)
         self.results_tileserver_box.setGeometry(QtCore.QRect(110, 190, 251, 20))
         self.results_tileserver_box.setObjectName(_fromUtf8("results_tileserver_box"))
         self.label_19 = QtGui.QLabel(self.resultsviewer_widget)
         self.label_19.setGeometry(QtCore.QRect(310, 80, 41, 16))
-        self.label_19.setText(QtGui.QApplication.translate("PreferencesDialog", "Style3", None, QtGui.QApplication.UnicodeUTF8))
         self.label_19.setObjectName(_fromUtf8("label_19"))
         self.results_tileserver_lbl = QtGui.QLabel(self.resultsviewer_widget)
         self.results_tileserver_lbl.setGeometry(QtCore.QRect(20, 190, 91, 16))
-        self.results_tileserver_lbl.setText(QtGui.QApplication.translate("PreferencesDialog", "Tile Server URL:", None, QtGui.QApplication.UnicodeUTF8))
         self.results_tileserver_lbl.setObjectName(_fromUtf8("results_tileserver_lbl"))
         self.stylecustom_radio = QtGui.QRadioButton(self.resultsviewer_widget)
         self.stylecustom_radio.setGeometry(QtCore.QRect(270, 160, 91, 18))
-        self.stylecustom_radio.setText(QtGui.QApplication.translate("PreferencesDialog", "Custom Tiles", None, QtGui.QApplication.UnicodeUTF8))
         self.stylecustom_radio.setObjectName(_fromUtf8("stylecustom_radio"))
         self.style1_radio = QtGui.QRadioButton(self.resultsviewer_widget)
         self.style1_radio.setGeometry(QtCore.QRect(20, 160, 111, 18))
-        self.style1_radio.setText(QtGui.QApplication.translate("PreferencesDialog", "OpenStreetMap", None, QtGui.QApplication.UnicodeUTF8))
         self.style1_radio.setObjectName(_fromUtf8("style1_radio"))
         self.label_18 = QtGui.QLabel(self.resultsviewer_widget)
         self.label_18.setGeometry(QtCore.QRect(180, 80, 41, 16))
-        self.label_18.setText(QtGui.QApplication.translate("PreferencesDialog", "Style2", None, QtGui.QApplication.UnicodeUTF8))
         self.label_18.setObjectName(_fromUtf8("label_18"))
         self.results_mapstyle_lbl = QtGui.QLabel(self.resultsviewer_widget)
         self.results_mapstyle_lbl.setGeometry(QtCore.QRect(20, 30, 191, 16))
-        self.results_mapstyle_lbl.setText(QtGui.QApplication.translate("PreferencesDialog", "Select Map Viewer Style:", None, QtGui.QApplication.UnicodeUTF8))
         self.results_mapstyle_lbl.setObjectName(_fromUtf8("results_mapstyle_lbl"))
         self.resultsviewer_options = QtGui.QLabel(self.resultsviewer_widget)
         self.resultsviewer_options.setGeometry(QtCore.QRect(10, 10, 171, 16))
-        self.resultsviewer_options.setText(QtGui.QApplication.translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Results Viewer</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.resultsviewer_options.setObjectName(_fromUtf8("resultsviewer_options"))
         self.widget_8 = QtGui.QWidget(self.resultsviewer_widget)
         self.widget_8.setGeometry(QtCore.QRect(20, 60, 101, 91))
@@ -254,27 +235,18 @@ class Ui_PreferencesDialog(object):
         self.gearth_widget.setObjectName(_fromUtf8("gearth_widget"))
         self.gearth_path_browse = QtGui.QPushButton(self.gearth_widget)
         self.gearth_path_browse.setGeometry(QtCore.QRect(310, 70, 61, 23))
-        self.gearth_path_browse.setText(QtGui.QApplication.translate("PreferencesDialog", "Browse...", None, QtGui.QApplication.UnicodeUTF8))
         self.gearth_path_browse.setObjectName(_fromUtf8("gearth_path_browse"))
         self.gearth_path_lbl = QtGui.QLabel(self.gearth_widget)
         self.gearth_path_lbl.setGeometry(QtCore.QRect(20, 70, 91, 16))
-        self.gearth_path_lbl.setText(QtGui.QApplication.translate("PreferencesDialog", "Program Path:", None, QtGui.QApplication.UnicodeUTF8))
         self.gearth_path_lbl.setObjectName(_fromUtf8("gearth_path_lbl"))
         self.gearth_lbl = QtGui.QLabel(self.gearth_widget)
         self.gearth_lbl.setGeometry(QtCore.QRect(10, 10, 171, 16))
-        self.gearth_lbl.setText(QtGui.QApplication.translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Google Earth</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.gearth_lbl.setObjectName(_fromUtf8("gearth_lbl"))
         self.gearth_auto_check = QtGui.QCheckBox(self.gearth_widget)
         self.gearth_auto_check.setGeometry(QtCore.QRect(110, 100, 251, 18))
-        self.gearth_auto_check.setText(QtGui.QApplication.translate("PreferencesDialog", "Automatically load Earth Maps upon export", None, QtGui.QApplication.UnicodeUTF8))
         self.gearth_auto_check.setObjectName(_fromUtf8("gearth_auto_check"))
         self.gearth_get = QtGui.QPushButton(self.gearth_widget)
         self.gearth_get.setGeometry(QtCore.QRect(10, 40, 121, 23))
-        self.gearth_get.setText(QtGui.QApplication.translate("PreferencesDialog", "Get Google Earth", None, QtGui.QApplication.UnicodeUTF8))
         self.gearth_get.setObjectName(_fromUtf8("gearth_get"))
         self.gearth_path_box = QtGui.QLineEdit(self.gearth_widget)
         self.gearth_path_box.setGeometry(QtCore.QRect(110, 70, 191, 20))
@@ -285,27 +257,12 @@ class Ui_PreferencesDialog(object):
         self.export_widget.setObjectName(_fromUtf8("export_widget"))
         self.export_title = QtGui.QLabel(self.export_widget)
         self.export_title.setGeometry(QtCore.QRect(10, 10, 171, 16))
-        self.export_title.setText(QtGui.QApplication.translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Map Export Options</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.export_title.setObjectName(_fromUtf8("export_title"))
         self.export_patchsquares = QtGui.QCheckBox(self.export_widget)
         self.export_patchsquares.setGeometry(QtCore.QRect(20, 35, 251, 18))
-        self.export_patchsquares.setWhatsThis(QtGui.QApplication.translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">UrbanBEATS exports the positions of centroids of each patch with metadata of land use, area, aspect ratio, elevation and soil type for each patch. Check this box to export an additional polygonal shapefile containing rectangles drawn to the size of each patch in the map. </p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-style:italic;\">(Note: this is useful for visualising patch distribution, land use clustering and relative elevation of land uses in each block)</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.export_patchsquares.setText(QtGui.QApplication.translate("PreferencesDialog", "Export Visualisation of Patch Areas", None, QtGui.QApplication.UnicodeUTF8))
         self.export_patchsquares.setObjectName(_fromUtf8("export_patchsquares"))
         self.export_patchaspect = QtGui.QCheckBox(self.export_widget)
         self.export_patchaspect.setGeometry(QtCore.QRect(20, 60, 291, 18))
-        self.export_patchaspect.setWhatsThis(QtGui.QApplication.translate("PreferencesDialog", "Check this box if you want the shape of each rectangle to be governed by the aspect ratio of the patch. If left uncheck, the program will simply draw squares.", None, QtGui.QApplication.UnicodeUTF8))
-        self.export_patchaspect.setText(QtGui.QApplication.translate("PreferencesDialog", "Draw Rectangles based on Aspect Ratios", None, QtGui.QApplication.UnicodeUTF8))
         self.export_patchaspect.setObjectName(_fromUtf8("export_patchaspect"))
         self.verticalLayout_8.addWidget(self.export_widget)
         self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_3)
@@ -321,11 +278,6 @@ class Ui_PreferencesDialog(object):
         self.horizontalLayout_2.setMargin(0)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.remarks = QtGui.QLabel(self.widget_4)
-        self.remarks.setText(QtGui.QApplication.translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS.preferences</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.remarks.setObjectName(_fromUtf8("remarks"))
         self.horizontalLayout_2.addWidget(self.remarks)
         self.buttonBox = QtGui.QDialogButtonBox(self.widget_4)
@@ -334,7 +286,6 @@ class Ui_PreferencesDialog(object):
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.horizontalLayout_2.addWidget(self.buttonBox)
         self.optionsReset_button = QtGui.QPushButton(self.widget_4)
-        self.optionsReset_button.setText(QtGui.QApplication.translate("PreferencesDialog", "Reset", None, QtGui.QApplication.UnicodeUTF8))
         self.optionsReset_button.setObjectName(_fromUtf8("optionsReset_button"))
         self.horizontalLayout_2.addWidget(self.optionsReset_button)
         self.verticalLayout.addWidget(self.widget_4)
@@ -366,9 +317,89 @@ class Ui_PreferencesDialog(object):
         PreferencesDialog.setTabOrder(self.gearth_path_browse, self.gearth_auto_check)
 
     def retranslateUi(self, PreferencesDialog):
-        self.options_tabs.setTabText(self.options_tabs.indexOf(self.general_tab), QtGui.QApplication.translate("PreferencesDialog", "General", None, QtGui.QApplication.UnicodeUTF8))
-        self.options_tabs.setTabText(self.options_tabs.indexOf(self.simulation_tab), QtGui.QApplication.translate("PreferencesDialog", "Simulation", None, QtGui.QApplication.UnicodeUTF8))
-        self.options_tabs.setTabText(self.options_tabs.indexOf(self.results_tab), QtGui.QApplication.translate("PreferencesDialog", "Results", None, QtGui.QApplication.UnicodeUTF8))
+        PreferencesDialog.setWindowTitle(_translate("PreferencesDialog", "Preferences", None))
+        self.dbtitle.setText(_translate("PreferencesDialog", "Preferences", None))
+        self.dbsubtitle.setText(_translate("PreferencesDialog", "Configure the program, simulation options, paths and export options.", None))
+        self.projinfo_options.setText(_translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Project Details</span></p></body></html>", None))
+        self.modeller_name_lbl.setText(_translate("PreferencesDialog", "Default Modeller Name:", None))
+        self.modeller_affil_lbl.setText(_translate("PreferencesDialog", "Default Affiliation:", None))
+        self.projinfo_temp_title.setText(_translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Temporary Directory Path</span></p></body></html>", None))
+        self.projinfo_temp_lbl.setText(_translate("PreferencesDialog", "Specify a specific directory for the model to use", None))
+        self.projinfo_tempbrowse.setText(_translate("PreferencesDialog", "Browse...", None))
+        self.projinfo_temp_check.setText(_translate("PreferencesDialog", "Use Windows Default (Users/name/AppData/Local/Temp/...)", None))
+        self.options_tabs.setTabText(self.options_tabs.indexOf(self.general_tab), _translate("PreferencesDialog", "General", None))
+        self.techplan_options.setText(_translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Technologies Planning</span></p></body></html>", None))
+        self.techplan_city_lbl.setText(_translate("PreferencesDialog", "Default City:", None))
+        self.tech_leaveempty_radio.setText(_translate("PreferencesDialog", "Leave Basin Empty", None))
+        self.techplan_iter_spin.setSuffix(_translate("PreferencesDialog", " realisations", None))
+        self.techplan_city_combo.setItemText(0, _translate("PreferencesDialog", "Adelaide", None))
+        self.techplan_city_combo.setItemText(1, _translate("PreferencesDialog", "Brisbane", None))
+        self.techplan_city_combo.setItemText(2, _translate("PreferencesDialog", "Darwin", None))
+        self.techplan_city_combo.setItemText(3, _translate("PreferencesDialog", "Melbourne", None))
+        self.techplan_city_combo.setItemText(4, _translate("PreferencesDialog", "Perth", None))
+        self.techplan_city_combo.setItemText(5, _translate("PreferencesDialog", "Sydney", None))
+        self.techplan_decision_lbl.setText(_translate("PreferencesDialog", "Decision to make if no solutions found:", None))
+        self.techplan_iter_lbl.setText(_translate("PreferencesDialog", "Default Monte Carlo Iteration Count:", None))
+        self.tech_highest_radio.setText(_translate("PreferencesDialog", "Choose Highest Service", None))
+        self.techplan_strats_spin.setSuffix(_translate("PreferencesDialog", " strategies", None))
+        self.techplan_strats_lbl1.setText(_translate("PreferencesDialog", "Number of chosen strategies to export:", None))
+        self.techplan_strats_lbl2.setText(_translate("PreferencesDialog", "(static simulations only)", None))
+        self.options_tabs.setTabText(self.options_tabs.indexOf(self.simulation_tab), _translate("PreferencesDialog", "Simulation", None))
+        self.style2_radio.setText(_translate("PreferencesDialog", "OpenStreetMap", None))
+        self.label_17.setText(_translate("PreferencesDialog", "Style1", None))
+        self.label_19.setText(_translate("PreferencesDialog", "Style3", None))
+        self.results_tileserver_lbl.setText(_translate("PreferencesDialog", "Tile Server URL:", None))
+        self.stylecustom_radio.setText(_translate("PreferencesDialog", "Custom Tiles", None))
+        self.style1_radio.setText(_translate("PreferencesDialog", "OpenStreetMap", None))
+        self.label_18.setText(_translate("PreferencesDialog", "Style2", None))
+        self.results_mapstyle_lbl.setText(_translate("PreferencesDialog", "Select Map Viewer Style:", None))
+        self.resultsviewer_options.setText(_translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Results Viewer</span></p></body></html>", None))
+        self.gearth_path_browse.setText(_translate("PreferencesDialog", "Browse...", None))
+        self.gearth_path_lbl.setText(_translate("PreferencesDialog", "Program Path:", None))
+        self.gearth_lbl.setText(_translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Google Earth</span></p></body></html>", None))
+        self.gearth_auto_check.setText(_translate("PreferencesDialog", "Automatically load Earth Maps upon export", None))
+        self.gearth_get.setText(_translate("PreferencesDialog", "Get Google Earth", None))
+        self.export_title.setText(_translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Map Export Options</span></p></body></html>", None))
+        self.export_patchsquares.setWhatsThis(_translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">UrbanBEATS exports the positions of centroids of each patch with metadata of land use, area, aspect ratio, elevation and soil type for each patch. Check this box to export an additional polygonal shapefile containing rectangles drawn to the size of each patch in the map. </p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-style:italic;\">(Note: this is useful for visualising patch distribution, land use clustering and relative elevation of land uses in each block)</span></p></body></html>", None))
+        self.export_patchsquares.setText(_translate("PreferencesDialog", "Export Visualisation of Patch Areas", None))
+        self.export_patchaspect.setWhatsThis(_translate("PreferencesDialog", "Check this box if you want the shape of each rectangle to be governed by the aspect ratio of the patch. If left uncheck, the program will simply draw squares.", None))
+        self.export_patchaspect.setText(_translate("PreferencesDialog", "Draw Rectangles based on Aspect Ratios", None))
+        self.options_tabs.setTabText(self.options_tabs.indexOf(self.results_tab), _translate("PreferencesDialog", "Results", None))
+        self.remarks.setText(_translate("PreferencesDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-style:italic;\">UrbanBEATS.preferences</span></p></body></html>", None))
+        self.optionsReset_button.setText(_translate("PreferencesDialog", "Reset", None))
 
-import guitoolbaricons_rc
 import guitoolbaricons_rc

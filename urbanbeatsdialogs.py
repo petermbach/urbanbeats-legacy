@@ -337,6 +337,12 @@ class PreferencesDialogLaunch(QtGui.QDialog):
         self.ui.modeller_name_box.setText(self.module.getConfigOptions("defaultmodeller"))
         self.ui.modeller_affil_box.setText(self.module.getConfigOptions("defaultaffil"))
 
+        self.ui.projinfo_temppath_box.setText(self.module.getConfigOptions("temp_dir"))
+        self.ui.projinfo_temp_check.setChecked(int(self.module.getConfigOptions("cust_path")))
+
+        self.enablePathBox()
+        self.connect(self.ui.projinfo_temp_check, QtCore.SIGNAL("clicked()"), self.enablePathBox)
+
         self.ui.techplan_iter_spin.setValue(self.module.getConfigOptions("iterations"))
 
         cities = ["Adelaide", "Brisbane", "Darwin", "Melbourne", "Perth", "Sydney"]
@@ -368,6 +374,14 @@ class PreferencesDialogLaunch(QtGui.QDialog):
 
         self.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
         self.connect(self.ui.optionsReset_button, QtCore.SIGNAL("clicked()"), self.reset_values)
+
+    def enablePathBox(self):
+        if self.ui.projinfo_temp_check.isChecked():
+            self.ui.projinfo_tempbrowse.setEnabled(0)
+            self.ui.projinfo_temppath_box.setEnabled(0)
+        else:
+            self.ui.projinfo_tempbrowse.setEnabled(1)
+            self.ui.projinfo_temppath_box.setEnabled(1)
 
     def enabledisableMapStyle(self):
         if self.ui.stylecustom_radio.isChecked():
