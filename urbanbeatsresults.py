@@ -25,13 +25,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 __author__ = 'Peter M Bach'
 
-import sys, os
-#import mapnik
 from urbanbeatscore import *
 import PyQt4
 from PyQt4 import QtGui, QtCore, QtWebKit
 from urbanbeatsresultsgui import Ui_ResultsBrowseDialog
 import ubhighcharts, ubleafletjs, urbanbeatssummaries
+import urbanbeatsfiles as ubfiles
+import tempfile, os
 
 def createTopLevelItem(name):
     """Creates a top level item for a tree widget"""
@@ -55,6 +55,9 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
 
         self.current_active_plotdata = None
 
+        self.temp_dir = activesim.getCurrentTempDirectory()
+
+
         #PROJECT SUMMARY WINDOW
         toplevitems = [createTopLevelItem("FULL SUMMARY"), createTopLevelItem("General Info"), createTopLevelItem("Synopsis"), createTopLevelItem("Simulation Details")]
         narratives = activesim.getAllNarratives()
@@ -66,7 +69,7 @@ class ResultsBrowseDialogLaunch(QtGui.QDialog):
         self.ui.ps_WebView.setHtml(summaryhtml)
 
         #SPATIAL MAP VIEWER - LEAFLET MAP TILES
-        self.htmlscript0 = ubleafletjs.writeLeafletScript("off", self.project_path, self.map_files, self.options_root)
+        self.htmlscript0 = ubleafletjs.writeLeafletScript("off", self.project_path, self.map_files, self.temp_dir)
         self.ui.sm_WebView.setHtml(self.htmlscript0)
 
 

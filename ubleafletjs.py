@@ -28,12 +28,12 @@ __author__ = 'Peter M Bach'
 
 import os
 
-def writeLeafletScript(viewmode, filepath, filename, options_root):
+def writeLeafletScript(viewmode, project_path, filename, output_path):
     """Creates the HTML code for the leafletjs map, returns a string object with html code"""
 
     htmlscript = ""
     htmlscript += writeLeafletHeader(viewmode)
-    htmlscript += writeLeafletBody(viewmode, filepath, filename, options_root)
+    htmlscript += writeLeafletBody(viewmode, project_path, filename, output_path)
     htmlscript += """</html>"""
 
     return htmlscript
@@ -58,9 +58,9 @@ def writeLeafletHeader(viewmode):
     """
     return htmlscript
 
-def writeLeafletBody(viewmode, filepath, filename, options_root):
+def writeLeafletBody(viewmode, project_path, filename, output_path):
     """Writes the main body of the leaflet map"""
-    blocksfile = open(options_root+"\\temp\\tempgeojson_0pc_Blocks.geojson")
+    blocksfile = open(output_path+"/tempgeojson_0pc_Blocks.geojson")
     blockscode = """ """
     for lines in blocksfile:
         blockscode += lines

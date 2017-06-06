@@ -1270,7 +1270,7 @@ def exportBlockCentre(filename, assets, miscoptions, map_attr, kmlbool, perf_inc
     return True
 
 def writeGeoJSONTempFiles(activesim, tabindex, curcycle):
-    filepath = activesim.getGlobalOptionsRoot()
+    filepath = activesim.getCurrentTempDirectory()
     gisoptions = activesim.getGISExportDetails()
     map_data = activesim.getAssetWithName("MapAttributes")
     fname = "tempgeojson_"+str(tabindex)+str(curcycle)
@@ -1351,7 +1351,7 @@ def writeBuildingBlocksGeoJSON(filepath, filename, assets, miscoptions, map_attr
             """
     geojsonstring += """
     ] } """
-    f = open(filepath+"/temp/"+filename+"_Blocks.geojson", 'w')
+    f = open(filepath+"/"+filename+"_Blocks.geojson", 'w')
     f.write(geojsonstring)
     f.close()
     return geojsonstring

@@ -338,10 +338,11 @@ class PreferencesDialogLaunch(QtGui.QDialog):
         self.ui.modeller_affil_box.setText(self.module.getConfigOptions("defaultaffil"))
 
         self.ui.projinfo_temppath_box.setText(self.module.getConfigOptions("temp_dir"))
-        self.ui.projinfo_temp_check.setChecked(int(self.module.getConfigOptions("cust_path")))
+        self.ui.projinfo_temp_check.setChecked(int(self.module.getConfigOptions("default_path")))
 
         self.enablePathBox()
         self.connect(self.ui.projinfo_temp_check, QtCore.SIGNAL("clicked()"), self.enablePathBox)
+        self.connect(self.ui.projinfo_tempbrowse, QtCore.SIGNAL("clicked()"), self.getTempPath)
 
         self.ui.techplan_iter_spin.setValue(self.module.getConfigOptions("iterations"))
 
@@ -375,6 +376,12 @@ class PreferencesDialogLaunch(QtGui.QDialog):
         self.connect(self.ui.buttonBox, QtCore.SIGNAL("accepted()"), self.save_values)
         self.connect(self.ui.optionsReset_button, QtCore.SIGNAL("clicked()"), self.reset_values)
 
+    def getTempPath(self):
+        pathname = QtGui.QFileDialog.getExistingDirectory(self, "Select Temp Directory Location")
+        if pathname:
+            self.ui.projinfo_temppath_box.setText(pathname)
+        return True
+
     def enablePathBox(self):
         if self.ui.projinfo_temp_check.isChecked():
             self.ui.projinfo_tempbrowse.setEnabled(0)
@@ -407,6 +414,9 @@ class PreferencesDialogLaunch(QtGui.QDialog):
     def save_values(self):
         self.module.setConfigOptions("defaultmodeller", str(self.ui.modeller_name_box.text()))
         self.module.setConfigOptions("defaultaffil", str(self.ui.modeller_affil_box.text()))
+
+        self.module.setConfigOptions("temp_dir", str(self.ui.projinfo_temppath_box.text()))
+        self.module.setConfigOptions("default_path", int(self.ui.projinfo_temp_check.isChecked()))
 
         self.module.setConfigOptions("iterations", float(self.ui.techplan_iter_spin.value()))
 

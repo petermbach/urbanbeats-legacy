@@ -758,8 +758,10 @@ class Techplacement(UBModule):
 
         self.createParameter("maxMCiterations", DOUBLE, "")
         self.createParameter("defaultdecision", STRING, "")
+        self.createParameter("temp_dir", STRING, "")
         self.maxMCiterations = 1000
         self.defaultdecision = "H"
+        self.temp_dir = ""
 
         #MCA Penalties
         self.createParameter("penaltyQty", BOOL, "")
@@ -4556,7 +4558,8 @@ class Techplacement(UBModule):
     
     
     def debugPlanning(self, basin_strategies_matrix, basinID):
-        f = open((self.ubeatsdir)+"/temp/"+"MCRSum-"+str(self.tabindex)+"-BasinID"+str(basinID)+".csv", 'w')
+        print "NOW DEBUGGING PLANNING", self.temp_dir+"/MCRSum-"+str(self.tabindex)+"-BasinID"+str(basinID)+".csv"
+        f = open(self.temp_dir+"/MCRSum-"+str(self.tabindex)+"-BasinID"+str(basinID)+".csv", 'w')
         for i in range(len(basin_strategies_matrix)):
             cbs = basin_strategies_matrix[i]
             f.write(str(cbs[0])+","+str(cbs[1])+","+str(cbs[2])+","+str(cbs[3])+"\n")

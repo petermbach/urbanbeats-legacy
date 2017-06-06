@@ -44,8 +44,12 @@ class UrbanBeatsSim(threading.Thread):
         self.__options_root = options_root
         global_options = ubfiles.readGlobalOptionsConfig(self.__options_root)
 
+        self.__current_temp_dir = ""
+
         self.emptyBlockPath = self.__options_root+str("/ancillary/emptyblockmap.shp")
         self.emptySysPath = self.__options_root+str("/ancillary/emptysystemsmap.shp")
+
+
         #Observer, Status and Filename
         self.__observers = []         #Observers of the current simulation
         self.__simulation_has_completed = 0
@@ -351,6 +355,13 @@ class UrbanBeatsSim(threading.Thread):
 #        self.__params_techimplement.append(TechimplementParameterSet("baseline"))
 #        self.__params_perfassess.append(PerformanceParameterSet("baseline"))
         return True
+
+    def setCurrentTempDirectory(self, path):
+        self.__current_temp_dir = path
+        return True
+
+    def getCurrentTempDirectory(self):
+        return self.__current_temp_dir
 
     ### ---------- DATA ARCHIVE & DATA SET MANIPULATION --------------------------
     def addDataToArchive(self, datatype, fname):
@@ -661,6 +672,27 @@ class UrbanBeatsSim(threading.Thread):
         ubdata.writeGeoJSONTempFiles(self, tabindex, curcycle)
         return True
 
+    def setTempDirectory(self):
+        global_options = ubfiles.readGlobalOptionsConfig(self.__options_root)
+        if global_options["default_path"] == 1:
+            temp_directory = tempfile.gettempdir() + "\\ubeats"
+            if os.path.exists(temp_directory):
+                pass
+            else:
+                os.mkdir(temp_directory)
+        else:
+            temp_directory = global_options["temp_dir"]
+            if os.path.exists(temp_directory):
+                pass
+            else:
+                print "Error, temp directory does not exist"
+                temp_directory = tempfile.gettempdir() + "\\ubeats"
+                if os.path.exists(temp_directory):
+                    pass
+                else:
+                    os.mkdir(temp_directory)
+        return temp_directory
+
     def run(self):
         print "run time: ", self.__runtimemethod
         if self.__runtimemethod == 0:
@@ -682,23 +714,7 @@ class UrbanBeatsSim(threading.Thread):
 
         self.updateObservers("Starting Simulation")
         global_options = ubfiles.readGlobalOptionsConfig(self.__options_root)
-        if global_options["default_path"] == 1:
-            temp_directory = tempfile.gettempdir() + "\\ubeats"
-            if os.path.exists(temp_directory):
-                pass
-            else:
-                os.mkdir(temp_directory)
-        else:
-            temp_directory = global_options["temp_dir"]
-            if os.path.exists(temp_directory):
-                pass
-            else:
-                print "Error, temp directory does not exist"
-                temp_directory = tempfile.gettempdir() + "\\ubeats"
-                if os.path.exists(temp_directory):
-                    pass
-                else:
-                    os.mkdir(temp_directory)
+        self.setCurrentTempDirectory(self.setTempDirectory())
 
         if len(self.__techimplement) == 0:
             progressincrement = 1.0/float(self.__tabs)   #1 divided by number of tabs e.g. 4 tabs, each tab will be 25% of progress bar
@@ -790,7 +806,7 @@ class UrbanBeatsSim(threading.Thread):
                 techplacement.setParameter("num_output_strats", global_options["numstrats"])
                 techplacement.setParameter("maxMCiterations", global_options["iterations"])
                 techplacement.setParameter("defaultdecision", global_options["decisiontype"])
-                techplacement.setParameter("temp_dir", temp_directory)
+                techplacement.setParameter("temp_dir", self.getCurrentTempDirectory())
                 techplacement.setParameter("currentyear", current)
                 techplacement.setParameter("startyear", startyear)
                 techplacement.setParameter("prevyear", int(current) - int(timestep))
@@ -926,6 +942,8 @@ class UrbanBeatsSim(threading.Thread):
 
         self.updateObservers("Starting Simulation")
         global_options = ubfiles.readGlobalOptionsConfig(self.__options_root)
+        #DO not set the temp directory when running performance only!
+
         if len(self.__techimplement) == 0:
             progressincrement = 1.0/float(self.__tabs)   #1 divided by number of tabs e.g. 4 tabs, each tab will be 25% of progress bar
         else:
