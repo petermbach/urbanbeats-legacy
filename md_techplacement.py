@@ -775,6 +775,10 @@ class Techplacement(UBModule):
         self.penaltyFa = 2.0
         self.penaltyFb = 1.2
 
+        #Plan Revision
+        self.createParameter("Revise", BOOL, "")
+        self.Revise = 0
+
         
     def run(self):
         #self.notify(self.ubeatsdir)
@@ -784,7 +788,13 @@ class Techplacement(UBModule):
         ###-------------------------------------------------------------------###
         #--- PRE-PROCESSING
         ###-------------------------------------------------------------------###        
-        
+
+        #MODIFY PARAMETERS IF REVISION IS NOT WANTED
+        if self.Revise == 1:
+            self.ration_runoff = 0
+            self.ration_pollute = 0
+            self.ration_harvest = 0
+
         #CALCULATE SOME GLOBAL VARIABLES RELATING TO TARGETS
         self.system_tarQ = self.ration_runoff * self.targets_runoff     #Runoff reduction target
         self.system_tarTSS = self.ration_pollute * self.targets_TSS     #TSS reduction target
@@ -975,12 +985,12 @@ class Techplacement(UBModule):
         #INITIALIZE THE DATABASE ---- COMMENT FROM HERE TO REMOVE DATABASE WRITING
         #
         #DEBUG - Database path
-        # ubdbpath = self.ubeatsdir+"/temp/ubeatsdb1.db"
+        # ubdbpath = self.temp_dir+"/ubeatsdb1.db"
         # if os.path.isfile(ubdbpath):
         #     try:
         #         os.remove(ubdbpath)     #Attempts to remove the file, if it fails, it creates another with an incremented
         #     except:                     #index.
-        #         ubdbpath = self.ubeatsdir+"/temp/ubeatsdb"+str(int(ubdbpath[len(ubdbpath)-4])+1)+".db"
+        #         ubdbpath = self.temp_dir+"/ubeatsdb"+str(int(ubdbpath[len(ubdbpath)-4])+1)+".db"
         #
         # self.sqlDB = sqlite3.connect(ubdbpath)
         # self.dbcurs = self.sqlDB.cursor()
@@ -1101,7 +1111,7 @@ class Techplacement(UBModule):
 
             #SKIP CONDITIONS
             if basinRemainQTY == 0.0 and basinRemainWQ == 0.0 and basinRemainREC == 0.0:
-                #self.notify("Basin ID: ", currentBasinID, " has no remaining service requirements, skipping!"
+                #self.notify("Basin ID: ", currentBasinID, " has no remaining service requirements, skipping!")
                 print "Transferring existing systems across"
                 for stratnum in range(int(self.num_output_strats)):
                     self.transferExistingSystemsToOutput(int(stratnum+1), 0, currentBasinID)

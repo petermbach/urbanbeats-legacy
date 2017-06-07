@@ -154,7 +154,8 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.runButton, QtCore.SIGNAL("clicked()"), self.checks_before_run)
         self.connect(self.ui.pc_dataset, QtCore.SIGNAL("clicked()"), lambda curstate="pc": self.customize_dataset(curstate))
         self.connect(self.ui.ic_dataset, QtCore.SIGNAL("clicked()"), lambda curstate="ic": self.customize_dataset(curstate))
-        self.connect(self.ui.pa_dataset, QtCore.SIGNAL("clicked()"), lambda curstate="pa": self.customize_dataset(curstate))        
+        self.connect(self.ui.pa_dataset, QtCore.SIGNAL("clicked()"), lambda curstate="pa": self.customize_dataset(curstate))
+        self.connect(self.ui.revise_check, QtCore.SIGNAL("clicked()"), self.updateSimulationRevisionPlan)
         #----------------------------------------------------------------------------------------------<<<
                         
         #Advanced Menu
@@ -553,7 +554,21 @@ class MainWindow(QtGui.QMainWindow):
             elif activesim.getParameter("df_perfinclude") == 0:
                 self.disable_select_guis("techimpl")
 
-
+    def updateSimulationRevisionPlan(self):
+        """Signals to the module that in that particular tab, no revision is to be made to the masterplan regardless of
+        what the user sets.
+        """
+        curtab = self.ui.simconfig_tabs.currentIndex()
+        activesim = self.getActiveSimulationObject()
+        try:
+            #Try to obtain the technology placement module for that tab
+            tp_module = activesim.getModuleTechplacement(curtab)
+            if self.ui.revise_check.isChecked():    #If checked, do not revise
+                tp_module.setParameter("Revise", 0)
+            else:
+                tp_module.setParameter("Revise", 1)
+        except IndexError:
+            pass
 
     def updateNewProject(self):
         self.processSetupParameters()
