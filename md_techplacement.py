@@ -857,7 +857,7 @@ class Techplacement(UBModule):
         for i in range(int(blocks_num)):
             currentID = i+1
             currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-            #currentAttList = self.getBlockUUID(currentID, city)
+
             if currentAttList.getAttribute("Status") == 0:
                 continue
             wdDict = self.calculateBlockWaterDemand(currentAttList)
@@ -910,7 +910,7 @@ class Techplacement(UBModule):
         for i in range(int(blocks_num)):
             currentID = i+1
             currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-            #currentAttList = self.getBlockUUID(currentID, city)
+
             if currentAttList.getAttribute("Status") == 0:
                 continue
             block_EIA = currentAttList.getAttribute("Blk_EIA")
@@ -933,9 +933,6 @@ class Techplacement(UBModule):
         ###-------------------------------------------------------------------###
         #---  SECOND LOOP - RETROFIT ALGORITHM
         ###-------------------------------------------------------------------###
-        #strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
-        #totsystems = city.getComponent(strvec[0]).getAttribute("TotalSystems")
-        #ubeatsfile = city.getComponent(strvec[0]).getAttribute("UBFile")
         totsystems = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("TotalSystems")
         ubeatsfile = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("UBFile")
 
@@ -947,7 +944,6 @@ class Techplacement(UBModule):
         for i in range(int(blocks_num)):
             system_list[i+1] = []
         for i in range(len(sysIDs)):
-            #curSys = city.getComponent(sysuuids[i])
             curSys = sysIDs[i]
             locate = int(curSys.getAttribute("Location"))
             system_list[locate].append(curSys)  #Block ID [5], [curSys, curSys, curSys]
@@ -955,7 +951,6 @@ class Techplacement(UBModule):
         #Do the retrofitting
         for i in range(int(blocks_num)):
             currentID = i+1
-            #currentAttList = self.getBlockUUID(currentID, city) #QUIT CONDITION #1 - status=0
             currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
             if currentAttList.getAttribute("Status") == 0:
                 continue
@@ -1027,7 +1022,6 @@ class Techplacement(UBModule):
             currentID = i+1
             self.notify("Currently on Block "+str(currentID))
             currentAttList = self.activesim.getAssetWithName("BlockID"+str(currentID))
-            #currentAttList = self.getBlockUUID(currentID, city)
             if currentAttList.getAttribute("Status") == 0:
                 self.notify("Block not active in simulation")
                 continue
@@ -4517,7 +4511,7 @@ class Techplacement(UBModule):
         existSys = self.activesim.getAssetsWithIdentifier("SysPrevID")
         for curSys in existSys:
             if curSys == None:
-                continue        #RemoveComponent only removes the components, not the UUID, must therefore catch this
+                continue
             if int(curSys.getAttribute("BasinID")) != int(basinID):
                 continue        #If the system is not in the current basin, don't transfer it yet.
 

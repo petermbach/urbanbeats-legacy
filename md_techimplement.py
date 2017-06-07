@@ -113,13 +113,9 @@ class Techimplement(UBModule):
         startyear = self.startyear
 
         #Get global map attributes
-        #strvec = city.getUUIDsOfComponentsInView(self.mapattributes)
-        #map_attr = city.getComponent(strvec[0])
         map_attr = self.activesim.getAssetWithName("MapAttributes")
 
         #Find out how many systems are in the list of systems to be implemented
-        #strvec = city.getUUIDsOfComponentsInView(self.sysGlobal)
-        #totsystems = city.getComponent(strvec[0]).getAttribute("TotalSystems")
         totsystems = self.activesim.getAssetWithName("SysPrevGlobal").getAttribute("TotalSystems")
 
         self.notify("Total Systems in map: "+str(totsystems))
@@ -133,7 +129,7 @@ class Techimplement(UBModule):
         sysList = {}
         for i in range(int(blocks_num)):
             sysList[i+1] = []   #Initialize the vector
-        #sysuuids = city.getUUIDsOfComponentsInView(self.sysAttr)
+
         sysuuids = self.activesim.getAssetsWithIdentifier("SysPrevID")
         for curSys in sysuuids:
             location = int(curSys.getAttribute("Location"))
@@ -299,7 +295,6 @@ class Techimplement(UBModule):
         sysAttr.addAttribute("WDepth", sys.getAttribute("WDepth")) #Done in the retrofit/implementation part
         sysAttr.addAttribute("FDepth", sys.getAttribute("FDepth")) #Done in the retrofit/implementation part
         sysAttr.addAttribute("Exfil", sys.getAttribute("Exfil")) #Done in the retrofit/implementation part
-        #city.addComponent(sysAttr, self.techimplAttr)
         sysID = len(self.activesim.getAssetsWithIdentifier("SysID"))+1
         self.activesim.addAsset("SysID"+str(sysID), sysAttr)
         return True
