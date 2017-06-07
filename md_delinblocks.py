@@ -131,9 +131,8 @@ class Delinblocks(UBModule):      #UBCORE
         self.createParameter("include_lakes", BOOL, "Include Lakes Map?")
         self.createParameter("include_groundwater", BOOL, "Include Groundwater Map?")
         self.createParameter("groundwater_datum", STRING, "Groundwater Datum?")
+        self.createParameter("include_drainage_net", BOOL, "")
         #self.createParameter("include_road_net", BOOL,"")
-        #self.createParameter("include_supply_net", BOOL, "")
-        #self.createParameter("include_sewer_net", BOOL, "")
         self.createParameter("include_soc_par1", BOOL,"Include Social Parameters Map?")
         self.createParameter("include_soc_par2", BOOL,"Include a Second Social Parameters Map?")
         self.createParameter("social_par1_name", STRING,"Social Parameter 1 Name")
@@ -156,9 +155,9 @@ class Delinblocks(UBModule):      #UBCORE
         self.include_lakes = 0              #include lake systems
         self.include_groundwater = 0        #include groundwater table
         self.groundwater_datum = "Sea"          #"Sea" = Sea level, "Surf" = Surface level
-        
-        #self.include_road_net = False           #road network map not working yet
-        #self.include_supply_net = False       #include water supply mains
+
+        self.include_drainage_net = False       # include water supply mains
+        #self.include_road_net = False          #road network map not working yet
         #self.include_sewer_net = False        #include sewer mains
         
         self.include_soc_par1 = 0            #include a social parameter in the simulation?

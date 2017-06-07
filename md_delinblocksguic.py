@@ -121,10 +121,9 @@ class DelinBlocksGUILaunch(QtGui.QDialog):
             self.ui.groundwater_datumcombo.setCurrentIndex(1)
         
         QtCore.QObject.connect(self.ui.groundwater_check, QtCore.SIGNAL("clicked()"), self.groundwaterDatum_modify)
-        
+
+        self.ui.drainage_check.setChecked(int(self.module.getParameter("include_drainage_net")))
         #self.ui.roadnet_check.setChecked(int(self.module.getParameter("include_road_net")))     #Future version
-        #self.ui.sewermains_check.setChecked(int(self.module.getParameter("include_sewer_net")))
-        #self.ui.supplymains_check.setChecked(int(self.module.getParameter("include_supply_net")))
         
         #conditions for what user inputs from main module are
         if self.module.getParameter("include_soc_par1") == True:
@@ -394,8 +393,10 @@ class DelinBlocksGUILaunch(QtGui.QDialog):
         
         gwoptions = ["Sea", "Surf"]
         self.module.setParameter("groundwater_datum", gwoptions[self.ui.groundwater_datumcombo.currentIndex()])
-        
+
+        self.module.setParameter("include_drainage_net", int(self.ui.drainage_check.isChecked()))
         #self.module.setParameter("include_road_net", int(self.ui.roadnet_check.isChecked()))
+
         
         if self.ui.soc_par1_check.isChecked() == 1:
             include_soc_par1 = 1
