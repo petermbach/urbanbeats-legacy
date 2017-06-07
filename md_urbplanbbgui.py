@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'md_urbplanbbgui.ui'
 #
-# Created: Thu May 19 17:23:51 2016
+# Created: Wed Jun 07 14:37:42 2017
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -41,7 +41,7 @@ class Ui_BuildingBlockDialog(object):
         self.gridLayout_2.setMargin(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.buildingblocktabs = QtGui.QTabWidget(self.bbwidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.buildingblocktabs.sizePolicy().hasHeightForWidth())
@@ -111,7 +111,7 @@ class Ui_BuildingBlockDialog(object):
         self.genrules_separator.setObjectName(_fromUtf8("genrules_separator"))
         self.verticalLayout.addWidget(self.gr_heading)
         self.gr_parameters = QtGui.QScrollArea(self.gr_input)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.gr_parameters.sizePolicy().hasHeightForWidth())
@@ -260,7 +260,7 @@ class Ui_BuildingBlockDialog(object):
         self.res_parameters.setWidgetResizable(True)
         self.res_parameters.setObjectName(_fromUtf8("res_parameters"))
         self.res_scrollAreaWidgetContents = QtGui.QWidget()
-        self.res_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 387, 605))
+        self.res_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 605))
         self.res_scrollAreaWidgetContents.setObjectName(_fromUtf8("res_scrollAreaWidgetContents"))
         self.gridLayout_15 = QtGui.QGridLayout(self.res_scrollAreaWidgetContents)
         self.gridLayout_15.setObjectName(_fromUtf8("gridLayout_15"))
@@ -656,7 +656,7 @@ class Ui_BuildingBlockDialog(object):
         self.nr_parameters.setWidgetResizable(True)
         self.nr_parameters.setObjectName(_fromUtf8("nr_parameters"))
         self.nr_scrollAreaWidgetContents = QtGui.QWidget()
-        self.nr_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 387, 1142))
+        self.nr_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 1142))
         self.nr_scrollAreaWidgetContents.setObjectName(_fromUtf8("nr_scrollAreaWidgetContents"))
         self.verticalLayout_5 = QtGui.QVBoxLayout(self.nr_scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
@@ -1108,7 +1108,7 @@ class Ui_BuildingBlockDialog(object):
         self.tra_parameters.setWidgetResizable(True)
         self.tra_parameters.setObjectName(_fromUtf8("tra_parameters"))
         self.tra_scrollAreaWidgetContents = QtGui.QWidget()
-        self.tra_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 387, 617))
+        self.tra_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 617))
         self.tra_scrollAreaWidgetContents.setObjectName(_fromUtf8("tra_scrollAreaWidgetContents"))
         self.verticalLayout_7 = QtGui.QVBoxLayout(self.tra_scrollAreaWidgetContents)
         self.verticalLayout_7.setObjectName(_fromUtf8("verticalLayout_7"))
@@ -1454,7 +1454,7 @@ class Ui_BuildingBlockDialog(object):
         self.opsp_parameters.setWidgetResizable(True)
         self.opsp_parameters.setObjectName(_fromUtf8("opsp_parameters"))
         self.opsp_scrollAreaWidgetContents = QtGui.QWidget()
-        self.opsp_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 387, 532))
+        self.opsp_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 532))
         self.opsp_scrollAreaWidgetContents.setObjectName(_fromUtf8("opsp_scrollAreaWidgetContents"))
         self.verticalLayout_8 = QtGui.QVBoxLayout(self.opsp_scrollAreaWidgetContents)
         self.verticalLayout_8.setObjectName(_fromUtf8("verticalLayout_8"))
@@ -1677,7 +1677,7 @@ class Ui_BuildingBlockDialog(object):
         self.oth_parameters.setWidgetResizable(True)
         self.oth_parameters.setObjectName(_fromUtf8("oth_parameters"))
         self.oth_scrollAreaWidgetContents = QtGui.QWidget()
-        self.oth_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 387, 392))
+        self.oth_scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 392))
         self.oth_scrollAreaWidgetContents.setObjectName(_fromUtf8("oth_scrollAreaWidgetContents"))
         self.gridLayout_18 = QtGui.QGridLayout(self.oth_scrollAreaWidgetContents)
         self.gridLayout_18.setObjectName(_fromUtf8("gridLayout_18"))

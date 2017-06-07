@@ -32,7 +32,7 @@
       <item row="0" column="0">
        <widget class="QTabWidget" name="buildingblocktabs">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -95,7 +95,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/GeneralImage.png</pixmap>
+                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/ub_modules/resources/dialogimg.qrc">:/urbplanbb/GeneralImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -163,7 +163,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="QScrollArea" name="gr_parameters">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -617,7 +617,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>387</width>
+                  <width>398</width>
                   <height>605</height>
                  </rect>
                 </property>
@@ -1636,7 +1636,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/ResidentialImage.png</pixmap>
+                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/ub_modules/resources/dialogimg.qrc">:/urbplanbb/ResidentialImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -1706,7 +1706,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/NonResImage.png</pixmap>
+                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/ub_modules/resources/dialogimg.qrc">:/urbplanbb/NonResImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -1807,7 +1807,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>387</width>
+                  <width>398</width>
                   <height>1142</height>
                  </rect>
                 </property>
@@ -3403,7 +3403,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/TransportImage.png</pixmap>
+                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/ub_modules/resources/dialogimg.qrc">:/urbplanbb/TransportImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -3510,7 +3510,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>387</width>
+                  <width>398</width>
                   <height>617</height>
                  </rect>
                 </property>
@@ -4501,7 +4501,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/ParkImage.png</pixmap>
+                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/ub_modules/resources/dialogimg.qrc">:/urbplanbb/ParkImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -4608,7 +4608,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>387</width>
+                  <width>398</width>
                   <height>532</height>
                  </rect>
                 </property>
@@ -5338,7 +5338,7 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>387</width>
+                  <width>398</width>
                   <height>392</height>
                  </rect>
                 </property>
@@ -5747,7 +5747,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/UndevImage.png</pixmap>
+                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/ub_modules/resources/dialogimg.qrc">:/urbplanbb/UndevImage.png</pixmap>
                </property>
               </widget>
              </item>
@@ -6842,7 +6842,7 @@ p, li { white-space: pre-wrap; }
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/resources/dialogimg.qrc">:/urbplanbb/landcover.png</pixmap>
+                <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/ub_modules/resources/dialogimg.qrc">:/urbplanbb/landcover.png</pixmap>
                </property>
               </widget>
              </item>
@@ -6961,7 +6961,7 @@ p, li { white-space: pre-wrap; }
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
+       <pixmap resource="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/ub_modules/resources/dialogimg.qrc">:/general/ublogo50.png</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="bbdescr1">
@@ -7185,6 +7185,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>other_explain</tabstop>
  </tabstops>
  <resources>
+  <include location="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/ub_modules/resources/dialogimg.qrc"/>
   <include location="../../../Dropbox/Documents RESEARCH/Current Projects/UrbanBEATS/Core Dev/ub_modules/resources/dialogimg.qrc"/>
  </resources>
  <connections>
