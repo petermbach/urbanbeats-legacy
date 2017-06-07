@@ -316,7 +316,11 @@ class Delinblocks(UBModule):      #UBCORE
         if self.include_soc_par2: socpar2 = self.loadRaster(cycledataset, "Social Parameters")
         else: socpar2 = 0
         #print "Socpar2", socpar2
-        
+
+        #(8) - Network Infrastructure
+        if self.include_drainage_net: drainagepoints = ""       ### TO DO - IMPROVE THE FLOW PATH DETECTION ALGORITHM
+        else: drainagepoints = 0
+
         #road_net, supply_net and sewer_net = coming in future versions
 
         ################################### END OF DATA RETRIEVAL UBCORE VERSION ##############################################
