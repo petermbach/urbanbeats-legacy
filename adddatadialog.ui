@@ -218,7 +218,7 @@
       </item>
       <item>
        <property name="text">
-        <string>Planner's Map</string>
+        <string>Planning Overlay Map</string>
        </property>
       </item>
       <item>
@@ -243,12 +243,17 @@
       </item>
       <item>
        <property name="text">
-        <string>Social Parameters Map</string>
+        <string>Socio-Economic Data Map</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Existing Systems</string>
+        <string>Existing WSUD Systems</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Existing Network Infrastructure</string>
        </property>
       </item>
       <item>

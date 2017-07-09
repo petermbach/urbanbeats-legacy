@@ -107,7 +107,8 @@ class UrbanBeatsSim(threading.Thread):
                 "Rivers" : [],
                 "Lakes" : [],
                 "Social Parameters" : [],
-                "Existing Systems" : [],
+                "Existing WSUD" : [],
+                "Existing Network" : [],
                 "Rainfall" : [],
                 "Evapotranspiration" : [],
                 "Solar Radiation" : []                }       #will contain the full library of data for the simulation

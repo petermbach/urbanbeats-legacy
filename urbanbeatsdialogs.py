@@ -648,7 +648,7 @@ class DataSelectGUILaunch(QtGui.QDialog):
         self.ui = Ui_SelectData()
         self.ui.setupUi(self)
         self.module = activesim
-        self.__dtype_names = ["Elevation", "Soil", "Land Use", "Population",  "Employment", "Planning", "Locality", "Groundwater", "Rivers", "Lakes", "Social Parameters", "Existing Systems", "Rainfall", "Evapotranspiration", "Solar Radiation"]        
+        self.__dtype_names = ["Elevation", "Soil", "Land Use", "Population",  "Employment", "Planning", "Locality", "Groundwater", "Rivers", "Lakes", "Social Parameters", "Existing WSUD", "Existing Network" "Rainfall", "Evapotranspiration", "Solar Radiation"]
         self.__curstate = curstate
         self.__tabindex = tabindex
         self.__activedataitems = {}        
@@ -678,8 +678,10 @@ class DataSelectGUILaunch(QtGui.QDialog):
             social = QtGui.QTreeWidgetItem()
             social.setText(0, "Social Parameters")        
             wsud = QtGui.QTreeWidgetItem()
-            wsud.setText(0, "Existing Systems")
-            customtoplevitems = [elevation, soil, landuse, demographic, plannermap, locality, groundwater, naturalwater, social, wsud]
+            wsud.setText(0, "Existing WSUD")
+            network = QtGui.QTreeWidgetItem()
+            network.setText(0, "Existing Network")
+            customtoplevitems = [elevation, soil, landuse, demographic, plannermap, locality, groundwater, naturalwater, social, wsud, network]
         elif curstate in ["pa"]:
             climate = QtGui.QTreeWidgetItem()
             climate.setText(0, "Climate")                

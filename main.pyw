@@ -63,7 +63,7 @@ class MainWindow(QtGui.QMainWindow):
         self.consoleobserver = ConsoleObserver()
         #self.progressobserver = ProgressObserver()
 
-        self.__dtype_names = ["Elevation", "Soil", "Land Use", "Population",  "Employment", "Planning", "Locality", "Groundwater", "Rivers", "Lakes", "Social Parameters", "Existing Systems", "Rainfall", "Evapotranspiration", "Solar Radiation"]        
+        self.__dtype_names = ["Elevation", "Soil", "Land Use", "Population",  "Employment", "Planning", "Locality", "Groundwater", "Rivers", "Lakes", "Social Parameters", "Existing WSUD", "Existing Network", "Rainfall", "Evapotranspiration", "Solar Radiation"]
         
         #ATTRIBUTES
         self.__activeSimulationObject = None
@@ -841,10 +841,12 @@ class MainWindow(QtGui.QMainWindow):
         social = QtGui.QTreeWidgetItem()
         social.setText(0, "Social Parameters")        
         wsud = QtGui.QTreeWidgetItem()
-        wsud.setText(0, "Existing Systems")
+        wsud.setText(0, "Existing WSUD")
+        network = QtGui.QTreeWidgetItem()
+        network.setText(0, "Existing Network Infrastructure")
         climate = QtGui.QTreeWidgetItem()
         climate.setText(0, "Climate")                
-        toplevitems = [elevation, soil, landuse, demographic, plannermap, locality, groundwater, naturalwater, social, wsud, climate]
+        toplevitems = [elevation, soil, landuse, demographic, plannermap, locality, groundwater, naturalwater, social, wsud, network, climate]
         none_elev = QtGui.QTreeWidgetItem()
         none_elev.setText(0, "<none>")
         none_soil = QtGui.QTreeWidgetItem()
