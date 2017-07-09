@@ -177,6 +177,8 @@ class Delinblocks(UBModule):      #UBCORE
         self.createParameter("flow_method", STRING,"Selected Flowpath Method")
         self.createParameter("demsmooth_choose", BOOL,"Smoothen DEM?")
         self.createParameter("demsmooth_passes", DOUBLE,"Number of Smoothing Passes for DEM")
+        self.createParameter("use_river", BOOL, "Use river network data to determine flow paths?")
+        self.createParameter("use_drainage", BOOL, "Use drainage network data to determine flow paths?")
         
         self.Neighbourhood = "M"                #three options: M = Moore, N = von Neumann
         self.vn4FlowPaths = 0
@@ -184,7 +186,10 @@ class Delinblocks(UBModule):      #UBCORE
         self.flow_method = "D8"                 #three options: DI = D-infinity (Tarboton), D8 = D8 (O'Callaghan & Mark) and MS = Divergent (Freeman)
         self.demsmooth_choose = 0
         self.demsmooth_passes = float(1)
-        
+        self.use_river = 0
+        self.use_drainage = 0
+
+
         #Regional Geography
         self.createParameter("considerCBD", BOOL, "Consider CBD Location?")
         self.createParameter("locationOption", STRING, "Location Method")
@@ -214,10 +219,7 @@ class Delinblocks(UBModule):      #UBCORE
         #self.createParameter("yllcorner", DOUBLE, "")
         #self.xllcorner = float(313420.7405)    #Yarra Estuary Limits
         #self.yllcorner = float(5807211.478)    #spatial extents of the input map
-        
-        #LATER ON! FOR LATER CYCLES - CHANGING THIS VARIABLE WILL ALLOW SKIPPING OF FLOWPATHS AND BASIN DELINATION!
-        self.obtain_flowbasins = "D"                                    #F = file, D = delineate
-        
+
         self.xllcorner = float(0)    #Obtained from the loaded raster data (elevation) upon run-time
         self.yllcorner = float(0)    #spatial extents of the input map
         
@@ -298,8 +300,10 @@ class Delinblocks(UBModule):      #UBCORE
         else: employment = 0
         
         #(4) - Rivers Map
-        if self.include_rivers: riverpoints = ubvmap.runRiverImport(float(cs/4), cycledataset["Rivers"])
-        else: riverpoints = 0
+        if self.include_rivers or self.use_river:
+            riverpoints = ubvmap.runRiverImport(float(cs/4), cycledataset["Rivers"])
+        else:
+            riverpoints = 0
         
         #(5) - Lakes Map
         if self.include_lakes: lakepoints = ubvmap.runLakesImport(cycledataset["Lakes"])
@@ -318,8 +322,10 @@ class Delinblocks(UBModule):      #UBCORE
         #print "Socpar2", socpar2
 
         #(8) - Network Infrastructure
-        if self.include_drainage_net: drainagepoints = ""       ### TO DO - IMPROVE THE FLOW PATH DETECTION ALGORITHM
-        else: drainagepoints = 0
+        if self.include_drainage_net or self.use_drainage:
+            drainagepoints = ubvmap.runRiverImport(float(cs/4), cycledataset["Existing Network"])
+        else:
+            drainagepoints = 0
 
         #road_net, supply_net and sewer_net = coming in future versions
 
@@ -659,9 +665,9 @@ class Delinblocks(UBModule):      #UBCORE
                 blockymin = yorigin + self.yllcorner
                 blockymax = yorigin + self.yllcorner + cs
                 
-                #RIVERS - At least one point within Block
+                #RIVERS AND DRAINAGE - At least one point within Block
                 hasriver = 0
-                if self.include_rivers:
+                if self.include_rivers or self.use_river:
                     pointcount = 0
                     while pointcount != len(riverpoints):
                         pointset = riverpoints[pointcount]
@@ -671,7 +677,19 @@ class Delinblocks(UBModule):      #UBCORE
                                 hasriver = 1
                                 pointcount = len(riverpoints)
                     block_attr.addAttribute("HasRiv", hasriver)
-                
+
+                hasdrainage = 0
+                if self.include_drainage_net or self.use_drainage:
+                    pointcount = 0
+                    while pointcount != len(drainagepoints):
+                        pointset = drainagepoints[pointcount]
+                        pointcount += 1
+                        if pointset[0] >= blockxmin and pointset[0] < blockxmax:
+                            if pointset[1] >= blockymin and pointset[1] < blockymax:
+                                hasdrainage = 1
+                                pointcount = len(drainagepoints)
+                    block_attr.addAttribute("HasDrain", hasdrainage)
+
                 #LAKES - Centroid within Block
                 haslake = 0
                 lakearea = 0
@@ -697,15 +715,14 @@ class Delinblocks(UBModule):      #UBCORE
                             if locfeature[2] >= blockymin and locfeature[2] < blockymax:
                                 haslocal = 1
                                 facilcount += 1
-#                                fac_attr = city.addNode(locfeature[1]-self.xllcorner, locfeature[2]-self.yllcorner, 0, self.blocklocality)  #DYNAMIND                                
-                                fac_attr = ubdata.UBVector([(locfeature[1]-self.xllcorner, locfeature[2]-self.yllcorner, 0, self.blocklocality)])   #UBCORE
+                                fac_attr = ubdata.UBVector([(locfeature[1]-self.xllcorner, locfeature[2]-self.yllcorner, 0, self.blocklocality)])
                                 fac_attr.addAttribute("BlockID", blockIDcount)
                                 fac_attr.addAttribute("Type", locfeature[0])
                                 fac_attr.addAttribute("Area", locfeature[3])
                                 fac_attr.addAttribute("TIF", locfeature[4])
                                 fac_attr.addAttribute("ARoof", locfeature[5])
                                 fac_attr.addAttribute("AvgWD", locfeature[6])
-                                self.activesim.addAsset("FacilityID"+str(facilcount))       #UBCORE
+                                self.activesim.addAsset("FacilityID"+str(facilcount))
                                 localitymap.remove(locfeature)  #Remove this entry from the matrix to make it shorter for next time
                                 
                     block_attr.addAttribute("HasLoc", haslocal)
@@ -732,8 +749,7 @@ class Delinblocks(UBModule):      #UBCORE
                             if paluc == -9999:  #if the current patch is a no-data patch, skip...
                                 continue
 
-                        self.drawPatchCentroid(pacentroid, paspect, inputres, offset, i+1, blockIDcount, paarea, paluc, paelev, pasoil)         #UBCORE
-#                        self.drawPatchFace(city, panodes, inputres, offset, i+1, blockIDcount, paarea, paluc, paelev, pasoil)   #DYNAMIND
+                        self.drawPatchCentroid(pacentroid, paspect, inputres, offset, i+1, blockIDcount, paarea, paluc, paelev, pasoil)
                         
                     block_attr.addAttribute("Patches", len(patchdict))
                     #print "End Patches"
@@ -742,44 +758,24 @@ class Delinblocks(UBModule):      #UBCORE
                 block_attr.addAttribute("BasinID", 0)               #Assign Default value of zero, this is altered below
                 
                 ### INCREMENT BLOCK ID COUNT BY 1 ###
-                self.activesim.addAsset("BlockID"+str(blockIDcount), block_attr)        #UBCORE: Add block asset to simulation storage
+                self.activesim.addAsset("BlockID"+str(blockIDcount), block_attr)        #Add block asset to simulation storage
                 blockIDcount += 1    #increase counter by one before next loop to represent next Block ID
                 #END OF BLOCK LOOP
         
         ########################################################################
         ### 3.) TERRAIN & BASIN DELINEATION                                  ###
         ########################################################################
-        #DynaMind's Block Views are saved using a special encoding - the UUID, we therefore have to reference
-        #Block ID with the View's UUID.
-#        self.initBLOCKIDtoUUID(city)    #DYNAMIND: gets all UUIDs of each block and sets up a dictionary to refer to.
-                
         if self.demsmooth_choose:
             for currentpass in range(int(self.demsmooth_passes)):
                 self.smoothDEM(numblocks, neighbourhood_type) 
         
         #Determine whether terrain delineation already exists or whether it needs to be done
-        if self.obtain_flowbasins == "F":               #F = file
-#            self.retrieveFlowBasinsFromFile(filename, city, numblocks)          #DYNAMIND
-            self.retrieveFlowBasinsFromFile(filename, numblocks)                #UBCORE
-        elif self.obtain_flowbasins == "D":             #D = delineate
-            #-----> UBCORE
-            self.delineateFlowPaths(numblocks, cs, neighbourhood_type)         
-            hash_table = self.createBlockHashTable(numblocks)                   
-            totalbasins = self.delineateBasins(numblocks, hash_table)
-            map_attr.addAttribute("TotalBasins", totalbasins)
-            #-------> UBCORE
-            
-#            #DYNAMIND -------------->            
-#            self.delineateFlowPaths(city, numblocks, cs, neighbourhood_type)
-#            hash_table = self.createBlockHashTable(city, numblocks)
-#            totalbasins = self.delineateBasins(city, numblocks, hash_table)
-#            map_attr.addAttribute("TotalBasins", totalbasins)
-#            #------------> DYNAMIND
-            
-            self.saveFlowBasinsToFile(numblocks, hash_table)
-            
-    ########################################    
-        #UBCORE ----------------------------------------->       
+        self.delineateFlowPaths(numblocks, cs, neighbourhood_type)
+        hash_table = self.createBlockHashTable(numblocks)
+        totalbasins = self.delineateBasins(numblocks, hash_table)
+        map_attr.addAttribute("TotalBasins", totalbasins)
+
+    ########################################
         #RESET ALL RASTER AND VECTOR DATA VARIABLES        
         elevationraster.resetData()
         soilraster.resetData()
@@ -794,7 +790,6 @@ class Delinblocks(UBModule):      #UBCORE
         if socpar1 != 0: socpar1.resetData()
         if socpar2 != 0: socpar2.resetData()
         self.notify("End of DelinBlocks")
-        #-----------------------------------------> UBCORE 
 
     ########################################################################
     ### DELINBLOCKS SUB-FUNCTIONS                                        ###
@@ -1125,7 +1120,7 @@ class Delinblocks(UBModule):      #UBCORE
         return True
 
     
-    def smoothDEM(self, numblocks, nhd_type):       #UBCORE VERSION -----------------------------------------------------------
+    def smoothDEM(self, numblocks, nhd_type):
         new_elevs = []
         for i in range(int(numblocks)):
             nhd_count = 1
@@ -1160,10 +1155,10 @@ class Delinblocks(UBModule):      #UBCORE
             currentID = i+1
             currentAttList = self.activesim.getAssetWithName(currentID)
             currentAttList.setAttribute("AvgElev", new_elevs[i])
-        return True #END OF UBCORE VERSION ----------------------------------------------------------------------------------------
+        return True
 
 
-    def getBlockNeighbourhood(self, currentAttList):        #UBCORE VERSION --------------------------------------------------
+    def getBlockNeighbourhood(self, currentAttList):
         """Returns the Moore neighbouhoord for the Block (8 neighbours in all cardinal
         directions, the order is North, South, West, Est, followed by NE, NW, SE, SW"""
         ID_N = int(round(currentAttList.getAttribute("Nhd_N")))
@@ -1175,49 +1170,49 @@ class Delinblocks(UBModule):      #UBCORE
         ID_SE = int(round(currentAttList.getAttribute("Nhd_SE")))
         ID_SW = int(round(currentAttList.getAttribute("Nhd_SW")))
         current_neighb = [ID_N, ID_S, ID_W, ID_E, ID_NE, ID_NW, ID_SE, ID_SW]
-        return current_neighb   #END OF UBCORE VERSION -----------------------------------------------------------------------
-
-#    def getBlockNeighbourhood(self, currentAttList):        #DYNAMIND VERSION -----------------------------------------------
-#        """Returns the Moore neighbouhoord for the Block (8 neighbours in all cardinal
-#        directions, the order is North, South, West, Est, followed by NE, NW, SE, SW"""
-#        ID_N = int(round(currentAttList.getAttribute("Nhd_N").getDouble()))
-#        ID_S = int(round(currentAttList.getAttribute("Nhd_S").getDouble()))
-#        ID_W = int(round(currentAttList.getAttribute("Nhd_W").getDouble()))
-#        ID_E = int(round(currentAttList.getAttribute("Nhd_E").getDouble()))
-#        ID_NE = int(round(currentAttList.getAttribute("Nhd_NE").getDouble()))
-#        ID_NW = int(round(currentAttList.getAttribute("Nhd_NW").getDouble()))
-#        ID_SE = int(round(currentAttList.getAttribute("Nhd_SE").getDouble()))
-#        ID_SW = int(round(currentAttList.getAttribute("Nhd_SW").getDouble()))
-#        current_neighb = [ID_N, ID_S, ID_W, ID_E, ID_NE, ID_NW, ID_SE, ID_SW]
-#        return current_neighb   #END OF DYNAMIND VERSION -------------------------------------------------------------------
+        return current_neighb
 
     
-    def getNeighbourhoodZ(self, nhdIDs):    #UBCORE VERSION ------------------------------------------------------------------
+    def getNeighbourhoodZ(self, nhdIDs):
         current_neighbdZ = []
-        for i in nhdIDs:       #scan all 8 neighbours
-            if i == 0:  #if the Neighbourhood ID == 0
+
+        #scan for river and drainage data
+        rivbool = []
+        drainbool = []
+        if self.use_river or self.use_drainage:
+            for i in nhdIDs:
+                if i == 0:
+                    rivbool.append(0)       #rivbool = [0,0,0,1,0,0] contains a list of booleans, if the sum is greater
+                    drainbool.append(0)     #than 0 then at least one neighbour has the water feature
+                else:
+                    rivbool.append(self.activesim.getAssetWithName("BlockID"+str(i)).getAttribute("HasRiver"))
+                    drainbool.append(self.activesim.getAssetWithName("BlockID"+str(i)).getAttribute("HasDrain"))
+
+        for i in nhdIDs:       #scan all 8 neighbours, determine elevation
+            if i == 0:          #if the Neighbourhood ID == 0
                 current_neighbdZ.append(99999)
                 continue
             curface = self.activesim.getAssetWithName("BlockID"+str(i))
             if int(round(curface.getAttribute("Status"))) == 0:
                 current_neighbdZ.append(99999) #works based on Sea Level, so nothing can really be higher than Everest :)
-            else:
-                current_neighbdZ.append(curface.getAttribute("AvgElev"))
-        return current_neighbdZ #END OF UBCORE VERSION -----------------------------------------------------------------------
+                continue
+            if self.use_river and sum(rivbool) > 0:
+                if curface.getAttribute("HasRiver") == 1:
+                    current_neighbdZ.append(curface.getAttribute("AvgElev"))
+                    continue
+                else:
+                    current_neighbdZ.append(99999)
+                continue
+            if self.use_drainage and sum(drainbool) > 0:
+                if curface.getAttribute("HasDrain") == 1:
+                    current_neighbdZ.append(curface.getAttribute("AvgElev"))
+                else:
+                    current_neighbdZ.append(99999)
+                continue
 
-#    def getNeighbourhoodZ(self, nhdIDs, city):      #DYNAMIND VERSION -------------------------------------------------------
-#        current_neighbdZ = []
-#        for i in nhdIDs:       #scan all 8 neighbours
-#            uuid = self.getBlockUUID(i, city)
-#            if uuid == "":   #if not found because of some error, then return a very high number
-#                current_neighbdZ.append(99999)
-#                continue
-#            curface = city.getFace(uuid)
-#            if int(round(curface.getAttribute("Status").getDouble())) == 0:
-#                current_neighbdZ.append(99999) #works based on Sea Level, so nothing can really be higher than Everest :)
-#            else:
-#                current_neighbdZ.append(curface.getAttribute("AvgElev").getDouble())
-#        return current_neighbdZ #END OF DYNAMIND VERSION --------------------------------------------------------------------
+            current_neighbdZ.append(curface.getAttribute("AvgElev"))
+
+        return current_neighbdZ
 
 
     def findDownstreamD8(self, currentZ, neighboursZ, neighbourhood_type):
@@ -1339,38 +1334,9 @@ class Delinblocks(UBModule):      #UBCORE
         network_attr.addAttribute("Type", typenum)       #1 = basic downstream, -1 = unblocked sink, #0 = sink
         network_attr.addAttribute("avg_slope", avg_slope)
         self.activesim.addAsset("NetworkID"+str(currentID), network_attr)
-        return True #END OF UBCORE VERSION ------------------------------------------------------------------------------
+        return True
     
-#    def drawFlowPaths(self, city, currentID, downstreamID, currentAttList, max_Zdrop, avg_slope, typenum):  #DYNAMIND VERSION ------
-#        print "BlockID", currentID
-#        uuid = self.getBlockUUID(downstreamID,city)
-#        if  uuid == "":
-#            print "Error block not found: " + str(downstreamID)
-#            return True
-#        
-#        f = city.getFace(uuid)
-#        x_up = currentAttList.getAttribute("CentreX").getDouble()
-#        y_up = currentAttList.getAttribute("CentreY").getDouble()
-#        z_up = currentAttList.getAttribute("AvgElev") .getDouble()
-#        upNode = city.addNode(x_up,y_up,z_up)
-#        
-#        x_down = f.getAttribute("CentreX").getDouble()
-#        y_down = f.getAttribute("CentreY").getDouble()
-#        z_down = f.getAttribute("AvgElev").getDouble()
-#        downNode = city.addNode(x_down,y_down,z_down)
-#        
-#        network_attr = city.addEdge(upNode,downNode,self.network)         
-#        network_attr.addAttribute("BlockID", currentID)
-#        network_attr.addAttribute("DownID", downstreamID)
-#        network_attr.addAttribute("Z_up", z_up)
-#        network_attr.addAttribute("Z_down", z_down)
-#        network_attr.addAttribute("max_Zdrop", max_Zdrop)
-#        network_attr.addAttribute("Type", typenum)       #1 = basic downstream, -1 = unblocked sink, #0 = sink
-#        network_attr.addAttribute("avg_slope", avg_slope)
-#        return True #END OF DYNAMIND VERSION ------------------------------------------------------------------------------
-        
-    
-    def delineateFlowPaths(self, numblocks, cs, neighbourhood_type): #UBCORE VERSION ------------------------------------
+    def delineateFlowPaths(self, numblocks, cs, neighbourhood_type):
         sinkIDs = []
         riverIDs = []
         lakeIDs = []
@@ -1386,7 +1352,7 @@ class Delinblocks(UBModule):      #UBCORE
                 continue
             
             #CONDITION 2 - Block already contains a sink e.g. river/etc.
-            if currentAttList.getAttribute("HasRiv") == 1:
+            if currentAttList.getAttribute("HasRiv") == 1 and useriver == 0:
                 hasRiver = 1
                 riverIDs.append(currentID)
                 continue
@@ -1433,77 +1399,10 @@ class Delinblocks(UBModule):      #UBCORE
             
         self.unblockSinks(sinkIDs, numblocks)
         self.connectRiverBlocks(riverIDs, numblocks)
-        return True #END OF UBCORE VERSION ----------------------------------------------------------------------------------
+        return True
+
     
-#    def delineateFlowPaths(self, city, numblocks, cs, neighbourhood_type): #DYNAMIND VERSION ------------------------------------
-#        sinkIDs = []
-#        riverIDs = []
-#        lakeIDs = []
-#
-#        for i in range(numblocks):
-#            currentID = i+1
-#            uuid = self.getBlockUUID(int(currentID), city)
-#            if uuid == "":
-#                print "Error, Block"+ str(currentID)+" not found."
-#                continue
-#            
-#            #CONDITION 1 - Block is Active in Simulation
-#            currentAttList = city.getFace(uuid)
-#            if currentAttList.getAttribute("Status").getDouble() == 0:
-#                #print "BlockID"+str(currentID)+" not active in simulation"
-#                continue
-#            
-#            #CONDITION 2 - Block already contains a sink e.g. river/etc.
-#            if currentAttList.getAttribute("HasRiv").getDouble() == 1:
-#                hasRiver = 1
-#                riverIDs.append(currentID)
-#                continue
-#            
-#            
-#            currentZ = currentAttList.getAttribute("AvgElev").getDouble()
-#            
-#            #Neighbours array: [N, S, W, E, NE, NW, SE, SW], the last four are 0 if only vonNeumann Nhd used.
-#            neighbours = self.getBlockNeighbourhood(currentAttList)
-#            neighboursZ = self.getNeighbourhoodZ(neighbours, city)
-#            
-#            #Find Downstream Block - The Functions return the Index of the Cardinal Direction
-#            if self.flow_method == "D8":
-#                flow_direction, max_Zdrop = self.findDownstreamD8(currentZ, neighboursZ, neighbourhood_type)
-#            elif self.flow_method == "DI":
-#                flow_direction, max_Zdrop = self.findDownstreamDinf(currentZ, cs, neighboursZ, neighbourhood_type)
-#            
-#            if flow_direction == -9999:
-#                sinkIDs.append(currentID)
-#                downstreamID = -1
-#            else:
-#                downstreamID = neighbours[flow_direction]
-#            
-#            #Grab Distance/Slope between two Block IDs
-#            if flow_direction == -9999:
-#                dx = 0
-#            elif flow_direction <= 3:
-#                dx = cs
-#            elif flow_direction > 3:
-#                dx = math.sqrt(2*cs*cs)                        #diagonal
-#                
-#            if dx == 0: avg_slope = 0
-#            else: avg_slope = max_Zdrop/dx
-#            
-#            currentAttList.addAttribute("downID", downstreamID)
-#            currentAttList.addAttribute("maxdZ", max_Zdrop)
-#            currentAttList.addAttribute("slope", avg_slope)
-#            
-#            #DRAW NETWORKS OF PATHS THAT ARE NOT SINKS
-#            if downstreamID != -1 or downstreamID != 0:
-#                self.drawFlowPaths(city, currentID, downstreamID, currentAttList, max_Zdrop, avg_slope, 1)
-#            
-#        
-#        self.unblockSinks(sinkIDs, city, numblocks)
-#        self.connectRiverBlocks(riverIDs, city, numblocks)
-#        return True    #END OF DYNAMIND VERSION ----------------------------------------------------------------------------------
-    
-    
-    def unblockSinks(self, sinkIDs, numblocks): #UBCORE VERSION ---------------------------------------------------------------------
+    def unblockSinks(self, sinkIDs, numblocks):
         total_sinks = len(sinkIDs)
         #print "A total of: "+str(total_sinks)+" sinks found in map!"
         self.notify("A total of: "+str(total_sinks)+" sinks found in map!") #UBCORE
@@ -1543,48 +1442,9 @@ class Delinblocks(UBModule):      #UBCORE
             else:
                 #IF the model reaches this point, the identified cell is either most definitely an outlet or a very troublesome sink
                 currentAttList.addAttribute("drainID", -1)      #-1 in drainID = outlet or sub-outlet        
-        return True #END OF UBCORE VERSION ---------------------------------------------------------------------------------------------------    
-    
-#    def unblockSinks(self, sinkIDs, city, numblocks):   #DYNAMIND VERSION ---------------------------------------------------------------------
-#        total_sinks = len(sinkIDs)
-#        print "A total of: "+str(total_sinks)+" sinks found in map!"
-#        
-#        #Sink unblocking algorithm for immediate neighbourhood
-#        for i in sinkIDs:
-#            currentID = i
-#            currentAttList = city.getFace(self.getBlockUUID(currentID,city))           
-#            currentZ = currentAttList.getAttribute("AvgElev").getDouble()    
-#            
-#            current_neighb = self.getBlockNeighbourhood(currentAttList)
-#            
-#            possible_IDdrains = []
-#            possible_IDdZ = []
-#            possibility = 0
-#            
-#            for j in current_neighb:
-#                uuid = self.getBlockUUID(j,city)
-#                if len(uuid)!= 0:
-#                    f = city.getFace(uuid)
-#                    testdownID = int(round(f.getAttribute("downID").getDouble()))
-#                    if  testdownID not in [currentID, -1] and testdownID not in current_neighb and int(round(f.getAttribute("Status").getDouble())) != 0:
-#                        possible_IDdrains.append(j)
-#                        possible_IDdZ.append(f.getAttribute("AvgElev").getDouble()-currentZ)
-#                        possibility += 1
-#            
-#            if possibility > 0:         #if algorithm found a possible pathway for sink to unblock, then get the ID and connect network
-#                sink_path = min(possible_IDdZ)
-#                sink_drainID = possible_IDdrains[possible_IDdZ.index(sink_path)]
-#                currentAttList.addAttribute("drainID", sink_drainID)            
-#                currentAttList.addAttribute("h_pond", sink_path)
-#                self.drawFlowPaths(city, currentID, sink_drainID, currentAttList, sink_path, 0, -1) 
-#                continue
-#            
-#            else:
-#                #IF the model reaches this point, the identified cell is either most definitely an outlet or a very troublesome sink
-#                currentAttList.addAttribute("drainID", -1)      #-1 in drainID = outlet or sub-outlet        
-#        return True #END OF DYNAMIND VERSION ---------------------------------------------------------------------------------------------------    
-    
-    
+        return True
+
+
     def connectRiverBlocks(self, riverIDs, numblocks):
         #print "A total of: "+str(len(riverIDs))+" Blocks contain a river body!"
         self.notify("A total of: "+str(len(riverIDs))+" Blocks contain a river body!")
@@ -1592,7 +1452,7 @@ class Delinblocks(UBModule):      #UBCORE
         return True
     
     
-    def createBlockHashTable(self, numblocks): #UBCORE VERSION ----------------------------------------------
+    def createBlockHashTable(self, numblocks):
         """Indexes through the list of blocks and finds the downstream blocks that each
         block flows into (0 = outlet). This hash table is required for finding basins
         within the case study area.
@@ -1615,38 +1475,7 @@ class Delinblocks(UBModule):      #UBCORE
                 hash_table[1].append(int(0))
         #print hash_table
         self.notify(hash_table)
-        return hash_table #END OF UBCORE VERSION --------------------------------------------------------------------
-
-#    def createBlockHashTable(self, city, numblocks):    #DYNAMIND VERSION ----------------------------------------------
-#        """Indexes through the list of blocks and finds the downstream blocks that each
-#        block flows into (0 = outlet). This hash table is required for finding basins
-#        within the case study area.
-#        """
-#        hash_table = [[],[]]    #COLUMN1: BLOCK ID (UP), COLUMN2: DOWNSTREAM ID (DOWN)
-#        for i in range(int(numblocks)):
-#            currentID = i+1
-#            uuid = self.getBlockUUID(currentID, city)
-#            if uuid == "":
-#                print "Error, Block"+ str(currentID)+" not found"
-#                continue
-#            
-#            currentAttList = city.getFace(uuid)
-#            if currentAttList.getAttribute("Status").getDouble() == 0:
-#                #print "BlockID"+str(currentID)+" not active in simulation"
-#                continue
-#            
-#            hash_table[0].append(int(currentID))
-#            
-#            if currentAttList.getAttribute("downID").getDouble() not in [0, -1]:
-#                hash_table[1].append(int(currentAttList.getAttribute("downID").getDouble()))
-#            elif currentAttList.getAttribute("drainID").getDouble() not in [0, -1]:
-#                hash_table[1].append(int(currentAttList.getAttribute("drainID").getDouble()))
-#            else:
-#                hash_table[1].append(int(0))
-#        
-#        print hash_table
-#        return hash_table   #END OF DYNAMIND VERSION --------------------------------------------------------------------
-    
+        return hash_table
     
     def delineateBasins(self, numblocks, hash_table): #UBCORE VERSION ------------------------------------------------------
         basinID = 0
@@ -1713,85 +1542,4 @@ class Delinblocks(UBModule):      #UBCORE
         #print "Total Basins in Case Study: ", basinID
         self.notify("Total Basins in Case Study: "+str(basinID))
 
-        return basinID #UBCORE VERSION ------------------------------------------------------------------------------------
-    
-#    def delineateBasins(self, city, numblocks, hash_table): #DYNAMIND VERSION ------------------------------------------------------
-#        basinID = 0
-#        for i in range(numblocks):
-#            currentID = i+1
-#            uuid = self.getBlockUUID(currentID, city)
-#            if uuid == "":
-#                print "Error, Block"+ str(currentID)+" not found"
-#                continue
-#                
-#            currentAttList = city.getFace(uuid)
-#            if currentAttList.getAttribute("Status").getDouble() == 0:
-#                #print "BlockID"+str(currentID)+" not active in simulation"
-#                continue
-#            
-#            if currentID not in hash_table[1]:
-#                currentAttList.addAttribute("UpstrIDs", "")
-#                if currentID in hash_table[0]:
-#                    if hash_table[1][hash_table[0].index(currentID)] == 0:
-#                        print "Found a single block basin at Block: ", currentID
-#                        basinID += 1   #transfer currentID to all blocks
-#                        currentAttList.addAttribute("BasinID", basinID)
-#                        currentAttList.addAttribute("Outlet", 1)
-#                continue
-#            
-#            upstreamIDs = [currentID]
-#            for id in upstreamIDs:
-#                for j in range(len(hash_table[1])):
-#                    if id == hash_table[1][j]:
-#                        if hash_table[0][j] not in upstreamIDs:
-#                            upstreamIDs.append(hash_table[0][j])
-#            
-#            upstreamIDs.remove(currentID)
-#            print "BlockID", currentID, "Upstream: ", upstreamIDs
-#            
-#            outputstring = ""
-#            for j in upstreamIDs:
-#                outputstring += str(j)+","
-#            currentAttList.addAttribute("UpstrIDs", outputstring)
-#            
-#            #Set Basin IDs
-#            if hash_table[1][hash_table[0].index(currentID)] == 0:
-#                print "Found a basin outlet at Block: ", currentID
-#                basinID += 1   #transfer currentID to all blocks
-#                currentAttList.addAttribute("Outlet", 1)
-#                currentAttList.addAttribute("BasinID", basinID)
-#                for j in upstreamIDs:
-#                    upblock = city.getFace(self.getBlockUUID(j, city))
-#                    upblock.addAttribute("BasinID", basinID)
-#                    upblock.addAttribute("Outlet", 0)
-#        
-#        print "Total Basins in Case Study: ", basinID
-#        
-#        return basinID  #DYNAMIND VERSION ------------------------------------------------------------------------------------
-    
-    def saveFlowBasinsToFile(self, numblocks, hash_table):
-        #f = open("simulationflowbasins.txt", 'w')
-        #
-        #f.close()
-        return True
-    
-    def retrieveFlowBasinsFromFile(self, filename, numblocks):
-        #f = open(filename, 'r')
-        #
-        #f.close()
-        return True
-    
-    ########################################################
-    #LINK WITH GUI                                         #
-    ########################################################        
-    #def getParameter(self, name):   #UBCORE FUNCTION
-    #    return self.__dict__.get(name)
-    #
-    #def setParameter(self, name, value):    #UBCORE FUNCTION
-    #    self.__dict__.__setitem__(name, value)
-    #    return True
-    #
-#    def createInputDialog(self):    #DYNAMIND FUNCTION --------------------------
-#        form = activatedelinblocksGUI(self, QApplication.activeWindow())
-#        form.show()
-#        return True #-----------------END OF DYNAMIND FUNCTIOn ------------------
+        return basinID
