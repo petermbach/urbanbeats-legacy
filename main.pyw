@@ -843,7 +843,7 @@ class MainWindow(QtGui.QMainWindow):
         wsud = QtGui.QTreeWidgetItem()
         wsud.setText(0, "Existing WSUD")
         network = QtGui.QTreeWidgetItem()
-        network.setText(0, "Existing Network Infrastructure")
+        network.setText(0, "Existing Network")
         climate = QtGui.QTreeWidgetItem()
         climate.setText(0, "Climate")                
         toplevitems = [elevation, soil, landuse, demographic, plannermap, locality, groundwater, naturalwater, social, wsud, network, climate]

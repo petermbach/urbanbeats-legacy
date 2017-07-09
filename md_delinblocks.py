@@ -323,7 +323,10 @@ class Delinblocks(UBModule):      #UBCORE
 
         #(8) - Network Infrastructure
         if self.include_drainage_net or self.use_drainage:
+            print "Loading Drainage network"
             drainagepoints = ubvmap.runRiverImport(float(cs/4), cycledataset["Existing Network"])
+            print drainagepoints
+            print len(drainagepoints)
         else:
             drainagepoints = 0
 

@@ -195,7 +195,11 @@ class DelinBlocksGUILaunch(QtGui.QDialog):
             self.ui.demsmooth_spin.setEnabled(0)
             
         self.ui.demsmooth_spin.setValue(int(self.module.getParameter("demsmooth_passes")))
-        
+
+        self.ui.use_drainage.setChecked(int(self.module.getParameter("use_drainage")))
+        self.ui.use_river.setChecked(int(self.module.getParameter("use_river")))
+
+
         QtCore.QObject.connect(self.ui.demsmooth_check, QtCore.SIGNAL("clicked()"), self.demsmooth_modify)
         
         #----------------------------------------------------------------------#
@@ -455,7 +459,10 @@ class DelinBlocksGUILaunch(QtGui.QDialog):
         
         self.module.setParameter("demsmooth_choose", int(self.ui.demsmooth_check.isChecked()))
         self.module.setParameter("demsmooth_passes", self.ui.demsmooth_spin.value())
-        
+
+        self.module.setParameter("use_river", int(self.ui.use_river.isChecked()))
+        self.module.setParameter("use_drainage", int(self.ui.use_drainage.isChecked()))
+
         #----------------------------------------------------------------------#
         #-------- REGIONAL GEOGRAPHY INPUTS -----------------------------------#
         #----------------------------------------------------------------------#
