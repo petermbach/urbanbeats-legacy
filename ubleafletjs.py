@@ -71,7 +71,7 @@ def writeLeafletBody(viewmode, project_path, filename, output_path):
     if viewmode == "on":
         linkrel = """<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>"""
     else:
-        linkrel = """<script src=\""""+options_root+"""/ancillary/leafletjs-0.6.4/leaflet.js\"></script> """
+        linkrel = """<script src=\""""+str(os.path.dirname(__file__))+"""/ancillary/leafletjs-0.6.4/leaflet.js\"></script> """
 
     htmlscript = """
     <body>
