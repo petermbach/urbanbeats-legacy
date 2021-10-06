@@ -64,7 +64,9 @@ def runLocalityImport(*args):
     spatialRef = getSpatialRefDataSource(layer)    
     
     facilities = []    
-    
+
+    possible_names = ["DIAMETER", "DIAM", "DURCHMESSER", "SOMEDUTCHNAME", "SOMESPANISHNAME", "NATALIA"]
+
     for i in range(totfeatures):
         #(1) Get the feature
         currentfeature = layer.GetFeature(i)
@@ -167,6 +169,7 @@ def runRiverImport(segmentmax, *args):
             for j in range(len(linestrings)):
                 linestrings[j].Segmentize(segmentmax)
                 getAllPointsInRiverFeature(riverpoints, linestrings[j])
+
     return riverpoints
     
 

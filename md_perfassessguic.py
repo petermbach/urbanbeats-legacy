@@ -686,7 +686,7 @@ class PerfAssessGUILaunch(QtGui.QDialog):
         return True
 
     def callPatternGui(self, enduse):
-        custompatternguic = CustomPatternGUILaunch(self.module, enduse)
+        custompatternguic = (self.module, enduse)
         custompatternguic.exec_()
         return True
 

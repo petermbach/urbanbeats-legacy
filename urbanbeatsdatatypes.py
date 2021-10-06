@@ -184,7 +184,8 @@ def exportBuildingBlocks(filename, assets, miscoptions, map_attr, kmlbool, tech_
 
     driver = ogr.GetDriverByName('ESRI Shapefile')
 
-    if os.path.exists(str(filename)+"_Blocks.shp"): os.remove(str(filename)+"_Blocks.shp")
+    if os.path.exists(str(filename)+"_Blocks.shp"):
+        os.remove(str(filename)+"_Blocks.shp")
     shapefile = driver.CreateDataSource(str(filename)+"_Blocks.shp")
 
     layer = shapefile.CreateLayer('layer1', spatialRef, ogr.wkbPolygon)

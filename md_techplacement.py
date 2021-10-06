@@ -34,45 +34,12 @@ import numpy as np
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-#from pydynamind import *
+
 import urbanbeatsdatatypes as ubdata    #UBCORE
 from urbanbeatsmodule import *      #UBCORE
 
 class Techplacement(UBModule):
     """Log of Updates made at each version:
-    
-    v1.00 update (April 2013):
-        - Complete revamp of existing 5 modules, merger into a single Module with multiple functions
-        - Creation of separate scripts to steer tech planning, placement and evaluation
-        - Rewrite of technology.py, now called tech_library.py, class functions are now more efficient
-        - Inclusion of water recycling functionality
-        - Inclusion of more planning options available to user
-        - Integration of techretrofit features to deal with dynamics more efficiently
-        
-    v0.80 update (July 2012):
-        - upgraded techplanning to include forks for dynamics, planning and implementation cycles
-        - allowed planning with custom design curves input by the user or from UrbanBEATs' database
-        - included retrofit functionality in techplacement
-        - upgraded techstrategy eval with bug fixes and improved decision-making
-    
-    v0.80 update (March 2012):
-        - Split module into five parts: initial data prep, 4x planning at different scales and one evaluation
-        - Built Monte Carlo Brainstorming method for technologies (see 9UDM Conference Paper)
-        - Added functionality for Infiltration systems, biofilters, swales, wetlands and ponds
-        - Included new information about certain technologies, refined GUI to include location
-        - Upgraded techstrat-eval with some bug fixes and improved decision-making
-    
-    v0.75 update (October 2011):
-        - Added in initial design methods for several systems, upgraded GUI to include new features
-    
-    v0.5 update (August 2011):
-        - Updated Techplacement to include multi-criteria evaluation options, methods
-        - Concept brainstorming completed
-        
-    v0.5 first (July 2011):
-        - Created first version, initial GUI concepts and ideas
-        - Created initial list of techplacement ideas
-	
 	@ingroup UrbanBEATS
 	@author Peter M Bach
 	"""

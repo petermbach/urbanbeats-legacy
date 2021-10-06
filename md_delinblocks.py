@@ -33,10 +33,7 @@ import ubconvertcoord as ubcc
 import ubvectormapload as ubvmap
 import urbanbeatsdatatypes as ubdata    #UBCORE
 from urbanbeatsmodule import *      #UBCORE
-#from pydynamind import *               #DYNAMIND
-#from delinblocksguic import *          #DYNAMIND
 
-#class Delinblocks(Module):      #DYNAMIND
 class Delinblocks(UBModule):      #UBCORE
     """Processes information from either UrbanSim or four input biophysical rasters
     and an optional two social-economic rasters and creates a preliminary grid of
@@ -100,9 +97,6 @@ class Delinblocks(UBModule):      #UBCORE
         @author Peter M Bach
         """
     
-#    def __init__(self):            #DYNAMIND
-#        Module.__init__(self)       #DYNAMIND
-
     def __init__(self, activesim, tabindex):      #UBCORE
         UBModule.__init__(self)      #UBCORE
         self.cycletype = "pc"       #UBCORE: contains either planning or implementation (so it knows what to do and whether to skip)
@@ -263,8 +257,7 @@ class Delinblocks(UBModule):      #UBCORE
         self.notify("StartDelinBlocks!")        #UBCORE
         rand.seed()
 
-#        city = self.getData("City")     #DYNAMIND : Get the datastream containing all the info
-        
+
         cs = self.BlockSize             #set blocksize to a local variable with a short name cs = cell size
                 
         if self.Neighbourhood == "N":           #Set neighbourhood Type
@@ -358,13 +351,6 @@ class Delinblocks(UBModule):      #UBCORE
         #self.notify("Cells in Block: "+str(cellsinblock))
         #------------------> UBCORE 
         
-#        #DYNAMIND --------------->
-#        print "Width", width
-#        print "Height", height
-#        print "Block Size: ", cs
-#        print "Cells in Block: ", cellsinblock
-#        #---------------> DYNAMIND
-        
         #Note that the simulation area needs to have a larger width and larger height than the data input area!
         whfactor = 1 - (1/(cs*2))               #factor replaces the rounding function and speeds up computation
         widthnew = int(width/cs+whfactor)       #width of the simulation area (divide total width by block size and round) [#Blocks]
@@ -393,9 +379,7 @@ class Delinblocks(UBModule):      #UBCORE
         map_attr.addAttribute("patchdelin", self.patchdelin)
         map_attr.addAttribute("spatialmetrics", self.spatialmetrics)
         map_attr.addAttribute("considerCBD", self.considerCBD)
-        
-#        city.addComponent(map_attr, self.mapattributes)                 #DYNAMIND: add the component list map_attr to the View self.mapattributes        
-        
+
         #Look up long and lat of CBD if need to be considered
         if self.considerCBD:
             #Grab CBD coordinates, convert to UTM if necessary
@@ -417,14 +401,6 @@ class Delinblocks(UBModule):      #UBCORE
                 self.activesim.addAsset("CPCityCentre", city_pts)
             #------------------> UBCORE 
 
-#            #DYNAMIND --------------->
-#            if self.marklocation:
-#                loc = city.addNode(cityeasting-self.xllcorner, citynorthing-self.yllcorner, 0, self.blocknodes)
-#                loc.addAttribute("BlockID", -1)     #-1 for CBD
-#                loc.addAttribute("AvgElev", -1)     #-1 for CBD
-#                loc.addAttribute("Type", "CBD")     #-1 for CBD
-#            #---------------> DYNAMIND         
-        
         self.activesim.addAsset("MapAttributes", map_attr)                 #UBCORE: save Mapattribuets as an asset of the current simulation
         
         x_adj = 0               #these track the position of the 'draw cursor', these offset the cursor
@@ -437,10 +413,8 @@ class Delinblocks(UBModule):      #UBCORE
         for y in range(heightnew):              #outer loop scans through rows
             for x in range(widthnew):           #inner loop scans through columns
 
-#                print "CURRENT BLOCK ID: "+str(blockIDcount)           #DYNAMIND                
                 self.notify("CURRENT BLOCK ID: "+str(blockIDcount))     #UBCORE)
 
-#                block_attr = self.createBlockFace(city, x, y, cs, x_adj, y_adj, blockIDcount)   #DYNAMIND                
                 block_attr = self.createBlockFace(x, y, cs, x_adj, y_adj, blockIDcount)         #UBCORE
                 
                 xcentre = x*cs+0.5*cs       #Centre point               
@@ -632,7 +606,6 @@ class Delinblocks(UBModule):      #UBCORE
                 
                 if blockstatus == 1:
                     curblock_node = ubdata.UBVector([(xcentre,ycentre,0)])              #UBCORE
-#                    curblock_node = city.addNode(xcentre,ycentre,0, self.blocknodes)    #DYNAMIND
                     curblock_node.addAttribute("BlockID", blockIDcount)
                     curblock_node.addAttribute("AvgElev", raster_sum_elev/total_n_elev)
                     curblock_node.addAttribute("Type", "Block")
@@ -831,25 +804,7 @@ class Delinblocks(UBModule):      #UBCORE
         
         return blocksize        
     
-#    def createBlockFace(self, city, x, y, cs, x_adj, y_adj, ID):                #DYNAMIND VERSION
-#        n1 = city.addNode((x+x_adj)*cs,(y+y_adj)*cs,0)
-#        n2 = city.addNode((x+x_adj+1)*cs,(y+y_adj)*cs,0)
-#        n3 = city.addNode((x+x_adj+1)*cs,(y+y_adj+1)*cs,0)
-#        n4 = city.addNode((x+x_adj)*cs,(y+y_adj+1)*cs,0)
-#        
-#        plist = nodevector()
-#        plist.append(n1)
-#        plist.append(n2)
-#        plist.append(n3)
-#        plist.append(n4)
-#        plist.append(n1)
-#        
-#        #Add a face denoted by the point list plist to block view
-#        block_attr = city.addFace(plist, self.block)        
-#        block_attr.addAttribute("BlockID", int(ID))
-#        return block_attr       # ------------------------------------------END OF DYNAMIND VERSION
-    
-    def createBlockFace(self, x, y, cs, x_adj, y_adj, ID):                      #UBCORE VERSION
+    def createBlockFace(self, x, y, cs, x_adj, y_adj, ID):
         n1 = ((x+x_adj)*cs,(y+y_adj)*cs,0)
         n2 = ((x+x_adj+1)*cs,(y+y_adj)*cs,0)
         n3 = ((x+x_adj+1)*cs,(y+y_adj+1)*cs,0)
@@ -859,7 +814,7 @@ class Delinblocks(UBModule):      #UBCORE
         block_attr = ubdata.UBVector([n1, n2, n3, n4, n1])        
         block_attr.addAttribute("BlockID", int(ID))
         
-        return block_attr   # --------------------------------------------- END OF UBCORE VERSION
+        return block_attr
     
     def getCBDcoordinates(self):
         if self.locationOption == "S":

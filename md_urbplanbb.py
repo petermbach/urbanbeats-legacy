@@ -979,9 +979,9 @@ class Urbplanbb(UBModule):
                     #Transfer attributes from indHI dictionary
                     currentAttList.addAttribute("HIjobs", indHI_dict["TotalBlockEmployed"])
                     currentAttList.addAttribute("HIestates", indHI_dict["Estates"])
-                    currentAttList.addAttribute("avSt_HI", indLI_dict["av_St"])
-                    currentAttList.addAttribute("HIAfront", indLI_dict["Afrontage"])
-                    currentAttList.addAttribute("HIAfrEIA", indLI_dict["FrontageEIA"])
+                    currentAttList.addAttribute("avSt_HI", indHI_dict["av_St"])
+                    currentAttList.addAttribute("HIAfront", indHI_dict["Afrontage"])
+                    currentAttList.addAttribute("HIAfrEIA", indHI_dict["FrontageEIA"])
                     currentAttList.addAttribute("HIAestate", indHI_dict["Aestate"])
                     currentAttList.addAttribute("HIAeBldg", indHI_dict["EstateBuildingArea"])
                     currentAttList.addAttribute("HIFloors", indHI_dict["Floors"])
